@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Placement Prep needs microphone access so you can speak your answers during mock interviews.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Placement Prep uses speech recognition to transcribe your spoken interview answers.</string>
+</dict>
+</plist>
