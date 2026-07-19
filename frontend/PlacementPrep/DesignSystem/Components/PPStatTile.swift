@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// A number over a label. Appears bare inside the blurple hero card (`.inline`)
+/// A number over a label. Appears bare inside the amber hero card (`.inline`)
 /// and inside its own surface card on the results screen (`.card`).
 struct PPStatTile: View {
 
@@ -12,8 +12,9 @@ struct PPStatTile: View {
     let value: String
     let label: String
     var style: Style = .card
-    /// Overrides the value colour, e.g. green for "Top 18%".
+    /// Overrides for context — the amber hero card sets these to ink.
     var valueColor: Color = .ppText
+    var labelColor: Color = .ppMuted
 
     var body: some View {
         Group {
@@ -31,7 +32,7 @@ struct PPStatTile: View {
                 .foregroundStyle(valueColor)
             Text(label)
                 .font(.ppCaption)
-                .foregroundStyle(Color.ppMuted)
+                .foregroundStyle(labelColor)
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
@@ -53,16 +54,24 @@ struct PPStatRow: View {
     }
 
     let items: [Item]
+    var valueColor: Color = .ppText
+    var labelColor: Color = .ppMuted
 
     var body: some View {
         HStack(spacing: 0) {
             ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
                 if index > 0 {
                     Rectangle()
-                        .fill(Color.white.opacity(0.18))
+                        .fill(labelColor.opacity(0.4))
                         .frame(width: 1, height: 34)
                 }
-                PPStatTile(value: item.value, label: item.label, style: .inline)
+                PPStatTile(
+                    value: item.value,
+                    label: item.label,
+                    style: .inline,
+                    valueColor: valueColor,
+                    labelColor: labelColor
+                )
             }
         }
     }
@@ -71,11 +80,15 @@ struct PPStatRow: View {
 #Preview("Stats") {
     VStack(spacing: PPSpacing.lg) {
         PPCard(tone: .accent) {
-            PPStatRow(items: [
-                .init(value: "24", label: "Quizzes"),
-                .init(value: "78%", label: "Avg score"),
-                .init(value: "6", label: "Interviews"),
-            ])
+            PPStatRow(
+                items: [
+                    .init(value: "24", label: "Quizzes"),
+                    .init(value: "78%", label: "Avg score"),
+                    .init(value: "6", label: "Interviews"),
+                ],
+                valueColor: .ppGround,
+                labelColor: Color.ppGround.opacity(0.65)
+            )
         }
 
         HStack(spacing: PPSpacing.md) {

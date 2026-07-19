@@ -74,14 +74,19 @@ struct QuizSessionView: View {
         HStack(spacing: PPSpacing.md) {
             PPIconButton(systemName: "xmark", diameter: 36) { dismiss() }
 
-            PPBadge(model.topic.displayName, tone: .accent)
+            // Neutral so the difficulty chip's colour stays the only signal here.
+            PPBadge(model.topic.displayName, tone: .neutral)
             PPBadge(PPDifficulty(model.difficulty))
 
             Spacer()
 
             HStack(spacing: PPSpacing.xs) {
                 Image(systemName: "clock")
-                Text(model.formattedQuestionTime).monospacedDigit()
+                Text(model.formattedQuestionTime)
+                    .monospacedDigit()
+                    // Digits roll rather than flash — text-only, no layout cost.
+                    .contentTransition(.numericText())
+                    .animation(PPMotion.snappy, value: model.formattedQuestionTime)
             }
             .font(.ppMicro)
             .foregroundStyle(Color.ppMuted)
@@ -153,11 +158,15 @@ struct QuizSessionView: View {
             .buttonStyle(.ppPrimary)
         }
         .padding(PPSpacing.xl)
-        .background(Color.ppGround)
+        // One deliberate use of material: the sticky footer blurs the answer
+        // list scrolling beneath it. A single static-size blur region is cheap;
+        // the tint keeps it in the palette.
+        .background(.ultraThinMaterial)
+        .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {
             Rectangle().fill(Color.ppBorder).frame(height: 1)
         }
-        .animation(.easeOut(duration: 0.2), value: model.currentAnswer)
+        .animation(PPMotion.snappy, value: model.currentAnswer)
     }
 }
 

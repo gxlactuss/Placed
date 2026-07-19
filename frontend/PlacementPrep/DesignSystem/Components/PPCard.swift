@@ -2,9 +2,13 @@ import SwiftUI
 
 /// The container every grouped block in the app sits inside.
 ///
+/// Flat by design: a fill and a hairline, no shadows, no gradients. Hierarchy
+/// comes from the three surface steps and from typography, which keeps every
+/// card a single cheap draw.
+///
 /// ```swift
 /// PPCard { Text("Daily streak") }
-/// PPCard(tone: .accent) { statsRow }
+/// PPCard(tone: .accent) { statsRow }   // solid amber — ink text inside
 /// ```
 struct PPCard<Content: View>: View {
 
@@ -13,7 +17,8 @@ struct PPCard<Content: View>: View {
         case surface
         /// A card nested inside another surface, or a selected row.
         case elevated
-        /// The blurple hero card used for headline statistics.
+        /// The solid amber hero card. Content inside must use ink
+        /// (`Color.ppGround`) for text, not the usual light palette.
         case accent
     }
 
@@ -26,52 +31,69 @@ struct PPCard<Content: View>: View {
         content
             .padding(padding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(background)
-            .clipShape(.rect(cornerRadius: cornerRadius))
-            .overlay {
+            .background {
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .strokeBorder(borderColor, lineWidth: 1)
+                    .fill(fill)
             }
+            .overlay {
+                if tone != .accent {
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .strokeBorder(Color.ppBorder, lineWidth: 1)
+                }
+            }
+            .contentShape(.rect(cornerRadius: cornerRadius))
     }
 
-    @ViewBuilder
-    private var background: some View {
+    private var fill: Color {
         switch tone {
-        case .surface: Color.ppSurface
-        case .elevated: Color.ppElevated
-        case .accent: LinearGradient.ppAccentCard
+        case .surface: .ppSurface
+        case .elevated: .ppElevated
+        case .accent: .ppAccent
         }
     }
+}
 
-    private var borderColor: Color {
-        switch tone {
-        case .surface, .elevated: .ppBorder
-        case .accent: .ppAccent.opacity(0.45)
-        }
+/// Press feedback for tappable cards: a small spring scale and dim. Scale and
+/// opacity are GPU-composited transforms — the cheapest animations available.
+struct PPPressableStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .opacity(configuration.isPressed ? 0.88 : 1)
+            .animation(PPMotion.snappy, value: configuration.isPressed)
     }
+}
+
+extension ButtonStyle where Self == PPPressableStyle {
+    static var ppPressable: PPPressableStyle { PPPressableStyle() }
 }
 
 #Preview("Cards") {
     VStack(spacing: PPSpacing.lg) {
         PPCard(tone: .accent) {
-            HStack {
-                PPStatTile(value: "24", label: "Quizzes", style: .inline)
-                Divider().overlay(Color.white.opacity(0.2))
-                PPStatTile(value: "78%", label: "Avg score", style: .inline)
-                Divider().overlay(Color.white.opacity(0.2))
-                PPStatTile(value: "6", label: "Interviews", style: .inline)
-            }
-            .frame(height: 52)
+            PPStatRow(
+                items: [
+                    .init(value: "24", label: "Quizzes"),
+                    .init(value: "78%", label: "Avg score"),
+                    .init(value: "6", label: "Interviews"),
+                ],
+                valueColor: .ppGround,
+                labelColor: Color.ppGround.opacity(0.65)
+            )
         }
 
-        PPCard {
-            VStack(alignment: .leading, spacing: PPSpacing.sm) {
-                Text("Company-wise DSA").font(.ppHeadline)
-                Text("2,400+ tagged LeetCode problems")
-                    .font(.ppCaption)
-                    .foregroundStyle(Color.ppMuted)
+        Button {
+        } label: {
+            PPCard {
+                VStack(alignment: .leading, spacing: PPSpacing.sm) {
+                    Text("Company-wise DSA").font(.ppHeadline)
+                    Text("Tap me — cards press with a spring")
+                        .font(.ppCaption)
+                        .foregroundStyle(Color.ppMuted)
+                }
             }
         }
+        .buttonStyle(.ppPressable)
 
         PPCard(tone: .elevated) {
             Text("Elevated tone").font(.ppBodyMedium)

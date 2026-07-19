@@ -67,6 +67,8 @@ struct PPOptionRow: View {
                 if let trailingSymbol {
                     Image(systemName: trailingSymbol)
                         .foregroundStyle(accent)
+                        // One-shot bounce when the verdict lands; free after that.
+                        .symbolEffect(.bounce, value: state)
                 }
             }
             .padding(PPSpacing.lg)
@@ -81,7 +83,7 @@ struct PPOptionRow: View {
         // taking hits entirely rather than merely looking inert.
         .disabled(state.isLocked)
         .opacity(state == .dimmed ? 0.55 : 1)
-        .animation(.easeOut(duration: 0.18), value: state)
+        .animation(PPMotion.snappy, value: state)
         .accessibilityLabel(Text("\(letter). \(text)"))
         .accessibilityValue(Text(accessibilityValue))
     }
@@ -115,7 +117,7 @@ struct PPOptionRow: View {
     }
 
     private var markerForeground: Color {
-        isHighlighted ? .white : .ppMuted
+        isHighlighted ? .ppGround : .ppMuted
     }
 
     private var trailingSymbol: String? {

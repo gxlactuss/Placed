@@ -20,7 +20,7 @@ struct PPCheckbox: View {
                     if isOn {
                         Image(systemName: "checkmark")
                             .font(.system(size: size * 0.5, weight: .bold))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color.ppGround)
                     }
                 }
                 .frame(width: size, height: size)
@@ -46,7 +46,7 @@ struct PPStreakDay: View {
                     Circle().fill(Color.ppAccent)
                     Image(systemName: "checkmark")
                         .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.ppGround)
                 } else {
                     Circle()
                         .strokeBorder(

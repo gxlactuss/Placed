@@ -54,12 +54,17 @@ struct HomeView: View {
     }
 
     private var heroStats: some View {
+        // The one loud moment on the screen: solid amber, ink type.
         PPCard(tone: .accent) {
-            PPStatRow(items: [
-                .init(value: "\(SampleData.quizzesTaken)", label: "Quizzes"),
-                .init(value: "\(SampleData.averageScore)%", label: "Avg score"),
-                .init(value: "\(SampleData.interviewsTaken)", label: "Interviews"),
-            ])
+            PPStatRow(
+                items: [
+                    .init(value: "\(SampleData.quizzesTaken)", label: "Quizzes"),
+                    .init(value: "\(SampleData.averageScore)%", label: "Avg score"),
+                    .init(value: "\(SampleData.interviewsTaken)", label: "Interviews"),
+                ],
+                valueColor: .ppGround,
+                labelColor: Color.ppGround.opacity(0.65)
+            )
         }
     }
 
@@ -86,7 +91,7 @@ struct HomeView: View {
                 }
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.ppPressable)
     }
 
     private var practiceModes: some View {
@@ -135,7 +140,7 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.ppPressable)
     }
 
     private var companyCard: some View {
@@ -165,7 +170,7 @@ struct HomeView: View {
                 }
             }
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.ppPressable)
     }
 
     private var streakCard: some View {

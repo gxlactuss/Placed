@@ -9,6 +9,8 @@ struct QuizResultsView: View {
 
     /// Ring animates from zero on appear rather than snapping to the score.
     @State private var animatedProgress: Double = 0
+    /// Drives the one-shot staggered reveal of the cards below the ring.
+    @State private var revealed = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -31,6 +33,7 @@ struct QuizResultsView: View {
             withAnimation(.easeOut(duration: 0.8).delay(0.15)) {
                 animatedProgress = Double(model.scorePercentage) / 100
             }
+            revealed = true
         }
     }
 
@@ -79,7 +82,7 @@ struct QuizResultsView: View {
             VStack(alignment: .leading, spacing: PPSpacing.md) {
                 PPSectionHeader("Areas to improve")
 
-                ForEach(model.weakAreas, id: \.concept) { area in
+                ForEach(Array(model.weakAreas.enumerated()), id: \.element.concept) { position, area in
                     PPCard {
                         HStack(spacing: PPSpacing.md) {
                             Circle()
@@ -96,6 +99,14 @@ struct QuizResultsView: View {
                             Spacer()
                         }
                     }
+                    // One-shot staggered entrance: opacity + a small offset,
+                    // 80ms apart. Nothing runs after the cards settle.
+                    .opacity(revealed ? 1 : 0)
+                    .offset(y: revealed ? 0 : 14)
+                    .animation(
+                        PPMotion.settle.delay(0.25 + Double(position) * 0.08),
+                        value: revealed
+                    )
                 }
             }
         }
@@ -139,7 +150,8 @@ struct QuizResultsView: View {
             .buttonStyle(.ppPrimary)
         }
         .padding(PPSpacing.xl)
-        .background(Color.ppGround)
+        .background(.ultraThinMaterial)
+        .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {
             Rectangle().fill(Color.ppBorder).frame(height: 1)
         }

@@ -8,11 +8,12 @@ import SwiftUI
 /// reference designs were drawn at.
 extension Font {
 
-    /// Screen titles, e.g. "Companies". Resolves to 34pt.
-    static let ppDisplay = Font.system(.largeTitle, weight: .bold)
+    /// Screen titles, e.g. "Companies". Serif (New York) — the system's own
+    /// editorial voice, no bundled font needed. Resolves to 34pt.
+    static let ppDisplay = Font.system(.largeTitle, design: .serif, weight: .semibold)
 
     /// The user's name on the home header, quiz question prompts. 22pt.
-    static let ppTitle = Font.system(.title2, weight: .bold)
+    static let ppTitle = Font.system(.title2, design: .serif, weight: .semibold)
 
     /// Card headings, e.g. "Company-wise DSA". 17pt.
     static let ppHeadline = Font.system(.headline, weight: .semibold)
@@ -30,16 +31,17 @@ extension Font {
     /// Uppercased, letter-spaced group labels, e.g. "PRACTICE MODES". 12pt.
     static let ppSectionLabel = Font.system(.caption, weight: .semibold)
 
-    /// Numerals that carry a card, e.g. "78%", "12 day streak".
+    /// Numerals that carry a card, e.g. "78%", "12 day streak". Serif numerals
+    /// read like a broadsheet figure, not a fitness app.
     static func ppStat(_ style: Font.TextStyle = .title2) -> Font {
-        .system(style, design: .rounded, weight: .bold)
+        .system(style, design: .serif, weight: .semibold)
     }
 
     /// Non-scaling variant of `ppStat`, for numerals laid out inside fixed
     /// geometry — the score ring in particular, where scaling the text would
     /// push it outside the circle it sits in.
     static func ppStatFixed(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .bold, design: .rounded)
+        .system(size: size, weight: .semibold, design: .serif)
     }
 }
 

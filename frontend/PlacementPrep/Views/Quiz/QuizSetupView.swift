@@ -21,30 +21,18 @@ struct QuizSetupView: View {
 
                 VStack(alignment: .leading, spacing: PPSpacing.md) {
                     PPSectionHeader("Topic")
-                    FlowRow {
-                        ForEach(QuizTopic.allCases) { option in
-                            PPFilterChip(
-                                title: option.displayName,
-                                isSelected: option == topic
-                            ) {
-                                topic = option
-                            }
-                        }
-                    }
+                    PPSegmentedChips(
+                        items: QuizTopic.allCases.map { .init(id: $0, title: $0.displayName) },
+                        selection: $topic
+                    )
                 }
 
                 VStack(alignment: .leading, spacing: PPSpacing.md) {
                     PPSectionHeader("Difficulty")
-                    FlowRow {
-                        ForEach(QuizDifficulty.allCases) { option in
-                            PPFilterChip(
-                                title: option.rawValue.capitalized,
-                                isSelected: option == difficulty
-                            ) {
-                                difficulty = option
-                            }
-                        }
-                    }
+                    PPSegmentedChips(
+                        items: QuizDifficulty.allCases.map { .init(id: $0, title: $0.rawValue.capitalized) },
+                        selection: $difficulty
+                    )
                 }
 
                 PPCard {

@@ -27,14 +27,14 @@ struct PPButtonStyle: ButtonStyle {
                 RoundedRectangle(cornerRadius: PPRadius.md)
                     .strokeBorder(border, lineWidth: 1)
             }
-            .opacity(configuration.isPressed ? 0.75 : 1)
-            .scaleEffect(configuration.isPressed ? 0.98 : 1)
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+            .opacity(configuration.isPressed ? 0.8 : 1)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(PPMotion.snappy, value: configuration.isPressed)
     }
 
     private var foreground: Color {
         switch variant {
-        case .primary: .ppText
+        case .primary: .ppGround
         case .secondary: .ppText
         case .ghost: .ppAccent400
         }
@@ -42,7 +42,7 @@ struct PPButtonStyle: ButtonStyle {
 
     private var background: Color {
         switch variant {
-        case .primary: .ppAccentSection
+        case .primary: .ppAccent
         case .secondary: .ppSurface
         case .ghost: .clear
         }
@@ -50,7 +50,7 @@ struct PPButtonStyle: ButtonStyle {
 
     private var border: Color {
         switch variant {
-        case .primary: .ppAccent
+        case .primary: .clear
         case .secondary: .ppBorderStrong
         case .ghost: .clear
         }

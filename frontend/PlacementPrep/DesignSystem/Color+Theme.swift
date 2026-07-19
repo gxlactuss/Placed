@@ -1,7 +1,7 @@
 import SwiftUI
 
 extension Color {
-    /// Creates a color from a packed 24-bit RGB literal, e.g. `Color(hex: 0x161826)`.
+    /// Creates a color from a packed 24-bit RGB literal, e.g. `Color(hex: 0x0E0F12)`.
     init(hex: UInt32, opacity: Double = 1) {
         self.init(
             .sRGB,
@@ -13,46 +13,41 @@ extension Color {
     }
 }
 
-// MARK: - Nocturne palette
+// MARK: - Ledger palette
+//
+// Editorial dark: a neutral ink ground with no blue cast, warm paper-white
+// text, and a single amber accent used sparingly — headlines, selection, and
+// the hero card. Depth comes from hairlines and typography, not shadows or
+// gradients. Difficulty colours are desaturated so they read as annotations,
+// not candy.
 
 extension Color {
 
-    // Core surfaces
-    static let ppGround = Color(hex: 0x161826)
-    static let ppSurface = Color(hex: 0x232532)
-    static let ppElevated = Color(hex: 0x2B2E3D)
+    // Core surfaces — neutral greys, warmed very slightly.
+    static let ppGround = Color(hex: 0x0E0F12)
+    static let ppSurface = Color(hex: 0x17181D)
+    static let ppElevated = Color(hex: 0x202127)
 
     // Content
-    static let ppText = Color(hex: 0xE9E9ED)
-    static let ppMuted = Color(hex: 0x9397AB)
+    static let ppText = Color(hex: 0xF2F1EC)
+    static let ppMuted = Color(hex: 0x8E9099)
 
-    // Accent · blurple
-    static let ppAccent300 = Color(hex: 0xD2CEFD)
-    static let ppAccent400 = Color(hex: 0xB5ABFC)
-    static let ppAccent = Color(hex: 0x9184D9)
-    static let ppAccent700 = Color(hex: 0x5D5294)
-    static let ppAccentSection = Color(hex: 0x262A60)
+    // Accent · amber. The tint scale keeps the old token names so call sites
+    // don't churn: 300/400 are lighter tints, 700 is dim, `section` is a wash.
+    static let ppAccent300 = Color(hex: 0xF2CD8C)
+    static let ppAccent400 = Color(hex: 0xECB55E)
+    static let ppAccent = Color(hex: 0xE8A33D)
+    static let ppAccent700 = Color(hex: 0x8F6320)
+    static let ppAccentSection = Color(hex: 0x261E10)
 
-    // Difficulty semantics
-    static let ppEasy = Color(hex: 0x5FBF95)
-    static let ppMedium = Color(hex: 0xD9A95F)
-    static let ppHard = Color(hex: 0xDD7A8A)
+    // Difficulty semantics — muted sage / ochre / clay.
+    static let ppEasy = Color(hex: 0x84B394)
+    static let ppMedium = Color(hex: 0xC9A15E)
+    static let ppHard = Color(hex: 0xC97F74)
 
-    /// Hairline used for card and control borders. The palette has no dedicated
-    /// stroke token, so borders are a low-alpha lift off the elevated surface.
-    static let ppBorder = Color.white.opacity(0.07)
-    static let ppBorderStrong = Color.white.opacity(0.12)
-}
-
-// MARK: - Gradients
-
-extension LinearGradient {
-    /// Fill for the hero statistics card on the home screen.
-    static let ppAccentCard = LinearGradient(
-        colors: [Color(hex: 0x4A4385), Color.ppAccentSection],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
+    /// Hairlines — the only depth cue in this system.
+    static let ppBorder = Color.white.opacity(0.08)
+    static let ppBorderStrong = Color.white.opacity(0.16)
 }
 
 // MARK: - Screen chrome

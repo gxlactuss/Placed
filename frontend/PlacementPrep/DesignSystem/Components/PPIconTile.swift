@@ -6,15 +6,21 @@ struct PPIconTile: View {
 
     let systemName: String
     var size: CGFloat = PPSize.iconTile
-    var tint: Color = .ppAccent400
-    var fill: Color = .ppElevated
+    var tint: Color = .ppMuted
+    var fill: Color = .clear
 
     var body: some View {
         Image(systemName: systemName)
-            .font(.system(size: size * 0.42, weight: .medium))
+            .font(.system(size: size * 0.42, weight: .regular))
             .foregroundStyle(tint)
             .frame(width: size, height: size)
             .background(fill, in: .rect(cornerRadius: PPRadius.md))
+            .overlay {
+                // Icons sit in a thin ruled square — an annotation, not a
+                // candy tile.
+                RoundedRectangle(cornerRadius: PPRadius.md)
+                    .strokeBorder(Color.ppBorderStrong, lineWidth: 1)
+            }
             .accessibilityHidden(true)
     }
 }

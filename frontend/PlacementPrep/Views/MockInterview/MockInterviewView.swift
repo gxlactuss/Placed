@@ -55,7 +55,9 @@ struct MockInterviewView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: PPSpacing.lg) {
                     ForEach(turns) { turn in
-                        bubble(turn).id(turn.id)
+                        bubble(turn)
+                            .id(turn.id)
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
 
                     if isThinking {
@@ -161,11 +163,13 @@ struct MockInterviewView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, PPSpacing.xl)
-        .background(Color.ppGround)
+        // Matches the quiz footer: one static blur region over the transcript.
+        .background(.ultraThinMaterial)
+        .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {
             Rectangle().fill(Color.ppBorder).frame(height: 1)
         }
-        .animation(.easeOut(duration: 0.2), value: isRecording)
+        .animation(PPMotion.snappy, value: isRecording)
     }
 
     // MARK: - Behaviour
@@ -203,7 +207,9 @@ struct MockInterviewView: View {
         liveText = ""
         guard !answer.isEmpty else { return }
 
-        turns.append(Turn(speaker: .user, text: answer, isFollowUp: false))
+        withAnimation(PPMotion.settle) {
+            turns.append(Turn(speaker: .user, text: answer, isFollowUp: false))
+        }
         respond()
     }
 
@@ -215,13 +221,15 @@ struct MockInterviewView: View {
             let followUpIndex = round - 1
 
             if followUpIndex < SampleData.interviewFollowUps.count {
-                turns.append(
-                    Turn(
-                        speaker: .ai,
-                        text: SampleData.interviewFollowUps[followUpIndex],
-                        isFollowUp: true
+                withAnimation(PPMotion.settle) {
+                    turns.append(
+                        Turn(
+                            speaker: .ai,
+                            text: SampleData.interviewFollowUps[followUpIndex],
+                            isFollowUp: true
+                        )
                     )
-                )
+                }
             }
             round += 1
         }

@@ -36,19 +36,11 @@ struct CompanyListView: View {
 
             PPSearchField(placeholder: "Search problems or companies", text: $query)
 
-            ScrollView(.horizontal) {
-                HStack(spacing: PPSpacing.sm) {
-                    ForEach(SampleData.companies) { company in
-                        PPFilterChip(
-                            title: company.name,
-                            isSelected: company.slug == selectedSlug
-                        ) {
-                            selectedSlug = company.slug
-                        }
-                    }
-                }
-            }
-            .scrollIndicators(.hidden)
+            PPSegmentedChips(
+                items: SampleData.companies.map { .init(id: $0.slug, title: $0.name) },
+                selection: $selectedSlug,
+                style: .scrolling
+            )
 
             summaryRow
         }
