@@ -1,31 +1,42 @@
 import SwiftUI
 
-/// Root TabView housing the three core modules: Quiz, Mock Interview, and
-/// Company-wise DSA prep. Presented once AuthViewModel.isAuthenticated is true.
+/// The app's four destinations.
+enum AppTab: Hashable {
+    case home, quiz, interview, companies
+}
+
+/// Root TabView. Selection is hoisted into state so Home's shortcut cards can
+/// switch tabs — tapping "Mock Interview" on Home should land on the same screen
+/// the tab bar reaches, not push a second copy onto Home's stack.
+///
+/// Uses the system tab bar restyled by `PPAppearance` rather than a custom bar,
+/// so safe-area insets, keyboard avoidance and VoiceOver ordering keep working.
 struct DashboardView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
+
+    @State private var selectedTab: AppTab = .home
 
     var body: some View {
-        TabView {
-            QuizListView()
-                .tabItem {
-                    Label("Quiz", systemImage: "checklist")
-                }
+        TabView(selection: $selectedTab) {
+            HomeView(selectedTab: $selectedTab)
+                .tabItem { Label("Home", systemImage: "house.fill") }
+                .tag(AppTab.home)
+
+            QuizSetupView()
+                .tabItem { Label("Quiz", systemImage: "checklist") }
+                .tag(AppTab.quiz)
 
             MockInterviewView()
-                .tabItem {
-                    Label("Mock Interview", systemImage: "mic.fill")
-                }
+                .tabItem { Label("Interview", systemImage: "mic.fill") }
+                .tag(AppTab.interview)
 
             CompanyListView()
-                .tabItem {
-                    Label("Companies", systemImage: "building.2.fill")
-                }
+                .tabItem { Label("Companies", systemImage: "building.2.fill") }
+                .tag(AppTab.companies)
         }
+        .tint(.ppAccent400)
     }
 }
 
 #Preview {
     DashboardView()
-        .environmentObject(AuthViewModel())
 }

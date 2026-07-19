@@ -1,0 +1,50 @@
+name: PlacementPrep
+
+options:
+  bundleIdPrefix: com.placementprep
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: false
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+    # Left blank so the project builds for the simulator without a signing
+    # identity. Set your team here (or in Xcode) before running on a device.
+    DEVELOPMENT_TEAM: ""
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  PlacementPrep:
+    type: application
+    platform: iOS
+    sources:
+      - path: PlacementPrep
+        excludes:
+          # Consumed via INFOPLIST_FILE below; excluding it here stops Xcode
+          # also copying it into the bundle as a loose resource.
+          - "Resources/Info.plist"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.placementprep.app
+        PRODUCT_NAME: PlacementPrep
+        INFOPLIST_FILE: PlacementPrep/Resources/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        # iPhone only — the designs are phone-width and the layouts are not
+        # adapted for regular-width size classes yet.
+        TARGETED_DEVICE_FAMILY: "1"
+        ENABLE_PREVIEWS: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+
+schemes:
+  PlacementPrep:
+    build:
+      targets:
+        PlacementPrep: all
+    run:
+      config: Debug
+    archive:
+      config: Release

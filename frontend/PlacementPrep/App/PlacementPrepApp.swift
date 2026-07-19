@@ -2,18 +2,18 @@ import SwiftUI
 
 @main
 struct PlacementPrepApp: App {
-    @StateObject private var authViewModel = AuthViewModel()
+
+    init() {
+        PPAppearance.configure()
+    }
 
     var body: some Scene {
         WindowGroup {
-            Group {
-                if authViewModel.isAuthenticated {
-                    DashboardView()
-                } else {
-                    LoginView()
-                }
-            }
-            .environmentObject(authViewModel)
+            // Auth is not wired up yet — the app opens straight into the tabs.
+            // Reinstate the AuthViewModel gate here when login returns.
+            DashboardView()
+                // Dark-only for now; remove once the themes feature lands.
+                .preferredColorScheme(.dark)
         }
     }
 }
