@@ -1,0 +1,261 @@
+{
+  "id": "cs-dbms-08",
+  "category": "cs-fundamentals",
+  "subject": "dbms",
+  "order": 8,
+  "title": "DBMS 8: Query Processing & Optimization",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-dbms-08-q01",
+      "prompt": "Relations R (1000 blocks) and S (500 blocks) are joined with a block nested-loop join using 502 buffer blocks, with S as the outer relation. Roughly how many block transfers are required?",
+      "options": [
+        {
+          "id": "A",
+          "text": "500,000"
+        },
+        {
+          "id": "B",
+          "text": "1,000,000"
+        },
+        {
+          "id": "C",
+          "text": "1,500"
+        },
+        {
+          "id": "D",
+          "text": "500"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "With 500 blocks of S plus buffers to spare, S fits in memory entirely: read S once (500) and R once (1000) = 1500 transfers. The quadratic 500,000 figure applies only when the outer relation must be processed in chunks.",
+      "concept": "Join Algorithms"
+    },
+    {
+      "id": "cs-dbms-08-q02",
+      "prompt": "Which transformation is a valid equivalence rule used by a query optimizer?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Replacing an outer join with an inner join unconditionally"
+        },
+        {
+          "id": "B",
+          "text": "Pushing a projection below a selection that references the projected-away column"
+        },
+        {
+          "id": "C",
+          "text": "Reordering aggregation before grouping"
+        },
+        {
+          "id": "D",
+          "text": "Pushing a selection below a join when the predicate uses only that relation's attributes"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Selection pushdown is the classic heuristic: filtering early shrinks the intermediate result feeding the join. The others change query semantics — a projection cannot discard a column a later predicate needs.",
+      "concept": "Query Optimization"
+    },
+    {
+      "id": "cs-dbms-08-q03",
+      "prompt": "External merge sort is used on a 100-block file with 10 buffer blocks. How many initial sorted runs are produced?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "100"
+        },
+        {
+          "id": "D",
+          "text": "9"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The sort phase fills all 10 buffer blocks, sorts them in memory and writes each as a run, giving ceil(100/10) = 10 runs. The merge phase then combines them, using 9 blocks for input and 1 for output.",
+      "concept": "External Sorting"
+    },
+    {
+      "id": "cs-dbms-08-q04",
+      "prompt": "The selectivity of a predicate is best described as:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The number of indexes the predicate can use"
+        },
+        {
+          "id": "B",
+          "text": "The fraction of tuples that satisfy the predicate"
+        },
+        {
+          "id": "C",
+          "text": "The number of disk blocks the predicate reads"
+        },
+        {
+          "id": "D",
+          "text": "The CPU cost of evaluating the predicate"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Selectivity is the expected fraction of rows passing the filter, estimated from catalogue statistics such as histograms. Low selectivity favours an index scan; high selectivity favours a full scan.",
+      "concept": "Cost Estimation"
+    },
+    {
+      "id": "cs-dbms-08-q05",
+      "prompt": "For an equijoin where the join attribute of S has a B+ tree index, indexed nested-loop join is preferable to block nested-loop join when:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The outer relation is small and the index is selective"
+        },
+        {
+          "id": "B",
+          "text": "Both relations are very large and unsorted"
+        },
+        {
+          "id": "C",
+          "text": "No index exists on either relation"
+        },
+        {
+          "id": "D",
+          "text": "The join predicate is an inequality"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Cost is roughly (blocks of outer) + (tuples of outer × index lookup cost), so few outer tuples and a selective index keep it cheap. With a huge outer relation, the per-tuple probes dominate and a hash or merge join wins.",
+      "concept": "Join Algorithms"
+    },
+    {
+      "id": "cs-dbms-08-q06",
+      "prompt": "Why does a query optimizer typically consider only left-deep join trees?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Bushy trees cannot use indexes"
+        },
+        {
+          "id": "B",
+          "text": "They are the only trees that produce correct results"
+        },
+        {
+          "id": "C",
+          "text": "They keep the search space manageable and allow pipelining of intermediate results"
+        },
+        {
+          "id": "D",
+          "text": "They always produce the globally optimal plan"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Restricting to left-deep shapes cuts the plan space dramatically and suits pipelined execution, since one input to each join is always a base relation. It is a heuristic, so the true optimum may be missed.",
+      "concept": "Query Optimization"
+    },
+    {
+      "id": "cs-dbms-08-q07",
+      "prompt": "Relations R and S have 1000 and 2000 tuples. The join attribute is a foreign key in R referencing the primary key of S. How many tuples does the natural join produce, at most?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2000"
+        },
+        {
+          "id": "B",
+          "text": "3000"
+        },
+        {
+          "id": "C",
+          "text": "2,000,000"
+        },
+        {
+          "id": "D",
+          "text": "1000"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Each R tuple matches at most one S tuple, since the referenced attribute is a primary key. So the result has at most |R| = 1000 tuples — exactly 1000 if no foreign key value is NULL.",
+      "concept": "Cost Estimation"
+    },
+    {
+      "id": "cs-dbms-08-q08",
+      "prompt": "In hash join, what is the purpose of the partitioning (build) phase?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To sort both relations on the join attribute"
+        },
+        {
+          "id": "B",
+          "text": "To split both relations into buckets so matching tuples land in the same bucket"
+        },
+        {
+          "id": "C",
+          "text": "To eliminate duplicate tuples before joining"
+        },
+        {
+          "id": "D",
+          "text": "To build a B+ tree index on the smaller relation"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Hashing the join attribute of both inputs guarantees that any pair that could match falls into the same partition, so each partition can be joined independently in memory.",
+      "concept": "Join Algorithms"
+    },
+    {
+      "id": "cs-dbms-08-q09",
+      "prompt": "Materialization differs from pipelining in query evaluation because materialization:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Requires the query to be read-only"
+        },
+        {
+          "id": "B",
+          "text": "Always uses less disk I/O"
+        },
+        {
+          "id": "C",
+          "text": "Writes each operator's intermediate result to disk before the next operator reads it"
+        },
+        {
+          "id": "D",
+          "text": "Can only be used with sort-based operators"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Materialization stores intermediates, costing extra I/O but simplifying execution and enabling reuse. Pipelining streams tuples straight into the next operator, avoiding that write — though blocking operators like sort must materialize anyway.",
+      "concept": "Query Processing"
+    },
+    {
+      "id": "cs-dbms-08-q10",
+      "prompt": "A cost-based optimizer relies primarily on which source of information to choose a plan?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The number of users connected to the database"
+        },
+        {
+          "id": "B",
+          "text": "The order in which tables appear in the FROM clause"
+        },
+        {
+          "id": "C",
+          "text": "The physical order of rows on disk only"
+        },
+        {
+          "id": "D",
+          "text": "Catalogue statistics such as relation sizes, distinct value counts and histograms"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Cost-based optimization estimates the cost of candidate plans from catalogue statistics. This is why stale statistics cause bad plans — and why running ANALYZE often fixes a sudden regression.",
+      "concept": "Query Optimization"
+    }
+  ]
+}

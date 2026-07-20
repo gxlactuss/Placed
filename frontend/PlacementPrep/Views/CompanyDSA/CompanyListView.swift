@@ -9,7 +9,9 @@ struct CompanyListView: View {
 
     var body: some View {
         NavigationStack {
-            Group {
+            VStack(spacing: 0) {
+                header
+
                 if bank.companies.isEmpty {
                     missingDataState
                 } else if filtered.isEmpty {
@@ -18,16 +20,22 @@ struct CompanyListView: View {
                     list
                 }
             }
-            .navigationTitle("LeetCode")
-            .navigationBarTitleDisplayMode(.large)
-            .searchable(
-                text: $query,
-                placement: .navigationBarDrawer(displayMode: .always),
-                prompt: "Search companies"
-            )
+            .toolbar(.hidden, for: .navigationBar)
             .foregroundStyle(Color.ppText)
             .ppScreenBackground()
         }
+    }
+
+    /// Serif header plus the in-house search field, matching the rest of the app.
+    /// A system `.searchable` bar would render in SF and reserve nav-bar space.
+    private var header: some View {
+        VStack(alignment: .leading, spacing: PPSpacing.lg) {
+            Text("LeetCode").font(.ppDisplay)
+            PPSearchField(placeholder: "Search companies", text: $query)
+        }
+        .padding(.horizontal, PPSpacing.xl)
+        .padding(.top, PPSpacing.lg)
+        .padding(.bottom, PPSpacing.md)
     }
 
     private var list: some View {

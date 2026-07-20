@@ -1,0 +1,261 @@
+{
+  "id": "cs-dbms-05",
+  "category": "cs-fundamentals",
+  "subject": "dbms",
+  "order": 5,
+  "title": "DBMS 5: Indexing & File Organization",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-dbms-05-q01",
+      "prompt": "What distinguishes a clustered index from an unclustered (secondary) index?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A clustered index stores the data records in the same order as the index"
+        },
+        {
+          "id": "B",
+          "text": "A clustered index can only be built on a primary key"
+        },
+        {
+          "id": "C",
+          "text": "A clustered index cannot be a B+ tree"
+        },
+        {
+          "id": "D",
+          "text": "An unclustered index is always faster for range queries"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Clustering means the physical order of records matches the index order, so a range scan reads consecutive pages. A table can have only one clustered index, since it can be physically sorted just one way.",
+      "concept": "Indexing"
+    },
+    {
+      "id": "cs-dbms-05-q02",
+      "prompt": "In a dense index, there is one index entry for:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every disk cylinder"
+        },
+        {
+          "id": "B",
+          "text": "Every search-key value in the file"
+        },
+        {
+          "id": "C",
+          "text": "Every block of the file"
+        },
+        {
+          "id": "D",
+          "text": "Every distinct primary key only"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A dense index has an entry per search-key value, so a lookup never needs to scan the data file to decide existence. A sparse index has one entry per block and is smaller but requires a scan within the block.",
+      "concept": "Indexing"
+    },
+    {
+      "id": "cs-dbms-05-q03",
+      "prompt": "Why do database systems prefer B+ trees over binary search trees for disk-based indexes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "B+ trees do not need to be balanced"
+        },
+        {
+          "id": "B",
+          "text": "B+ trees use less CPU per comparison"
+        },
+        {
+          "id": "C",
+          "text": "B+ trees have higher fan-out, so fewer disk I/Os are needed per lookup"
+        },
+        {
+          "id": "D",
+          "text": "Binary search trees cannot store duplicate keys"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A B+ tree node fills a disk block and holds many keys, so its height is log_f(N) for a large fan-out f. Since each level costs a disk I/O, a shallow tree is dramatically faster than a binary tree of height log2(N).",
+      "concept": "B+ Trees"
+    },
+    {
+      "id": "cs-dbms-05-q04",
+      "prompt": "In a B+ tree, where are the actual data pointers stored?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only in the internal nodes"
+        },
+        {
+          "id": "B",
+          "text": "Only in the leaf nodes"
+        },
+        {
+          "id": "C",
+          "text": "In both internal and leaf nodes"
+        },
+        {
+          "id": "D",
+          "text": "In the root node only"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "In a B+ tree all record pointers live in the leaves, which are chained together for efficient range scans. Internal nodes hold only separator keys for routing. (A B-tree, by contrast, stores pointers at every level.)",
+      "concept": "B+ Trees"
+    },
+    {
+      "id": "cs-dbms-05-q05",
+      "prompt": "A B+ tree index has order p = 100 (up to 100 pointers per node) and indexes 1,000,000 records. Roughly how many levels does it have?",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 1000"
+        },
+        {
+          "id": "B",
+          "text": "About 10"
+        },
+        {
+          "id": "C",
+          "text": "About 20"
+        },
+        {
+          "id": "D",
+          "text": "About 2 to 3"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "With fan-out near 100, one level indexes ~10^2 entries, two ~10^4, three ~10^6. So around three levels suffice — which is why a point lookup costs only a handful of I/Os.",
+      "concept": "B+ Trees"
+    },
+    {
+      "id": "cs-dbms-05-q06",
+      "prompt": "Which index structure is LEAST suitable for answering a range query such as WHERE salary BETWEEN 50000 AND 80000?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Static hash index on salary"
+        },
+        {
+          "id": "B",
+          "text": "Sparse index on a sorted file"
+        },
+        {
+          "id": "C",
+          "text": "Unclustered B+ tree on salary"
+        },
+        {
+          "id": "D",
+          "text": "Clustered B+ tree on salary"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Hashing scatters adjacent key values across buckets, so a range has no locality and every bucket must be probed. Tree indexes keep keys in sorted order, making ranges a contiguous leaf traversal.",
+      "concept": "Indexing"
+    },
+    {
+      "id": "cs-dbms-05-q07",
+      "prompt": "In extendible hashing, what happens when a bucket overflows and its local depth equals the global depth?",
+      "options": [
+        {
+          "id": "A",
+          "text": "An overflow chain is appended to the bucket"
+        },
+        {
+          "id": "B",
+          "text": "The insertion is rejected"
+        },
+        {
+          "id": "C",
+          "text": "The directory size doubles and global depth increases by 1"
+        },
+        {
+          "id": "D",
+          "text": "The entire file is rehashed from scratch"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "When local depth equals global depth there is no spare directory entry to point at the new bucket, so the directory doubles. If local depth were less, only the bucket splits and the directory is untouched.",
+      "concept": "Hashing"
+    },
+    {
+      "id": "cs-dbms-05-q08",
+      "prompt": "A file has 10,000 records, 10 records per block, and is stored as a sorted file. Using binary search, roughly how many block accesses does a key lookup need?",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 1000"
+        },
+        {
+          "id": "B",
+          "text": "About 14"
+        },
+        {
+          "id": "C",
+          "text": "About 100"
+        },
+        {
+          "id": "D",
+          "text": "10"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The file occupies 10000/10 = 1000 blocks, and binary search costs ceil(log2 1000) = 10 block accesses. Contrast this with a linear scan averaging 500.",
+      "concept": "File Organization"
+    },
+    {
+      "id": "cs-dbms-05-q09",
+      "prompt": "What is a covering index?",
+      "options": [
+        {
+          "id": "A",
+          "text": "An index containing all columns a query needs, so the base table is never read"
+        },
+        {
+          "id": "B",
+          "text": "An index that spans every column of the table"
+        },
+        {
+          "id": "C",
+          "text": "A backup copy of a primary index"
+        },
+        {
+          "id": "D",
+          "text": "An index automatically created for every foreign key"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "If the index alone supplies every column referenced by the query, the engine performs an index-only scan and skips the extra lookups into the heap — often a large saving.",
+      "concept": "Indexing"
+    },
+    {
+      "id": "cs-dbms-05-q10",
+      "prompt": "Which is a genuine drawback of creating many secondary indexes on a heavily updated table?",
+      "options": [
+        {
+          "id": "A",
+          "text": "SELECT queries become slower in all cases"
+        },
+        {
+          "id": "B",
+          "text": "Every INSERT, UPDATE and DELETE must maintain each index, slowing writes"
+        },
+        {
+          "id": "C",
+          "text": "The table can no longer have a primary key"
+        },
+        {
+          "id": "D",
+          "text": "Indexes prevent the use of transactions"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Indexes trade write cost and storage for read speed. Each additional index is another structure the DBMS must keep consistent on every modification.",
+      "concept": "Indexing"
+    }
+  ]
+}

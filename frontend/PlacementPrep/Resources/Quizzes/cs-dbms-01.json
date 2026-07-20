@@ -1,0 +1,261 @@
+{
+  "id": "cs-dbms-01",
+  "category": "cs-fundamentals",
+  "subject": "dbms",
+  "order": 1,
+  "title": "DBMS 1: Relational Model & ER Basics",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-dbms-01-q01",
+      "prompt": "In the relational model, what is the degree of a relation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The number of attributes in the relation"
+        },
+        {
+          "id": "B",
+          "text": "The number of foreign keys referencing it"
+        },
+        {
+          "id": "C",
+          "text": "The number of candidate keys"
+        },
+        {
+          "id": "D",
+          "text": "The number of tuples in the relation"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Degree (or arity) is the number of attributes — the width of the table. The number of tuples is the cardinality.",
+      "concept": "Relational Model"
+    },
+    {
+      "id": "cs-dbms-01-q02",
+      "prompt": "Which of the following is TRUE about a candidate key?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It must always be a single attribute"
+        },
+        {
+          "id": "B",
+          "text": "It is a minimal superkey"
+        },
+        {
+          "id": "C",
+          "text": "It may contain NULL values in the primary key column"
+        },
+        {
+          "id": "D",
+          "text": "A relation can have at most one candidate key"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A candidate key is a superkey with no redundant attributes — removing any attribute destroys uniqueness. A relation may have several, and one is chosen as the primary key.",
+      "concept": "Keys & Constraints"
+    },
+    {
+      "id": "cs-dbms-01-q03",
+      "prompt": "The entity integrity constraint states that:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every foreign key must match some primary key value"
+        },
+        {
+          "id": "B",
+          "text": "Attribute values must be atomic"
+        },
+        {
+          "id": "C",
+          "text": "No attribute of a primary key may be NULL"
+        },
+        {
+          "id": "D",
+          "text": "Every relation must have at least one foreign key"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Entity integrity forbids NULLs in any primary key attribute, since a NULL would make the tuple unidentifiable. Matching foreign keys is referential integrity.",
+      "concept": "Keys & Constraints"
+    },
+    {
+      "id": "cs-dbms-01-q04",
+      "prompt": "In an ER diagram, a weak entity set is characterised by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Having no attributes at all"
+        },
+        {
+          "id": "B",
+          "text": "Participating in exactly one relationship"
+        },
+        {
+          "id": "C",
+          "text": "Being connected only to other weak entity sets"
+        },
+        {
+          "id": "D",
+          "text": "Having no primary key of its own, depending on an identifying owner"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A weak entity lacks a sufficient key of its own. It is identified by its partial key combined with the primary key of its identifying (owner) entity, via a total, identifying relationship.",
+      "concept": "ER Model"
+    },
+    {
+      "id": "cs-dbms-01-q05",
+      "prompt": "A relationship set R between entity sets A and B is many-to-one from A to B. This means:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Each entity in A associates with at most one entity in B"
+        },
+        {
+          "id": "B",
+          "text": "Each entity in B associates with at most one entity in A"
+        },
+        {
+          "id": "C",
+          "text": "Each entity in A associates with exactly one entity in B"
+        },
+        {
+          "id": "D",
+          "text": "Both A and B associate with many entities"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Many-to-one from A to B means many A entities may map to one B entity, so each A entity is related to at most one B entity. 'At most' rather than 'exactly' because participation may be partial.",
+      "concept": "ER Model"
+    },
+    {
+      "id": "cs-dbms-01-q06",
+      "prompt": "Which relational algebra operation requires the two operand relations to be union-compatible?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Projection"
+        },
+        {
+          "id": "B",
+          "text": "Set difference"
+        },
+        {
+          "id": "C",
+          "text": "Natural join"
+        },
+        {
+          "id": "D",
+          "text": "Cartesian product"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Union, intersection and set difference all require union compatibility: the same degree and matching attribute domains. Cartesian product and join impose no such requirement.",
+      "concept": "Relational Algebra"
+    },
+    {
+      "id": "cs-dbms-01-q07",
+      "prompt": "Which of these is NOT one of the basic (primitive) operations of relational algebra?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Projection"
+        },
+        {
+          "id": "B",
+          "text": "Rename"
+        },
+        {
+          "id": "C",
+          "text": "Natural join"
+        },
+        {
+          "id": "D",
+          "text": "Selection"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The primitive set is selection, projection, union, set difference, Cartesian product and rename. Natural join is derived — it can be expressed as a product followed by a selection and a projection.",
+      "concept": "Relational Algebra"
+    },
+    {
+      "id": "cs-dbms-01-q08",
+      "prompt": "A foreign key in relation R referencing relation S may be NULL. What does this represent?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A duplicate tuple in S"
+        },
+        {
+          "id": "B",
+          "text": "An error that the DBMS must reject"
+        },
+        {
+          "id": "C",
+          "text": "A violation of referential integrity"
+        },
+        {
+          "id": "D",
+          "text": "A tuple in R that participates in no relationship with S"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Referential integrity requires a foreign key to either match an existing primary key in S or be entirely NULL. A NULL simply means the tuple currently has no counterpart — partial participation.",
+      "concept": "Keys & Constraints"
+    },
+    {
+      "id": "cs-dbms-01-q09",
+      "prompt": "Which level of the three-schema architecture describes WHAT data is stored and the relationships among it, independent of physical storage?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Conceptual (logical) level"
+        },
+        {
+          "id": "B",
+          "text": "External (view) level"
+        },
+        {
+          "id": "C",
+          "text": "Application level"
+        },
+        {
+          "id": "D",
+          "text": "Internal (physical) level"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The conceptual level describes the whole database logically. The external level exposes per-user views, and the internal level describes physical storage. Separating them gives physical and logical data independence.",
+      "concept": "DBMS Architecture"
+    },
+    {
+      "id": "cs-dbms-01-q10",
+      "prompt": "If relation R has 5 tuples and relation S has 3 tuples, how many tuples are in R × S (Cartesian product)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "3"
+        },
+        {
+          "id": "B",
+          "text": "15"
+        },
+        {
+          "id": "C",
+          "text": "5"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The Cartesian product pairs every tuple of R with every tuple of S, giving 5 × 3 = 15 tuples. Its degree is the sum of the two degrees.",
+      "concept": "Relational Algebra"
+    }
+  ]
+}

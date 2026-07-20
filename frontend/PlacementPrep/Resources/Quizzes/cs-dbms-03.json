@@ -1,0 +1,261 @@
+{
+  "id": "cs-dbms-03",
+  "category": "cs-fundamentals",
+  "subject": "dbms",
+  "order": 3,
+  "title": "DBMS 3: Functional Dependencies & Normal Forms",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-dbms-03-q01",
+      "prompt": "For relation R(A, B, C, D) with FDs {A → B, B → C, C → D}, what is the attribute closure A+?",
+      "options": [
+        {
+          "id": "A",
+          "text": "{A, B, C, D}"
+        },
+        {
+          "id": "B",
+          "text": "{A}"
+        },
+        {
+          "id": "C",
+          "text": "{A, B, C}"
+        },
+        {
+          "id": "D",
+          "text": "{A, B}"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Start with {A}; A → B adds B, B → C adds C, C → D adds D. The closure is all of R, so A is a superkey — and since no proper subset works, it is the candidate key.",
+      "concept": "Functional Dependencies"
+    },
+    {
+      "id": "cs-dbms-03-q02",
+      "prompt": "A relation is in 2NF if it is in 1NF and:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every determinant is a candidate key"
+        },
+        {
+          "id": "B",
+          "text": "No non-prime attribute is partially dependent on any candidate key"
+        },
+        {
+          "id": "C",
+          "text": "It contains no multivalued dependencies"
+        },
+        {
+          "id": "D",
+          "text": "No non-prime attribute is transitively dependent on any candidate key"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "2NF removes partial dependencies — a non-prime attribute depending on only part of a composite candidate key. Removing transitive dependencies is 3NF; every determinant being a key is BCNF.",
+      "concept": "Normalization"
+    },
+    {
+      "id": "cs-dbms-03-q03",
+      "prompt": "R(A, B, C) has FDs {AB → C, C → A}. Which normal form does R satisfy, at the highest level?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2NF but not 3NF"
+        },
+        {
+          "id": "B",
+          "text": "BCNF"
+        },
+        {
+          "id": "C",
+          "text": "3NF but not BCNF"
+        },
+        {
+          "id": "D",
+          "text": "1NF only"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Candidate keys are AB and BC, so prime attributes are A, B and C — every attribute is prime, hence no transitive dependency on a non-prime attribute, giving 3NF. But C → A has a non-superkey determinant, so BCNF fails.",
+      "concept": "Normalization"
+    },
+    {
+      "id": "cs-dbms-03-q04",
+      "prompt": "Which of Armstrong's axioms states that if X → Y then XZ → YZ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Decomposition"
+        },
+        {
+          "id": "B",
+          "text": "Transitivity"
+        },
+        {
+          "id": "C",
+          "text": "Reflexivity"
+        },
+        {
+          "id": "D",
+          "text": "Augmentation"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Augmentation permits adding the same attributes to both sides. Reflexivity gives X → Y when Y is a subset of X, and transitivity chains X → Y and Y → Z into X → Z.",
+      "concept": "Functional Dependencies"
+    },
+    {
+      "id": "cs-dbms-03-q05",
+      "prompt": "In R(A, B, C, D) with FDs {AB → C, C → D, D → A}, how many candidate keys contain attribute B?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every candidate key contains B"
+        },
+        {
+          "id": "B",
+          "text": "Exactly one, namely AB"
+        },
+        {
+          "id": "C",
+          "text": "0 — B appears in no candidate key"
+        },
+        {
+          "id": "D",
+          "text": "B alone is the only candidate key"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "B never appears on the right-hand side of any FD, so no dependency can derive it. Any attribute that is never determined must belong to every candidate key. (Here the keys are AB, BC and BD.)",
+      "concept": "Functional Dependencies"
+    },
+    {
+      "id": "cs-dbms-03-q06",
+      "prompt": "Which statement about 3NF and BCNF is correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every relation in 3NF is also in BCNF"
+        },
+        {
+          "id": "B",
+          "text": "Every relation in BCNF is also in 3NF"
+        },
+        {
+          "id": "C",
+          "text": "The two are equivalent for all relations"
+        },
+        {
+          "id": "D",
+          "text": "BCNF is weaker than 2NF"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "BCNF is strictly stronger, so BCNF implies 3NF but not the reverse. 3NF tolerates a non-superkey determinant provided the dependent attribute is prime.",
+      "concept": "Normalization"
+    },
+    {
+      "id": "cs-dbms-03-q07",
+      "prompt": "A relation is in 1NF if:",
+      "options": [
+        {
+          "id": "A",
+          "text": "All attributes are of the same data type"
+        },
+        {
+          "id": "B",
+          "text": "It has a primary key defined"
+        },
+        {
+          "id": "C",
+          "text": "All attribute values are atomic (no repeating groups or multivalued attributes)"
+        },
+        {
+          "id": "D",
+          "text": "It has no functional dependencies"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "1NF requires atomic, single-valued attributes drawn from their domain. Composite or repeating attributes must be flattened out before higher normal forms are even meaningful.",
+      "concept": "Normalization"
+    },
+    {
+      "id": "cs-dbms-03-q08",
+      "prompt": "Given FDs F = {A → B, A → C, AB → C}, which FD is redundant (extraneous) in F?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A → C"
+        },
+        {
+          "id": "B",
+          "text": "A → B"
+        },
+        {
+          "id": "C",
+          "text": "None are redundant"
+        },
+        {
+          "id": "D",
+          "text": "AB → C"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "AB → C follows from A → C by augmentation, so removing it leaves the closure unchanged. Computing a canonical cover would drop it — note A → C itself is needed and is not redundant.",
+      "concept": "Functional Dependencies"
+    },
+    {
+      "id": "cs-dbms-03-q09",
+      "prompt": "Which anomaly is directly eliminated by decomposing a relation to remove a transitive dependency?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The inability to store a department with no employees (insertion anomaly)"
+        },
+        {
+          "id": "B",
+          "text": "Loss of the ability to reconstruct the original relation"
+        },
+        {
+          "id": "C",
+          "text": "Phantom reads during concurrent scans"
+        },
+        {
+          "id": "D",
+          "text": "Deadlock between transactions"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Transitive dependencies force unrelated facts into one relation, producing insertion, deletion and update anomalies. Decomposition to 3NF separates them. Deadlocks and phantoms are concurrency issues, unrelated to normalization.",
+      "concept": "Normalization"
+    },
+    {
+      "id": "cs-dbms-03-q10",
+      "prompt": "R(A, B, C, D, E) has FDs {A → BC, CD → E, B → D, E → A}. Which of the following is a candidate key?",
+      "options": [
+        {
+          "id": "A",
+          "text": "D"
+        },
+        {
+          "id": "B",
+          "text": "A"
+        },
+        {
+          "id": "C",
+          "text": "BC"
+        },
+        {
+          "id": "D",
+          "text": "BD"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A+ = {A}, then A → BC adds B and C, B → D adds D, and CD → E adds E — so A+ is all of R and A is minimal. (E and CD are also keys, via E → A.)",
+      "concept": "Functional Dependencies"
+    }
+  ]
+}

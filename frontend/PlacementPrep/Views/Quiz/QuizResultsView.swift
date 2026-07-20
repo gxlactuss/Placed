@@ -18,6 +18,7 @@ struct QuizResultsView: View {
                 VStack(spacing: PPSpacing.xl) {
                     header
                     ring
+                    verdict
                     statRow
                     weakAreas
                     recommendations
@@ -38,10 +39,36 @@ struct QuizResultsView: View {
     }
 
     private var header: some View {
-        Text("Quiz complete · \(model.topic.displayName) · \(model.difficulty.rawValue.capitalized)")
+        Text("\(model.quiz.category.title) · \(model.quiz.title)")
             .ppSectionLabelStyle()
             .multilineTextAlignment(.center)
             .padding(.top, PPSpacing.lg)
+    }
+
+    /// States plainly whether the next quiz just unlocked — the single most
+    /// important thing on this screen once progression is in play.
+    private var verdict: some View {
+        let passed = model.hasPassed
+
+        return PPCard(tone: .elevated) {
+            HStack(spacing: PPSpacing.md) {
+                Image(systemName: passed ? "lock.open.fill" : "arrow.counterclockwise")
+                    .foregroundStyle(passed ? Color.ppEasy : Color.ppMedium)
+
+                VStack(alignment: .leading, spacing: PPSpacing.xs) {
+                    Text(passed ? "Passed — next quiz unlocked" : "Not passed yet")
+                        .font(.ppBodyMedium)
+                    Text(passed
+                         ? "You cleared the \(model.quiz.passPercentage)% pass mark."
+                         : "Score \(model.quiz.passPercentage)% or higher to unlock the next quiz.")
+                        .font(.ppCaption)
+                        .foregroundStyle(Color.ppMuted)
+                        .multilineTextAlignment(.leading)
+                }
+
+                Spacer(minLength: 0)
+            }
+        }
     }
 
     private var ring: some View {
@@ -159,12 +186,16 @@ struct QuizResultsView: View {
 }
 
 #Preview {
-    let model = QuizSessionModel(topic: .csFundamentals, difficulty: .medium)
-    model.answer("C")
-    model.advance()
-    model.answer("A")
-    model.finish()
-
-    return QuizResultsView(model: model, onRetry: {}, onClose: {})
-        .ppScreenBackground()
+    if let quiz = QuizBank().quizzes(in: .aptitude).first {
+        let model = QuizSessionModel(quiz: quiz)
+        model.answer(quiz.questions[0].correctOptionID)
+        model.advance()
+        model.finish()
+        return AnyView(
+            QuizResultsView(model: model, onRetry: {}, onClose: {})
+                .ppScreenBackground()
+        )
+    } else {
+        return AnyView(Text("No quiz JSON bundled"))
+    }
 }

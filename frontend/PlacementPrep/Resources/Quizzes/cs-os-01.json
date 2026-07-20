@@ -1,0 +1,261 @@
+{
+  "id": "cs-os-01",
+  "category": "cs-fundamentals",
+  "subject": "os",
+  "order": 9,
+  "title": "Operating Systems: Processes & Memory",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-os-01-q01",
+      "prompt": "Which page-replacement algorithm can exhibit Belady's anomaly, where adding more page frames increases the number of page faults?",
+      "options": [
+        {
+          "id": "A",
+          "text": "LRU (Least Recently Used)"
+        },
+        {
+          "id": "B",
+          "text": "Optimal (OPT)"
+        },
+        {
+          "id": "C",
+          "text": "FIFO (First In First Out)"
+        },
+        {
+          "id": "D",
+          "text": "Clock (Second Chance)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "FIFO ignores access recency, so a larger frame count can evict a page that is about to be reused. Stack algorithms such as LRU and OPT are provably immune to the anomaly.",
+      "concept": "Memory Management"
+    },
+    {
+      "id": "cs-os-01-q02",
+      "prompt": "A deadlock requires four conditions to hold simultaneously. Which of these is NOT one of them?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mutual exclusion"
+        },
+        {
+          "id": "B",
+          "text": "Hold and wait"
+        },
+        {
+          "id": "C",
+          "text": "Circular wait"
+        },
+        {
+          "id": "D",
+          "text": "Priority inversion"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The Coffman conditions are mutual exclusion, hold and wait, no preemption, and circular wait. Priority inversion is a separate scheduling problem where a high-priority task waits on a lower-priority one.",
+      "concept": "Deadlocks"
+    },
+    {
+      "id": "cs-os-01-q03",
+      "prompt": "What is the key difference between a process and a thread?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Threads have separate address spaces; processes share one"
+        },
+        {
+          "id": "B",
+          "text": "Processes have separate address spaces; threads share one"
+        },
+        {
+          "id": "C",
+          "text": "Threads cannot run concurrently"
+        },
+        {
+          "id": "D",
+          "text": "Processes cannot be scheduled independently"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Each process owns an isolated address space. Threads within a process share that space — which is why thread communication is cheap and why data races are possible.",
+      "concept": "Processes & Threads"
+    },
+    {
+      "id": "cs-os-01-q04",
+      "prompt": "Which scheduling algorithm gives the provably minimum average waiting time for a fixed set of jobs?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Round Robin"
+        },
+        {
+          "id": "B",
+          "text": "First Come First Served"
+        },
+        {
+          "id": "C",
+          "text": "Shortest Job First"
+        },
+        {
+          "id": "D",
+          "text": "Priority scheduling"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "SJF is optimal for average waiting time, but it requires knowing burst times in advance and can starve long jobs — which is why real schedulers approximate it instead.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-01-q05",
+      "prompt": "What does thrashing refer to in an operating system?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Excessive paging activity that leaves little time for useful work"
+        },
+        {
+          "id": "B",
+          "text": "Two threads deadlocking on the same mutex"
+        },
+        {
+          "id": "C",
+          "text": "The CPU cache being flushed on every context switch"
+        },
+        {
+          "id": "D",
+          "text": "A process consuming its entire time slice"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Thrashing happens when the working set exceeds available physical memory, so the system spends nearly all its time swapping pages rather than executing instructions.",
+      "concept": "Memory Management"
+    },
+    {
+      "id": "cs-os-01-q06",
+      "prompt": "Which of these is a valid solution to the critical section problem that guarantees mutual exclusion, progress, and bounded waiting?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Disabling interrupts on a multiprocessor"
+        },
+        {
+          "id": "B",
+          "text": "Peterson's algorithm"
+        },
+        {
+          "id": "C",
+          "text": "Busy-waiting on an unsynchronised flag"
+        },
+        {
+          "id": "D",
+          "text": "Assigning fixed time slices"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Peterson's algorithm satisfies all three requirements for two processes. Disabling interrupts does not scale to multiprocessors, and an unsynchronised flag fails mutual exclusion.",
+      "concept": "Synchronisation"
+    },
+    {
+      "id": "cs-os-01-q07",
+      "prompt": "What is the purpose of a Translation Lookaside Buffer (TLB)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To cache recently used virtual-to-physical address translations"
+        },
+        {
+          "id": "B",
+          "text": "To store the contents of recently accessed pages"
+        },
+        {
+          "id": "C",
+          "text": "To buffer disk writes before they are flushed"
+        },
+        {
+          "id": "D",
+          "text": "To hold the process control blocks of ready processes"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The TLB is a small associative cache of page-table entries. A hit avoids walking the page table, which would otherwise cost extra memory accesses on every reference.",
+      "concept": "Virtual Memory"
+    },
+    {
+      "id": "cs-os-01-q08",
+      "prompt": "In a system using semaphores, what does a binary semaphore initialised to 1 behave as?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A condition variable"
+        },
+        {
+          "id": "B",
+          "text": "A mutex lock"
+        },
+        {
+          "id": "C",
+          "text": "A counting barrier"
+        },
+        {
+          "id": "D",
+          "text": "A spinlock that never blocks"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A binary semaphore starting at 1 admits exactly one holder at a time, giving mutual exclusion. The practical difference from a true mutex is ownership: a mutex may only be released by the thread that acquired it.",
+      "concept": "Synchronisation"
+    },
+    {
+      "id": "cs-os-01-q09",
+      "prompt": "Which condition must hold for a system state to be considered 'safe' under the Banker's algorithm?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No process is currently blocked"
+        },
+        {
+          "id": "B",
+          "text": "All resources are fully allocated"
+        },
+        {
+          "id": "C",
+          "text": "There exists a sequence in which every process can finish"
+        },
+        {
+          "id": "D",
+          "text": "Every process has declared zero maximum need"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A safe state is one where at least one ordering exists that lets every process obtain its maximum need and terminate. Unsafe does not mean deadlocked — it means deadlock can no longer be ruled out.",
+      "concept": "Deadlocks"
+    },
+    {
+      "id": "cs-os-01-q10",
+      "prompt": "What happens during a context switch?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The CPU saves the current process state and restores another's"
+        },
+        {
+          "id": "B",
+          "text": "The process is permanently removed from the ready queue"
+        },
+        {
+          "id": "C",
+          "text": "All cached pages are written back to disk"
+        },
+        {
+          "id": "D",
+          "text": "The scheduler recalculates every process priority"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The kernel saves registers, program counter and other state into the outgoing process's PCB, then loads the incoming one's. It is pure overhead, which is why excessive switching hurts throughput.",
+      "concept": "Processes & Threads"
+    }
+  ]
+}

@@ -9,9 +9,7 @@ import Observation
 @Observable
 final class QuizSessionModel {
 
-    let topic: QuizTopic
-    let difficulty: QuizDifficulty
-    let questions: [SampleQuizQuestion]
+    let quiz: Quiz
 
     private(set) var index = 0
     private(set) var answers: [Int: String] = [:]
@@ -24,15 +22,14 @@ final class QuizSessionModel {
     /// holds `self` weakly and exits on its own if the model goes away.
     private var ticker: Task<Void, Never>?
 
-    init(topic: QuizTopic, difficulty: QuizDifficulty) {
-        self.topic = topic
-        self.difficulty = difficulty
-        self.questions = SampleData.questions(topic: topic, difficulty: difficulty)
+    init(quiz: Quiz) {
+        self.quiz = quiz
     }
 
     // MARK: - Derived state
 
-    var current: SampleQuizQuestion { questions[index] }
+    var questions: [Question] { quiz.questions }
+    var current: Question { questions[index] }
 
     var progress: Double {
         guard !questions.isEmpty else { return 0 }
@@ -46,7 +43,7 @@ final class QuizSessionModel {
 
     var correctCount: Int {
         answers.reduce(into: 0) { total, entry in
-            if questions[entry.key].correctLetter == entry.value { total += 1 }
+            if questions[entry.key].correctOptionID == entry.value { total += 1 }
         }
     }
 
@@ -54,6 +51,10 @@ final class QuizSessionModel {
         guard !questions.isEmpty else { return 0 }
         return Int((Double(correctCount) / Double(questions.count) * 100).rounded())
     }
+
+    /// Whether this run cleared the quiz's pass mark — the signal that unlocks
+    /// the next quiz in the category.
+    var hasPassed: Bool { scorePercentage >= quiz.passPercentage }
 
     var formattedTotalTime: String {
         String(format: "%d:%02d", totalSeconds / 60, totalSeconds % 60)
@@ -71,7 +72,7 @@ final class QuizSessionModel {
         for (questionIndex, question) in questions.enumerated() {
             totals[question.concept, default: 0] += 1
             let answer = answers[questionIndex]
-            if answer == nil || answer != question.correctLetter {
+            if answer == nil || answer != question.correctOptionID {
                 missed[question.concept, default: 0] += 1
             }
         }
@@ -84,10 +85,10 @@ final class QuizSessionModel {
 
     // MARK: - Actions
 
-    func answer(_ letter: String) {
+    func answer(_ optionID: String) {
         // One-shot commit: ignore taps once this question is resolved.
         guard answers[index] == nil else { return }
-        answers[index] = letter
+        answers[index] = optionID
     }
 
     func advance() {

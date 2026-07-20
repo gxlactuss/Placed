@@ -1,0 +1,261 @@
+{
+  "id": "cs-dbms-07",
+  "category": "cs-fundamentals",
+  "subject": "dbms",
+  "order": 7,
+  "title": "DBMS 7: Concurrency Control & Recovery",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-dbms-07-q01",
+      "prompt": "Two-phase locking (2PL) guarantees conflict serializability. What does it NOT guarantee?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Freedom from deadlock"
+        },
+        {
+          "id": "B",
+          "text": "Mutual exclusion on locked items"
+        },
+        {
+          "id": "C",
+          "text": "That transactions acquire locks before use"
+        },
+        {
+          "id": "D",
+          "text": "Conflict serializability"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "2PL enforces a growing phase then a shrinking phase, which guarantees serializability but says nothing about deadlock — two transactions can still wait on each other's locks in a cycle.",
+      "concept": "Locking Protocols"
+    },
+    {
+      "id": "cs-dbms-07-q02",
+      "prompt": "Which variant of 2PL prevents cascading rollbacks by holding all exclusive locks until commit?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Conservative (static) 2PL"
+        },
+        {
+          "id": "B",
+          "text": "Strict 2PL"
+        },
+        {
+          "id": "C",
+          "text": "Optimistic concurrency control"
+        },
+        {
+          "id": "D",
+          "text": "Basic 2PL"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Strict 2PL retains write locks until commit or abort, so no other transaction can read uncommitted data — hence no cascading aborts. Conservative 2PL acquires all locks up front and is deadlock-free but impractical.",
+      "concept": "Locking Protocols"
+    },
+    {
+      "id": "cs-dbms-07-q03",
+      "prompt": "In the wait-die deadlock prevention scheme, when an older transaction requests a lock held by a younger one, the older transaction:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Pre-empts the younger transaction"
+        },
+        {
+          "id": "B",
+          "text": "Restarts with a new timestamp"
+        },
+        {
+          "id": "C",
+          "text": "Waits"
+        },
+        {
+          "id": "D",
+          "text": "Is aborted (dies)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Wait-die is non-pre-emptive: an older (smaller timestamp) transaction waits, while a younger one requesting an older transaction's lock is aborted. Wound-wait is the pre-emptive mirror image.",
+      "concept": "Deadlock Handling"
+    },
+    {
+      "id": "cs-dbms-07-q04",
+      "prompt": "Under basic timestamp ordering, transaction T issues read(X) and TS(T) < W-timestamp(X). What happens?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The read proceeds and R-timestamp(X) is updated"
+        },
+        {
+          "id": "B",
+          "text": "The read returns the previous version of X"
+        },
+        {
+          "id": "C",
+          "text": "T waits until the writer commits"
+        },
+        {
+          "id": "D",
+          "text": "T is rolled back"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "T needs a value that has already been overwritten by a younger transaction, so the read is too late and T is rolled back. Option D describes multiversion timestamp ordering, not the basic protocol.",
+      "concept": "Timestamp Ordering"
+    },
+    {
+      "id": "cs-dbms-07-q05",
+      "prompt": "The write-ahead logging (WAL) rule requires that:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The log record for a change reaches stable storage before the modified data page does"
+        },
+        {
+          "id": "B",
+          "text": "Data pages are flushed before their log records"
+        },
+        {
+          "id": "C",
+          "text": "The log is written only at commit time"
+        },
+        {
+          "id": "D",
+          "text": "Undo and redo information are stored in separate files"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "WAL guarantees the log always describes any change that might have reached disk, so recovery can undo it. Flushing data first would leave uncorrectable changes after a crash.",
+      "concept": "Recovery"
+    },
+    {
+      "id": "cs-dbms-07-q06",
+      "prompt": "After a crash, ARIES recovery proceeds in which order?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Undo, Redo, Analysis"
+        },
+        {
+          "id": "B",
+          "text": "Analysis, Redo, Undo"
+        },
+        {
+          "id": "C",
+          "text": "Analysis, Undo, Redo"
+        },
+        {
+          "id": "D",
+          "text": "Redo, Analysis, Undo"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Analysis rebuilds the dirty page and transaction tables from the last checkpoint; Redo replays history to restore the pre-crash state; Undo then rolls back the losers. Redo-before-undo is what makes repeating history work.",
+      "concept": "Recovery"
+    },
+    {
+      "id": "cs-dbms-07-q07",
+      "prompt": "In deferred database modification, when are a transaction's writes applied to the database?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Immediately as each write executes"
+        },
+        {
+          "id": "B",
+          "text": "During the undo phase of recovery"
+        },
+        {
+          "id": "C",
+          "text": "Only after the transaction commits"
+        },
+        {
+          "id": "D",
+          "text": "At the next checkpoint"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Deferred modification buffers updates and applies them post-commit, so recovery needs redo only — an aborted transaction touched nothing. Immediate modification requires both undo and redo.",
+      "concept": "Recovery"
+    },
+    {
+      "id": "cs-dbms-07-q08",
+      "prompt": "What is the primary purpose of a checkpoint in a recovery system?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To compress the database file"
+        },
+        {
+          "id": "B",
+          "text": "To detect deadlocks among running transactions"
+        },
+        {
+          "id": "C",
+          "text": "To release all locks held by active transactions"
+        },
+        {
+          "id": "D",
+          "text": "To bound how much of the log must be examined after a crash"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A checkpoint records a known-good point with buffers flushed, so recovery need not scan the log from the beginning of time. It limits recovery work, not concurrency.",
+      "concept": "Recovery"
+    },
+    {
+      "id": "cs-dbms-07-q09",
+      "prompt": "In multiple-granularity locking, before acquiring an exclusive lock on a row, a transaction must first acquire which lock on the table?",
+      "options": [
+        {
+          "id": "A",
+          "text": "IX (intention-exclusive)"
+        },
+        {
+          "id": "B",
+          "text": "S (shared)"
+        },
+        {
+          "id": "C",
+          "text": "X (exclusive)"
+        },
+        {
+          "id": "D",
+          "text": "No table-level lock is needed"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Intention locks announce intent down the hierarchy, so a transaction wanting a table-level lock can detect conflicts without inspecting every row. X on a row requires IX (or SIX) on its ancestors.",
+      "concept": "Locking Protocols"
+    },
+    {
+      "id": "cs-dbms-07-q10",
+      "prompt": "Optimistic concurrency control is most appropriate when:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The system cannot maintain timestamps"
+        },
+        {
+          "id": "B",
+          "text": "Conflicts between transactions are rare"
+        },
+        {
+          "id": "C",
+          "text": "Deadlock detection is unavailable"
+        },
+        {
+          "id": "D",
+          "text": "Transactions are long and highly contended"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "OCC skips locking and validates at commit, which is cheap when conflicts are unlikely. Under heavy contention the repeated validation failures and restarts make it perform worse than locking.",
+      "concept": "Concurrency Control"
+    }
+  ]
+}

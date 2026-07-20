@@ -1,14 +1,19 @@
 import SwiftUI
 
-/// One run through a quiz, then its results. Both phases live behind the same
-/// full-screen cover so the X dismisses back to the setup screen from either.
-struct QuizSessionView: View {
+/// Plays one quiz, then shows its result. Category-agnostic — it renders
+/// whatever `Quiz` it is handed, so a 3-question aptitude set and a 10-question
+/// CS set use the same view.
+struct QuizView: View {
+
+    let quiz: Quiz
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(QuizProgressStore.self) private var progress
     @State private var model: QuizSessionModel
 
-    init(topic: QuizTopic, difficulty: QuizDifficulty) {
-        _model = State(initialValue: QuizSessionModel(topic: topic, difficulty: difficulty))
+    init(quiz: Quiz) {
+        self.quiz = quiz
+        _model = State(initialValue: QuizSessionModel(quiz: quiz))
     }
 
     var body: some View {
@@ -26,6 +31,11 @@ struct QuizSessionView: View {
         .ppScreenBackground()
         .onAppear { model.startTimer() }
         .onDisappear { model.stopTimer() }
+        .onChange(of: model.isFinished) { _, finished in
+            // Record on completion, not on every answer, so an abandoned run
+            // never counts toward unlocking.
+            if finished { progress.record(score: model.scorePercentage, for: quiz) }
+        }
     }
 
     // MARK: - Question phase
@@ -45,15 +55,15 @@ struct QuizSessionView: View {
                     VStack(spacing: PPSpacing.md) {
                         ForEach(model.current.options) { option in
                             PPOptionRow(
-                                letter: option.letter,
+                                letter: option.id,
                                 text: option.text,
                                 state: .resolve(
-                                    optionID: option.letter,
+                                    optionID: option.id,
                                     selectedID: model.currentAnswer,
-                                    correctID: model.current.correctLetter
+                                    correctID: model.current.correctOptionID
                                 )
                             ) {
-                                model.answer(option.letter)
+                                model.answer(option.id)
                             }
                         }
                     }
@@ -74,9 +84,8 @@ struct QuizSessionView: View {
         HStack(spacing: PPSpacing.md) {
             PPIconButton(systemName: "xmark", diameter: 36) { dismiss() }
 
-            // Neutral so the difficulty chip's colour stays the only signal here.
-            PPBadge(model.topic.displayName, tone: .neutral)
-            PPBadge(PPDifficulty(model.difficulty))
+            PPBadge(quiz.category.title, tone: .neutral)
+            PPBadge(quiz.difficulty.title, tone: .tinted(quiz.difficulty.accent))
 
             Spacer()
 
@@ -84,7 +93,6 @@ struct QuizSessionView: View {
                 Image(systemName: "clock")
                 Text(model.formattedQuestionTime)
                     .monospacedDigit()
-                    // Digits roll rather than flash — text-only, no layout cost.
                     .contentTransition(.numericText())
                     .animation(PPMotion.snappy, value: model.formattedQuestionTime)
             }
@@ -103,7 +111,7 @@ struct QuizSessionView: View {
             HStack {
                 Text("Question \(model.index + 1) of \(model.questions.count)")
                 Spacer()
-                Text("\(Int(model.progress * 100))%")
+                Text("Pass \(quiz.passPercentage)%")
             }
             .font(.ppCaption)
             .foregroundStyle(Color.ppMuted)
@@ -115,18 +123,16 @@ struct QuizSessionView: View {
     }
 
     private var explanation: some View {
-        PPCard(tone: .elevated) {
+        let wasRight = model.currentAnswer == model.current.correctOptionID
+
+        return PPCard(tone: .elevated) {
             VStack(alignment: .leading, spacing: PPSpacing.sm) {
                 Label(
-                    model.currentAnswer == model.current.correctLetter ? "Correct" : "Not quite",
-                    systemImage: model.currentAnswer == model.current.correctLetter
-                        ? "checkmark.circle.fill"
-                        : "xmark.circle.fill"
+                    wasRight ? "Correct" : "Not quite",
+                    systemImage: wasRight ? "checkmark.circle.fill" : "xmark.circle.fill"
                 )
                 .font(.ppMicro)
-                .foregroundStyle(
-                    model.currentAnswer == model.current.correctLetter ? Color.ppEasy : Color.ppHard
-                )
+                .foregroundStyle(wasRight ? Color.ppEasy : Color.ppHard)
 
                 Text(model.current.explanation)
                     .font(.ppCaption)
@@ -158,9 +164,6 @@ struct QuizSessionView: View {
             .buttonStyle(.ppPrimary)
         }
         .padding(PPSpacing.xl)
-        // One deliberate use of material: the sticky footer blurs the answer
-        // list scrolling beneath it. A single static-size blur region is cheap;
-        // the tint keeps it in the palette.
         .background(.ultraThinMaterial)
         .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {
@@ -171,5 +174,10 @@ struct QuizSessionView: View {
 }
 
 #Preview {
-    QuizSessionView(topic: .csFundamentals, difficulty: .medium)
+    if let quiz = QuizBank().quizzes(in: .aptitude).first {
+        QuizView(quiz: quiz)
+            .environment(QuizProgressStore.preview())
+    } else {
+        Text("No quiz JSON bundled").ppScreenBackground()
+    }
 }

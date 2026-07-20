@@ -21,7 +21,7 @@ struct DashboardView: View {
                 .tabItem { Label("Home", systemImage: "house.fill") }
                 .tag(AppTab.home)
 
-            QuizSetupView()
+            QuizCategoryView()
                 .tabItem { Label("Quiz", systemImage: "checklist") }
                 .tag(AppTab.quiz)
 
@@ -41,4 +41,6 @@ struct DashboardView: View {
     DashboardView()
         .environment(CompanyBank())
         .environment(SolvedStore.preview())
+        .environment(QuizBank())
+        .environment(QuizProgressStore.preview())
 }

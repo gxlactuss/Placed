@@ -1,0 +1,261 @@
+{
+  "id": "cs-dbms-02",
+  "category": "cs-fundamentals",
+  "subject": "dbms",
+  "order": 2,
+  "title": "DBMS 2: SQL Fundamentals",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-dbms-02-q01",
+      "prompt": "What is the difference between WHERE and HAVING in SQL?",
+      "options": [
+        {
+          "id": "A",
+          "text": "HAVING filters rows before grouping; WHERE filters after"
+        },
+        {
+          "id": "B",
+          "text": "They are interchangeable in all queries"
+        },
+        {
+          "id": "C",
+          "text": "WHERE filters rows before grouping; HAVING filters groups after aggregation"
+        },
+        {
+          "id": "D",
+          "text": "WHERE works only on numeric columns"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "WHERE is applied to individual rows before GROUP BY, so it cannot reference aggregates. HAVING is applied to the groups produced by GROUP BY, so it can.",
+      "concept": "SQL Querying"
+    },
+    {
+      "id": "cs-dbms-02-q02",
+      "prompt": "Consider a table T with 10 rows, where the column C has 3 NULLs and 7 non-NULL values (2 of them duplicates). What does SELECT COUNT(C) FROM T return?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10"
+        },
+        {
+          "id": "B",
+          "text": "7"
+        },
+        {
+          "id": "C",
+          "text": "5"
+        },
+        {
+          "id": "D",
+          "text": "3"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "COUNT(column) ignores NULLs, giving 7. COUNT(*) would return 10, and COUNT(DISTINCT C) would exclude duplicates as well.",
+      "concept": "SQL Aggregates"
+    },
+    {
+      "id": "cs-dbms-02-q03",
+      "prompt": "Which JOIN returns all rows from the left table, with NULLs where no match exists on the right?",
+      "options": [
+        {
+          "id": "A",
+          "text": "CROSS JOIN"
+        },
+        {
+          "id": "B",
+          "text": "RIGHT OUTER JOIN"
+        },
+        {
+          "id": "C",
+          "text": "INNER JOIN"
+        },
+        {
+          "id": "D",
+          "text": "LEFT OUTER JOIN"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A LEFT OUTER JOIN preserves every row of the left relation, padding the right side with NULLs when the join condition finds no match.",
+      "concept": "SQL Joins"
+    },
+    {
+      "id": "cs-dbms-02-q04",
+      "prompt": "In SQL, the expression (NULL = NULL) evaluates to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "UNKNOWN"
+        },
+        {
+          "id": "B",
+          "text": "TRUE"
+        },
+        {
+          "id": "C",
+          "text": "A syntax error"
+        },
+        {
+          "id": "D",
+          "text": "FALSE"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "SQL uses three-valued logic. Any comparison involving NULL yields UNKNOWN, which is why IS NULL exists — rows where the predicate is UNKNOWN are not returned by WHERE.",
+      "concept": "NULL Semantics"
+    },
+    {
+      "id": "cs-dbms-02-q05",
+      "prompt": "Which clause is evaluated LAST in a standard SQL SELECT query?",
+      "options": [
+        {
+          "id": "A",
+          "text": "WHERE"
+        },
+        {
+          "id": "B",
+          "text": "HAVING"
+        },
+        {
+          "id": "C",
+          "text": "ORDER BY"
+        },
+        {
+          "id": "D",
+          "text": "GROUP BY"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Logical evaluation order is FROM, WHERE, GROUP BY, HAVING, SELECT, then ORDER BY. Because ORDER BY runs after SELECT, it can reference column aliases defined there.",
+      "concept": "SQL Querying"
+    },
+    {
+      "id": "cs-dbms-02-q06",
+      "prompt": "What is the effect of the DISTINCT keyword in SELECT DISTINCT A, B FROM T?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Removes rows containing NULLs"
+        },
+        {
+          "id": "B",
+          "text": "Removes duplicates from column A only"
+        },
+        {
+          "id": "C",
+          "text": "Sorts the result by A then B"
+        },
+        {
+          "id": "D",
+          "text": "Removes rows where the combination (A, B) is duplicated"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "DISTINCT applies to the entire projected row, so duplicate (A, B) pairs collapse to one. It does not apply per column, and it does not sort.",
+      "concept": "SQL Querying"
+    },
+    {
+      "id": "cs-dbms-02-q07",
+      "prompt": "Which SQL statement removes all rows from a table but keeps the table structure, and cannot be rolled back in many systems because it is not fully logged?",
+      "options": [
+        {
+          "id": "A",
+          "text": "TRUNCATE TABLE T"
+        },
+        {
+          "id": "B",
+          "text": "DELETE FROM T"
+        },
+        {
+          "id": "C",
+          "text": "ALTER TABLE T"
+        },
+        {
+          "id": "D",
+          "text": "DROP TABLE T"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "TRUNCATE is a DDL operation that deallocates data pages wholesale. DELETE is DML, logs each row and can be rolled back; DROP removes the table definition entirely.",
+      "concept": "SQL DDL/DML"
+    },
+    {
+      "id": "cs-dbms-02-q08",
+      "prompt": "A table Employee(eid, name, dept) has 12 rows across 4 departments. How many rows does SELECT dept, COUNT(*) FROM Employee GROUP BY dept return?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1"
+        },
+        {
+          "id": "B",
+          "text": "4"
+        },
+        {
+          "id": "C",
+          "text": "12"
+        },
+        {
+          "id": "D",
+          "text": "48"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "GROUP BY collapses the rows into one output row per distinct grouping value, so 4 departments give 4 rows, each with its own count.",
+      "concept": "SQL Aggregates"
+    },
+    {
+      "id": "cs-dbms-02-q09",
+      "prompt": "Which constraint guarantees that a column's values are unique but, unlike a primary key, permits a NULL?",
+      "options": [
+        {
+          "id": "A",
+          "text": "CHECK"
+        },
+        {
+          "id": "B",
+          "text": "NOT NULL"
+        },
+        {
+          "id": "C",
+          "text": "UNIQUE"
+        },
+        {
+          "id": "D",
+          "text": "DEFAULT"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "UNIQUE enforces distinctness while generally allowing NULLs (which are not considered equal to one another). A PRIMARY KEY is effectively UNIQUE plus NOT NULL.",
+      "concept": "Keys & Constraints"
+    },
+    {
+      "id": "cs-dbms-02-q10",
+      "prompt": "What does a correlated subquery do that an ordinary subquery does not?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It returns multiple columns by definition"
+        },
+        {
+          "id": "B",
+          "text": "It can only appear in the FROM clause"
+        },
+        {
+          "id": "C",
+          "text": "It always executes faster than a join"
+        },
+        {
+          "id": "D",
+          "text": "It references columns from the outer query, so it is re-evaluated per outer row"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A correlated subquery depends on the current outer row, so conceptually it runs once per outer row. That dependency is exactly why it is often slower than an equivalent join.",
+      "concept": "SQL Querying"
+    }
+  ]
+}

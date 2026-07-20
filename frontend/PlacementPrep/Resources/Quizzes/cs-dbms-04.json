@@ -1,0 +1,261 @@
+{
+  "id": "cs-dbms-04",
+  "category": "cs-fundamentals",
+  "subject": "dbms",
+  "order": 4,
+  "title": "DBMS 4: Transactions & ACID",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-dbms-04-q01",
+      "prompt": "Which ACID property guarantees that a transaction's effects survive a subsequent system crash?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Consistency"
+        },
+        {
+          "id": "B",
+          "text": "Atomicity"
+        },
+        {
+          "id": "C",
+          "text": "Durability"
+        },
+        {
+          "id": "D",
+          "text": "Isolation"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Durability means committed changes persist, normally ensured by forcing log records to stable storage before acknowledging the commit. Atomicity is all-or-nothing, not persistence.",
+      "concept": "Transactions"
+    },
+    {
+      "id": "cs-dbms-04-q02",
+      "prompt": "A schedule is conflict serializable if and only if:",
+      "options": [
+        {
+          "id": "A",
+          "text": "All reads occur before all writes"
+        },
+        {
+          "id": "B",
+          "text": "It contains no concurrent transactions"
+        },
+        {
+          "id": "C",
+          "text": "Every transaction follows two-phase locking"
+        },
+        {
+          "id": "D",
+          "text": "Its precedence (serialization) graph is acyclic"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Build a node per transaction and an edge Ti → Tj for each conflicting pair where Ti acts first. The schedule is conflict serializable exactly when this graph has no cycle.",
+      "concept": "Serializability"
+    },
+    {
+      "id": "cs-dbms-04-q03",
+      "prompt": "Two operations conflict if they belong to different transactions, access the same data item, and:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Both are reads"
+        },
+        {
+          "id": "B",
+          "text": "At least one of them is a write"
+        },
+        {
+          "id": "C",
+          "text": "Both are writes only"
+        },
+        {
+          "id": "D",
+          "text": "They occur in the same transaction"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Read–read pairs commute and do not conflict. Read–write, write–read and write–write pairs do, because swapping them can change the outcome.",
+      "concept": "Serializability"
+    },
+    {
+      "id": "cs-dbms-04-q04",
+      "prompt": "Which isolation level permits non-repeatable reads but prevents dirty reads?",
+      "options": [
+        {
+          "id": "A",
+          "text": "READ COMMITTED"
+        },
+        {
+          "id": "B",
+          "text": "REPEATABLE READ"
+        },
+        {
+          "id": "C",
+          "text": "READ UNCOMMITTED"
+        },
+        {
+          "id": "D",
+          "text": "SERIALIZABLE"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "READ COMMITTED only ever reads committed data, so no dirty reads, but it does not hold read locks to completion — so re-reading a row may yield a different value.",
+      "concept": "Isolation Levels"
+    },
+    {
+      "id": "cs-dbms-04-q05",
+      "prompt": "A 'dirty read' occurs when a transaction:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Reads the same row twice and gets different values"
+        },
+        {
+          "id": "B",
+          "text": "Reads a row that was deleted before it started"
+        },
+        {
+          "id": "C",
+          "text": "Reads a value written by another transaction that has not yet committed"
+        },
+        {
+          "id": "D",
+          "text": "Writes over another transaction's uncommitted write"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Reading uncommitted data is dangerous because the writer may abort, leaving the reader having acted on a value that never existed — a cascading rollback.",
+      "concept": "Isolation Levels"
+    },
+    {
+      "id": "cs-dbms-04-q06",
+      "prompt": "A schedule is said to be cascadeless (avoids cascading rollback) if:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The precedence graph is a tree"
+        },
+        {
+          "id": "B",
+          "text": "No transaction ever aborts"
+        },
+        {
+          "id": "C",
+          "text": "All writes happen at commit time"
+        },
+        {
+          "id": "D",
+          "text": "Every transaction reads only values written by committed transactions"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "If a transaction never reads uncommitted data, one abort can never force others to roll back. Every cascadeless schedule is recoverable, but not vice versa.",
+      "concept": "Recoverability"
+    },
+    {
+      "id": "cs-dbms-04-q07",
+      "prompt": "Consider the schedule: r1(X), w1(X), r2(X), w2(X), r1(Y), w1(Y), commit1, commit2. Is it conflict serializable?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Yes — equivalent to T1 followed by T2"
+        },
+        {
+          "id": "B",
+          "text": "No — the precedence graph has a cycle"
+        },
+        {
+          "id": "C",
+          "text": "Yes — equivalent to T2 followed by T1"
+        },
+        {
+          "id": "D",
+          "text": "It cannot be determined without knowing the values"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The only conflicts are on X, and every T1 operation on X precedes every T2 operation, giving the single edge T1 → T2. Y is touched by T1 alone, so the graph is acyclic and the serial order is T1, T2.",
+      "concept": "Serializability"
+    },
+    {
+      "id": "cs-dbms-04-q08",
+      "prompt": "Which anomaly does the SERIALIZABLE isolation level prevent that REPEATABLE READ (in the classic ANSI definition) does not?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Lost update"
+        },
+        {
+          "id": "B",
+          "text": "Phantom read"
+        },
+        {
+          "id": "C",
+          "text": "Dirty read"
+        },
+        {
+          "id": "D",
+          "text": "Non-repeatable read"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A phantom appears when a re-executed range query returns newly inserted rows. Preventing it needs predicate or index-range locking, which is what SERIALIZABLE adds over REPEATABLE READ.",
+      "concept": "Isolation Levels"
+    },
+    {
+      "id": "cs-dbms-04-q09",
+      "prompt": "In the transaction state diagram, a transaction moves from 'partially committed' to 'committed' when:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Its final statement has executed"
+        },
+        {
+          "id": "B",
+          "text": "It acquires all required locks"
+        },
+        {
+          "id": "C",
+          "text": "Its log records have been written to stable storage"
+        },
+        {
+          "id": "D",
+          "text": "It releases its first lock"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Executing the last statement only reaches 'partially committed'. The transaction is truly committed once enough log information is on stable storage to guarantee its effects survive a crash.",
+      "concept": "Transactions"
+    },
+    {
+      "id": "cs-dbms-04-q10",
+      "prompt": "Every conflict-serializable schedule is also view serializable. Which statement completes the relationship correctly?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every view-serializable schedule is conflict serializable"
+        },
+        {
+          "id": "B",
+          "text": "The two classes are disjoint"
+        },
+        {
+          "id": "C",
+          "text": "View serializability is a stricter condition"
+        },
+        {
+          "id": "D",
+          "text": "Some view-serializable schedules are not conflict serializable — these contain blind writes"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Conflict serializability is a strict subset of view serializability. The schedules in the gap always involve blind writes — a write with no preceding read of that item by the same transaction.",
+      "concept": "Serializability"
+    }
+  ]
+}
