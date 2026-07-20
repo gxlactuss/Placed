@@ -27,6 +27,12 @@ targets:
           # Consumed via INFOPLIST_FILE below; excluding it here stops Xcode
           # also copying it into the bundle as a loose resource.
           - "Resources/Info.plist"
+          # Added below as a folder reference instead.
+          - "Resources/Companies"
+      # A folder reference (rather than a group) so the CSVs land in the bundle
+      # under Companies/ and can be enumerated by subdirectory at runtime.
+      - path: PlacementPrep/Resources/Companies
+        type: folder
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.placementprep.app

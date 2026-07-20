@@ -6,6 +6,8 @@ struct HomeView: View {
 
     @Binding var selectedTab: AppTab
 
+    @Environment(CompanyBank.self) private var bank
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: PPSpacing.xl) {
@@ -152,10 +154,10 @@ struct HomeView: View {
                     PPIconTile(systemName: "building.2.fill")
 
                     VStack(alignment: .leading, spacing: PPSpacing.xs) {
-                        Text("Company-wise DSA")
+                        Text("LeetCode")
                             .font(.ppHeadline)
                             .multilineTextAlignment(.leading)
-                        Text("2,400+ tagged LeetCode problems")
+                        Text("Company-wise problem lists")
                             .font(.ppCaption)
                             .foregroundStyle(Color.ppMuted)
                             .multilineTextAlignment(.leading)
@@ -163,7 +165,8 @@ struct HomeView: View {
 
                     Spacer(minLength: PPSpacing.sm)
 
-                    Text("142 · Google")
+                    // Real count from the bundled CSVs rather than a hardcoded figure.
+                    Text("\(bank.companies.count) companies")
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
                         .fixedSize()
@@ -228,4 +231,5 @@ struct HomeView: View {
 #Preview {
     @Previewable @State var tab: AppTab = .home
     HomeView(selectedTab: $tab)
+        .environment(CompanyBank())
 }

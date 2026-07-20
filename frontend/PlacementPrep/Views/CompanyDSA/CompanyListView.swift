@@ -1,180 +1,114 @@
 import SwiftUI
 
-/// Company-wise DSA problem list with search, company filter and local solved state.
+/// Company picker: a searchable list of every company with a bundled CSV.
+/// Selecting one pushes its question list.
 struct CompanyListView: View {
 
-    @State private var selectedSlug = "google"
+    @Environment(CompanyBank.self) private var bank
     @State private var query = ""
-    /// Solved problems are held in memory only for now; persist once the API exists.
-    @State private var solved: Set<String> = [
-        "https://leetcode.com/problems/two-sum",
-        "https://leetcode.com/problems/longest-substring-without-repeating-characters",
-        "https://leetcode.com/problems/trapping-rain-water",
-    ]
 
     var body: some View {
-        VStack(spacing: PPSpacing.lg) {
-            header
-
-            if filteredProblems.isEmpty {
-                emptyState
-            } else {
-                problemList
-            }
-        }
-        .foregroundStyle(Color.ppText)
-        .ppScreenBackground()
-    }
-
-    // MARK: - Header
-
-    private var header: some View {
-        VStack(alignment: .leading, spacing: PPSpacing.lg) {
-            Text("Companies")
-                .font(.ppDisplay)
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-            PPSearchField(placeholder: "Search problems or companies", text: $query)
-
-            PPSegmentedChips(
-                items: SampleData.companies.map { .init(id: $0.slug, title: $0.name) },
-                selection: $selectedSlug,
-                style: .scrolling
-            )
-
-            summaryRow
-        }
-        .padding(.horizontal, PPSpacing.xl)
-        .padding(.top, PPSpacing.lg)
-    }
-
-    private var summaryRow: some View {
-        HStack {
-            Text("\(selectedCompany.name) · \(solvedCount) / \(allProblems.count) solved")
-                .font(.ppCaption)
-                .foregroundStyle(Color.ppMuted)
-
-            Spacer()
-
-            HStack(spacing: PPSpacing.sm) {
-                ForEach(PPDifficulty.allCases) { level in
-                    Text("\(solvedCount(for: level))/\(total(for: level)) \(level.initial)")
-                        .font(.ppMicro)
-                        .foregroundStyle(level.color)
+        NavigationStack {
+            Group {
+                if bank.companies.isEmpty {
+                    missingDataState
+                } else if filtered.isEmpty {
+                    noMatchState
+                } else {
+                    list
                 }
             }
+            .navigationTitle("LeetCode")
+            .navigationBarTitleDisplayMode(.large)
+            .searchable(
+                text: $query,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "Search companies"
+            )
+            .foregroundStyle(Color.ppText)
+            .ppScreenBackground()
         }
     }
 
-    // MARK: - List
-
-    private var problemList: some View {
+    private var list: some View {
         ScrollView {
-            LazyVStack(spacing: PPSpacing.md) {
-                ForEach(filteredProblems) { problem in
-                    problemRow(problem)
+            LazyVStack(spacing: PPSpacing.sm) {
+                ForEach(filtered) { company in
+                    NavigationLink(value: company) {
+                        PPCard(padding: PPSpacing.md) {
+                            HStack(spacing: PPSpacing.md) {
+                                PPIconTile(systemName: "building.2", size: 36)
+
+                                Text(company.name)
+                                    .font(.ppBodyMedium)
+                                    .foregroundStyle(Color.ppText)
+
+                                Spacer(minLength: PPSpacing.sm)
+
+                                Image(systemName: "chevron.right")
+                                    .font(.ppMicro)
+                                    .foregroundStyle(Color.ppMuted)
+                            }
+                        }
+                    }
+                    .buttonStyle(.ppPressable)
                 }
             }
             .padding(.horizontal, PPSpacing.xl)
             .padding(.bottom, PPSpacing.xl)
         }
         .scrollIndicators(.hidden)
+        .navigationDestination(for: DSACompany.self) { company in
+            CompanyQuestionsView(company: company)
+        }
     }
 
-    private func problemRow(_ problem: DSAQuestion) -> some View {
-        let isSolved = solved.contains(problem.id)
+    private var filtered: [DSACompany] {
+        let trimmed = query.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return bank.companies }
+        return bank.companies.filter { $0.name.localizedCaseInsensitiveContains(trimmed) }
+    }
 
-        return PPCard {
-            HStack(spacing: PPSpacing.md) {
-                PPCheckbox(
-                    isOn: Binding(
-                        get: { isSolved },
-                        set: { newValue in
-                            if newValue { solved.insert(problem.id) } else { solved.remove(problem.id) }
-                        }
-                    )
-                )
+    private var noMatchState: some View {
+        emptyState(
+            icon: "magnifyingglass",
+            title: "No companies match \"\(query)\"",
+            detail: nil
+        )
+    }
 
-                VStack(alignment: .leading, spacing: PPSpacing.sm) {
-                    Text(problem.title)
-                        .font(.ppBodyMedium)
-                        .strikethrough(isSolved, color: .ppMuted)
-                        .foregroundStyle(isSolved ? Color.ppMuted : Color.ppText)
-                        .multilineTextAlignment(.leading)
+    /// Shown when no CSVs made it into the bundle — far more useful than an
+    /// empty list, since the likely cause is a setup step being missed.
+    private var missingDataState: some View {
+        emptyState(
+            icon: "tray",
+            title: "No company data bundled",
+            detail: "Add the company CSVs to Resources/Companies, then run xcodegen generate."
+        )
+    }
 
-                    HStack(spacing: PPSpacing.sm) {
-                        PPBadge(difficulty(of: problem))
-                        if let frequency = problem.frequency {
-                            Text("Freq \(Int(frequency * 100))%")
-                                .font(.ppMicro)
-                                .foregroundStyle(Color.ppMuted)
-                        }
-                    }
-                }
-
-                Spacer(minLength: PPSpacing.sm)
-
-                // Not force-unwrapped: these URLs come from the API once it is
-                // wired up, and a malformed one must not take the screen down.
-                if let url = URL(string: problem.leetcodeURL) {
-                    Link(destination: url) {
-                        Image(systemName: "arrow.up.right")
-                            .foregroundStyle(Color.ppMuted)
-                            .frame(width: 32, height: 32)
-                            .contentShape(.rect)
-                    }
-                    .accessibilityLabel("Open \(problem.title) on LeetCode")
-                }
+    private func emptyState(icon: String, title: String, detail: String?) -> some View {
+        VStack(spacing: PPSpacing.md) {
+            Image(systemName: icon)
+                .font(.system(size: 30))
+                .foregroundStyle(Color.ppMuted)
+            Text(title)
+                .font(.ppBodyMedium)
+                .multilineTextAlignment(.center)
+            if let detail {
+                Text(detail)
+                    .font(.ppCaption)
+                    .foregroundStyle(Color.ppMuted)
+                    .multilineTextAlignment(.center)
             }
         }
-    }
-
-    private var emptyState: some View {
-        VStack(spacing: PPSpacing.md) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 32))
-                .foregroundStyle(Color.ppMuted)
-            Text("No problems match \"\(query)\"")
-                .font(.ppCaption)
-                .foregroundStyle(Color.ppMuted)
-                .multilineTextAlignment(.center)
-        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(PPSpacing.xl)
-    }
-
-    // MARK: - Data
-
-    private var selectedCompany: CompanySummary {
-        SampleData.companies.first { $0.slug == selectedSlug } ?? SampleData.companies[0]
-    }
-
-    private var allProblems: [DSAQuestion] {
-        SampleData.problems(for: selectedSlug)
-    }
-
-    private var filteredProblems: [DSAQuestion] {
-        guard !query.trimmingCharacters(in: .whitespaces).isEmpty else { return allProblems }
-        return allProblems.filter { $0.title.localizedCaseInsensitiveContains(query) }
-    }
-
-    private var solvedCount: Int {
-        allProblems.filter { solved.contains($0.id) }.count
-    }
-
-    private func difficulty(of problem: DSAQuestion) -> PPDifficulty {
-        PPDifficulty(rawValue: problem.difficulty.lowercased()) ?? .medium
-    }
-
-    private func total(for level: PPDifficulty) -> Int {
-        allProblems.filter { difficulty(of: $0) == level }.count
-    }
-
-    private func solvedCount(for level: PPDifficulty) -> Int {
-        allProblems.filter { difficulty(of: $0) == level && solved.contains($0.id) }.count
+        .padding(PPSpacing.xxl)
     }
 }
 
 #Preview {
     CompanyListView()
+        .environment(CompanyBank())
+        .environment(SolvedStore.preview())
 }

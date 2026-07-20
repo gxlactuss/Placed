@@ -30,7 +30,7 @@ struct DashboardView: View {
                 .tag(AppTab.interview)
 
             CompanyListView()
-                .tabItem { Label("Companies", systemImage: "building.2.fill") }
+                .tabItem { Label("LeetCode", systemImage: "building.2.fill") }
                 .tag(AppTab.companies)
         }
         .tint(.ppAccent400)
@@ -39,4 +39,6 @@ struct DashboardView: View {
 
 #Preview {
     DashboardView()
+        .environment(CompanyBank())
+        .environment(SolvedStore.preview())
 }
