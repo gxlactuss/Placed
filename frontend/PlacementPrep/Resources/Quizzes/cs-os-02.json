@@ -1,0 +1,261 @@
+{
+  "id": "cs-os-02",
+  "category": "cs-fundamentals",
+  "subject": "os",
+  "order": 10,
+  "title": "OS 2: Process States & Context Switching",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-os-02-q01",
+      "prompt": "Which one of the following process state transitions is NOT possible?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Ready to Running"
+        },
+        {
+          "id": "B",
+          "text": "Running to Ready"
+        },
+        {
+          "id": "C",
+          "text": "Blocked to Ready"
+        },
+        {
+          "id": "D",
+          "text": "Blocked to Running"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A blocked process whose I/O completes moves to Ready, not straight to Running — it must still be selected by the scheduler. The other three transitions correspond to preemption, dispatch and I/O completion.",
+      "concept": "Process States"
+    },
+    {
+      "id": "cs-os-02-q02",
+      "prompt": "Dispatch latency is best defined as:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The total time a process spends waiting in the ready queue"
+        },
+        {
+          "id": "B",
+          "text": "The time an I/O operation takes to complete"
+        },
+        {
+          "id": "C",
+          "text": "The time between submitting a job and its completion"
+        },
+        {
+          "id": "D",
+          "text": "The time to stop one process and start another running"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Dispatch latency is the overhead the dispatcher incurs switching context, switching to user mode, and jumping to the right instruction. It is pure overhead and matters most in real-time systems.",
+      "concept": "Scheduling Basics"
+    },
+    {
+      "id": "cs-os-02-q03",
+      "prompt": "A running process issues an I/O request. What state does it move to?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Ready"
+        },
+        {
+          "id": "B",
+          "text": "New"
+        },
+        {
+          "id": "C",
+          "text": "Terminated"
+        },
+        {
+          "id": "D",
+          "text": "Blocked (waiting)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The process cannot proceed until the I/O completes, so it leaves the CPU and waits in the blocked state. It returns to Ready once the device signals completion.",
+      "concept": "Process States"
+    },
+    {
+      "id": "cs-os-02-q04",
+      "prompt": "Which one of the following need NOT be saved when the operating system switches context from one process to another?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Program status word"
+        },
+        {
+          "id": "B",
+          "text": "General purpose registers"
+        },
+        {
+          "id": "C",
+          "text": "Program counter"
+        },
+        {
+          "id": "D",
+          "text": "Contents of the translation lookaside buffer"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The TLB is a cache of translations, not architectural state — it is simply flushed (or tagged with an address space id) on a switch. Registers, PC and PSW must all be preserved to resume the process correctly.",
+      "concept": "Context Switching"
+    },
+    {
+      "id": "cs-os-02-q05",
+      "prompt": "What is swap space on disk used for?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Holding the boot loader"
+        },
+        {
+          "id": "B",
+          "text": "Caching frequently read disk blocks"
+        },
+        {
+          "id": "C",
+          "text": "Storing the file system journal"
+        },
+        {
+          "id": "D",
+          "text": "Storing pages evicted from physical memory"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Swap space backs virtual memory: when physical frames run short, pages are written out to swap and read back on demand. It is what allows a process's address space to exceed RAM.",
+      "concept": "Virtual Memory"
+    },
+    {
+      "id": "cs-os-02-q06",
+      "prompt": "In a system with n CPUs, what is the maximum number of processes that can be in the Ready state?",
+      "options": [
+        {
+          "id": "A",
+          "text": "n - 1"
+        },
+        {
+          "id": "B",
+          "text": "n"
+        },
+        {
+          "id": "C",
+          "text": "Independent of n"
+        },
+        {
+          "id": "D",
+          "text": "2n"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The Ready queue holds every runnable process not currently executing, and its length is bounded only by how many processes exist. It is the Running state that is capped at n.",
+      "concept": "Process States"
+    },
+    {
+      "id": "cs-os-02-q07",
+      "prompt": "Under preemptive scheduling, which of the following transitions can occur?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Ready to Blocked, caused by a timer interrupt"
+        },
+        {
+          "id": "B",
+          "text": "Blocked to Running, caused by I/O completion"
+        },
+        {
+          "id": "C",
+          "text": "Terminated to Ready, caused by a restart"
+        },
+        {
+          "id": "D",
+          "text": "Running to Ready, caused by the scheduler"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Preemption is exactly the Running to Ready transition — the scheduler takes the CPU away from a process that could still run. A ready process is not waiting on anything, so it cannot become blocked.",
+      "concept": "Process States"
+    },
+    {
+      "id": "cs-os-02-q08",
+      "prompt": "Which one of the following does NOT interrupt a running process?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The scheduler process"
+        },
+        {
+          "id": "B",
+          "text": "Power failure"
+        },
+        {
+          "id": "C",
+          "text": "A timer interrupt"
+        },
+        {
+          "id": "D",
+          "text": "A device interrupt"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The scheduler is not an independently running process that can seize the CPU; it executes as part of the kernel while handling some other interrupt or trap. The other three are genuine asynchronous events.",
+      "concept": "Interrupts"
+    },
+    {
+      "id": "cs-os-02-q09",
+      "prompt": "Multiprogramming is best described as:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Compiling several programs into one binary"
+        },
+        {
+          "id": "B",
+          "text": "Executing one program on several CPUs at once"
+        },
+        {
+          "id": "C",
+          "text": "Executing several programs concurrently by switching the CPU between them"
+        },
+        {
+          "id": "D",
+          "text": "Allowing several users to share a single terminal"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Multiprogramming keeps several processes in memory and switches the CPU to another whenever the current one blocks, which raises CPU utilisation. It requires no more than a single processor.",
+      "concept": "OS Fundamentals"
+    },
+    {
+      "id": "cs-os-02-q10",
+      "prompt": "The operating system prevents an already running user process from modifying other processes because:",
+      "options": [
+        {
+          "id": "A",
+          "text": "User processes are always loaded into read-only memory"
+        },
+        {
+          "id": "B",
+          "text": "Each process runs on a dedicated processor"
+        },
+        {
+          "id": "C",
+          "text": "The compiler removes all unsafe instructions"
+        },
+        {
+          "id": "D",
+          "text": "Memory protection hardware traps accesses outside the process's address space"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Isolation is enforced at runtime by the MMU: an address outside the process's mapped region raises a fault. Compile-time checks cannot help, since a process can compute addresses at runtime.",
+      "concept": "Protection"
+    }
+  ]
+}

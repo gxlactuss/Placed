@@ -1,0 +1,261 @@
+{
+  "id": "cs-gen-05",
+  "category": "cs-fundamentals",
+  "subject": "general",
+  "order": 30,
+  "title": "GEN 5: Digital Logic & Number Systems",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-gen-05-q01",
+      "prompt": "What is the range of integers representable in an n-bit two's complement system?",
+      "options": [
+        {
+          "id": "A",
+          "text": "-2^(n-1) to 2^(n-1) - 1"
+        },
+        {
+          "id": "B",
+          "text": "-2^(n-1) + 1 to 2^(n-1)"
+        },
+        {
+          "id": "C",
+          "text": "-2^n to 2^n - 1"
+        },
+        {
+          "id": "D",
+          "text": "-(2^(n-1) - 1) to 2^(n-1) - 1"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Two's complement has a single representation of zero, which frees one extra negative value. Option D describes sign-magnitude and one's complement, both of which have two zeros.",
+      "concept": "Number Representation"
+    },
+    {
+      "id": "cs-gen-05-q02",
+      "prompt": "The 16-bit two's complement representation of an integer is 1111 1111 1111 0101. What is its decimal value?",
+      "options": [
+        {
+          "id": "A",
+          "text": "-5"
+        },
+        {
+          "id": "B",
+          "text": "-10"
+        },
+        {
+          "id": "C",
+          "text": "-11"
+        },
+        {
+          "id": "D",
+          "text": "65525"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The leading 1 marks it negative. Inverting gives 0000 0000 0000 1010 and adding one gives 1011, which is 11 — so the value is -11.",
+      "concept": "Number Representation"
+    },
+    {
+      "id": "cs-gen-05-q03",
+      "prompt": "How many distinct Boolean functions can be formed from n Boolean variables?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2^n"
+        },
+        {
+          "id": "B",
+          "text": "2^(2^n)"
+        },
+        {
+          "id": "C",
+          "text": "n^2"
+        },
+        {
+          "id": "D",
+          "text": "2n"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The truth table has 2^n rows and each row's output can independently be 0 or 1, giving 2 raised to the power 2^n functions. For n = 2 that is 16.",
+      "concept": "Boolean Algebra"
+    },
+    {
+      "id": "cs-gen-05-q04",
+      "prompt": "Which pair of gates is functionally complete on its own?",
+      "options": [
+        {
+          "id": "A",
+          "text": "AND and XOR"
+        },
+        {
+          "id": "B",
+          "text": "XOR alone"
+        },
+        {
+          "id": "C",
+          "text": "AND and OR"
+        },
+        {
+          "id": "D",
+          "text": "NAND alone"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "NAND (and equally NOR) can build NOT, AND and OR, so any function can be realised from it. AND with OR cannot produce complementation, and XOR alone cannot either.",
+      "concept": "Logic Gates"
+    },
+    {
+      "id": "cs-gen-05-q05",
+      "prompt": "How many 3-to-8 line decoders with an enable input are needed to build a 6-to-64 line decoder, using no other gates?",
+      "options": [
+        {
+          "id": "A",
+          "text": "8"
+        },
+        {
+          "id": "B",
+          "text": "9"
+        },
+        {
+          "id": "C",
+          "text": "10"
+        },
+        {
+          "id": "D",
+          "text": "64"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "One decoder takes the three high-order bits and its eight outputs enable one of eight second-stage decoders driven by the three low-order bits. That is 1 + 8 = 9 in total.",
+      "concept": "Combinational Circuits"
+    },
+    {
+      "id": "cs-gen-05-q06",
+      "prompt": "What is the minimum number of D flip-flops needed to build a modulo-258 counter?",
+      "options": [
+        {
+          "id": "A",
+          "text": "8"
+        },
+        {
+          "id": "B",
+          "text": "10"
+        },
+        {
+          "id": "C",
+          "text": "9"
+        },
+        {
+          "id": "D",
+          "text": "258"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The counter must hold 258 distinct states, and n flip-flops give 2^n. Since 2^8 = 256 is too few and 2^9 = 512 suffices, 9 are required.",
+      "concept": "Sequential Circuits"
+    },
+    {
+      "id": "cs-gen-05-q07",
+      "prompt": "In an SR latch built from cross-coupled NAND gates, what happens when both S and R inputs are driven to 0?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The latch holds its previous state"
+        },
+        {
+          "id": "B",
+          "text": "Both outputs go to 1, which is an invalid (forbidden) condition"
+        },
+        {
+          "id": "C",
+          "text": "The latch is set"
+        },
+        {
+          "id": "D",
+          "text": "The latch is reset"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Both NAND gates are forced high, so Q and its complement are simultaneously 1 — a contradiction. Releasing both inputs at once then leaves the final state indeterminate.",
+      "concept": "Latches & Flip-Flops"
+    },
+    {
+      "id": "cs-gen-05-q08",
+      "prompt": "What is the race-around condition in a level-triggered JK flip-flop, and how is it avoided?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The output is stuck; a preset input fixes it"
+        },
+        {
+          "id": "B",
+          "text": "The clock arrives too late; raising its frequency fixes it"
+        },
+        {
+          "id": "C",
+          "text": "Two flip-flops change state at once; adding a buffer fixes it"
+        },
+        {
+          "id": "D",
+          "text": "The output toggles repeatedly while the clock is high; a master-slave or edge-triggered design fixes it"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "With J = K = 1 and a clock pulse longer than the propagation delay, the output feeds back and toggles many times, so the final state is unpredictable. Master-slave splits the transfer into two half-cycles.",
+      "concept": "Latches & Flip-Flops"
+    },
+    {
+      "id": "cs-gen-05-q09",
+      "prompt": "Adding the 4-bit two's complement numbers 1101 and 0100 gives which result, and does it overflow?",
+      "options": [
+        {
+          "id": "A",
+          "text": "0001 with overflow"
+        },
+        {
+          "id": "B",
+          "text": "0001 with no overflow"
+        },
+        {
+          "id": "C",
+          "text": "1001 with overflow"
+        },
+        {
+          "id": "D",
+          "text": "10001 with a carry that must be kept"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "1101 is -3 and 0100 is +4, so the sum is +1 = 0001. Overflow is impossible when the operands have opposite signs, and the carry out of the sign bit is simply discarded.",
+      "concept": "Binary Arithmetic"
+    },
+    {
+      "id": "cs-gen-05-q10",
+      "prompt": "In a 4-bit ripple carry adder built from full adders, what limits the maximum clock speed?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The time for the carry to propagate through all the stages"
+        },
+        {
+          "id": "B",
+          "text": "The number of inputs to each XOR gate"
+        },
+        {
+          "id": "C",
+          "text": "The time to compute the least significant sum bit"
+        },
+        {
+          "id": "D",
+          "text": "The setup time of the input registers alone"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each stage must wait for the carry from the one below, so the worst-case delay grows linearly with width. Carry-lookahead computes the carries in parallel to break this chain.",
+      "concept": "Combinational Circuits"
+    }
+  ]
+}

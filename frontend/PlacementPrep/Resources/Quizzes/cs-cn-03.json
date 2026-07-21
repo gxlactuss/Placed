@@ -1,0 +1,261 @@
+{
+  "id": "cs-cn-03",
+  "category": "cs-fundamentals",
+  "subject": "cn",
+  "order": 18,
+  "title": "CN 3: Medium Access & Ethernet",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-cn-03-q01",
+      "prompt": "A CSMA/CD network runs at 10^8 bits per second over a 500 m segment, with signal propagation at 2 x 10^8 m/s. What is the minimum frame size required for reliable collision detection?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1000 bits"
+        },
+        {
+          "id": "B",
+          "text": "250 bits"
+        },
+        {
+          "id": "C",
+          "text": "512 bits"
+        },
+        {
+          "id": "D",
+          "text": "500 bits"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "One-way propagation is 500 / (2 x 10^8) = 2.5 microseconds, so the round trip is 5 microseconds. The sender must still be transmitting after that, needing 10^8 x 5 x 10^-6 = 500 bits.",
+      "concept": "CSMA/CD"
+    },
+    {
+      "id": "cs-cn-03-q02",
+      "prompt": "Why does CSMA/CD impose a minimum frame size at all?",
+      "options": [
+        {
+          "id": "A",
+          "text": "So the sender is still transmitting when a collision signal could reach it"
+        },
+        {
+          "id": "B",
+          "text": "So the CRC has enough bits to be effective"
+        },
+        {
+          "id": "C",
+          "text": "So the receiver has time to allocate a buffer"
+        },
+        {
+          "id": "D",
+          "text": "So the destination address always fits in the header"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A station that finishes transmitting before the worst-case round trip elapses would never learn its frame collided, and would wrongly assume success. The minimum size forces transmission to last at least that long.",
+      "concept": "CSMA/CD"
+    },
+    {
+      "id": "cs-cn-03-q03",
+      "prompt": "An Ethernet frame shorter than the 802.3 minimum of 64 octets is called a:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Jam signal"
+        },
+        {
+          "id": "B",
+          "text": "Runt"
+        },
+        {
+          "id": "C",
+          "text": "Jabber"
+        },
+        {
+          "id": "D",
+          "text": "Giant"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Runts are usually the debris of a collision and are discarded. A frame exceeding the maximum length is a giant, and a station transmitting continuously is jabbering.",
+      "concept": "Ethernet"
+    },
+    {
+      "id": "cs-cn-03-q04",
+      "prompt": "In Ethernet, which field is added by the physical layer and is not considered part of the MAC frame?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Destination address"
+        },
+        {
+          "id": "B",
+          "text": "Frame check sequence"
+        },
+        {
+          "id": "C",
+          "text": "Preamble"
+        },
+        {
+          "id": "D",
+          "text": "Length or type field"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The 7-octet preamble plus start frame delimiter exist purely so the receiver's clock can lock on. They are stripped before the MAC layer sees the frame and are excluded from the length calculation.",
+      "concept": "Ethernet"
+    },
+    {
+      "id": "cs-cn-03-q05",
+      "prompt": "Which medium access control protocol is used by IEEE 802.11 wireless LANs?",
+      "options": [
+        {
+          "id": "A",
+          "text": "CSMA/CD"
+        },
+        {
+          "id": "B",
+          "text": "Pure ALOHA"
+        },
+        {
+          "id": "C",
+          "text": "Token passing"
+        },
+        {
+          "id": "D",
+          "text": "CSMA/CA"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A wireless station cannot listen while transmitting, so collisions cannot be detected. 802.11 therefore avoids them using random backoff before sending, plus optional RTS/CTS to address hidden terminals.",
+      "concept": "Wireless LAN"
+    },
+    {
+      "id": "cs-cn-03-q06",
+      "prompt": "In a pure ALOHA network, frames are 1000 bits and the channel runs at 1 Mbps. Total transmissions follow a Poisson process at 1000 frames per second. What is the approximate throughput in frames per second?",
+      "options": [
+        {
+          "id": "A",
+          "text": "135"
+        },
+        {
+          "id": "B",
+          "text": "368"
+        },
+        {
+          "id": "C",
+          "text": "184"
+        },
+        {
+          "id": "D",
+          "text": "500"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Frame time is 1 ms, so the offered load G is 1. Pure ALOHA throughput is G x e^(-2G) = e^-2, which is about 0.135, giving roughly 135 frames per second.",
+      "concept": "ALOHA"
+    },
+    {
+      "id": "cs-cn-03-q07",
+      "prompt": "There are n stations in a slotted LAN, each transmitting with probability p in a slot. What is the probability that exactly one station transmits in a given slot?",
+      "options": [
+        {
+          "id": "A",
+          "text": "np(1-p)"
+        },
+        {
+          "id": "B",
+          "text": "np(1-p)^(n-1)"
+        },
+        {
+          "id": "C",
+          "text": "p(1-p)^n"
+        },
+        {
+          "id": "D",
+          "text": "(1-p)^(n-1)"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Choose which of the n stations transmits, multiply by its probability p, and require the other n-1 to stay silent with probability (1-p) each.",
+      "concept": "Slotted ALOHA"
+    },
+    {
+      "id": "cs-cn-03-q08",
+      "prompt": "How many 8-port Ethernet switches, with no separate uplink ports, are needed at minimum to connect 15 machines in one LAN?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5"
+        },
+        {
+          "id": "B",
+          "text": "2"
+        },
+        {
+          "id": "C",
+          "text": "3"
+        },
+        {
+          "id": "D",
+          "text": "4"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Interconnecting switches consumes ports. With three switches, two ports are used for the links between them, leaving 8 + 6 + 7 = 21 free ports, which is enough. Two switches offer only 14 usable ports.",
+      "concept": "Switching"
+    },
+    {
+      "id": "cs-cn-03-q09",
+      "prompt": "In Ethernet CSMA/CD, what is the special bit sequence a station transmits after detecting a collision?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Frame check sequence"
+        },
+        {
+          "id": "B",
+          "text": "Backoff token"
+        },
+        {
+          "id": "C",
+          "text": "Preamble"
+        },
+        {
+          "id": "D",
+          "text": "Jam signal"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The 32-bit jam signal ensures the collision lasts long enough for every other station to notice it, so all parties abort and back off rather than some continuing with corrupted data.",
+      "concept": "CSMA/CD"
+    },
+    {
+      "id": "cs-cn-03-q10",
+      "prompt": "Two stations A and B are the only ones on an Ethernet, both with frames queued. They collide, A wins the backoff and transmits. They then collide again. What is the probability that A wins this second backoff?",
+      "options": [
+        {
+          "id": "A",
+          "text": "0.5"
+        },
+        {
+          "id": "B",
+          "text": "0.625"
+        },
+        {
+          "id": "C",
+          "text": "0.75"
+        },
+        {
+          "id": "D",
+          "text": "1.0"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A transmitted successfully so its counter reset: it now draws from {0,1}. B has collided twice and draws from {0,1,2,3}. A wins when it draws strictly smaller — 5 of the 8 equally likely pairs — giving 0.625.",
+      "concept": "Backoff"
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "id": "cs-os-04",
+  "category": "cs-fundamentals",
+  "subject": "os",
+  "order": 12,
+  "title": "OS 4: Process Synchronisation",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-os-04-q01",
+      "prompt": "A counting semaphore has the value 7. Then 20 P (wait) operations and 15 V (signal) operations complete on it. What is the resulting value of the semaphore?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2"
+        },
+        {
+          "id": "B",
+          "text": "-2"
+        },
+        {
+          "id": "C",
+          "text": "12"
+        },
+        {
+          "id": "D",
+          "text": "42"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each P decrements and each V increments, so the value is 7 - 20 + 15 = 2. Note that processes blocked along the way do not change the arithmetic, since a blocked P has not completed.",
+      "concept": "Semaphores"
+    },
+    {
+      "id": "cs-os-04-q02",
+      "prompt": "A shared variable x, initially 0, is used by four concurrent processes. W and X each read x, add one, and store it. Y and Z each read x, subtract two, and store it. Every process performs P(S) before reading and V(S) after storing, where S is a counting semaphore initialised to 2. What is the maximum possible final value of x?",
+      "options": [
+        {
+          "id": "A",
+          "text": "-2"
+        },
+        {
+          "id": "B",
+          "text": "-4"
+        },
+        {
+          "id": "C",
+          "text": "0"
+        },
+        {
+          "id": "D",
+          "text": "2"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "S = 2 admits two processes at once, so updates can be lost. Let W read 0 and stall; then Y and Z run fully, leaving x = -4; now W stores 0 + 1 = 1, and finally X reads 1 and stores 2. Both decrements are overwritten, giving the maximum of 2.",
+      "concept": "Race Conditions"
+    },
+    {
+      "id": "cs-os-04-q03",
+      "prompt": "Which of the following is NOT one of the three requirements a solution to the critical section problem must satisfy?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mutual exclusion"
+        },
+        {
+          "id": "B",
+          "text": "Deadlock detection"
+        },
+        {
+          "id": "C",
+          "text": "Progress"
+        },
+        {
+          "id": "D",
+          "text": "Bounded waiting"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The three classical requirements are mutual exclusion, progress and bounded waiting. Deadlock detection is a resource-allocation concern, not a property demanded of a critical-section protocol.",
+      "concept": "Critical Section"
+    },
+    {
+      "id": "cs-os-04-q04",
+      "prompt": "Semaphores can be used to solve which of the following?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mutual exclusion only"
+        },
+        {
+          "id": "B",
+          "text": "Page replacement and mutual exclusion"
+        },
+        {
+          "id": "C",
+          "text": "Race conditions, process synchronisation and mutual exclusion"
+        },
+        {
+          "id": "D",
+          "text": "Deadlock detection only"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A binary semaphore enforces mutual exclusion and thereby removes race conditions, while a counting semaphore can sequence events between processes. Page replacement is unrelated to semaphores.",
+      "concept": "Semaphores"
+    },
+    {
+      "id": "cs-os-04-q05",
+      "prompt": "A busy-wait lock is built with an atomic test-and-set instruction. Which statement about it is correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It guarantees both mutual exclusion and bounded waiting"
+        },
+        {
+          "id": "B",
+          "text": "It guarantees mutual exclusion and is deadlock free, but not starvation free"
+        },
+        {
+          "id": "C",
+          "text": "It allows two processes into the critical section simultaneously"
+        },
+        {
+          "id": "D",
+          "text": "It requires processes to enter the critical section in FIFO order"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Test-and-set is atomic, so mutual exclusion holds and some waiting process always succeeds. But nothing orders the waiters, so one unlucky process can be overtaken indefinitely — bounded waiting fails.",
+      "concept": "Hardware Synchronisation"
+    },
+    {
+      "id": "cs-os-04-q06",
+      "prompt": "In the producer-consumer problem with a bounded buffer, increasing the number of buffer slots is likely to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Eliminate the possibility of deadlock entirely"
+        },
+        {
+          "id": "B",
+          "text": "Guarantee the consumer never waits"
+        },
+        {
+          "id": "C",
+          "text": "Remove the need for mutual exclusion on the buffer"
+        },
+        {
+          "id": "D",
+          "text": "Increase throughput by reducing how often either party blocks"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "More slots absorb bursts, so the producer fills up and the consumer empties out less often. Mutual exclusion on the shared buffer is still required, and a badly ordered wait can still deadlock.",
+      "concept": "Producer-Consumer"
+    },
+    {
+      "id": "cs-os-04-q07",
+      "prompt": "Processes X, Y and Z each need semaphores from the set {a, b, c, d}, all binary and initialised to 1. Which ordering of P operations is guaranteed to be deadlock free?",
+      "options": [
+        {
+          "id": "A",
+          "text": "X: a,b,c   Y: b,c,d   Z: a,c,d"
+        },
+        {
+          "id": "B",
+          "text": "X: b,a,c   Y: c,b,d   Z: a,d,c"
+        },
+        {
+          "id": "C",
+          "text": "X: a,c,b   Y: d,b,c   Z: c,a,d"
+        },
+        {
+          "id": "D",
+          "text": "X: a,b,c   Y: b,c,d   Z: c,d,a"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "In option C every process acquires semaphores in the same global order a < b < c < d, which makes a circular wait impossible. The other orderings each contain a process that grabs a later semaphore before an earlier one.",
+      "concept": "Deadlock Prevention"
+    },
+    {
+      "id": "cs-os-04-q08",
+      "prompt": "Why must semaphore P and V operations be executed atomically?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Otherwise two processes could both observe the semaphore as available and enter together"
+        },
+        {
+          "id": "B",
+          "text": "Otherwise the semaphore value would overflow"
+        },
+        {
+          "id": "C",
+          "text": "Because they always require a system call"
+        },
+        {
+          "id": "D",
+          "text": "Because the scheduler cannot preempt kernel code"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The test and the decrement must be indivisible. If a process is preempted between reading a positive value and decrementing it, another can read the same value, and both proceed into the critical section.",
+      "concept": "Semaphores"
+    },
+    {
+      "id": "cs-os-04-q09",
+      "prompt": "A solution to the dining philosophers problem that avoids deadlock is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every philosopher picks up the right fork first, then the left"
+        },
+        {
+          "id": "B",
+          "text": "Every philosopher picks up the left fork first, then the right"
+        },
+        {
+          "id": "C",
+          "text": "One philosopher picks up the right fork first while all others pick up the left first"
+        },
+        {
+          "id": "D",
+          "text": "Each philosopher waits a random time before picking up either fork"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Making one philosopher asymmetric breaks the circular wait, so at least one can always eat. Uniform ordering deadlocks when all five pick up simultaneously, and random delays only make deadlock less likely, not impossible.",
+      "concept": "Classical Problems"
+    },
+    {
+      "id": "cs-os-04-q10",
+      "prompt": "Which sharing property must a program have so that a single copy in memory can serve several users concurrently?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It must be written as a macro"
+        },
+        {
+          "id": "B",
+          "text": "It must be compiled without optimisation"
+        },
+        {
+          "id": "C",
+          "text": "It must be recursive"
+        },
+        {
+          "id": "D",
+          "text": "It must be reentrant"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A reentrant program keeps no modifiable state in its code segment, holding per-user data in registers or a private stack. Editors and compilers are shared this way. Recursion is a different and unrelated property.",
+      "concept": "Reentrancy"
+    }
+  ]
+}

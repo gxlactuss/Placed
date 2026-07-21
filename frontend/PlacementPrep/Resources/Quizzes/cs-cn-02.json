@@ -1,0 +1,261 @@
+{
+  "id": "cs-cn-02",
+  "category": "cs-fundamentals",
+  "subject": "cn",
+  "order": 17,
+  "title": "CN 2: Data Link Layer & Error Control",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-cn-02-q01",
+      "prompt": "Bit stuffing refers to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Adding idle bits between frames to maintain synchronisation"
+        },
+        {
+          "id": "B",
+          "text": "Inserting a 0 after five consecutive 1s so data cannot imitate the frame delimiter"
+        },
+        {
+          "id": "C",
+          "text": "Appending parity bits to each byte of the payload"
+        },
+        {
+          "id": "D",
+          "text": "Padding a frame with zeros to reach the minimum frame size"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The flag pattern 01111110 must be unique, so the transmitter inserts a 0 after any run of five 1s in the data and the receiver removes it. This is transparency, not padding.",
+      "concept": "Framing"
+    },
+    {
+      "id": "cs-cn-02-q02",
+      "prompt": "A bit-stuffing protocol uses the delimiter 01111110. If the stuffed output bit string is 01111100101, what was the input?",
+      "options": [
+        {
+          "id": "A",
+          "text": "01111_0101"
+        },
+        {
+          "id": "B",
+          "text": "0111110101 with the flag removed"
+        },
+        {
+          "id": "C",
+          "text": "0111110101"
+        },
+        {
+          "id": "D",
+          "text": "011111000101"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Scanning the output, after the run 11111 the next 0 was inserted by the stuffer and is removed. Deleting that single bit from 01111100101 recovers the original 0111110101.",
+      "concept": "Framing"
+    },
+    {
+      "id": "cs-cn-02-q03",
+      "prompt": "Which property must a CRC generator polynomial G(x) have in order to detect all errors affecting an odd number of bits?",
+      "options": [
+        {
+          "id": "A",
+          "text": "G(x) must have degree at least 16"
+        },
+        {
+          "id": "B",
+          "text": "G(x) must have a constant term of 0"
+        },
+        {
+          "id": "C",
+          "text": "G(x) must be irreducible"
+        },
+        {
+          "id": "D",
+          "text": "G(x) must have (x + 1) as a factor"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "An error pattern with an odd number of 1s is not divisible by x + 1, so if x + 1 divides G(x) no such pattern can divide G(x) either, and every odd-weight error is caught.",
+      "concept": "Error Detection"
+    },
+    {
+      "id": "cs-cn-02-q04",
+      "prompt": "A CRC scheme uses the generator polynomial x^3 + x + 1 (that is, 1011). For the message 11000, what are the three check bits appended?",
+      "options": [
+        {
+          "id": "A",
+          "text": "011"
+        },
+        {
+          "id": "B",
+          "text": "110"
+        },
+        {
+          "id": "C",
+          "text": "101"
+        },
+        {
+          "id": "D",
+          "text": "000"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Append three zeros to give 11000000 and divide by 1011 modulo 2. The remainder of that division is 011, which becomes the check sequence.",
+      "concept": "Error Detection"
+    },
+    {
+      "id": "cs-cn-02-q05",
+      "prompt": "A binary code has the four valid code words 00000, 01011, 10101 and 11110. What is the minimum Hamming distance p, and how many bit errors q can be corrected?",
+      "options": [
+        {
+          "id": "A",
+          "text": "p = 4 and q = 2"
+        },
+        {
+          "id": "B",
+          "text": "p = 3 and q = 1"
+        },
+        {
+          "id": "C",
+          "text": "p = 2 and q = 1"
+        },
+        {
+          "id": "D",
+          "text": "p = 3 and q = 2"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The closest pair of code words differs in three positions, so p = 3. A code corrects up to floor((p-1)/2) errors, which is 1.",
+      "concept": "Error Correction"
+    },
+    {
+      "id": "cs-cn-02-q06",
+      "prompt": "Frames of 1000 bits are sent over a 10^6 bps link with a one-way propagation time of 25 ms, using a sliding window that keeps the link fully packed. What is the minimum number of bits needed for the sequence number field?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5"
+        },
+        {
+          "id": "B",
+          "text": "7"
+        },
+        {
+          "id": "C",
+          "text": "6"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Transmission time is 1000/10^6 = 1 ms and the round trip is 50 ms, so up to 51 frames can be outstanding. Representing a window of 51 requires ceil(log2(51+1)) = 6 bits.",
+      "concept": "Flow Control"
+    },
+    {
+      "id": "cs-cn-02-q07",
+      "prompt": "What is the maximum sender window size for the selective repeat protocol with n-bit sequence numbers?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2^n"
+        },
+        {
+          "id": "B",
+          "text": "n/2"
+        },
+        {
+          "id": "C",
+          "text": "2^n - 1"
+        },
+        {
+          "id": "D",
+          "text": "2^(n-1)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Selective repeat needs the sender and receiver windows to be disjoint in sequence space, so each may be at most half the space, giving 2^(n-1). Go-back-N can use 2^n - 1 because its receiver window is one.",
+      "concept": "Sliding Window"
+    },
+    {
+      "id": "cs-cn-02-q08",
+      "prompt": "Using stop-and-wait, a 3000-bit frame is sent at 2000 bps with a one-way propagation delay of 100 ms. Acknowledgements and processing are negligible. What is the channel utilisation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "88.2 percent"
+        },
+        {
+          "id": "B",
+          "text": "60.0 percent"
+        },
+        {
+          "id": "C",
+          "text": "50.0 percent"
+        },
+        {
+          "id": "D",
+          "text": "93.8 percent"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Transmission time is 3000/2000 = 1.5 s and the round trip adds 0.2 s. Utilisation is 1.5 / 1.7, which is about 88.2 percent.",
+      "concept": "Stop-and-Wait"
+    },
+    {
+      "id": "cs-cn-02-q09",
+      "prompt": "In stop-and-wait ARQ, which scenario gives the LOWEST link utilisation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A short frame on a low-bandwidth link with a short propagation delay"
+        },
+        {
+          "id": "B",
+          "text": "A short frame on a high-bandwidth link with a long propagation delay"
+        },
+        {
+          "id": "C",
+          "text": "A long frame on a high-bandwidth link with a short propagation delay"
+        },
+        {
+          "id": "D",
+          "text": "A long frame on a low-bandwidth link with a short propagation delay"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Utilisation is transmission time divided by transmission plus round trip time. A small transmission time against a large propagation delay makes that ratio tiny — the sender spends nearly all its time waiting.",
+      "concept": "Stop-and-Wait"
+    },
+    {
+      "id": "cs-cn-02-q10",
+      "prompt": "How many check bits are required to detect two-bit errors and correct single-bit errors in a 16-bit data word using a Hamming code?",
+      "options": [
+        {
+          "id": "A",
+          "text": "4"
+        },
+        {
+          "id": "B",
+          "text": "5"
+        },
+        {
+          "id": "C",
+          "text": "6"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Single-error correction on 16 data bits needs r with 2^r >= 16 + r + 1, satisfied at r = 5. Adding an overall parity bit for double-error detection makes 6 in total.",
+      "concept": "Error Correction"
+    }
+  ]
+}

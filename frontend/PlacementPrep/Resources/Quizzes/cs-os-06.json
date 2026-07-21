@@ -1,0 +1,261 @@
+{
+  "id": "cs-os-06",
+  "category": "cs-fundamentals",
+  "subject": "os",
+  "order": 14,
+  "title": "OS 6: Deadlocks & Resource Allocation",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-os-06-q01",
+      "prompt": "A system has m resources of one type shared by three processes A, B and C with peak demands of 3, 4 and 6 respectively. What is the minimum value of m that guarantees deadlock can never occur?",
+      "options": [
+        {
+          "id": "A",
+          "text": "12"
+        },
+        {
+          "id": "B",
+          "text": "10"
+        },
+        {
+          "id": "C",
+          "text": "13"
+        },
+        {
+          "id": "D",
+          "text": "11"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The worst case gives every process one short of its peak: 2 + 3 + 5 = 10 units held with everyone blocked. One more unit lets some process finish and release, so m = 11 suffices.",
+      "concept": "Deadlock Avoidance"
+    },
+    {
+      "id": "cs-os-06-q02",
+      "prompt": "A system has 6 identical resources shared by N processes, each of which may request at most 2. For which value of N could deadlock occur?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6"
+        },
+        {
+          "id": "B",
+          "text": "2"
+        },
+        {
+          "id": "C",
+          "text": "3"
+        },
+        {
+          "id": "D",
+          "text": "5"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Deadlock is impossible while m is at least N(k-1)+1, that is 6 >= N + 1, so N up to 5 is safe. With N = 6 each process can hold one unit and wait for a second, exhausting all six.",
+      "concept": "Deadlock Avoidance"
+    },
+    {
+      "id": "cs-os-06-q03",
+      "prompt": "Three processes share 4 instances of a resource, each requesting and releasing one instance at a time. What is the largest maximum demand K per process that still always avoids deadlock?",
+      "options": [
+        {
+          "id": "A",
+          "text": "3"
+        },
+        {
+          "id": "B",
+          "text": "2"
+        },
+        {
+          "id": "C",
+          "text": "1"
+        },
+        {
+          "id": "D",
+          "text": "4"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Safety requires 4 >= 3(K-1)+1, so 3 >= 3(K-1), giving K = 2. With K = 3 each process could hold one instance and still need two more, with only one instance left over.",
+      "concept": "Deadlock Avoidance"
+    },
+    {
+      "id": "cs-os-06-q04",
+      "prompt": "A system contains three programs, each requiring three tape units. What is the minimum number of tape units the system must have so that deadlock can never arise?",
+      "options": [
+        {
+          "id": "A",
+          "text": "8"
+        },
+        {
+          "id": "B",
+          "text": "6"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "9"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each program can hold at most two units without completing, so 3 x 2 = 6 units can be tied up. A seventh unit always lets one program reach its requirement and finish, releasing its units.",
+      "concept": "Deadlock Avoidance"
+    },
+    {
+      "id": "cs-os-06-q05",
+      "prompt": "In a resource allocation graph where every resource type has exactly one instance, a cycle implies:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The system is in a safe state"
+        },
+        {
+          "id": "B",
+          "text": "Deadlock may or may not have occurred"
+        },
+        {
+          "id": "C",
+          "text": "Starvation but never deadlock"
+        },
+        {
+          "id": "D",
+          "text": "Deadlock has definitely occurred"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "With single instances a cycle is both necessary and sufficient for deadlock. When resource types have several instances a cycle is only necessary, so deadlock becomes possible rather than certain.",
+      "concept": "Deadlock Detection"
+    },
+    {
+      "id": "cs-os-06-q06",
+      "prompt": "Which statement about an unsafe state under the Banker's algorithm is correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "An unsafe state may still avoid deadlock, depending on future requests"
+        },
+        {
+          "id": "B",
+          "text": "An unsafe state is always deadlocked"
+        },
+        {
+          "id": "C",
+          "text": "Every state with a blocked process is unsafe"
+        },
+        {
+          "id": "D",
+          "text": "An unsafe state cannot be entered by any request"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Unsafe means no ordering is guaranteed to let every process finish in the worst case. If processes happen not to claim their full maximum, the system can still complete — the Banker's algorithm is conservative by design.",
+      "concept": "Banker's Algorithm"
+    },
+    {
+      "id": "cs-os-06-q07",
+      "prompt": "Which deadlock prevention policy works by attacking the circular wait condition?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Making all resources shareable"
+        },
+        {
+          "id": "B",
+          "text": "Numbering resources uniquely and requiring requests in increasing order"
+        },
+        {
+          "id": "C",
+          "text": "Requiring every process to acquire all resources before it starts"
+        },
+        {
+          "id": "D",
+          "text": "Allowing the system to preempt resources from a waiting process"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A global ordering makes a cycle impossible, since a cycle would require some process to request a lower-numbered resource while holding a higher one. Option A attacks hold-and-wait and option C attacks no-preemption.",
+      "concept": "Deadlock Prevention"
+    },
+    {
+      "id": "cs-os-06-q08",
+      "prompt": "An operating system requires a process to release all its resources before requesting another. Which statement is TRUE?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It prevents deadlock but can cause starvation"
+        },
+        {
+          "id": "B",
+          "text": "It prevents both deadlock and starvation"
+        },
+        {
+          "id": "C",
+          "text": "It prevents starvation but not deadlock"
+        },
+        {
+          "id": "D",
+          "text": "It prevents neither deadlock nor starvation"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Since no process ever holds one resource while waiting for another, hold-and-wait is eliminated and deadlock cannot occur. But a process may repeatedly lose its resources and be forced to restart, so it can starve.",
+      "concept": "Deadlock Prevention"
+    },
+    {
+      "id": "cs-os-06-q09",
+      "prompt": "Consider n processes where process i holds Xi instances of a resource R and may request Yi more, with all instances of R currently in use. Exactly two processes p and q have Yp = Yq = 0. What guarantees that no process other than p and q can complete?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Some other process has Yi less than Xp"
+        },
+        {
+          "id": "B",
+          "text": "The total of all Xi exceeds the number of instances of R"
+        },
+        {
+          "id": "C",
+          "text": "Every other process has Yi greater than the sum of Xp and Xq"
+        },
+        {
+          "id": "D",
+          "text": "Every other process has Yi equal to zero"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Only p and q can finish immediately, releasing Xp + Xq instances between them. If every remaining process needs strictly more than that, none can proceed even after both release.",
+      "concept": "Deadlock Detection"
+    },
+    {
+      "id": "cs-os-06-q10",
+      "prompt": "Which of the following is NOT a necessary condition for deadlock?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Circular wait"
+        },
+        {
+          "id": "B",
+          "text": "Hold and wait"
+        },
+        {
+          "id": "C",
+          "text": "Mutual exclusion"
+        },
+        {
+          "id": "D",
+          "text": "Preemption of allocated resources"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Deadlock requires NO preemption — resources must not be forcibly taken back. Allowing preemption is in fact one of the standard ways to prevent deadlock.",
+      "concept": "Deadlock Conditions"
+    }
+  ]
+}

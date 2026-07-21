@@ -1,0 +1,261 @@
+{
+  "id": "cs-sd-04",
+  "category": "cs-fundamentals",
+  "subject": "system-design",
+  "order": 24,
+  "title": "SD 4: Distributed Systems & Consistency",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-sd-04-q01",
+      "prompt": "The CAP theorem states that during a network partition, a distributed system must choose between:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Consistency and availability"
+        },
+        {
+          "id": "B",
+          "text": "Latency and throughput"
+        },
+        {
+          "id": "C",
+          "text": "Consistency and partition tolerance"
+        },
+        {
+          "id": "D",
+          "text": "Availability and durability"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Partitions are a fact of networks, not a design option, so P is not really negotiable. The real decision is whether a partitioned node refuses requests to stay consistent, or answers and risks divergence.",
+      "concept": "CAP Theorem"
+    },
+    {
+      "id": "cs-sd-04-q02",
+      "prompt": "What does eventual consistency guarantee?",
+      "options": [
+        {
+          "id": "A",
+          "text": "All reads return the most recent write immediately"
+        },
+        {
+          "id": "B",
+          "text": "If writes stop, all replicas eventually converge to the same value"
+        },
+        {
+          "id": "C",
+          "text": "Reads are always served by the primary node"
+        },
+        {
+          "id": "D",
+          "text": "Writes are never lost under any circumstances"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "It is a liveness property with no bound on when convergence happens, and it says nothing about what intermediate reads return. That is precisely why stronger models such as read-your-writes are layered on top.",
+      "concept": "Consistency Models"
+    },
+    {
+      "id": "cs-sd-04-q03",
+      "prompt": "Why is idempotency important for operations retried over an unreliable network?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It makes each retry faster than the last"
+        },
+        {
+          "id": "B",
+          "text": "It removes the need for acknowledgements"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees the operation succeeds on the first attempt"
+        },
+        {
+          "id": "D",
+          "text": "Applying the operation more than once has the same effect as applying it once"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A client that times out cannot tell whether the request was lost or the response was. Safe retries therefore require the server to deduplicate, usually via a client-supplied idempotency key.",
+      "concept": "Idempotency"
+    },
+    {
+      "id": "cs-sd-04-q04",
+      "prompt": "In a quorum system with N replicas, a write quorum W and a read quorum R, what condition guarantees a read sees the latest write?",
+      "options": [
+        {
+          "id": "A",
+          "text": "R + W > N"
+        },
+        {
+          "id": "B",
+          "text": "R = W"
+        },
+        {
+          "id": "C",
+          "text": "R + W = N"
+        },
+        {
+          "id": "D",
+          "text": "R + W < N"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "If the read and write sets must overlap, at least one replica in every read has seen the latest write. Choosing W = N and R = 1 favours fast reads; W = 1 and R = N favours fast writes.",
+      "concept": "Quorums"
+    },
+    {
+      "id": "cs-sd-04-q05",
+      "prompt": "Why is two-phase commit considered a blocking protocol?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It requires all participants to be on the same machine"
+        },
+        {
+          "id": "B",
+          "text": "Participants that have voted to commit cannot proceed if the coordinator fails"
+        },
+        {
+          "id": "C",
+          "text": "It locks the entire database during the prepare phase"
+        },
+        {
+          "id": "D",
+          "text": "It can only commit one transaction per second"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A prepared participant has promised it can commit and must hold its locks until told the outcome. If the coordinator dies at that moment, participants are stuck — which is what three-phase commit and consensus protocols address.",
+      "concept": "Distributed Transactions"
+    },
+    {
+      "id": "cs-sd-04-q06",
+      "prompt": "What problem do vector clocks solve that physical timestamps do not?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They guarantee a total order of all events"
+        },
+        {
+          "id": "B",
+          "text": "They keep every machine's clock synchronised"
+        },
+        {
+          "id": "C",
+          "text": "They capture causal ordering without relying on synchronised clocks"
+        },
+        {
+          "id": "D",
+          "text": "They compress event history for storage"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Machine clocks drift and skew, so a later wall-clock stamp does not imply a later event. Vector clocks track causality directly and can detect genuinely concurrent updates that need conflict resolution.",
+      "concept": "Logical Clocks"
+    },
+    {
+      "id": "cs-sd-04-q07",
+      "prompt": "The saga pattern maintains consistency across microservices by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Replicating every service's database to every other service"
+        },
+        {
+          "id": "B",
+          "text": "Deferring all writes until the workflow completes"
+        },
+        {
+          "id": "C",
+          "text": "Holding a distributed lock for the duration of the workflow"
+        },
+        {
+          "id": "D",
+          "text": "Splitting the workflow into local transactions, each with a compensating action on failure"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Sagas accept that a single ACID transaction across services is impractical. Each step commits locally, and failure triggers compensating actions to unwind earlier steps — so intermediate states are visible.",
+      "concept": "Distributed Transactions"
+    },
+    {
+      "id": "cs-sd-04-q08",
+      "prompt": "A leader election protocol such as Raft requires a majority quorum. Why does this prevent split brain?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Two disjoint majorities cannot exist simultaneously in one cluster"
+        },
+        {
+          "id": "B",
+          "text": "Majorities make elections finish faster"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees the fastest node is always elected"
+        },
+        {
+          "id": "D",
+          "text": "It removes the need for heartbeats"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Any two majorities of the same set must share at least one member, and that member will not vote for two leaders in the same term. So a partition can produce at most one leader.",
+      "concept": "Consensus"
+    },
+    {
+      "id": "cs-sd-04-q09",
+      "prompt": "What is the fundamental difficulty a heartbeat-based failure detector faces?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Heartbeats consume most of the network bandwidth"
+        },
+        {
+          "id": "B",
+          "text": "A slow node and a failed node are indistinguishable from the outside"
+        },
+        {
+          "id": "C",
+          "text": "Heartbeats cannot be sent over TCP"
+        },
+        {
+          "id": "D",
+          "text": "Failed nodes continue sending heartbeats"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "In an asynchronous network there is no timeout that separates crashed from merely slow. A short timeout declares healthy nodes dead; a long one delays recovery — the trade-off cannot be eliminated.",
+      "concept": "Failure Detection"
+    },
+    {
+      "id": "cs-sd-04-q10",
+      "prompt": "Which statement about strong consistency versus eventual consistency is correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Eventual consistency always uses less storage"
+        },
+        {
+          "id": "B",
+          "text": "Eventual consistency guarantees lower durability"
+        },
+        {
+          "id": "C",
+          "text": "Strong consistency generally costs more latency because of cross-node coordination"
+        },
+        {
+          "id": "D",
+          "text": "Strong consistency removes the need for replication"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Making every reader observe the newest write requires nodes to agree before responding, which costs at least one round trip. Eventual consistency answers locally and reconciles afterwards, trading correctness guarantees for speed.",
+      "concept": "Consistency Models"
+    }
+  ]
+}

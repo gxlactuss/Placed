@@ -1,0 +1,261 @@
+{
+  "id": "cs-cn-01",
+  "category": "cs-fundamentals",
+  "subject": "cn",
+  "order": 16,
+  "title": "CN 1: Network Models & Physical Layer",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-cn-01-q01",
+      "prompt": "Which layers of the OSI reference model are the host-to-host (end-to-end) layers?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Physical, Data Link, Network"
+        },
+        {
+          "id": "B",
+          "text": "Data Link, Network, Transport"
+        },
+        {
+          "id": "C",
+          "text": "Network and Data Link only"
+        },
+        {
+          "id": "D",
+          "text": "Transport, Session, Presentation, Application"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The lower three layers are concerned with getting bits between adjacent nodes and across the subnet. From Transport upward the layers hold a conversation between the two end hosts, with intermediate routers unaware of them.",
+      "concept": "OSI Model"
+    },
+    {
+      "id": "cs-cn-01-q02",
+      "prompt": "If there are n devices in a network, how many links are required for a fully connected mesh and for a star topology respectively?",
+      "options": [
+        {
+          "id": "A",
+          "text": "n(n-1)/2 and n"
+        },
+        {
+          "id": "B",
+          "text": "n and n(n-1)/2"
+        },
+        {
+          "id": "C",
+          "text": "n(n-1)/2 and n-1"
+        },
+        {
+          "id": "D",
+          "text": "n(n-1) and n-1"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A full mesh connects every unordered pair once, giving n(n-1)/2 links. A star connects each device to the central hub, giving n links.",
+      "concept": "Topologies"
+    },
+    {
+      "id": "cs-cn-01-q03",
+      "prompt": "In networking terminology, UTP stands for:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Uniform Transmission Path"
+        },
+        {
+          "id": "B",
+          "text": "Unshielded Twisted Pair"
+        },
+        {
+          "id": "C",
+          "text": "Universal Transfer Protocol"
+        },
+        {
+          "id": "D",
+          "text": "Unicast Transport Packet"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "UTP cabling twists pairs of copper wires to cancel electromagnetic interference, without the foil shielding that STP adds. It is the standard medium for Ethernet in buildings.",
+      "concept": "Transmission Media"
+    },
+    {
+      "id": "cs-cn-01-q04",
+      "prompt": "If the bandwidth of a signal is 5 kHz and the lowest frequency is 52 kHz, what is the highest frequency?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5 kHz"
+        },
+        {
+          "id": "B",
+          "text": "260 kHz"
+        },
+        {
+          "id": "C",
+          "text": "57 kHz"
+        },
+        {
+          "id": "D",
+          "text": "47 kHz"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Bandwidth is the difference between the highest and lowest frequencies, so the highest is 52 + 5 = 57 kHz.",
+      "concept": "Signals"
+    },
+    {
+      "id": "cs-cn-01-q05",
+      "prompt": "What is the purpose of the start and stop bits in asynchronous serial communication?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They identify the destination of the character"
+        },
+        {
+          "id": "B",
+          "text": "They increase the effective data rate of the link"
+        },
+        {
+          "id": "C",
+          "text": "They carry parity information for error correction"
+        },
+        {
+          "id": "D",
+          "text": "They let the receiver synchronise on the boundaries of each character"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Asynchronous links have no shared clock, so each character is framed by a start bit and one or more stop bits that tell the receiver where it begins and ends. They carry no information and reduce the useful throughput.",
+      "concept": "Serial Communication"
+    },
+    {
+      "id": "cs-cn-01-q06",
+      "prompt": "How many characters per second can be transmitted over a 19,200 bps line if each character is 7 data bits plus 1 parity bit, with 1 start and 1 stop bit?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1920"
+        },
+        {
+          "id": "B",
+          "text": "1600"
+        },
+        {
+          "id": "C",
+          "text": "2400"
+        },
+        {
+          "id": "D",
+          "text": "2743"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each character occupies 7 + 1 + 1 + 1 = 10 bits on the wire. So 19,200 / 10 = 1920 characters per second.",
+      "concept": "Data Rate"
+    },
+    {
+      "id": "cs-cn-01-q07",
+      "prompt": "Manchester encoding guarantees a transition in the middle of every bit period. What is the main benefit of this?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It doubles the data rate for a given bandwidth"
+        },
+        {
+          "id": "B",
+          "text": "The receiver can recover the clock from the data itself"
+        },
+        {
+          "id": "C",
+          "text": "It allows more than two voltage levels"
+        },
+        {
+          "id": "D",
+          "text": "It removes the need for error detection"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The guaranteed mid-bit transition makes the encoding self-clocking, so long runs of identical bits cannot cause the receiver to drift. The cost is that it needs twice the bandwidth of NRZ.",
+      "concept": "Encoding"
+    },
+    {
+      "id": "cs-cn-01-q08",
+      "prompt": "Which device operates at the data link layer and forwards frames based on MAC addresses?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Hub"
+        },
+        {
+          "id": "B",
+          "text": "Router"
+        },
+        {
+          "id": "C",
+          "text": "Layer-2 switch"
+        },
+        {
+          "id": "D",
+          "text": "Repeater"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A switch learns which MAC addresses live on which port and forwards frames only where they are needed, so each port is its own collision domain. Hubs and repeaters work at the physical layer; routers work at the network layer.",
+      "concept": "Network Devices"
+    },
+    {
+      "id": "cs-cn-01-q09",
+      "prompt": "An Ethernet hub differs from a switch because a hub:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Routes packets between different IP networks"
+        },
+        {
+          "id": "B",
+          "text": "Stores frames and forwards them by destination MAC address"
+        },
+        {
+          "id": "C",
+          "text": "Operates only on fibre optic media"
+        },
+        {
+          "id": "D",
+          "text": "Repeats every incoming signal to all other ports, forming one collision domain"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A hub is a multi-port repeater with no knowledge of addresses, so every attached station shares the same collision domain and the available bandwidth.",
+      "concept": "Network Devices"
+    },
+    {
+      "id": "cs-cn-01-q10",
+      "prompt": "Which multiplexing technique assigns each source a fixed recurring time slot on a shared link?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Synchronous time division multiplexing"
+        },
+        {
+          "id": "B",
+          "text": "Code division multiplexing"
+        },
+        {
+          "id": "C",
+          "text": "Frequency division multiplexing"
+        },
+        {
+          "id": "D",
+          "text": "Wavelength division multiplexing"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Synchronous TDM gives each source the same slot in every frame whether or not it has data, which is simple but wastes capacity when sources are idle. Statistical TDM allocates slots on demand instead.",
+      "concept": "Multiplexing"
+    }
+  ]
+}

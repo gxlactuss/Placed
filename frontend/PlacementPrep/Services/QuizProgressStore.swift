@@ -11,6 +11,12 @@ final class QuizProgressStore {
 
     private static let defaultsKey = "quizBestScores"
 
+    /// TESTING ONLY — when true, every quiz reports as unlocked so any of them
+    /// can be opened without clearing the one before it. Progress is still
+    /// recorded normally, so flipping this back to `false` restores the real
+    /// pass-to-unlock progression with no loss of saved scores.
+    static let unlockAllForTesting = true
+
     /// Quiz id -> best score percentage.
     private(set) var bestScores: [String: Int]
     private let defaults: UserDefaults
@@ -51,7 +57,7 @@ final class QuizProgressStore {
         return quizzes.map { quiz in
             let item = QuizListItem(
                 quiz: quiz,
-                isUnlocked: previousPassed,
+                isUnlocked: Self.unlockAllForTesting || previousPassed,
                 bestScore: bestScores[quiz.id]
             )
             previousPassed = hasPassed(quiz)

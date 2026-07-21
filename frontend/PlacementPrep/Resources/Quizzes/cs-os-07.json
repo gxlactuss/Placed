@@ -1,0 +1,261 @@
+{
+  "id": "cs-os-07",
+  "category": "cs-fundamentals",
+  "subject": "os",
+  "order": 15,
+  "title": "OS 7: File Systems, Disks & System Calls",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-os-07-q01",
+      "prompt": "A Unix-like inode has 12 direct pointers, one single-indirect and one double-indirect pointer. The disk block size is 4 kB and a disk block address is 32 bits. What is the maximum possible file size, to one decimal place?",
+      "options": [
+        {
+          "id": "A",
+          "text": "8.0 GB"
+        },
+        {
+          "id": "B",
+          "text": "4.0 GB"
+        },
+        {
+          "id": "C",
+          "text": "2.0 GB"
+        },
+        {
+          "id": "D",
+          "text": "1.0 GB"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A 4 kB block holds 4096/4 = 1024 addresses. Reachable blocks are 12 + 1024 + 1024^2 = 1,049,612, and at 4 kB each that is about 4.0 GB. The double-indirect level dominates the total.",
+      "concept": "File Allocation"
+    },
+    {
+      "id": "cs-os-07-q02",
+      "prompt": "A process executes fork(); fork(); fork(); How many child processes are created in total?",
+      "options": [
+        {
+          "id": "A",
+          "text": "3"
+        },
+        {
+          "id": "B",
+          "text": "6"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each fork doubles the number of processes, so after three calls there are 2^3 = 8 processes in total. One of these is the original parent, leaving 7 children.",
+      "concept": "System Calls"
+    },
+    {
+      "id": "cs-os-07-q03",
+      "prompt": "Which file allocation scheme(s) can be used if no external fragmentation is allowed?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Contiguous and linked only"
+        },
+        {
+          "id": "B",
+          "text": "Contiguous only"
+        },
+        {
+          "id": "C",
+          "text": "Contiguous and indexed only"
+        },
+        {
+          "id": "D",
+          "text": "Linked and indexed only"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Linked and indexed allocation place blocks anywhere on disk, so any free block is usable and no external fragmentation arises. Contiguous allocation needs a run of adjacent free blocks and therefore suffers from it.",
+      "concept": "File Allocation"
+    },
+    {
+      "id": "cs-os-07-q04",
+      "prompt": "A FAT-based file system has 4 bytes of overhead per FAT entry. The disk is 100 x 10^6 bytes with a data block size of 10^3 bytes. What is the maximum size of a file that can be stored, in units of 10^6 bytes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "99.6"
+        },
+        {
+          "id": "B",
+          "text": "96.0"
+        },
+        {
+          "id": "C",
+          "text": "100.0"
+        },
+        {
+          "id": "D",
+          "text": "99.9"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The disk holds 100 x 10^6 / 10^3 = 10^5 blocks, so the FAT itself occupies 4 x 10^5 = 0.4 x 10^6 bytes. What remains for data is 100 - 0.4 = 99.6 x 10^6 bytes.",
+      "concept": "File Systems"
+    },
+    {
+      "id": "cs-os-07-q05",
+      "prompt": "Which standard C library function, called from a single-threaded process on Unix or Linux, will ALWAYS invoke a system call?",
+      "options": [
+        {
+          "id": "A",
+          "text": "rand"
+        },
+        {
+          "id": "B",
+          "text": "sleep"
+        },
+        {
+          "id": "C",
+          "text": "malloc"
+        },
+        {
+          "id": "D",
+          "text": "strlen"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Only the kernel can suspend a process for a period, so sleep must trap into it. strlen and rand are pure computation, and malloc often satisfies a request from an already-mapped heap without any system call.",
+      "concept": "System Calls"
+    },
+    {
+      "id": "cs-os-07-q06",
+      "prompt": "Which disk scheduling policy can cause starvation of requests to distant cylinders?",
+      "options": [
+        {
+          "id": "A",
+          "text": "First Come First Served"
+        },
+        {
+          "id": "B",
+          "text": "C-SCAN"
+        },
+        {
+          "id": "C",
+          "text": "Shortest Seek Time First"
+        },
+        {
+          "id": "D",
+          "text": "SCAN"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "SSTF always serves the nearest request, so a steady stream of requests near the head can postpone a far-away one indefinitely. The SCAN family bounds waiting by sweeping the whole disk.",
+      "concept": "Disk Scheduling"
+    },
+    {
+      "id": "cs-os-07-q07",
+      "prompt": "How does C-LOOK differ from SCAN?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It never changes the direction of head movement"
+        },
+        {
+          "id": "B",
+          "text": "It always services requests in arrival order"
+        },
+        {
+          "id": "C",
+          "text": "It requires the disk to have a single platter"
+        },
+        {
+          "id": "D",
+          "text": "It reverses direction at the last request rather than the last cylinder, and services in one direction only"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "LOOK avoids travelling to the physical end of the disk when no request lies there, and the circular variant jumps back to the lowest request and sweeps one way, giving more uniform waiting times.",
+      "concept": "Disk Scheduling"
+    },
+    {
+      "id": "cs-os-07-q08",
+      "prompt": "What distinguishes a named pipe (FIFO) from a regular file in Unix?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A named pipe has no on-disk data blocks and transfers data between processes in FIFO order"
+        },
+        {
+          "id": "B",
+          "text": "A named pipe can only be opened by the root user"
+        },
+        {
+          "id": "C",
+          "text": "A named pipe cannot appear in the file system namespace"
+        },
+        {
+          "id": "D",
+          "text": "A named pipe stores its data permanently on disk"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A FIFO has a name and an inode so unrelated processes can open it, but the data lives in a kernel buffer rather than on disk and is consumed as it is read.",
+      "concept": "Inter-Process Communication"
+    },
+    {
+      "id": "cs-os-07-q09",
+      "prompt": "The total time to prepare a disk drive to transfer a block of data is best described as:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Seek time only"
+        },
+        {
+          "id": "B",
+          "text": "Seek time plus rotational latency"
+        },
+        {
+          "id": "C",
+          "text": "Rotational latency plus transfer time"
+        },
+        {
+          "id": "D",
+          "text": "Transfer time only"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Access time is the seek to position the arm over the right cylinder plus the rotational wait for the sector to arrive under the head. Transfer time is the movement of data itself, after preparation is complete.",
+      "concept": "Disk Performance"
+    },
+    {
+      "id": "cs-os-07-q10",
+      "prompt": "A user-level process traps the signal raised by Ctrl-C and runs a handler that saves files before terminating. In which mode does the signal handling routine execute?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Kernel mode"
+        },
+        {
+          "id": "B",
+          "text": "Supervisor mode with interrupts disabled"
+        },
+        {
+          "id": "C",
+          "text": "User mode"
+        },
+        {
+          "id": "D",
+          "text": "Kernel mode for the first instruction, then user mode"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The kernel arranges for the process to resume at the handler, but the handler is ordinary application code and runs with the process's own privileges. If it could run in kernel mode, any program could escalate privileges by installing a handler.",
+      "concept": "Signals"
+    }
+  ]
+}

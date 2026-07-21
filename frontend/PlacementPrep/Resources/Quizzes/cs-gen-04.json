@@ -1,0 +1,261 @@
+{
+  "id": "cs-gen-04",
+  "category": "cs-fundamentals",
+  "subject": "general",
+  "order": 29,
+  "title": "GEN 4: Computer Organisation & Architecture",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-gen-04-q01",
+      "prompt": "A 4-stage pipeline has stage delays of 150, 120, 160 and 140 nanoseconds, with 5 ns registers between stages. What is the total time to process 1000 data items?",
+      "options": [
+        {
+          "id": "A",
+          "text": "165000 ns"
+        },
+        {
+          "id": "B",
+          "text": "570000 ns"
+        },
+        {
+          "id": "C",
+          "text": "160000 ns"
+        },
+        {
+          "id": "D",
+          "text": "165495 ns"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The clock is set by the slowest stage plus its register: 160 + 5 = 165 ns. Filling the pipeline costs 3 cycles, so the total is (1000 + 3) x 165 = 165,495 ns.",
+      "concept": "Pipelining"
+    },
+    {
+      "id": "cs-gen-04-q02",
+      "prompt": "A machine has 32-bit instructions, 64 registers and must support 45 instructions, each with two register operands and an unsigned immediate. What is the largest immediate value it can encode?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2^12 - 1"
+        },
+        {
+          "id": "B",
+          "text": "2^14 - 1"
+        },
+        {
+          "id": "C",
+          "text": "2^16 - 1"
+        },
+        {
+          "id": "D",
+          "text": "2^13 - 1"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Encoding 45 opcodes needs ceil(log2 45) = 6 bits, and each register field needs log2(64) = 6 bits. That leaves 32 - 6 - 6 - 6 = 14 bits, so the largest unsigned immediate is 2^14 - 1 = 16383.",
+      "concept": "Instruction Formats"
+    },
+    {
+      "id": "cs-gen-04-q03",
+      "prompt": "Which hazard arises when an instruction attempts to read a register before a preceding instruction has written it?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Read after write (true dependence)"
+        },
+        {
+          "id": "B",
+          "text": "Write after write (output dependence)"
+        },
+        {
+          "id": "C",
+          "text": "Structural hazard"
+        },
+        {
+          "id": "D",
+          "text": "Write after read (anti-dependence)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "RAW is a genuine data dependence and is usually handled by forwarding the result directly from a later pipeline stage. WAR and WAW are naming conflicts that register renaming can remove.",
+      "concept": "Pipeline Hazards"
+    },
+    {
+      "id": "cs-gen-04-q04",
+      "prompt": "A byte-addressable machine has a 32 KB direct-mapped cache with 64-byte blocks and 32-bit addresses. How many bits are in the tag field?",
+      "options": [
+        {
+          "id": "A",
+          "text": "19"
+        },
+        {
+          "id": "B",
+          "text": "15"
+        },
+        {
+          "id": "C",
+          "text": "17"
+        },
+        {
+          "id": "D",
+          "text": "13"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A 64-byte block needs 6 offset bits. With 32 KB / 64 B = 512 lines, the index takes 9 bits. The tag is what remains: 32 - 9 - 6 = 17 bits.",
+      "concept": "Cache Memory"
+    },
+    {
+      "id": "cs-gen-04-q05",
+      "prompt": "A read takes 5 ns on a cache hit and 50 ns on a miss, with a hit rate of 80 percent. What is the average read access time?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10 ns"
+        },
+        {
+          "id": "B",
+          "text": "45 ns"
+        },
+        {
+          "id": "C",
+          "text": "27.5 ns"
+        },
+        {
+          "id": "D",
+          "text": "14 ns"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Averaging over the two cases gives 0.8 x 5 + 0.2 x 50 = 4 + 10 = 14 ns. Note how heavily a 20 percent miss rate weighs on the result.",
+      "concept": "Cache Performance"
+    },
+    {
+      "id": "cs-gen-04-q06",
+      "prompt": "Which addressing mode allows position-independent code to be written most naturally?",
+      "options": [
+        {
+          "id": "A",
+          "text": "PC-relative addressing"
+        },
+        {
+          "id": "B",
+          "text": "Immediate addressing"
+        },
+        {
+          "id": "C",
+          "text": "Register addressing"
+        },
+        {
+          "id": "D",
+          "text": "Absolute (direct) addressing"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Encoding a displacement from the program counter means the code runs correctly wherever it is loaded. Absolute addresses would have to be patched at every relocation.",
+      "concept": "Addressing Modes"
+    },
+    {
+      "id": "cs-gen-04-q07",
+      "prompt": "Which characteristic is typical of a RISC processor rather than a CISC one?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Variable-length instruction encoding"
+        },
+        {
+          "id": "B",
+          "text": "Fixed-length instructions with arithmetic restricted to registers"
+        },
+        {
+          "id": "C",
+          "text": "Microprogrammed control as the norm"
+        },
+        {
+          "id": "D",
+          "text": "A large number of addressing modes"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Uniform encoding and a load-store discipline make decoding and pipelining simple, which is why hardwired control is practical. CISC accepts complex variable-length instructions and typically decodes them with microcode.",
+      "concept": "RISC vs CISC"
+    },
+    {
+      "id": "cs-gen-04-q08",
+      "prompt": "What is the primary advantage of DMA over programmed I/O?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It removes the need for interrupts entirely"
+        },
+        {
+          "id": "B",
+          "text": "It allows I/O without any device driver"
+        },
+        {
+          "id": "C",
+          "text": "The device transfers data to memory without the CPU moving each word"
+        },
+        {
+          "id": "D",
+          "text": "It increases the raw speed of the I/O device"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The DMA controller drives the bus directly, so the CPU is involved only at setup and completion. It still typically takes one interrupt at the end to learn the transfer finished.",
+      "concept": "I/O Organisation"
+    },
+    {
+      "id": "cs-gen-04-q09",
+      "prompt": "Why can increasing cache block size beyond a point raise the miss rate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Larger blocks cannot be stored in set-associative caches"
+        },
+        {
+          "id": "B",
+          "text": "The tag field grows until it exceeds the address width"
+        },
+        {
+          "id": "C",
+          "text": "Larger blocks disable prefetching"
+        },
+        {
+          "id": "D",
+          "text": "Fewer blocks fit, so useful data is evicted and unused bytes are fetched"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Big blocks exploit spatial locality up to a point, but for a fixed capacity they reduce the number of distinct regions cached and waste bandwidth on bytes never referenced.",
+      "concept": "Cache Memory"
+    },
+    {
+      "id": "cs-gen-04-q10",
+      "prompt": "In the IEEE 754 single precision format, how many bits are allocated to the sign, exponent and mantissa respectively?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1, 8 and 23"
+        },
+        {
+          "id": "B",
+          "text": "1, 10 and 21"
+        },
+        {
+          "id": "C",
+          "text": "1, 11 and 20"
+        },
+        {
+          "id": "D",
+          "text": "1, 7 and 24"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Single precision uses 1 sign bit, an 8-bit exponent biased by 127, and a 23-bit fraction with an implicit leading 1. Double precision uses 1, 11 and 52.",
+      "concept": "Floating Point"
+    }
+  ]
+}

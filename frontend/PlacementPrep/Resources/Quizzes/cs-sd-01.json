@@ -1,0 +1,261 @@
+{
+  "id": "cs-sd-01",
+  "category": "cs-fundamentals",
+  "subject": "system-design",
+  "order": 21,
+  "title": "SD 1: Scalability Fundamentals",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-sd-01-q01",
+      "prompt": "What is the difference between vertical and horizontal scaling?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They are two names for the same technique"
+        },
+        {
+          "id": "B",
+          "text": "Vertical adds more machines; horizontal adds more resources to one machine"
+        },
+        {
+          "id": "C",
+          "text": "Vertical adds resources to one machine; horizontal adds more machines"
+        },
+        {
+          "id": "D",
+          "text": "Vertical applies to databases and horizontal only to web servers"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Scaling up means a bigger machine, which is simple but has a hard ceiling and a single point of failure. Scaling out means more machines, which scales further but forces you to deal with distribution.",
+      "concept": "Scalability"
+    },
+    {
+      "id": "cs-sd-01-q02",
+      "prompt": "Why is it important for application servers behind a load balancer to be stateless?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Stateless servers use less CPU per request"
+        },
+        {
+          "id": "B",
+          "text": "It guarantees requests are processed in order"
+        },
+        {
+          "id": "C",
+          "text": "It removes the need for a database"
+        },
+        {
+          "id": "D",
+          "text": "Any request can be served by any instance, so instances can be added or removed freely"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "If session state lives in server memory, a user is pinned to one instance and losing it loses their session. Moving state to a shared store makes instances interchangeable and disposable.",
+      "concept": "Statelessness"
+    },
+    {
+      "id": "cs-sd-01-q03",
+      "prompt": "What does latency measure, as distinct from throughput?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The time taken to service a single request"
+        },
+        {
+          "id": "B",
+          "text": "The percentage of requests that succeed"
+        },
+        {
+          "id": "C",
+          "text": "The number of requests handled per second"
+        },
+        {
+          "id": "D",
+          "text": "The total data stored by the system"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Latency is per-request time and throughput is requests per unit time. They can move in opposite directions: batching often raises throughput while making each individual request slower.",
+      "concept": "Performance Metrics"
+    },
+    {
+      "id": "cs-sd-01-q04",
+      "prompt": "Why is p99 latency usually reported alongside average latency?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is always equal to the average multiplied by 99"
+        },
+        {
+          "id": "B",
+          "text": "It is cheaper to compute than the average"
+        },
+        {
+          "id": "C",
+          "text": "It shows the tail of the distribution, which averages hide"
+        },
+        {
+          "id": "D",
+          "text": "It measures the number of failed requests"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "An average can look healthy while one request in a hundred takes seconds. Since a single page may issue many backend calls, tail latency often dominates what a user actually experiences.",
+      "concept": "Performance Metrics"
+    },
+    {
+      "id": "cs-sd-01-q05",
+      "prompt": "A load balancer distributing requests using round robin has which limitation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It cannot be used with HTTP"
+        },
+        {
+          "id": "B",
+          "text": "It can only distribute across two backends"
+        },
+        {
+          "id": "C",
+          "text": "It requires all backends to share memory"
+        },
+        {
+          "id": "D",
+          "text": "It ignores how loaded or how fast each backend actually is"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Round robin treats all backends as identical, so a slow or overloaded instance still receives its full share. Least-connections or latency-aware policies adapt to real conditions instead.",
+      "concept": "Load Balancing"
+    },
+    {
+      "id": "cs-sd-01-q06",
+      "prompt": "What is a single point of failure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A component whose failure brings down the whole system"
+        },
+        {
+          "id": "B",
+          "text": "A bug that appears only once during testing"
+        },
+        {
+          "id": "C",
+          "text": "The slowest component in a request path"
+        },
+        {
+          "id": "D",
+          "text": "The first server a request reaches"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Availability is limited by any component with no redundancy. Ironically the load balancer added for redundancy becomes one itself unless it is deployed in a redundant pair.",
+      "concept": "Availability"
+    },
+    {
+      "id": "cs-sd-01-q07",
+      "prompt": "What does horizontal scaling of a stateful database make harder, compared with scaling web servers?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Databases cannot run on more than one machine at all"
+        },
+        {
+          "id": "B",
+          "text": "Data must be partitioned or replicated, raising consistency concerns"
+        },
+        {
+          "id": "C",
+          "text": "Queries become impossible to index"
+        },
+        {
+          "id": "D",
+          "text": "Network bandwidth becomes irrelevant"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Stateless servers can simply be cloned. Data cannot: you must decide where each row lives and what happens when copies disagree, which is why the database is usually the hardest tier to scale.",
+      "concept": "Scalability"
+    },
+    {
+      "id": "cs-sd-01-q08",
+      "prompt": "In a three-tier architecture, what is the role of the application tier?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It stores data durably on disk"
+        },
+        {
+          "id": "B",
+          "text": "It renders the user interface in the browser"
+        },
+        {
+          "id": "C",
+          "text": "It holds business logic between the presentation and data tiers"
+        },
+        {
+          "id": "D",
+          "text": "It balances load across the database"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Separating presentation, logic and storage lets each tier be scaled, deployed and reasoned about independently, and stops business rules from being duplicated in the UI.",
+      "concept": "Architecture"
+    },
+    {
+      "id": "cs-sd-01-q09",
+      "prompt": "What is the primary purpose of a reverse proxy sitting in front of application servers?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To let clients hide their IP addresses from the server"
+        },
+        {
+          "id": "B",
+          "text": "To compile application code before it runs"
+        },
+        {
+          "id": "C",
+          "text": "To replace the need for a database"
+        },
+        {
+          "id": "D",
+          "text": "To terminate TLS, route requests and shield backends from direct exposure"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A reverse proxy acts on behalf of the servers, centralising TLS termination, routing, caching and rate limiting. A forward proxy is the one that acts on behalf of clients.",
+      "concept": "Architecture"
+    },
+    {
+      "id": "cs-sd-01-q10",
+      "prompt": "A service is described as having 99.9 percent availability. Roughly how much downtime does that permit per year?",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 8.8 hours"
+        },
+        {
+          "id": "B",
+          "text": "About 5 minutes"
+        },
+        {
+          "id": "C",
+          "text": "About 3.7 days"
+        },
+        {
+          "id": "D",
+          "text": "About 53 minutes"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "0.1 percent of a 365-day year is roughly 8.77 hours. Each additional nine cuts this by a factor of ten, so 99.99 percent allows about 53 minutes.",
+      "concept": "Availability"
+    }
+  ]
+}

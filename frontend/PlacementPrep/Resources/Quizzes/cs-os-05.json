@@ -1,0 +1,261 @@
+{
+  "id": "cs-os-05",
+  "category": "cs-fundamentals",
+  "subject": "os",
+  "order": 13,
+  "title": "OS 5: Memory Management & Paging",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-os-05-q01",
+      "prompt": "A system uses a page size of 2 KB. Pages 0, 1, 2 and 3 are stored in page frames 1, 3, 2 and 0 respectively. Both physical and virtual addresses start from 0. What physical address corresponds to virtual address 2500?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2500"
+        },
+        {
+          "id": "B",
+          "text": "6596"
+        },
+        {
+          "id": "C",
+          "text": "8644"
+        },
+        {
+          "id": "D",
+          "text": "4548"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "2500 divided by 2048 gives page 1 with offset 452. Page 1 lives in frame 3, so the physical address is 3 x 2048 + 452 = 6144 + 452 = 6596.",
+      "concept": "Address Translation"
+    },
+    {
+      "id": "cs-os-05-q02",
+      "prompt": "A system has 32-bit logical addresses, a 4 KB page size, and 4-byte page table entries. What is the size of a single-level page table for one process?",
+      "options": [
+        {
+          "id": "A",
+          "text": "16 MB"
+        },
+        {
+          "id": "B",
+          "text": "1 MB"
+        },
+        {
+          "id": "C",
+          "text": "4 MB"
+        },
+        {
+          "id": "D",
+          "text": "4 KB"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A 4 KB page needs 12 offset bits, leaving 20 bits of page number, so there are 2^20 entries. At 4 bytes each that is 4 MB per process — which is exactly why multi-level page tables exist.",
+      "concept": "Page Tables"
+    },
+    {
+      "id": "cs-os-05-q03",
+      "prompt": "In a demand paging system, a memory access takes M units when the page is resident and D units when it causes a page fault. The measured average access time is X units. What is the page fault rate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "X / D"
+        },
+        {
+          "id": "B",
+          "text": "(D - X) / (D - M)"
+        },
+        {
+          "id": "C",
+          "text": "(X - M) / D"
+        },
+        {
+          "id": "D",
+          "text": "(X - M) / (D - M)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "With fault rate p, X = (1 - p)M + pD = M + p(D - M). Rearranging gives p = (X - M)/(D - M).",
+      "concept": "Demand Paging"
+    },
+    {
+      "id": "cs-os-05-q04",
+      "prompt": "The optimal page replacement algorithm evicts the page that:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Will not be used for the longest time in the future"
+        },
+        {
+          "id": "B",
+          "text": "Has been referenced the fewest times"
+        },
+        {
+          "id": "C",
+          "text": "Was loaded into memory earliest"
+        },
+        {
+          "id": "D",
+          "text": "Has not been used for the longest time in the past"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "OPT looks forward, which makes it unimplementable in practice but useful as a lower bound on fault count. Looking backward at recency is LRU, and eviction by load order is FIFO.",
+      "concept": "Page Replacement"
+    },
+    {
+      "id": "cs-os-05-q05",
+      "prompt": "Which memory allocation problem does compaction address?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Thrashing"
+        },
+        {
+          "id": "B",
+          "text": "External fragmentation"
+        },
+        {
+          "id": "C",
+          "text": "Belady's anomaly"
+        },
+        {
+          "id": "D",
+          "text": "Internal fragmentation"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Compaction slides allocated regions together so scattered free holes merge into one usable block. Internal fragmentation is waste inside an allocated block and cannot be reclaimed by moving blocks around.",
+      "concept": "Fragmentation"
+    },
+    {
+      "id": "cs-os-05-q06",
+      "prompt": "What does the dirty (modified) bit in a page table entry indicate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The page has been accessed recently"
+        },
+        {
+          "id": "B",
+          "text": "The page table entry is invalid"
+        },
+        {
+          "id": "C",
+          "text": "The page has been written to since it was loaded"
+        },
+        {
+          "id": "D",
+          "text": "The page is currently locked in memory"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A clean page can be discarded on eviction because an identical copy exists in the backing store; a dirty page must be written out first. This makes the bit a pure performance optimisation.",
+      "concept": "Page Tables"
+    },
+    {
+      "id": "cs-os-05-q07",
+      "prompt": "Why is a multi-level page table preferred over a single-level one for a large address space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It allows pages to be of variable size"
+        },
+        {
+          "id": "B",
+          "text": "It reduces the number of memory accesses per translation"
+        },
+        {
+          "id": "C",
+          "text": "It removes the need for a TLB"
+        },
+        {
+          "id": "D",
+          "text": "Page table pages for unused regions of the address space need not exist"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Address spaces are sparse, so most second-level tables are never allocated — the saving is in space. The cost is that translation now requires walking more levels, which is exactly why a TLB is essential.",
+      "concept": "Page Tables"
+    },
+    {
+      "id": "cs-os-05-q08",
+      "prompt": "The locality of reference principle implies that the pages referenced by a process:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Tend to cluster in a small subset of its address space over a short interval"
+        },
+        {
+          "id": "B",
+          "text": "Are always accessed in strictly increasing address order"
+        },
+        {
+          "id": "C",
+          "text": "Are spread uniformly across its entire address space"
+        },
+        {
+          "id": "D",
+          "text": "Change completely on every memory reference"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Loops and contiguous data structures concentrate references into a working set. Without this property, caches, TLBs and demand paging would all fail to pay off.",
+      "concept": "Locality"
+    },
+    {
+      "id": "cs-os-05-q09",
+      "prompt": "In a paging system with a TLB, the effective memory access time depends most directly on:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The number of processes in the ready queue"
+        },
+        {
+          "id": "B",
+          "text": "The TLB hit ratio"
+        },
+        {
+          "id": "C",
+          "text": "The size of the swap partition"
+        },
+        {
+          "id": "D",
+          "text": "The page replacement policy alone"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A TLB hit resolves the translation in cache time; a miss requires walking the page table in memory. Since the walk costs an extra access or more, effective time is dominated by the hit ratio.",
+      "concept": "TLB"
+    },
+    {
+      "id": "cs-os-05-q10",
+      "prompt": "A process is allocated 3 frames and references pages 1, 2, 1, 3, 7, 4, 5, 6, 3, 1 with all frames initially empty. Using optimal page replacement, how many page faults occur?",
+      "options": [
+        {
+          "id": "A",
+          "text": "8"
+        },
+        {
+          "id": "B",
+          "text": "10"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "6"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The seven faults are on 1, 2, 3, 7, 4, 5 and 6. Page 2 is the first victim because it is never referenced again; 1 and 3 are then kept, so the closing references to 3 and 1 are both hits.",
+      "concept": "Page Replacement"
+    }
+  ]
+}

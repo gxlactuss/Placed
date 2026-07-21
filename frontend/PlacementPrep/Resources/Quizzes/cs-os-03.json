@@ -1,0 +1,261 @@
+{
+  "id": "cs-os-03",
+  "category": "cs-fundamentals",
+  "subject": "os",
+  "order": 11,
+  "title": "OS 3: CPU Scheduling",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-os-03-q01",
+      "prompt": "Three processes arrive at time zero with CPU bursts of 16, 20 and 10 milliseconds. Using non-preemptive shortest job first, what is the average waiting time in milliseconds?",
+      "options": [
+        {
+          "id": "A",
+          "text": "12"
+        },
+        {
+          "id": "B",
+          "text": "15"
+        },
+        {
+          "id": "C",
+          "text": "18"
+        },
+        {
+          "id": "D",
+          "text": "22"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "SJF runs them shortest-first: 10, then 16, then 20. Waiting times are 0, 10 and 26, summing to 36, so the average is 36/3 = 12 ms.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q02",
+      "prompt": "Which one of the following scheduling algorithms can cause a long-running process to starve indefinitely?",
+      "options": [
+        {
+          "id": "A",
+          "text": "First Come First Served"
+        },
+        {
+          "id": "B",
+          "text": "Multilevel queue with round robin at every level"
+        },
+        {
+          "id": "C",
+          "text": "Shortest Remaining Time First"
+        },
+        {
+          "id": "D",
+          "text": "Round Robin"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "SRTF always favours the shortest remaining burst, so a steady stream of short jobs can postpone a long job forever. FCFS and round robin both guarantee eventual service.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q03",
+      "prompt": "In round robin scheduling, what happens as the time quantum grows much larger than the longest CPU burst?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Context switching overhead increases sharply"
+        },
+        {
+          "id": "B",
+          "text": "Average waiting time approaches zero"
+        },
+        {
+          "id": "C",
+          "text": "It degenerates to Shortest Job First"
+        },
+        {
+          "id": "D",
+          "text": "It degenerates to First Come First Served"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "If no process is ever preempted, each simply runs to completion in arrival order — exactly FCFS. A very small quantum has the opposite problem: context switch overhead dominates.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q04",
+      "prompt": "Which technique is used to overcome the priority inversion problem?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Priority inheritance"
+        },
+        {
+          "id": "B",
+          "text": "Aging"
+        },
+        {
+          "id": "C",
+          "text": "Time slicing"
+        },
+        {
+          "id": "D",
+          "text": "Preemption of the higher priority task"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The low-priority task holding the lock temporarily inherits the priority of the highest-priority task waiting on it, so it cannot be preempted by unrelated medium-priority work. Aging solves starvation, which is a different problem.",
+      "concept": "Real-Time Scheduling"
+    },
+    {
+      "id": "cs-os-03-q05",
+      "prompt": "The convoy effect, where many short processes queue behind one long process, is characteristic of which scheduling policy?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Round Robin"
+        },
+        {
+          "id": "B",
+          "text": "First Come First Served"
+        },
+        {
+          "id": "C",
+          "text": "Multilevel feedback queue"
+        },
+        {
+          "id": "D",
+          "text": "Shortest Job First"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "FCFS is non-preemptive and order-blind, so one CPU-bound job at the head of the queue holds up everything behind it, hurting both average waiting time and device utilisation.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q06",
+      "prompt": "Which scheduling algorithm requires a time quantum to be defined?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Non-preemptive priority scheduling"
+        },
+        {
+          "id": "B",
+          "text": "Shortest Job First"
+        },
+        {
+          "id": "C",
+          "text": "Round Robin"
+        },
+        {
+          "id": "D",
+          "text": "First Come First Served"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Round robin is defined by its quantum: each process runs for at most that long before being moved to the back of the ready queue. The others are driven by burst length, arrival order or priority.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q07",
+      "prompt": "A scheduler assigns priority proportional to a process's waiting time, re-evaluating periodically. All processes arrive at time zero and perform no I/O. This policy behaves like:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Non-preemptive priority scheduling"
+        },
+        {
+          "id": "B",
+          "text": "Shortest Job First"
+        },
+        {
+          "id": "C",
+          "text": "Last In First Out"
+        },
+        {
+          "id": "D",
+          "text": "Round Robin"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The longest-waiting process always has the highest priority, so the CPU rotates among all of them in turn — which is round robin with the re-evaluation interval acting as the quantum.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q08",
+      "prompt": "Two processes each alternate a 10 ms CPU burst with a 90 ms I/O burst, and their I/O can proceed in parallel. Which scheduling strategy gives the LOWEST CPU utilisation over a long period?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Round Robin with a 5 ms quantum"
+        },
+        {
+          "id": "B",
+          "text": "Shortest Remaining Time First"
+        },
+        {
+          "id": "C",
+          "text": "First Come First Served"
+        },
+        {
+          "id": "D",
+          "text": "Static priority with preemption"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A 5 ms quantum splits every 10 ms burst in two, doubling the number of context switches without improving overlap. Since both processes spend most of their time on I/O anyway, the extra switching is pure loss.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q09",
+      "prompt": "For a fixed set of processes all arriving at the same time, which claim about turnaround time is correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Round robin minimises average turnaround time"
+        },
+        {
+          "id": "B",
+          "text": "Shortest Job First minimises average turnaround time"
+        },
+        {
+          "id": "C",
+          "text": "FCFS minimises average turnaround time"
+        },
+        {
+          "id": "D",
+          "text": "All non-preemptive policies give the same average turnaround time"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "With identical arrival times, running the shortest job first is provably optimal for average waiting time, and hence for average turnaround time, since turnaround equals waiting plus a fixed burst.",
+      "concept": "CPU Scheduling"
+    },
+    {
+      "id": "cs-os-03-q10",
+      "prompt": "Given n processes to be scheduled on one processor, how many distinct non-preemptive schedules are possible?",
+      "options": [
+        {
+          "id": "A",
+          "text": "n squared"
+        },
+        {
+          "id": "B",
+          "text": "n"
+        },
+        {
+          "id": "C",
+          "text": "n factorial"
+        },
+        {
+          "id": "D",
+          "text": "2 raised to the power n"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A non-preemptive schedule is just an ordering of the n processes, and there are n! orderings. This is why optimal scheduling by exhaustive search is impractical.",
+      "concept": "CPU Scheduling"
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "id": "cs-cn-04",
+  "category": "cs-fundamentals",
+  "subject": "cn",
+  "order": 19,
+  "title": "CN 4: Network Layer, IP & Routing",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-cn-04-q01",
+      "prompt": "Which CIDR prefix exactly represents the address range 10.12.2.0 to 10.12.3.255?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10.12.2.0/23"
+        },
+        {
+          "id": "B",
+          "text": "10.12.2.0/24"
+        },
+        {
+          "id": "C",
+          "text": "10.12.0.0/22"
+        },
+        {
+          "id": "D",
+          "text": "10.12.2.0/22"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The range spans 512 addresses, which needs 9 host bits and therefore a /23 prefix. 10.12.2.0/23 covers exactly 10.12.2.0 through 10.12.3.255.",
+      "concept": "CIDR"
+    },
+    {
+      "id": "cs-cn-04-q02",
+      "prompt": "An IP datagram of 1000 bytes, including a 20-byte header, must cross a link with an MTU of 100 bytes. How many fragments are produced?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10"
+        },
+        {
+          "id": "B",
+          "text": "11"
+        },
+        {
+          "id": "C",
+          "text": "13"
+        },
+        {
+          "id": "D",
+          "text": "12"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each fragment spends 20 bytes on the header, leaving 80 bytes of payload — and 80 is a multiple of 8, as the fragment offset requires. The 980 payload bytes therefore need ceil(980/80) = 13 fragments, the last carrying only 20 bytes.",
+      "concept": "Fragmentation"
+    },
+    {
+      "id": "cs-cn-04-q03",
+      "prompt": "Which field of an IP header is ALWAYS modified by a router before forwarding a packet?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Protocol"
+        },
+        {
+          "id": "B",
+          "text": "Source address"
+        },
+        {
+          "id": "C",
+          "text": "Destination address"
+        },
+        {
+          "id": "D",
+          "text": "Time to live"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Every router decrements the TTL, which forces the header checksum to be recomputed too. Addresses stay unchanged in ordinary forwarding, and fragment fields change only when fragmentation actually occurs.",
+      "concept": "IP Header"
+    },
+    {
+      "id": "cs-cn-04-q04",
+      "prompt": "Why does the IP header include a Time To Live field?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To let a packet be discarded if it circulates in a routing loop"
+        },
+        {
+          "id": "B",
+          "text": "To give real-time traffic higher priority"
+        },
+        {
+          "id": "C",
+          "text": "To measure the round trip time to the destination"
+        },
+        {
+          "id": "D",
+          "text": "To let the receiver reassemble fragments in order"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Transient inconsistencies between routing tables can create loops. Decrementing TTL at each hop guarantees such a packet is eventually dropped rather than consuming bandwidth forever.",
+      "concept": "IP Header"
+    },
+    {
+      "id": "cs-cn-04-q05",
+      "prompt": "An organisation is granted the block 130.34.12.64/26 and needs 4 equal subnets. Which address does NOT belong to this organisation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "130.34.12.80"
+        },
+        {
+          "id": "B",
+          "text": "130.34.12.128"
+        },
+        {
+          "id": "C",
+          "text": "130.34.12.127"
+        },
+        {
+          "id": "D",
+          "text": "130.34.12.64"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A /26 block holds 64 addresses, so this block runs from 130.34.12.64 to 130.34.12.127. The address 130.34.12.128 is the start of the next block entirely.",
+      "concept": "Subnetting"
+    },
+    {
+      "id": "cs-cn-04-q06",
+      "prompt": "A class B address is split using a 6-bit subnet number. What are the maximum number of subnets and hosts per subnet?",
+      "options": [
+        {
+          "id": "A",
+          "text": "62 subnets and 1024 hosts"
+        },
+        {
+          "id": "B",
+          "text": "64 subnets and 1024 hosts"
+        },
+        {
+          "id": "C",
+          "text": "64 subnets and 1022 hosts"
+        },
+        {
+          "id": "D",
+          "text": "62 subnets and 262142 hosts"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Class B leaves 16 host bits; taking 6 for the subnet leaves 10, so there are 2^6 = 64 subnets and 2^10 - 2 = 1022 usable hosts each, after excluding the all-zeros and all-ones addresses.",
+      "concept": "Subnetting"
+    },
+    {
+      "id": "cs-cn-04-q07",
+      "prompt": "Which protocol resolves a known IP address to the corresponding MAC address on a local network?",
+      "options": [
+        {
+          "id": "A",
+          "text": "ICMP"
+        },
+        {
+          "id": "B",
+          "text": "DHCP"
+        },
+        {
+          "id": "C",
+          "text": "RARP"
+        },
+        {
+          "id": "D",
+          "text": "ARP"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "ARP broadcasts a request asking who owns an IP address, and the owner replies with its hardware address. RARP does the reverse mapping, and DHCP assigns addresses rather than resolving them.",
+      "concept": "ARP"
+    },
+    {
+      "id": "cs-cn-04-q08",
+      "prompt": "Which statement correctly contrasts distance vector and link state routing?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Link state converges faster after a topology change and avoids count-to-infinity"
+        },
+        {
+          "id": "B",
+          "text": "Link state protocols cannot be used on the Internet"
+        },
+        {
+          "id": "C",
+          "text": "Distance vector floods full topology information; link state exchanges only distances"
+        },
+        {
+          "id": "D",
+          "text": "Distance vector requires every node to run Dijkstra's algorithm"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Link state floods link information so every router builds the same map and runs Dijkstra locally, converging quickly. Distance vector shares only distance estimates with neighbours, which is what allows count-to-infinity.",
+      "concept": "Routing"
+    },
+    {
+      "id": "cs-cn-04-q09",
+      "prompt": "Which pair of statements about RIP and OSPF is correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "RIP uses distance vector and its packets are carried over UDP"
+        },
+        {
+          "id": "B",
+          "text": "RIP uses link state and OSPF uses distance vector"
+        },
+        {
+          "id": "C",
+          "text": "OSPF packets are carried over TCP"
+        },
+        {
+          "id": "D",
+          "text": "Both RIP and OSPF use distance vector routing"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "RIP is a distance vector protocol running over UDP port 520. OSPF is link state and rides directly on IP as protocol 89, using neither TCP nor UDP.",
+      "concept": "Routing Protocols"
+    },
+    {
+      "id": "cs-cn-04-q10",
+      "prompt": "A NAT device forwards a packet from an internal host to the external Internet. Which header fields does it modify?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Time to live only"
+        },
+        {
+          "id": "B",
+          "text": "Source IP address and source port"
+        },
+        {
+          "id": "C",
+          "text": "The MAC addresses only"
+        },
+        {
+          "id": "D",
+          "text": "Destination IP address and destination port"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "NAT rewrites the private source address to its own public address, and rewrites the source port so replies can be demultiplexed back to the right internal host. Checksums are recomputed as a consequence.",
+      "concept": "NAT"
+    }
+  ]
+}

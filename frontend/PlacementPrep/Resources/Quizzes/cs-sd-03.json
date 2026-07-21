@@ -1,0 +1,261 @@
+{
+  "id": "cs-sd-03",
+  "category": "cs-fundamentals",
+  "subject": "system-design",
+  "order": 23,
+  "title": "SD 3: Databases at Scale",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-sd-03-q01",
+      "prompt": "In a primary-replica (leader-follower) setup with asynchronous replication, what anomaly can a client observe?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Replicas reject all reads until fully caught up"
+        },
+        {
+          "id": "B",
+          "text": "The primary cannot accept writes while replicas lag"
+        },
+        {
+          "id": "C",
+          "text": "Writes to the primary are silently lost under normal operation"
+        },
+        {
+          "id": "D",
+          "text": "It may read its own write back as missing from a replica"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Replication lag means a read routed to a replica may predate the client's own write. Read-your-writes consistency is usually restored by pinning recent writers to the primary for a short window.",
+      "concept": "Replication"
+    },
+    {
+      "id": "cs-sd-03-q02",
+      "prompt": "What distinguishes sharding from replication?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sharding splits data across nodes; replication copies the same data to several nodes"
+        },
+        {
+          "id": "B",
+          "text": "They are different names for the same technique"
+        },
+        {
+          "id": "C",
+          "text": "Sharding applies only to caches, replication only to databases"
+        },
+        {
+          "id": "D",
+          "text": "Sharding copies all data to every node; replication splits it"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Sharding addresses capacity and write throughput by giving each node a disjoint subset. Replication addresses availability and read scaling by duplicating data. Large systems typically use both.",
+      "concept": "Sharding"
+    },
+    {
+      "id": "cs-sd-03-q03",
+      "prompt": "A shard key is chosen that is highly skewed, such as country for a service dominated by one country. What is the consequence?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Queries return incorrect results"
+        },
+        {
+          "id": "B",
+          "text": "One shard becomes a hotspot while others stay idle"
+        },
+        {
+          "id": "C",
+          "text": "Replication lag becomes zero"
+        },
+        {
+          "id": "D",
+          "text": "The database refuses further writes"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Sharding only helps if load spreads evenly. A skewed key recreates the single-node bottleneck on one shard while wasting the rest — which is why high-cardinality, uniformly distributed keys are preferred.",
+      "concept": "Sharding"
+    },
+    {
+      "id": "cs-sd-03-q04",
+      "prompt": "Which workload characteristic most strongly suggests a document or key-value store over a relational database?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Complex multi-table joins and strict foreign key constraints"
+        },
+        {
+          "id": "B",
+          "text": "Multi-row transactions spanning several entities"
+        },
+        {
+          "id": "C",
+          "text": "Simple lookups by key at very high volume with a flexible schema"
+        },
+        {
+          "id": "D",
+          "text": "Ad hoc analytical queries over many dimensions"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Key-value and document stores drop joins and rigid schemas in exchange for simple horizontal partitioning. Workloads that genuinely need joins or multi-entity transactions are better served relationally.",
+      "concept": "SQL vs NoSQL"
+    },
+    {
+      "id": "cs-sd-03-q05",
+      "prompt": "Why does adding an index speed up reads but slow down writes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Indexes lock the entire table during reads"
+        },
+        {
+          "id": "B",
+          "text": "Indexes force queries to scan more rows"
+        },
+        {
+          "id": "C",
+          "text": "Indexes are stored on slower disks than table data"
+        },
+        {
+          "id": "D",
+          "text": "The index must be updated on every insert, update and delete"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "An index is a second structure the engine must keep consistent with the table. Every additional index therefore multiplies write cost and storage, which is why unused indexes are worth removing.",
+      "concept": "Indexing"
+    },
+    {
+      "id": "cs-sd-03-q06",
+      "prompt": "What is the primary purpose of connection pooling in front of a database?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It reuses established connections, avoiding setup cost and unbounded connection counts"
+        },
+        {
+          "id": "B",
+          "text": "It encrypts traffic between application and database"
+        },
+        {
+          "id": "C",
+          "text": "It shards data across several databases"
+        },
+        {
+          "id": "D",
+          "text": "It caches query results in the application"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Opening a connection costs a round trip and server memory. A pool amortises that cost and, just as importantly, caps concurrent connections so a traffic spike cannot exhaust the database.",
+      "concept": "Connection Management"
+    },
+    {
+      "id": "cs-sd-03-q07",
+      "prompt": "In a read-heavy system, what is the most common reason to add read replicas rather than a cache?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Replicas are always strongly consistent with the primary"
+        },
+        {
+          "id": "B",
+          "text": "Replicas serve arbitrary queries, whereas a cache serves only precomputed keys"
+        },
+        {
+          "id": "C",
+          "text": "Replicas reduce write latency"
+        },
+        {
+          "id": "D",
+          "text": "Replicas remove the need for indexes"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A cache only helps for lookups you can key in advance. Replicas run the full query engine, so ad hoc and analytical reads can be offloaded without predicting access patterns.",
+      "concept": "Replication"
+    },
+    {
+      "id": "cs-sd-03-q08",
+      "prompt": "What does denormalising a schema trade away?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The ability to index any column"
+        },
+        {
+          "id": "B",
+          "text": "Support for transactions entirely"
+        },
+        {
+          "id": "C",
+          "text": "Write simplicity and update consistency, in exchange for faster reads"
+        },
+        {
+          "id": "D",
+          "text": "Read speed, in exchange for smaller storage"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Duplicating data avoids joins at read time, but every copy must now be updated together or they drift apart. It is the same redundancy that normalisation exists to remove, accepted deliberately.",
+      "concept": "Schema Design"
+    },
+    {
+      "id": "cs-sd-03-q09",
+      "prompt": "What problem does a write-ahead log solve in a database?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It distributes writes across shards"
+        },
+        {
+          "id": "B",
+          "text": "It removes the need for indexes on write-heavy tables"
+        },
+        {
+          "id": "C",
+          "text": "It compresses data before writing it to disk"
+        },
+        {
+          "id": "D",
+          "text": "It allows committed changes to survive a crash by recording intent before applying it"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Appending to a log is sequential and fast, and it means recovery can replay or undo whatever was in flight. It is also the natural stream to ship to replicas, which is how replication is usually built.",
+      "concept": "Durability"
+    },
+    {
+      "id": "cs-sd-03-q10",
+      "prompt": "A service must support both high-volume transactional writes and heavy analytical queries. What is the usual architectural response?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run both workloads on the same primary database instance"
+        },
+        {
+          "id": "B",
+          "text": "Drop all indexes to speed up the analytical queries"
+        },
+        {
+          "id": "C",
+          "text": "Separate them, replicating transactional data into an analytical store"
+        },
+        {
+          "id": "D",
+          "text": "Shard by timestamp so old data is deleted automatically"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The two workloads want opposite things — row-oriented short transactions versus column-oriented full scans. Keeping them on one instance means long analytical queries starve the transactional path.",
+      "concept": "OLTP vs OLAP"
+    }
+  ]
+}

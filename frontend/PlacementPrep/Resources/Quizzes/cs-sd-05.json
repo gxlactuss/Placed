@@ -1,0 +1,261 @@
+{
+  "id": "cs-sd-05",
+  "category": "cs-fundamentals",
+  "subject": "system-design",
+  "order": 25,
+  "title": "SD 5: Messaging, Reliability & Resilience",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-sd-05-q01",
+      "prompt": "What is the main benefit of putting a message queue between a producer and a consumer?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It guarantees messages are processed in strict global order"
+        },
+        {
+          "id": "B",
+          "text": "It removes the need for the consumer to handle errors"
+        },
+        {
+          "id": "C",
+          "text": "It compresses messages automatically"
+        },
+        {
+          "id": "D",
+          "text": "It decouples them, so a slow or failed consumer does not block the producer"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The queue absorbs bursts and outages, letting each side scale and fail independently. Global ordering is usually the opposite — it is sacrificed once you partition the queue for throughput.",
+      "concept": "Message Queues"
+    },
+    {
+      "id": "cs-sd-05-q02",
+      "prompt": "Why is at-least-once delivery far more common than exactly-once in distributed messaging?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Exactly-once needs coordination that is impossible to achieve end to end without idempotent consumers"
+        },
+        {
+          "id": "B",
+          "text": "At-least-once uses less network bandwidth"
+        },
+        {
+          "id": "C",
+          "text": "At-least-once guarantees strict ordering"
+        },
+        {
+          "id": "D",
+          "text": "Exactly-once is only possible with UDP"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A broker cannot know whether a consumer crashed before or after processing, so it must redeliver. True exactly-once semantics come from making the consumer idempotent, not from the transport.",
+      "concept": "Delivery Semantics"
+    },
+    {
+      "id": "cs-sd-05-q03",
+      "prompt": "What is a dead letter queue used for?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Prioritising messages from premium users"
+        },
+        {
+          "id": "B",
+          "text": "Holding messages that repeatedly fail processing, so they stop blocking the main queue"
+        },
+        {
+          "id": "C",
+          "text": "Storing messages that have been successfully processed"
+        },
+        {
+          "id": "D",
+          "text": "Buffering messages during a planned deployment"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Without one, a single poison message can be retried forever and stall everything behind it. Diverting it after a retry limit preserves throughput and leaves the failure available for inspection.",
+      "concept": "Message Queues"
+    },
+    {
+      "id": "cs-sd-05-q04",
+      "prompt": "What does the circuit breaker pattern protect against?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Unauthorised access to an internal service"
+        },
+        {
+          "id": "B",
+          "text": "Clock drift between servers"
+        },
+        {
+          "id": "C",
+          "text": "Repeatedly calling a failing dependency, wasting resources and delaying recovery"
+        },
+        {
+          "id": "D",
+          "text": "Data corruption during writes"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "After a failure threshold the breaker opens and fails fast without calling the dependency, freeing threads and giving it room to recover. It periodically half-opens to test whether service has returned.",
+      "concept": "Resilience Patterns"
+    },
+    {
+      "id": "cs-sd-05-q05",
+      "prompt": "Why should retries use exponential backoff with jitter rather than a fixed interval?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Jitter reduces the total number of retries to one"
+        },
+        {
+          "id": "B",
+          "text": "Exponential backoff guarantees the request eventually succeeds"
+        },
+        {
+          "id": "C",
+          "text": "Fixed intervals are not supported by HTTP"
+        },
+        {
+          "id": "D",
+          "text": "Fixed intervals synchronise clients into coordinated retry waves that re-overload the service"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Clients that fail together retry together, hammering a recovering service in lockstep. Growing delays reduce pressure and random jitter spreads the attempts out so they no longer arrive as a thundering herd.",
+      "concept": "Resilience Patterns"
+    },
+    {
+      "id": "cs-sd-05-q06",
+      "prompt": "A token bucket rate limiter permits a burst above the sustained rate. What determines the maximum burst size?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The capacity of the bucket"
+        },
+        {
+          "id": "B",
+          "text": "The rate at which tokens are refilled"
+        },
+        {
+          "id": "C",
+          "text": "The average request latency"
+        },
+        {
+          "id": "D",
+          "text": "The number of clients sharing the limiter"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Tokens accumulate up to the bucket's capacity while traffic is idle, and a burst can consume all of them at once. The refill rate sets the long-run sustained throughput instead.",
+      "concept": "Rate Limiting"
+    },
+    {
+      "id": "cs-sd-05-q07",
+      "prompt": "What is backpressure in a streaming or pipeline system?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Compressing data before transmission"
+        },
+        {
+          "id": "B",
+          "text": "A downstream consumer signalling upstream to slow down when it cannot keep up"
+        },
+        {
+          "id": "C",
+          "text": "Replaying old messages to rebuild state"
+        },
+        {
+          "id": "D",
+          "text": "Rejecting requests from unauthenticated clients"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Without backpressure, a fast producer drives unbounded queue growth until memory is exhausted and the failure is catastrophic. Propagating the limit upstream converts that into controlled slowdown.",
+      "concept": "Flow Control"
+    },
+    {
+      "id": "cs-sd-05-q08",
+      "prompt": "Why does the bulkhead pattern isolate resources such as thread pools per dependency?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It allows dependencies to share a single connection"
+        },
+        {
+          "id": "B",
+          "text": "It reduces total memory usage across the service"
+        },
+        {
+          "id": "C",
+          "text": "One failing dependency cannot exhaust the resources needed by all the others"
+        },
+        {
+          "id": "D",
+          "text": "It guarantees each dependency responds within a fixed time"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "With one shared pool, calls blocked on a slow dependency consume every thread and the entire service stops. Separate compartments confine the damage, exactly as bulkheads do in a ship's hull.",
+      "concept": "Resilience Patterns"
+    },
+    {
+      "id": "cs-sd-05-q09",
+      "prompt": "In an event-driven architecture, what is the main advantage of publish-subscribe over point-to-point messaging?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It guarantees each message is delivered exactly once"
+        },
+        {
+          "id": "B",
+          "text": "It removes the need for a message broker"
+        },
+        {
+          "id": "C",
+          "text": "It processes messages faster in every case"
+        },
+        {
+          "id": "D",
+          "text": "New consumers can be added without changing the producer"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The producer emits an event without knowing who cares, so adding a consumer is a deployment rather than a code change upstream. The cost is that the flow of a request becomes harder to trace.",
+      "concept": "Event-Driven Architecture"
+    },
+    {
+      "id": "cs-sd-05-q10",
+      "prompt": "What is graceful degradation in a service under heavy load?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Shedding or simplifying non-essential features so core functionality keeps working"
+        },
+        {
+          "id": "B",
+          "text": "Shutting the service down cleanly to protect data"
+        },
+        {
+          "id": "C",
+          "text": "Scaling automatically until the load is absorbed"
+        },
+        {
+          "id": "D",
+          "text": "Returning cached errors to every client"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Rather than failing entirely, the system drops recommendations, personalisation or analytics and keeps checkout working. This requires deciding in advance which features are expendable.",
+      "concept": "Resilience Patterns"
+    }
+  ]
+}

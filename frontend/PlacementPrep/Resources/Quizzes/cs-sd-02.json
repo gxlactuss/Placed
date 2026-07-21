@@ -1,0 +1,261 @@
+{
+  "id": "cs-sd-02",
+  "category": "cs-fundamentals",
+  "subject": "system-design",
+  "order": 22,
+  "title": "SD 2: Caching & Content Delivery",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-sd-02-q01",
+      "prompt": "In a cache-aside (lazy loading) strategy, what happens on a cache miss?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The write is queued until the cache is warm"
+        },
+        {
+          "id": "B",
+          "text": "The application reads from the database and then populates the cache"
+        },
+        {
+          "id": "C",
+          "text": "The cache fetches from the database itself and returns the value"
+        },
+        {
+          "id": "D",
+          "text": "The request fails and is retried by the client"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The application owns the logic: check cache, fall back to the database, then store the result. Only requested data is ever cached, at the cost of a slower first request per key.",
+      "concept": "Caching Strategies"
+    },
+    {
+      "id": "cs-sd-02-q02",
+      "prompt": "What is the main trade-off of a write-through cache compared with write-back?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Reads are slower, but writes are safer"
+        },
+        {
+          "id": "B",
+          "text": "Writes are faster, but data can be lost on a crash"
+        },
+        {
+          "id": "C",
+          "text": "Writes are slower, but the cache and store never diverge"
+        },
+        {
+          "id": "D",
+          "text": "It removes the need for cache eviction"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Write-through commits to the backing store on every write, so nothing is lost but each write pays the store's latency. Write-back buffers in the cache and is faster, at the risk of losing unflushed data.",
+      "concept": "Caching Strategies"
+    },
+    {
+      "id": "cs-sd-02-q03",
+      "prompt": "What problem does a cache stampede (thundering herd) describe?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The cache returns data belonging to another user"
+        },
+        {
+          "id": "B",
+          "text": "Two caches hold contradictory values for one key"
+        },
+        {
+          "id": "C",
+          "text": "The cache runs out of memory and evicts everything"
+        },
+        {
+          "id": "D",
+          "text": "Many concurrent requests miss the same expired key and all hit the database"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A popular key expiring can send a burst of identical queries to the database at once. Mitigations include a lock so only one request recomputes the value, and adding jitter to expiry times.",
+      "concept": "Cache Failure Modes"
+    },
+    {
+      "id": "cs-sd-02-q04",
+      "prompt": "Why is consistent hashing preferred over simple modulo hashing for distributing keys across cache nodes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Adding or removing a node remaps only a small fraction of keys"
+        },
+        {
+          "id": "B",
+          "text": "It eliminates the need for cache expiry"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees a perfectly even distribution of keys"
+        },
+        {
+          "id": "D",
+          "text": "It allows keys to be looked up without knowing the node count"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "With modulo hashing, changing the node count remaps almost every key and empties the cache. Consistent hashing places nodes on a ring so only the keys owned by the changed node move.",
+      "concept": "Consistent Hashing"
+    },
+    {
+      "id": "cs-sd-02-q05",
+      "prompt": "What does a TTL on a cache entry primarily provide?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A guarantee that the value is always current"
+        },
+        {
+          "id": "B",
+          "text": "A bound on how stale the cached value can become"
+        },
+        {
+          "id": "C",
+          "text": "Compression of the cached value"
+        },
+        {
+          "id": "D",
+          "text": "Protection against unauthorised reads"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A TTL trades freshness for simplicity: rather than tracking every change, you accept data can be out of date by at most that interval. Correctness-critical values need explicit invalidation instead.",
+      "concept": "Cache Invalidation"
+    },
+    {
+      "id": "cs-sd-02-q06",
+      "prompt": "Which content is a CDN best suited to serve?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Write-heavy transactional database queries"
+        },
+        {
+          "id": "B",
+          "text": "Per-user personalised account pages"
+        },
+        {
+          "id": "C",
+          "text": "Static assets such as images, scripts and video segments"
+        },
+        {
+          "id": "D",
+          "text": "Long-running background jobs"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "CDNs cache identical bytes at edge locations near users, cutting latency and origin load. Content that differs per user has no reuse, so caching it at the edge gains little.",
+      "concept": "CDN"
+    },
+    {
+      "id": "cs-sd-02-q07",
+      "prompt": "Why is the LRU eviction policy widely used in caches?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It always evicts the largest item first"
+        },
+        {
+          "id": "B",
+          "text": "It requires no bookkeeping at all"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees the minimum possible number of misses"
+        },
+        {
+          "id": "D",
+          "text": "It exploits temporal locality — recently used items are likely to be used again"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "LRU approximates the unimplementable optimal policy by assuming the recent past predicts the near future. It behaves badly on scans, which sweep the cache with data used exactly once.",
+      "concept": "Eviction Policies"
+    },
+    {
+      "id": "cs-sd-02-q08",
+      "prompt": "Cache invalidation is often called one of the hard problems in computing because:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Knowing exactly when cached data has become wrong is difficult across a distributed system"
+        },
+        {
+          "id": "B",
+          "text": "Caches cannot store structured data"
+        },
+        {
+          "id": "C",
+          "text": "Invalidation requires taking the system offline"
+        },
+        {
+          "id": "D",
+          "text": "Deleting a cache key is computationally expensive"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The write that invalidates a value may happen on another node, in another service, or in a batch job. Tracking every dependency is intricate, and getting it wrong serves stale data indefinitely.",
+      "concept": "Cache Invalidation"
+    },
+    {
+      "id": "cs-sd-02-q09",
+      "prompt": "A read-heavy service adds a cache and the hit rate settles at 90 percent. What is the main effect on the database?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The database can be removed entirely"
+        },
+        {
+          "id": "B",
+          "text": "Read load falls to roughly one tenth of its previous level"
+        },
+        {
+          "id": "C",
+          "text": "Write load falls by 90 percent"
+        },
+        {
+          "id": "D",
+          "text": "Query latency at the database increases tenfold"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Only the 10 percent of reads that miss now reach the database. Writes still go through, and the database remains the source of truth that repopulates the cache.",
+      "concept": "Caching Strategies"
+    },
+    {
+      "id": "cs-sd-02-q10",
+      "prompt": "What is the risk of caching data at multiple layers — browser, CDN and application — simultaneously?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Total storage cost becomes unbounded"
+        },
+        {
+          "id": "B",
+          "text": "Requests are served twice"
+        },
+        {
+          "id": "C",
+          "text": "An update must be invalidated at every layer, or stale data persists at some of them"
+        },
+        {
+          "id": "D",
+          "text": "The database stops receiving writes"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each layer expires independently, so purging the CDN does nothing for copies already in browsers. This is why versioned asset URLs are preferred — a new URL sidesteps invalidation entirely.",
+      "concept": "Cache Invalidation"
+    }
+  ]
+}

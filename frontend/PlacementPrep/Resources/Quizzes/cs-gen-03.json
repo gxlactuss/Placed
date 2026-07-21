@@ -1,0 +1,261 @@
+{
+  "id": "cs-gen-03",
+  "category": "cs-fundamentals",
+  "subject": "general",
+  "order": 28,
+  "title": "GEN 3: Compiler Design",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-gen-03-q01",
+      "prompt": "Which class of machine is necessary and sufficient for the lexical analysis of a modern programming language?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Linear bounded automaton"
+        },
+        {
+          "id": "B",
+          "text": "Finite automaton"
+        },
+        {
+          "id": "C",
+          "text": "Turing machine"
+        },
+        {
+          "id": "D",
+          "text": "Pushdown automaton"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Tokens are described by regular expressions, so a DFA recognises them. Nesting constructs such as balanced brackets are the parser's job, and those genuinely need a stack.",
+      "concept": "Lexical Analysis"
+    },
+    {
+      "id": "cs-gen-03-q02",
+      "prompt": "Which statement about parser power is correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "LALR is more powerful than canonical LR"
+        },
+        {
+          "id": "B",
+          "text": "SLR is more powerful than canonical LR"
+        },
+        {
+          "id": "C",
+          "text": "Canonical LR is more powerful than SLR"
+        },
+        {
+          "id": "D",
+          "text": "LL(1) is more powerful than LALR"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The containment is SLR within LALR within canonical LR. LALR merges LR states with identical cores, which keeps the table small but can introduce reduce-reduce conflicts that canonical LR avoids.",
+      "concept": "Parsing"
+    },
+    {
+      "id": "cs-gen-03-q03",
+      "prompt": "What makes a grammar ambiguous?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It has more non-terminals than terminals"
+        },
+        {
+          "id": "B",
+          "text": "It contains left recursion"
+        },
+        {
+          "id": "C",
+          "text": "It contains epsilon productions"
+        },
+        {
+          "id": "D",
+          "text": "Some string has more than one distinct parse tree"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Ambiguity means the grammar assigns a sentence more than one structure, so the meaning is not determined. Left recursion and epsilon productions are separate properties that particular parsing methods dislike.",
+      "concept": "Grammars"
+    },
+    {
+      "id": "cs-gen-03-q04",
+      "prompt": "Why must left recursion be eliminated before top-down parsing?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A recursive descent parser would recurse forever without consuming input"
+        },
+        {
+          "id": "B",
+          "text": "It doubles the size of the parse table"
+        },
+        {
+          "id": "C",
+          "text": "It makes the grammar ambiguous"
+        },
+        {
+          "id": "D",
+          "text": "It prevents the grammar from being context free"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "For a rule like A to A alpha, the parser expands A into A again with no token consumed, giving infinite recursion. Bottom-up parsers have no such problem and often prefer left recursion.",
+      "concept": "Parsing"
+    },
+    {
+      "id": "cs-gen-03-q05",
+      "prompt": "Which compiler phase reports the error 'variable used but not declared'?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Syntax analysis"
+        },
+        {
+          "id": "B",
+          "text": "Semantic analysis"
+        },
+        {
+          "id": "C",
+          "text": "Lexical analysis"
+        },
+        {
+          "id": "D",
+          "text": "Code generation"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The text is a valid identifier and the statement parses correctly, so only meaning is wrong. Semantic analysis consults the symbol table for declaration and type information.",
+      "concept": "Compiler Phases"
+    },
+    {
+      "id": "cs-gen-03-q06",
+      "prompt": "What is the purpose of the symbol table in a compiler?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To store the machine code produced for each function"
+        },
+        {
+          "id": "B",
+          "text": "To record the order of tokens for backtracking"
+        },
+        {
+          "id": "C",
+          "text": "To hold identifier attributes such as type, scope and storage"
+        },
+        {
+          "id": "D",
+          "text": "To buffer the input source file"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Nearly every phase consults it — semantic analysis for type checking, code generation for addressing. Because lookups are frequent, it is normally a hash table or a scoped stack of them.",
+      "concept": "Symbol Table"
+    },
+    {
+      "id": "cs-gen-03-q07",
+      "prompt": "In three-address code, what characterises each instruction?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It can only reference three registers"
+        },
+        {
+          "id": "B",
+          "text": "It occupies exactly three bytes"
+        },
+        {
+          "id": "C",
+          "text": "It must be executed in three clock cycles"
+        },
+        {
+          "id": "D",
+          "text": "It has at most one operator on the right-hand side with at most three operands involved"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Each statement takes the form x = y op z, using temporaries to break complex expressions apart. That flat form is what makes data flow analysis and optimisation tractable.",
+      "concept": "Intermediate Code"
+    },
+    {
+      "id": "cs-gen-03-q08",
+      "prompt": "What does common subexpression elimination do?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Replaces recomputation of an expression whose operands are unchanged with a saved value"
+        },
+        {
+          "id": "B",
+          "text": "Replaces a multiplication with repeated addition"
+        },
+        {
+          "id": "C",
+          "text": "Moves loop-invariant computations outside the loop"
+        },
+        {
+          "id": "D",
+          "text": "Removes code that can never be reached"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The optimiser must first prove no operand was assigned in between, otherwise reuse would be unsound. The other options describe dead code elimination, code motion and strength reduction respectively.",
+      "concept": "Optimisation"
+    },
+    {
+      "id": "cs-gen-03-q09",
+      "prompt": "What is the FOLLOW set of a non-terminal A?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The set of non-terminals reachable from A"
+        },
+        {
+          "id": "B",
+          "text": "The set of terminals that can appear immediately to the right of A in some sentential form"
+        },
+        {
+          "id": "C",
+          "text": "The set of terminals that can begin a string derived from A"
+        },
+        {
+          "id": "D",
+          "text": "The set of productions whose left-hand side is A"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "FOLLOW drives the decision to reduce or to apply an epsilon production in LL and SLR parsers. The set of terminals that can start a derivation from A is FIRST, not FOLLOW.",
+      "concept": "Parsing"
+    },
+    {
+      "id": "cs-gen-03-q10",
+      "prompt": "Which task does a linker perform?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Translating source code into assembly"
+        },
+        {
+          "id": "B",
+          "text": "Allocating registers within a function"
+        },
+        {
+          "id": "C",
+          "text": "Resolving external symbol references and combining object modules"
+        },
+        {
+          "id": "D",
+          "text": "Expanding macros before compilation"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Modules compiled separately refer to symbols they do not define, and the linker binds those references and relocates addresses. Macro expansion belongs to the preprocessor and register allocation to the compiler back end.",
+      "concept": "Linking"
+    }
+  ]
+}

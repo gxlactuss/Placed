@@ -1,0 +1,261 @@
+{
+  "id": "cs-gen-01",
+  "category": "cs-fundamentals",
+  "subject": "general",
+  "order": 26,
+  "title": "GEN 1: OOP & Programming Concepts",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "cs-gen-01-q01",
+      "prompt": "Which OOP concept allows a single interface to be backed by different implementations chosen at run time?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Abstraction"
+        },
+        {
+          "id": "B",
+          "text": "Polymorphism"
+        },
+        {
+          "id": "C",
+          "text": "Encapsulation"
+        },
+        {
+          "id": "D",
+          "text": "Composition"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Dynamic dispatch selects the implementation from the object's actual type, so calling code depends only on the interface. This is what makes substituting one subtype for another possible.",
+      "concept": "OOP"
+    },
+    {
+      "id": "cs-gen-01-q02",
+      "prompt": "What does encapsulation primarily achieve?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It removes the need for constructors"
+        },
+        {
+          "id": "B",
+          "text": "It lets a class inherit behaviour from several parents"
+        },
+        {
+          "id": "C",
+          "text": "It hides internal state behind a controlled interface, so invariants cannot be broken from outside"
+        },
+        {
+          "id": "D",
+          "text": "It makes all methods static"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "By exposing only methods, a type can guarantee its own consistency. Anyone able to write the fields directly could put the object into a state its methods assume is impossible.",
+      "concept": "OOP"
+    },
+    {
+      "id": "cs-gen-01-q03",
+      "prompt": "In call by value, what does a function receive?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A reference that can rebind the caller's variable"
+        },
+        {
+          "id": "B",
+          "text": "An unevaluated expression re-evaluated on each use"
+        },
+        {
+          "id": "C",
+          "text": "The address of the caller's variable"
+        },
+        {
+          "id": "D",
+          "text": "A copy of the argument's value"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Because the callee works on a copy, assignments to the parameter are invisible to the caller. Call by reference passes the location instead, and call by name re-evaluates the expression at each use.",
+      "concept": "Parameter Passing"
+    },
+    {
+      "id": "cs-gen-01-q04",
+      "prompt": "What distinguishes static (lexical) scoping from dynamic scoping?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Static scoping resolves names by where the code is written; dynamic scoping by who called it"
+        },
+        {
+          "id": "B",
+          "text": "Static scoping resolves names by the call stack at run time"
+        },
+        {
+          "id": "C",
+          "text": "Dynamic scoping is resolved entirely at compile time"
+        },
+        {
+          "id": "D",
+          "text": "They differ only in performance, never in results"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Lexical scoping lets you determine a variable's binding by reading the surrounding source, which is why nearly all modern languages use it. Dynamic scoping makes the binding depend on the runtime call chain.",
+      "concept": "Scoping"
+    },
+    {
+      "id": "cs-gen-01-q05",
+      "prompt": "What is the difference between overloading and overriding?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Overloading defines several methods with the same name but different parameters; overriding replaces an inherited method"
+        },
+        {
+          "id": "B",
+          "text": "Overloading replaces an inherited method; overriding varies the parameter list"
+        },
+        {
+          "id": "C",
+          "text": "Both are resolved at run time"
+        },
+        {
+          "id": "D",
+          "text": "Both require the methods to be static"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Overloading is normally settled at compile time by argument types, while overriding is resolved at run time by the object's actual class — which is why only overriding gives polymorphic behaviour.",
+      "concept": "OOP"
+    },
+    {
+      "id": "cs-gen-01-q06",
+      "prompt": "Where are local variables of a function typically allocated?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The data segment"
+        },
+        {
+          "id": "B",
+          "text": "The stack"
+        },
+        {
+          "id": "C",
+          "text": "The heap"
+        },
+        {
+          "id": "D",
+          "text": "The code segment"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Each call pushes an activation record holding parameters, locals and the return address, and popping it on return reclaims them automatically. Objects that must outlive the call go on the heap instead.",
+      "concept": "Memory Model"
+    },
+    {
+      "id": "cs-gen-01-q07",
+      "prompt": "What is a memory leak in a language without garbage collection?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Writing past the end of an allocated buffer"
+        },
+        {
+          "id": "B",
+          "text": "Freeing the same pointer twice"
+        },
+        {
+          "id": "C",
+          "text": "Allocated memory that is never freed and can no longer be reached"
+        },
+        {
+          "id": "D",
+          "text": "Reading memory that was never initialised"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The allocation stays reserved for the process lifetime even though nothing can use it, so a long-running program creeps upward in memory. The other options describe distinct bugs with their own symptoms.",
+      "concept": "Memory Management"
+    },
+    {
+      "id": "cs-gen-01-q08",
+      "prompt": "What does it mean for a function to be recursive?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It can be called from several threads at once"
+        },
+        {
+          "id": "B",
+          "text": "It is compiled into a loop automatically"
+        },
+        {
+          "id": "C",
+          "text": "It has no side effects"
+        },
+        {
+          "id": "D",
+          "text": "It calls itself, directly or indirectly, on a smaller subproblem"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A correct recursion needs a base case and progress toward it; without both it runs until the stack is exhausted. Being callable concurrently is reentrancy, which is a separate property.",
+      "concept": "Recursion"
+    },
+    {
+      "id": "cs-gen-01-q09",
+      "prompt": "What is the key difference between an abstract class and an interface (or protocol)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "An interface can hold state and implementations; an abstract class cannot"
+        },
+        {
+          "id": "B",
+          "text": "An abstract class may provide state and partial implementation; an interface primarily declares a contract"
+        },
+        {
+          "id": "C",
+          "text": "Neither can declare methods"
+        },
+        {
+          "id": "D",
+          "text": "Interfaces can only be used with primitive types"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "An abstract class shares code with its subclasses but usually restricts a type to one parent. An interface describes capability, so an unrelated type can adopt it without inheriting anything.",
+      "concept": "OOP"
+    },
+    {
+      "id": "cs-gen-01-q10",
+      "prompt": "Why is a compiled language typically faster at run time than an interpreted one?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Interpreters cannot use the CPU cache"
+        },
+        {
+          "id": "B",
+          "text": "Compiled programs never need an operating system"
+        },
+        {
+          "id": "C",
+          "text": "Translation to machine code happens once ahead of time rather than during execution"
+        },
+        {
+          "id": "D",
+          "text": "Compiled languages have simpler syntax"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The interpreter pays translation and dispatch cost on every execution, and has less opportunity for whole-program optimisation. JIT compilation narrows the gap by compiling hot paths at run time.",
+      "concept": "Language Implementation"
+    }
+  ]
+}
