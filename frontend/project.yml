@@ -30,11 +30,14 @@ targets:
           # Added below as a folder reference instead.
           - "Resources/Companies"
           - "Resources/Quizzes"
+          - "Resources/Logos"
       # A folder reference (rather than a group) so the CSVs land in the bundle
       # under Companies/ and can be enumerated by subdirectory at runtime.
       - path: PlacementPrep/Resources/Companies
         type: folder
       - path: PlacementPrep/Resources/Quizzes
+        type: folder
+      - path: PlacementPrep/Resources/Logos
         type: folder
     settings:
       base:

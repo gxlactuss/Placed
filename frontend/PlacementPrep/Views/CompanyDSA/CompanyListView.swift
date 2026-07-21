@@ -45,7 +45,7 @@ struct CompanyListView: View {
                     NavigationLink(value: company) {
                         PPCard(padding: PPSpacing.md) {
                             HStack(spacing: PPSpacing.md) {
-                                PPIconTile(systemName: "building.2", size: 36)
+                                PPCompanyLogo(companyName: company.name)
 
                                 Text(company.name)
                                     .font(.ppBodyMedium)
