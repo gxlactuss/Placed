@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-07",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 27,
+  "title": "Intervals & Sorting Patterns",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-07-q01",
+      "prompt": "To merge overlapping intervals, the essential first step is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sort the intervals by their length"
+        },
+        {
+          "id": "B",
+          "text": "Sort the intervals by their start point"
+        },
+        {
+          "id": "C",
+          "text": "Put them in a hash set"
+        },
+        {
+          "id": "D",
+          "text": "Reverse the list"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Once sorted by start, a single pass can extend or close the current merged interval, since any overlap must involve an adjacent interval. This makes the whole process O(n log n).",
+      "concept": "Intervals"
+    },
+    {
+      "id": "dsa-mix-07-q02",
+      "prompt": "Two intervals [a, b] and [c, d] overlap when:",
+      "options": [
+        {
+          "id": "A",
+          "text": "b == d"
+        },
+        {
+          "id": "B",
+          "text": "b < c"
+        },
+        {
+          "id": "C",
+          "text": "a <= d and c <= b"
+        },
+        {
+          "id": "D",
+          "text": "a == c"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "They overlap unless one ends before the other begins, which the condition a <= d and c <= b captures. It is often easier to test the non-overlap case and negate it.",
+      "concept": "Intervals"
+    },
+    {
+      "id": "dsa-mix-07-q03",
+      "prompt": "The minimum number of meeting rooms needed for a set of intervals can be found by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A single linear scan without sorting"
+        },
+        {
+          "id": "B",
+          "text": "A hash map of room numbers"
+        },
+        {
+          "id": "C",
+          "text": "Sorting by length and counting"
+        },
+        {
+          "id": "D",
+          "text": "A min-heap of end times, or a sweep line over sorted start and end events"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Processing starts and ends in time order, the peak number of simultaneously active meetings is the answer. A min-heap of end times reuses a room whenever the earliest meeting has finished.",
+      "concept": "Intervals"
+    },
+    {
+      "id": "dsa-mix-07-q04",
+      "prompt": "To select the maximum number of non-overlapping intervals, the greedy rule is to sort by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Start time, taking the latest start"
+        },
+        {
+          "id": "B",
+          "text": "End time, then repeatedly take the earliest-finishing compatible interval"
+        },
+        {
+          "id": "C",
+          "text": "Length, taking the shortest"
+        },
+        {
+          "id": "D",
+          "text": "Start time, taking the earliest start"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Finishing earliest leaves the most room for later intervals, which an exchange argument proves optimal. This is the activity-selection problem.",
+      "concept": "Greedy Intervals"
+    },
+    {
+      "id": "dsa-mix-07-q05",
+      "prompt": "The sweep-line technique processes geometric or interval events by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Building a hash table of coordinates"
+        },
+        {
+          "id": "B",
+          "text": "Randomly sampling points"
+        },
+        {
+          "id": "C",
+          "text": "Sorting all endpoints and moving a conceptual line across them, updating an active set"
+        },
+        {
+          "id": "D",
+          "text": "Recursing on the midpoint"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Sorting events and advancing a line lets you maintain the set of currently active intervals or segments, answering overlap and counting questions efficiently. It is fundamental in computational geometry.",
+      "concept": "Sweep Line"
+    },
+    {
+      "id": "dsa-mix-07-q06",
+      "prompt": "Custom sorting a list of objects by a computed key is typically done by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Reversing the list"
+        },
+        {
+          "id": "B",
+          "text": "Writing a new bubble sort each time"
+        },
+        {
+          "id": "C",
+          "text": "Hashing the objects"
+        },
+        {
+          "id": "D",
+          "text": "Providing a comparator or key function to a standard O(n log n) sort"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Library sorts accept a comparator or key selector, so any ordering is expressed without reimplementing the algorithm. The underlying sort remains O(n log n).",
+      "concept": "Sorting"
+    },
+    {
+      "id": "dsa-mix-07-q07",
+      "prompt": "When is a stable sort specifically required?",
+      "options": [
+        {
+          "id": "A",
+          "text": "When memory is unlimited"
+        },
+        {
+          "id": "B",
+          "text": "When sorting by a secondary key must preserve the order established by a previous sort on a primary key"
+        },
+        {
+          "id": "C",
+          "text": "When the array is already sorted"
+        },
+        {
+          "id": "D",
+          "text": "When all keys are distinct"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Stability keeps equal keys in their prior relative order, which lets multi-key sorting be done one key at a time. With distinct keys, stability makes no observable difference.",
+      "concept": "Stable Sort"
+    },
+    {
+      "id": "dsa-mix-07-q08",
+      "prompt": "To find whether any two of a set of intervals overlap, the most efficient approach is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Compare every pair of intervals"
+        },
+        {
+          "id": "B",
+          "text": "Store them in a hash set"
+        },
+        {
+          "id": "C",
+          "text": "Sort by start and check each interval against the previous one"
+        },
+        {
+          "id": "D",
+          "text": "Build a binary search tree keyed on length"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "After sorting by start, an overlap can only occur between consecutive intervals, so a single linear scan suffices. This is O(n log n) versus the O(n^2) of checking all pairs.",
+      "concept": "Intervals"
+    },
+    {
+      "id": "dsa-mix-07-q09",
+      "prompt": "The insert-interval problem (add a new interval into a sorted, non-overlapping list and merge) runs in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Since the list is already sorted, one linear pass places the new interval and merges any it overlaps. No re-sorting is needed, so it is linear rather than O(n log n).",
+      "concept": "Intervals"
+    },
+    {
+      "id": "dsa-mix-07-q10",
+      "prompt": "Many interval problems reduce to sorting because sorting:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Converts intervals into a hash table"
+        },
+        {
+          "id": "B",
+          "text": "Removes all duplicates"
+        },
+        {
+          "id": "C",
+          "text": "Guarantees O(1) total time"
+        },
+        {
+          "id": "D",
+          "text": "Brings related intervals adjacent, so a linear scan can decide overlaps locally"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Ordering by an endpoint means any interaction happens between neighbours, replacing global pairwise checks with a local sweep. This is why sorting is the first move in most interval algorithms.",
+      "concept": "Intervals"
+    }
+  ]
+}

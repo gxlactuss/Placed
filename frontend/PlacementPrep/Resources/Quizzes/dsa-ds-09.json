@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-09",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 9,
+  "title": "Segment Trees, Fenwick & Union-Find",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-09-q01",
+      "prompt": "What is the time complexity of a range-sum query on a segment tree over an array of n elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(sqrt n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Any range decomposes into O(log n) canonical segments covered by tree nodes. Both queries and point updates therefore run in logarithmic time, unlike a static prefix-sum array that cannot update cheaply.",
+      "concept": "Segment Trees"
+    },
+    {
+      "id": "dsa-ds-09-q02",
+      "prompt": "A Fenwick tree (binary indexed tree) supports which pair of operations in O(log n)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Insertion and deletion of arbitrary keys"
+        },
+        {
+          "id": "B",
+          "text": "Range minimum query and range assignment"
+        },
+        {
+          "id": "C",
+          "text": "Prefix sum query and point update"
+        },
+        {
+          "id": "D",
+          "text": "Sorting and searching"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A BIT maintains prefix sums using the low-bit trick to walk O(log n) responsible nodes per operation. It is more compact and simpler than a segment tree but supports fewer query types.",
+      "concept": "Fenwick Tree"
+    },
+    {
+      "id": "dsa-ds-09-q03",
+      "prompt": "What does path compression do in a union-find (disjoint set) structure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It sorts the elements within a set"
+        },
+        {
+          "id": "B",
+          "text": "It merges two sets by comparing their sizes"
+        },
+        {
+          "id": "C",
+          "text": "It deletes redundant elements"
+        },
+        {
+          "id": "D",
+          "text": "It re-points nodes on a find path directly to the root, flattening the tree"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "During find, each visited node is attached straight to the root, so later finds on those nodes are nearly constant time. Combined with union by rank it gives near-constant amortised cost.",
+      "concept": "Union-Find"
+    },
+    {
+      "id": "dsa-ds-09-q04",
+      "prompt": "Union by rank (or size) attaches the:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Larger element under the smaller element"
+        },
+        {
+          "id": "B",
+          "text": "Shorter tree under the taller tree's root"
+        },
+        {
+          "id": "C",
+          "text": "Two roots into a linked list"
+        },
+        {
+          "id": "D",
+          "text": "Taller tree under the shorter tree's root"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Hanging the smaller tree under the larger root keeps the combined tree from growing taller than necessary, bounding height and keeping find fast.",
+      "concept": "Union-Find"
+    },
+    {
+      "id": "dsa-ds-09-q05",
+      "prompt": "What is the amortised time per operation for union-find with both path compression and union by rank?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(sqrt n)"
+        },
+        {
+          "id": "C",
+          "text": "Nearly constant — the inverse Ackermann function of n"
+        },
+        {
+          "id": "D",
+          "text": "O(n)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The combined optimisations yield O(alpha(n)) amortised, where the inverse Ackermann function is at most 4 for any conceivable input. This is effectively constant in practice.",
+      "concept": "Union-Find"
+    },
+    {
+      "id": "dsa-ds-09-q06",
+      "prompt": "What is lazy propagation in a segment tree used for?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Compressing the tree to save memory"
+        },
+        {
+          "id": "B",
+          "text": "Sorting the underlying array before building the tree"
+        },
+        {
+          "id": "C",
+          "text": "Detecting cycles during construction"
+        },
+        {
+          "id": "D",
+          "text": "Deferring range updates to children until they are actually needed, keeping range updates O(log n)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Without lazy propagation a range update could touch O(n) leaves. Storing a pending update at a covering node and pushing it down only when that subtree is later visited keeps range updates logarithmic.",
+      "concept": "Segment Trees"
+    },
+    {
+      "id": "dsa-ds-09-q07",
+      "prompt": "What is the space complexity of a segment tree built over an array of n elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A segment tree has n leaves and about n internal nodes, so roughly 2n to 4n nodes in an array implementation — linear space. Its build time is likewise O(n).",
+      "concept": "Segment Trees"
+    },
+    {
+      "id": "dsa-ds-09-q08",
+      "prompt": "Which classic algorithm relies on a union-find structure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Merge sort"
+        },
+        {
+          "id": "B",
+          "text": "Kruskal's minimum spanning tree algorithm"
+        },
+        {
+          "id": "C",
+          "text": "Binary search"
+        },
+        {
+          "id": "D",
+          "text": "Dijkstra's shortest path algorithm"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Kruskal's adds edges in increasing weight, using find to test whether an edge's endpoints are already connected and union to merge components. This cycle check is exactly what disjoint-set supports.",
+      "concept": "Union-Find"
+    },
+    {
+      "id": "dsa-ds-09-q09",
+      "prompt": "In a Fenwick tree, how is the next index to update reached from index i?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Double the index, i x 2"
+        },
+        {
+          "id": "B",
+          "text": "Add one, i + 1"
+        },
+        {
+          "id": "C",
+          "text": "Add the lowest set bit of i, computed as i + (i & -i)"
+        },
+        {
+          "id": "D",
+          "text": "Halve the index, i / 2"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Updates climb by adding the low bit i & -i, while prefix queries descend by subtracting it. This bit manipulation is what gives the BIT its O(log n) cost and tiny constant factor.",
+      "concept": "Fenwick Tree"
+    },
+    {
+      "id": "dsa-ds-09-q10",
+      "prompt": "Compared with a segment tree, a Fenwick tree is preferred when:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The data must be kept sorted"
+        },
+        {
+          "id": "B",
+          "text": "Range assignment with lazy propagation is required"
+        },
+        {
+          "id": "C",
+          "text": "Range minimum queries are required"
+        },
+        {
+          "id": "D",
+          "text": "Only prefix or range sums with point updates are needed"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "For invertible aggregates like sums, the BIT is smaller, simpler and faster by a constant factor. Non-invertible queries such as range minimum need the greater generality of a segment tree.",
+      "concept": "Fenwick Tree"
+    }
+  ]
+}

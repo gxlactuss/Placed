@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-10",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 20,
+  "title": "Sliding Window & Prefix Sums",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-10-q01",
+      "prompt": "The sliding-window technique reduces which kind of brute-force solution to linear time?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Building a hash table"
+        },
+        {
+          "id": "B",
+          "text": "Recomputing an aggregate over every contiguous subarray from scratch"
+        },
+        {
+          "id": "C",
+          "text": "Searching a binary tree"
+        },
+        {
+          "id": "D",
+          "text": "Sorting the array repeatedly"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Instead of an O(n^2) or worse pass over all subarrays, the window updates its aggregate incrementally as it slides, adding the entering element and removing the leaving one in O(1).",
+      "concept": "Sliding Window"
+    },
+    {
+      "id": "dsa-algo-10-q02",
+      "prompt": "For the longest substring without repeating characters, a variable-size sliding window uses which auxiliary structure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A sorted array"
+        },
+        {
+          "id": "B",
+          "text": "A min-heap of characters"
+        },
+        {
+          "id": "C",
+          "text": "A hash set or last-seen index map for characters in the window"
+        },
+        {
+          "id": "D",
+          "text": "A stack of substrings"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Tracking which characters are currently in the window lets the left edge jump past a repeat in O(1). Each character enters and leaves the window at most once, so the scan is O(n).",
+      "concept": "Sliding Window"
+    },
+    {
+      "id": "dsa-algo-10-q03",
+      "prompt": "A prefix-sum array lets you answer the sum of any subarray A[l..r] in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log n) per query"
+        },
+        {
+          "id": "B",
+          "text": "O(n) per query"
+        },
+        {
+          "id": "C",
+          "text": "O(log n) per query"
+        },
+        {
+          "id": "D",
+          "text": "O(1) after O(n) preprocessing"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "With prefix sums P, the range sum is P[r+1] - P[l], a constant-time subtraction after building P in linear time. This trades a one-time O(n) cost for O(1) queries.",
+      "concept": "Prefix Sums"
+    },
+    {
+      "id": "dsa-algo-10-q04",
+      "prompt": "To count subarrays whose sum equals a target k, the efficient approach combines prefix sums with:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sorting the array"
+        },
+        {
+          "id": "B",
+          "text": "A hash map of prefix-sum frequencies seen so far"
+        },
+        {
+          "id": "C",
+          "text": "A second sliding window"
+        },
+        {
+          "id": "D",
+          "text": "A binary search tree of the elements"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "At each index the number of earlier prefix sums equal to current - k gives the subarrays ending here. A hash map of prefix-sum counts makes the whole scan O(n).",
+      "concept": "Prefix Sums"
+    },
+    {
+      "id": "dsa-algo-10-q05",
+      "prompt": "The sliding-window-maximum problem (maximum of every window of size k) is solved in O(n) using:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A max-heap rebuilt each window"
+        },
+        {
+          "id": "B",
+          "text": "A prefix-maximum array"
+        },
+        {
+          "id": "C",
+          "text": "A monotonic deque holding candidate indices in decreasing value order"
+        },
+        {
+          "id": "D",
+          "text": "Sorting each window"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The deque keeps indices whose values are useful future maxima, discarding smaller trailing ones. Its front is always the current window's maximum, and each index is pushed and popped once.",
+      "concept": "Monotonic Deque"
+    },
+    {
+      "id": "dsa-algo-10-q06",
+      "prompt": "Why does the classic sliding-window minimum-length-subarray technique require the values to be non-negative?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The window size must be even"
+        },
+        {
+          "id": "B",
+          "text": "Negatives cannot be stored in an array"
+        },
+        {
+          "id": "C",
+          "text": "Prefix sums do not exist for negatives"
+        },
+        {
+          "id": "D",
+          "text": "Shrinking the window must monotonically decrease the sum, which fails with negatives"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The window slides forward assuming that removing left elements lowers the sum. Negative numbers break that monotonicity, so those problems need prefix sums with a hash map or a deque instead.",
+      "concept": "Sliding Window"
+    },
+    {
+      "id": "dsa-algo-10-q07",
+      "prompt": "A 2-D prefix-sum (integral image) answers the sum of any axis-aligned submatrix in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(m + n) per query"
+        },
+        {
+          "id": "B",
+          "text": "O(1) after O(mn) preprocessing"
+        },
+        {
+          "id": "C",
+          "text": "O(mn) per query"
+        },
+        {
+          "id": "D",
+          "text": "O(log(mn)) per query"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Precomputing cumulative sums over the grid lets a rectangle sum be found by inclusion-exclusion of four corner values in constant time. It is widely used in image processing.",
+      "concept": "2D Prefix Sums"
+    },
+    {
+      "id": "dsa-algo-10-q08",
+      "prompt": "The difference-array technique makes which operation O(1)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Finding the maximum element"
+        },
+        {
+          "id": "B",
+          "text": "Searching for a value"
+        },
+        {
+          "id": "C",
+          "text": "Adding a constant to every element of a range, deferring the final values to one pass"
+        },
+        {
+          "id": "D",
+          "text": "Sorting a range"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Recording +v at the start of a range and -v just past its end lets many range updates be applied in O(1) each, then a single prefix-sum pass reconstructs the array. It is the inverse of a prefix sum.",
+      "concept": "Difference Array"
+    },
+    {
+      "id": "dsa-algo-10-q09",
+      "prompt": "In a fixed-size sliding window of width k over n elements, how many total element additions and removals occur?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(nk)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log k)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(n) — each element enters and leaves at most once"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "As the window advances one step, exactly one element enters and one leaves, so across the whole scan there are O(n) updates. This amortised bound is what makes the technique linear.",
+      "concept": "Sliding Window"
+    },
+    {
+      "id": "dsa-algo-10-q10",
+      "prompt": "Which problem is NOT a natural fit for a simple sliding window over a contiguous range?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Smallest subarray with sum at least a target (non-negative values)"
+        },
+        {
+          "id": "B",
+          "text": "Finding the longest increasing subsequence (non-contiguous)"
+        },
+        {
+          "id": "C",
+          "text": "Longest substring with at most two distinct characters"
+        },
+        {
+          "id": "D",
+          "text": "Maximum sum of any k consecutive elements"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A subsequence need not be contiguous, so a window over a contiguous range cannot capture it — that problem needs DP or patience sorting. The others all concern contiguous subarrays or substrings.",
+      "concept": "Sliding Window"
+    }
+  ]
+}

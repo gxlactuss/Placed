@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-01",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 11,
+  "title": "Searching & Two Pointers",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-01-q01",
+      "prompt": "What is the time complexity of binary search on a sorted array of n elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each comparison halves the remaining search space, so the number of steps is log n. It requires the array to be sorted first, which is the prerequisite that makes the speed-up possible.",
+      "concept": "Binary Search"
+    },
+    {
+      "id": "dsa-algo-01-q02",
+      "prompt": "Binary search requires the input array to be:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Stored in a linked list"
+        },
+        {
+          "id": "B",
+          "text": "Free of duplicates"
+        },
+        {
+          "id": "C",
+          "text": "Sorted"
+        },
+        {
+          "id": "D",
+          "text": "A power of two in length"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The algorithm decides which half to discard by comparing the target to the middle element, which is only meaningful if the array is ordered. On unsorted data a linear scan is the fallback.",
+      "concept": "Binary Search"
+    },
+    {
+      "id": "dsa-algo-01-q03",
+      "prompt": "In binary search, the midpoint is often computed as low + (high - low) / 2 rather than (low + high) / 2. Why?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To make the search faster"
+        },
+        {
+          "id": "B",
+          "text": "To handle unsorted arrays"
+        },
+        {
+          "id": "C",
+          "text": "To skip duplicate elements"
+        },
+        {
+          "id": "D",
+          "text": "To avoid integer overflow when low and high are large"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "For large indices, low + high can exceed the integer range and wrap around to a negative value. The subtraction form computes the same midpoint without ever forming the oversized sum.",
+      "concept": "Binary Search"
+    },
+    {
+      "id": "dsa-algo-01-q04",
+      "prompt": "The two-pointer technique on a sorted array to find a pair with a given sum runs in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "One pointer starts at each end and they move inward based on whether the current sum is too big or too small. Each pointer traverses the array at most once, giving linear time.",
+      "concept": "Two Pointers"
+    },
+    {
+      "id": "dsa-algo-01-q05",
+      "prompt": "To remove duplicates in place from a sorted array, the two-pointer approach uses:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Binary search for each element"
+        },
+        {
+          "id": "B",
+          "text": "A slow pointer marking the write position and a fast pointer scanning ahead"
+        },
+        {
+          "id": "C",
+          "text": "A hash set of seen values"
+        },
+        {
+          "id": "D",
+          "text": "A second array"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The fast pointer scans; whenever it finds a value different from the last kept one, the slow pointer advances and stores it. This compacts unique values in O(n) time and O(1) space.",
+      "concept": "Two Pointers"
+    },
+    {
+      "id": "dsa-algo-01-q06",
+      "prompt": "What is the worst-case time to search for an element in an unsorted array?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(1)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Linear search must inspect each element and the target may be last or absent. Without order there is no way to rule out large parts of the array, so binary search cannot be used.",
+      "concept": "Linear Search"
+    },
+    {
+      "id": "dsa-algo-01-q07",
+      "prompt": "Binary search can be adapted to find the first position where a monotonic predicate becomes true. This general pattern is often called:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Linear probing"
+        },
+        {
+          "id": "B",
+          "text": "Two-pass scanning"
+        },
+        {
+          "id": "C",
+          "text": "Binary search on the answer"
+        },
+        {
+          "id": "D",
+          "text": "Bucket search"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "When a condition is false then true across a range, binary search locates the boundary in O(log range). This turns many optimisation problems into a search over candidate answers.",
+      "concept": "Binary Search"
+    },
+    {
+      "id": "dsa-algo-01-q08",
+      "prompt": "The fast-and-slow pointer variant of two pointers is typically used to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Build a hash table"
+        },
+        {
+          "id": "B",
+          "text": "Compute prefix sums"
+        },
+        {
+          "id": "C",
+          "text": "Sort the array"
+        },
+        {
+          "id": "D",
+          "text": "Detect a cycle or find the middle of a sequence"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "One pointer moving twice as fast as the other meets it inside a cycle, and sits at the midpoint when the fast one reaches the end. This is Floyd's technique applied to arrays or lists.",
+      "concept": "Two Pointers"
+    },
+    {
+      "id": "dsa-algo-01-q09",
+      "prompt": "How many comparisons does binary search make in the worst case on an array of 1000 elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "About 1000"
+        },
+        {
+          "id": "B",
+          "text": "About 10"
+        },
+        {
+          "id": "C",
+          "text": "About 100"
+        },
+        {
+          "id": "D",
+          "text": "About 500"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The worst case is ceil(log2 1000), which is 10. Linear search on the same array would average about 500 comparisons.",
+      "concept": "Binary Search"
+    },
+    {
+      "id": "dsa-algo-01-q10",
+      "prompt": "When is a simple linear search preferable to binary search?",
+      "options": [
+        {
+          "id": "A",
+          "text": "When the array is very large and sorted"
+        },
+        {
+          "id": "B",
+          "text": "When many searches will be run on static data"
+        },
+        {
+          "id": "C",
+          "text": "When the data is unsorted and will be searched only once"
+        },
+        {
+          "id": "D",
+          "text": "When the array is stored on disk"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Sorting to enable binary search costs O(n log n), which is not worth it for a single lookup on unsorted data. Repeated searches on static data, by contrast, amortise that sorting cost.",
+      "concept": "Searching"
+    }
+  ]
+}

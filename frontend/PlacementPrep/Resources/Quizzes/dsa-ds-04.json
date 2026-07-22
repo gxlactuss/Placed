@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-04",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 4,
+  "title": "Hashing & Hash Tables",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-04-q01",
+      "prompt": "What is the average-case time complexity of lookup, insert and delete in a hash table?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(1)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A good hash function with a bounded load factor spreads keys evenly, so each operation touches only a short chain or a few probes. The worst case degrades to O(n) when keys collide badly.",
+      "concept": "Hashing"
+    },
+    {
+      "id": "dsa-ds-04-q02",
+      "prompt": "The load factor of a hash table is defined as:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The number of buckets divided by the number of keys"
+        },
+        {
+          "id": "B",
+          "text": "The number of stored keys divided by the number of buckets"
+        },
+        {
+          "id": "C",
+          "text": "The fraction of keys that collide"
+        },
+        {
+          "id": "D",
+          "text": "The length of the longest collision chain"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Load factor alpha = n / m measures how full the table is. Performance degrades as it rises, which is why tables rehash into a larger array once alpha crosses a threshold.",
+      "concept": "Hashing"
+    },
+    {
+      "id": "dsa-ds-04-q03",
+      "prompt": "How does separate chaining resolve collisions?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It rehashes the whole table on every collision"
+        },
+        {
+          "id": "B",
+          "text": "It rejects the colliding key"
+        },
+        {
+          "id": "C",
+          "text": "Each bucket holds a linked list of all keys that hash there"
+        },
+        {
+          "id": "D",
+          "text": "It probes the next free bucket in the array"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Colliding keys live in a list hanging off the bucket, so the table can hold more keys than buckets. Open addressing instead stores everything in the array itself by probing.",
+      "concept": "Collision Resolution"
+    },
+    {
+      "id": "dsa-ds-04-q04",
+      "prompt": "What problem is characteristic of linear probing in open addressing?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It cannot store more than one key per bucket"
+        },
+        {
+          "id": "B",
+          "text": "It cannot detect duplicate keys"
+        },
+        {
+          "id": "C",
+          "text": "It requires a linked list per bucket"
+        },
+        {
+          "id": "D",
+          "text": "Primary clustering — occupied runs grow and lengthen probe sequences"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Because probes step one slot at a time, contiguous occupied runs form and any key hashing into them extends the run. Quadratic probing and double hashing scatter probes to reduce this.",
+      "concept": "Open Addressing"
+    },
+    {
+      "id": "dsa-ds-04-q05",
+      "prompt": "Which is the most important property of a good hash function?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It always returns a prime number"
+        },
+        {
+          "id": "B",
+          "text": "It distributes keys uniformly across buckets"
+        },
+        {
+          "id": "C",
+          "text": "It is slow enough to be secure"
+        },
+        {
+          "id": "D",
+          "text": "It maps every key to the same bucket"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Uniform distribution keeps chains short and probe sequences brief, preserving the O(1) average. It should also be fast to compute and deterministic for a given key.",
+      "concept": "Hash Functions"
+    },
+    {
+      "id": "dsa-ds-04-q06",
+      "prompt": "Under what condition does a hash table lookup degrade to O(n)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "When keys are inserted in sorted order"
+        },
+        {
+          "id": "B",
+          "text": "When the table is exactly half full"
+        },
+        {
+          "id": "C",
+          "text": "When all keys hash to the same bucket"
+        },
+        {
+          "id": "D",
+          "text": "When the table has more buckets than keys"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "If every key collides, a chained table becomes one long list and every lookup scans it. This is why an adversary who can force collisions can turn a hash table into a linear structure.",
+      "concept": "Hashing"
+    },
+    {
+      "id": "dsa-ds-04-q07",
+      "prompt": "Which data structure is the natural choice for testing set membership at high volume?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A sorted array"
+        },
+        {
+          "id": "B",
+          "text": "A stack"
+        },
+        {
+          "id": "C",
+          "text": "A linked list"
+        },
+        {
+          "id": "D",
+          "text": "A hash set"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A hash set answers 'is x present' in O(1) average time. A sorted array gives O(log n) via binary search but is costly to update; a list is O(n).",
+      "concept": "Hash Set"
+    },
+    {
+      "id": "dsa-ds-04-q08",
+      "prompt": "When the load factor of a hash table grows too high, the usual response is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Allocate a larger table and rehash every key into it"
+        },
+        {
+          "id": "B",
+          "text": "Sort the buckets"
+        },
+        {
+          "id": "C",
+          "text": "Switch the hash function to the identity"
+        },
+        {
+          "id": "D",
+          "text": "Delete the oldest keys"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Rehashing into a bigger array restores a low load factor and short chains. It costs O(n) but happens rarely, so it is O(1) amortised per insertion — the same argument as dynamic array doubling.",
+      "concept": "Rehashing"
+    },
+    {
+      "id": "dsa-ds-04-q09",
+      "prompt": "In open addressing, why is a deleted slot marked with a tombstone rather than simply emptied?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The array cannot store empty slots"
+        },
+        {
+          "id": "B",
+          "text": "An empty slot would prematurely stop a probe sequence searching for a later key"
+        },
+        {
+          "id": "C",
+          "text": "It keeps the table sorted"
+        },
+        {
+          "id": "D",
+          "text": "Tombstones make deletion faster"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A search stops at a truly empty slot. If deletion left a hole in the middle of a probe run, keys past it would become unreachable, so the slot is marked deleted-but-not-empty instead.",
+      "concept": "Open Addressing"
+    },
+    {
+      "id": "dsa-ds-04-q10",
+      "prompt": "Why is it dangerous to use a mutable object as a key in a hash table?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It forces the table to rehash on every read"
+        },
+        {
+          "id": "B",
+          "text": "Mutable keys use more memory"
+        },
+        {
+          "id": "C",
+          "text": "Mutating it changes its hash, so it can no longer be found in its bucket"
+        },
+        {
+          "id": "D",
+          "text": "The table cannot compute their hash at all"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The key was placed in the bucket determined by its hash at insertion. If its fields change, its hash changes, and lookups now probe the wrong bucket, leaving the entry effectively lost.",
+      "concept": "Hashing"
+    }
+  ]
+}

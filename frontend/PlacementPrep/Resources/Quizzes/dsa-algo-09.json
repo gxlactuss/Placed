@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-09",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 19,
+  "title": "Dynamic Programming II",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-09-q01",
+      "prompt": "What is the time complexity of the standard dynamic program for the longest common subsequence of two strings of lengths m and n?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(mn)"
+        },
+        {
+          "id": "B",
+          "text": "O(m + n)"
+        },
+        {
+          "id": "C",
+          "text": "O(2^(m+n))"
+        },
+        {
+          "id": "D",
+          "text": "O(mn log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The DP fills an (m+1) by (n+1) table, each cell in constant time from its neighbours. Space can be reduced to O(min(m, n)) since each row depends only on the previous one.",
+      "concept": "Longest Common Subsequence"
+    },
+    {
+      "id": "dsa-algo-09-q02",
+      "prompt": "The edit distance (Levenshtein) between two strings of lengths m and n is computed in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(mn)"
+        },
+        {
+          "id": "B",
+          "text": "O(m + n)"
+        },
+        {
+          "id": "C",
+          "text": "O(max(m, n))"
+        },
+        {
+          "id": "D",
+          "text": "O(mn^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each cell dp[i][j] combines the insert, delete and replace options from adjacent cells in constant time, filling an m by n grid. It measures the minimum single-character edits to transform one string into the other.",
+      "concept": "Edit Distance"
+    },
+    {
+      "id": "dsa-algo-09-q03",
+      "prompt": "A grid path-counting DP (moving only right or down from top-left to bottom-right of an m by n grid) runs in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(mn)"
+        },
+        {
+          "id": "B",
+          "text": "O(m + n)"
+        },
+        {
+          "id": "C",
+          "text": "O(2^(m+n))"
+        },
+        {
+          "id": "D",
+          "text": "O(mn log mn)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each cell's path count is the sum of the cell above and the cell to the left, filling the grid once. The exponential naive recursion recomputes the same cells repeatedly.",
+      "concept": "Grid DP"
+    },
+    {
+      "id": "dsa-algo-09-q04",
+      "prompt": "Matrix chain multiplication, which finds the optimal parenthesisation to minimise scalar multiplications, has a DP complexity of:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^3)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(2^n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The interval DP considers every subchain and every split point within it, giving O(n^3). It decides the multiplication order, not the products themselves.",
+      "concept": "Matrix Chain Multiplication"
+    },
+    {
+      "id": "dsa-algo-09-q05",
+      "prompt": "The longest palindromic subsequence of a string of length n is found by DP in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(2^n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The interval DP over start and end indices fills an n by n table. It is equivalent to the longest common subsequence of the string and its reverse.",
+      "concept": "Interval DP"
+    },
+    {
+      "id": "dsa-algo-09-q06",
+      "prompt": "In interval dynamic programming, subproblems are typically indexed by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A hash of the input"
+        },
+        {
+          "id": "B",
+          "text": "A pair of endpoints defining a subrange"
+        },
+        {
+          "id": "C",
+          "text": "A vertex of a graph"
+        },
+        {
+          "id": "D",
+          "text": "A single index"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Problems like matrix chain and palindrome DP define dp[i][j] over the subrange from i to j, combining results across a split point k inside it. This two-endpoint indexing is the hallmark of interval DP.",
+      "concept": "Interval DP"
+    },
+    {
+      "id": "dsa-algo-09-q07",
+      "prompt": "The best-time-to-buy-and-sell-stock problem with at most k transactions is solved by a DP in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(nk)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2 k)"
+        },
+        {
+          "id": "D",
+          "text": "O(2^k)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The state tracks the day and the number of transactions used, giving n x k states each updated in constant time. When k is unbounded the problem collapses to a simple greedy scan.",
+      "concept": "State-Machine DP"
+    },
+    {
+      "id": "dsa-algo-09-q08",
+      "prompt": "Why is the DP for LCS often reduced to O(min(m, n)) space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The answer is always the shorter string"
+        },
+        {
+          "id": "B",
+          "text": "The strings are always equal length"
+        },
+        {
+          "id": "C",
+          "text": "Each row of the table depends only on the immediately preceding row"
+        },
+        {
+          "id": "D",
+          "text": "The table is symmetric"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Since dp[i][j] uses only row i-1, two rows (or one, updated carefully) suffice, so only the shorter dimension need be kept. Reconstructing the actual subsequence, however, needs the full table or a divide-and-conquer trick.",
+      "concept": "Space Optimisation"
+    },
+    {
+      "id": "dsa-algo-09-q09",
+      "prompt": "Bitmask dynamic programming, as used for the travelling salesman problem, has what complexity for n cities?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^2 x 2^n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n!)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^3)"
+        },
+        {
+          "id": "D",
+          "text": "O(2^n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The state is a subset of visited cities (2^n of them) paired with the current city (n), and each transition tries n next cities, giving O(n^2 x 2^n). This beats the O(n!) brute force for moderate n.",
+      "concept": "Bitmask DP"
+    },
+    {
+      "id": "dsa-algo-09-q10",
+      "prompt": "In a DP on a tree, subproblems are usually defined:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Per edge weight"
+        },
+        {
+          "id": "B",
+          "text": "Over all root-to-leaf paths independently"
+        },
+        {
+          "id": "C",
+          "text": "By sorting the nodes first"
+        },
+        {
+          "id": "D",
+          "text": "Per subtree, combining children's results at each node"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Tree DP computes an answer for each node from the answers of its children in a post-order traversal, so each subtree is solved once. Problems like maximum independent set on a tree use exactly this structure.",
+      "concept": "Tree DP"
+    }
+  ]
+}

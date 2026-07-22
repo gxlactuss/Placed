@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-08",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 18,
+  "title": "Dynamic Programming I",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-08-q01",
+      "prompt": "What two properties must a problem have to be solvable by dynamic programming?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The greedy-choice property and a sorted input"
+        },
+        {
+          "id": "B",
+          "text": "A balanced tree and no cycles"
+        },
+        {
+          "id": "C",
+          "text": "Randomised pivots and distinct keys"
+        },
+        {
+          "id": "D",
+          "text": "Overlapping subproblems and optimal substructure"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The same subproblems must recur (so caching pays off) and an optimal solution must be built from optimal solutions of subproblems. Without overlap, plain divide-and-conquer suffices.",
+      "concept": "Dynamic Programming"
+    },
+    {
+      "id": "dsa-algo-08-q02",
+      "prompt": "What is the difference between memoisation and tabulation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They give different answers"
+        },
+        {
+          "id": "B",
+          "text": "Memoisation is top-down and lazy; tabulation is bottom-up and iterative"
+        },
+        {
+          "id": "C",
+          "text": "Memoisation is always faster"
+        },
+        {
+          "id": "D",
+          "text": "Tabulation uses recursion; memoisation uses loops"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Memoisation recurses and caches results as they are first needed, so it computes only reachable states. Tabulation fills a table iteratively from the base cases upward, avoiding recursion overhead.",
+      "concept": "Dynamic Programming"
+    },
+    {
+      "id": "dsa-algo-08-q03",
+      "prompt": "What is the time complexity of the standard 0/1 knapsack dynamic program for n items and capacity W?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(nW)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log W)"
+        },
+        {
+          "id": "C",
+          "text": "O(2^n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n + W)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The table has n rows and W columns, each filled in constant time. This is pseudo-polynomial: W is a value, not an input length, so it is exponential in the number of bits of W.",
+      "concept": "Knapsack"
+    },
+    {
+      "id": "dsa-algo-08-q04",
+      "prompt": "Memoising the naive recursive Fibonacci reduces its time complexity from exponential to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "There are only n distinct subproblems, each computed once and reused thereafter. The exponential blow-up came entirely from recomputing the same values.",
+      "concept": "Memoisation"
+    },
+    {
+      "id": "dsa-algo-08-q05",
+      "prompt": "The longest increasing subsequence of an array can be found in O(n log n) using:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A single linear scan"
+        },
+        {
+          "id": "B",
+          "text": "A greedy scan without any auxiliary structure"
+        },
+        {
+          "id": "C",
+          "text": "Patience sorting with binary search over the tails array"
+        },
+        {
+          "id": "D",
+          "text": "Depth-first search"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Maintaining an array of smallest possible tail values and binary-searching each element's insertion point gives O(n log n). The straightforward DP is O(n^2).",
+      "concept": "Longest Increasing Subsequence"
+    },
+    {
+      "id": "dsa-algo-08-q06",
+      "prompt": "The unbounded coin-change problem (minimum coins to make an amount, unlimited coins) has a DP time complexity of:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(amount x number of coin types)"
+        },
+        {
+          "id": "B",
+          "text": "O(amount^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(2^amount)"
+        },
+        {
+          "id": "D",
+          "text": "O(number of coin types)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "For each amount from 1 to the target, the DP tries every coin denomination, giving amount x coins work. It is again pseudo-polynomial in the amount.",
+      "concept": "Coin Change"
+    },
+    {
+      "id": "dsa-algo-08-q07",
+      "prompt": "When is a greedy algorithm preferable to dynamic programming for a problem both can solve?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Never — DP is always better"
+        },
+        {
+          "id": "B",
+          "text": "Only for graph problems"
+        },
+        {
+          "id": "C",
+          "text": "Only when the input is unsorted"
+        },
+        {
+          "id": "D",
+          "text": "When the greedy-choice property holds, since greedy is typically faster and simpler"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "If a locally optimal choice is provably part of a global optimum, greedy avoids building a table and runs faster. DP is the safe fallback when that property cannot be established.",
+      "concept": "Dynamic Programming"
+    },
+    {
+      "id": "dsa-algo-08-q08",
+      "prompt": "In many 1-D dynamic programs such as climbing stairs, the space can be reduced from O(n) to O(1) because:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The recursion has no base case"
+        },
+        {
+          "id": "B",
+          "text": "Each state depends only on a constant number of previous states"
+        },
+        {
+          "id": "C",
+          "text": "The array is always sorted"
+        },
+        {
+          "id": "D",
+          "text": "The problem has no overlapping subproblems"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "When dp[i] uses only dp[i-1] and dp[i-2], keeping those two values in variables suffices and the full table is unnecessary. This rolling-variable trick is a common optimisation.",
+      "concept": "Space Optimisation"
+    },
+    {
+      "id": "dsa-algo-08-q09",
+      "prompt": "The subset-sum problem (does a subset sum to a target T?) has a DP complexity of:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n + T)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log T)"
+        },
+        {
+          "id": "C",
+          "text": "O(nT)"
+        },
+        {
+          "id": "D",
+          "text": "O(2^n) with no better option"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A boolean table over items and achievable sums up to T is filled in O(nT). Like knapsack it is pseudo-polynomial, and the decision version is the basis for the NP-complete partition problem.",
+      "concept": "Subset Sum"
+    },
+    {
+      "id": "dsa-algo-08-q10",
+      "prompt": "Why is the 0/1 knapsack DP called pseudo-polynomial rather than polynomial?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It sometimes gives approximate answers"
+        },
+        {
+          "id": "B",
+          "text": "It only works for small n"
+        },
+        {
+          "id": "C",
+          "text": "It uses recursion instead of iteration"
+        },
+        {
+          "id": "D",
+          "text": "Its running time is polynomial in the numeric value W, which is exponential in W's bit length"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The input size of W is its number of bits, roughly log W, so O(nW) is exponential in that size. A truly polynomial algorithm would be polynomial in the bit length of the input.",
+      "concept": "Complexity"
+    }
+  ]
+}

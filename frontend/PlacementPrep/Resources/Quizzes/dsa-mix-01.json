@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-01",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 21,
+  "title": "Time & Space Complexity",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-01-q01",
+      "prompt": "What does Big-O notation describe?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The exact running time in seconds"
+        },
+        {
+          "id": "B",
+          "text": "The best-case running time only"
+        },
+        {
+          "id": "C",
+          "text": "An asymptotic upper bound on the growth of a function"
+        },
+        {
+          "id": "D",
+          "text": "The memory address of the data"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Big-O bounds how fast a cost grows as input size increases, ignoring constants and lower-order terms. It abstracts away hardware speed to compare algorithms by scalability.",
+      "concept": "Asymptotic Notation"
+    },
+    {
+      "id": "dsa-mix-01-q02",
+      "prompt": "Which growth rate is the fastest-growing (worst) among these?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(2^n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Exponential growth eventually dwarfs any polynomial, so O(2^n) is the worst here. The ordering from best to worst is log n, n log n, n^2, then 2^n.",
+      "concept": "Growth Rates"
+    },
+    {
+      "id": "dsa-mix-01-q03",
+      "prompt": "In Big-O analysis, the expression O(3n^2 + 5n + 100) simplifies to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "B",
+          "text": "O(3n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2 + n)"
+        },
+        {
+          "id": "D",
+          "text": "O(100)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Constant factors and lower-order terms are dropped, leaving the dominant term n^2. Only the fastest-growing part matters as n becomes large.",
+      "concept": "Asymptotic Notation"
+    },
+    {
+      "id": "dsa-mix-01-q04",
+      "prompt": "What does Big-Omega notation describe?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The average case only"
+        },
+        {
+          "id": "B",
+          "text": "An asymptotic upper bound on growth"
+        },
+        {
+          "id": "C",
+          "text": "The exact space used"
+        },
+        {
+          "id": "D",
+          "text": "An asymptotic lower bound on growth"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Omega gives a lower bound — the cost grows at least this fast. When the upper and lower bounds match, Theta expresses the tight bound.",
+      "concept": "Asymptotic Notation"
+    },
+    {
+      "id": "dsa-mix-01-q05",
+      "prompt": "A loop that runs from 1 to n, doubling a counter each iteration (1, 2, 4, 8, ...), executes how many times?",
+      "options": [
+        {
+          "id": "A",
+          "text": "About n^2"
+        },
+        {
+          "id": "B",
+          "text": "About log2(n)"
+        },
+        {
+          "id": "C",
+          "text": "About n/2"
+        },
+        {
+          "id": "D",
+          "text": "About n"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The counter reaches n after about log2(n) doublings, so the loop is logarithmic. Halving each step gives the same count, which is why binary search is O(log n).",
+      "concept": "Loop Analysis"
+    },
+    {
+      "id": "dsa-mix-01-q06",
+      "prompt": "Two nested loops, each running n times, give what time complexity?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(2n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The inner loop runs n times for each of the n outer iterations, giving n x n = n^2 total steps. Nesting multiplies the counts.",
+      "concept": "Loop Analysis"
+    },
+    {
+      "id": "dsa-mix-01-q07",
+      "prompt": "What does space complexity measure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The physical size of the source code"
+        },
+        {
+          "id": "B",
+          "text": "The disk space of the operating system"
+        },
+        {
+          "id": "C",
+          "text": "The extra memory an algorithm uses as a function of input size"
+        },
+        {
+          "id": "D",
+          "text": "The number of CPU registers"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "It counts the auxiliary memory beyond the input that scales with input size, such as recursion stacks and temporary arrays. An in-place algorithm uses O(1) auxiliary space.",
+      "concept": "Space Complexity"
+    },
+    {
+      "id": "dsa-mix-01-q08",
+      "prompt": "What is the recursion-stack space used by a balanced recursive traversal of a tree with n nodes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The stack depth equals the tree height, which is O(log n) when balanced. A skewed tree would push this to O(n).",
+      "concept": "Space Complexity"
+    },
+    {
+      "id": "dsa-mix-01-q09",
+      "prompt": "Why is worst-case complexity usually reported rather than best-case?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Best-case is undefined for most algorithms"
+        },
+        {
+          "id": "B",
+          "text": "It reflects the fastest possible run"
+        },
+        {
+          "id": "C",
+          "text": "It is always easier to compute"
+        },
+        {
+          "id": "D",
+          "text": "It gives a guarantee that holds for every input"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The worst case bounds performance no matter what input arrives, which is what a reliability-conscious engineer needs. Best-case can be misleadingly optimistic.",
+      "concept": "Complexity Analysis"
+    },
+    {
+      "id": "dsa-mix-01-q10",
+      "prompt": "What does amortised analysis capture that worst-case-per-operation does not?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The exact time in seconds"
+        },
+        {
+          "id": "B",
+          "text": "The average cost per operation across a sequence, even if individual operations are occasionally expensive"
+        },
+        {
+          "id": "C",
+          "text": "The memory used by one operation"
+        },
+        {
+          "id": "D",
+          "text": "The best-case single operation"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Amortised analysis spreads the rare expensive operation, like a dynamic-array resize, across the many cheap ones. It shows appending is O(1) amortised despite an occasional O(n) resize.",
+      "concept": "Amortised Analysis"
+    }
+  ]
+}

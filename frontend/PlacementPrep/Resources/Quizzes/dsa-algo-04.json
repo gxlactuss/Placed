@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-04",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 14,
+  "title": "Divide & Conquer",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-04-q01",
+      "prompt": "What are the three steps of the divide-and-conquer paradigm?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Cache, reuse, prune"
+        },
+        {
+          "id": "B",
+          "text": "Sort, search, merge"
+        },
+        {
+          "id": "C",
+          "text": "Divide the problem, conquer the subproblems recursively, combine the results"
+        },
+        {
+          "id": "D",
+          "text": "Guess, check, repeat"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The problem is split into smaller instances, each solved recursively, then their solutions are merged into the overall answer. Merge sort and quicksort are canonical examples.",
+      "concept": "Divide and Conquer"
+    },
+    {
+      "id": "dsa-algo-04-q02",
+      "prompt": "What is the average-case time complexity of quicksort?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A balanced partition splits the array in roughly half at each level, giving log n levels of O(n) work. Poor pivots can degrade this to O(n^2), which randomised pivoting avoids in practice.",
+      "concept": "Quicksort"
+    },
+    {
+      "id": "dsa-algo-04-q03",
+      "prompt": "When does quicksort exhibit its O(n^2) worst case?",
+      "options": [
+        {
+          "id": "A",
+          "text": "When all elements are distinct"
+        },
+        {
+          "id": "B",
+          "text": "When the array is a power of two in length"
+        },
+        {
+          "id": "C",
+          "text": "When the array fits in cache"
+        },
+        {
+          "id": "D",
+          "text": "When the pivot is consistently the smallest or largest element"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A pivot at one extreme leaves one empty side and one of size n-1, producing n levels of recursion. Choosing the pivot randomly or by median-of-three makes this case vanishingly unlikely.",
+      "concept": "Quicksort"
+    },
+    {
+      "id": "dsa-algo-04-q04",
+      "prompt": "By the Master Theorem, what does the recurrence T(n) = 2T(n/2) + O(n) solve to?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Here a = 2, b = 2 so n^(log_b a) = n, which matches the O(n) combine cost, putting it in the balanced case that adds a log factor. This is exactly the merge sort recurrence.",
+      "concept": "Recurrences"
+    },
+    {
+      "id": "dsa-algo-04-q05",
+      "prompt": "The quickselect algorithm finds the k-th smallest element in expected time:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Like quicksort it partitions around a pivot, but recurses into only the side containing the k-th element. The work shrinks geometrically, giving expected linear time.",
+      "concept": "Quickselect"
+    },
+    {
+      "id": "dsa-algo-04-q06",
+      "prompt": "What is the time complexity of the classic divide-and-conquer merge sort recurrence?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Merge sort splits the array in half repeatedly (log n levels) and merges each level in O(n), giving O(n log n) in all cases. Its consistency is a key advantage over quicksort.",
+      "concept": "Merge Sort"
+    },
+    {
+      "id": "dsa-algo-04-q07",
+      "prompt": "The count of inversions in an array can be found in O(n log n) by modifying which algorithm?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Counting sort"
+        },
+        {
+          "id": "B",
+          "text": "Merge sort, counting cross-inversions during the merge step"
+        },
+        {
+          "id": "C",
+          "text": "Binary search"
+        },
+        {
+          "id": "D",
+          "text": "Bubble sort"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "During each merge, whenever an element from the right half is taken before elements remaining in the left half, all those remaining form inversions. Summing these gives the total in O(n log n).",
+      "concept": "Divide and Conquer"
+    },
+    {
+      "id": "dsa-algo-04-q08",
+      "prompt": "Binary search is itself a divide-and-conquer algorithm. Why does it lack a combine step?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It recurses into only one half and returns its result directly"
+        },
+        {
+          "id": "B",
+          "text": "It never divides the problem"
+        },
+        {
+          "id": "C",
+          "text": "It solves both halves and merges them"
+        },
+        {
+          "id": "D",
+          "text": "It has no base case"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Because the target can be in only one half, binary search discards the other entirely and needs nothing to combine. This one-sided recursion is what gives it O(log n) rather than O(n).",
+      "concept": "Divide and Conquer"
+    },
+    {
+      "id": "dsa-algo-04-q09",
+      "prompt": "By the Master Theorem, what does T(n) = 2T(n/2) + O(1) solve to?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Here n^(log_b a) = n dominates the constant combine cost, so the answer is O(n). This is the recurrence for traversing a balanced binary tree.",
+      "concept": "Recurrences"
+    },
+    {
+      "id": "dsa-algo-04-q10",
+      "prompt": "Why is merge sort preferred over quicksort for sorting linked lists?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is always faster than quicksort"
+        },
+        {
+          "id": "B",
+          "text": "It requires the list to be sorted first"
+        },
+        {
+          "id": "C",
+          "text": "It needs no random access and merges lists with pointer manipulation in O(1) extra space"
+        },
+        {
+          "id": "D",
+          "text": "It cannot be applied to arrays"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Merge sort accesses elements sequentially and splices nodes during merging, which suits linked lists perfectly. Quicksort relies on random access for efficient partitioning, which lists lack.",
+      "concept": "Merge Sort"
+    }
+  ]
+}

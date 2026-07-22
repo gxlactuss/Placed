@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-09",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 29,
+  "title": "Tricky DP & Optimization",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-09-q01",
+      "prompt": "Kadane's algorithm finds the maximum-sum contiguous subarray in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(1)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "It scans once, at each element deciding whether to extend the current subarray or start fresh, keeping a running best. This dynamic-programming-in-disguise runs in linear time with O(1) space.",
+      "concept": "Kadane"
+    },
+    {
+      "id": "dsa-mix-09-q02",
+      "prompt": "The word-break problem (can a string be segmented into dictionary words?) is solved by DP in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n) time"
+        },
+        {
+          "id": "B",
+          "text": "O(2^n) with no better option"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2) time, checking each prefix boundary against the dictionary"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "dp[i] is true if some j < i has dp[j] true and the substring from j to i is a word, giving O(n^2) checks (times word-lookup cost). The naive recursion without memoisation is exponential.",
+      "concept": "Word Break"
+    },
+    {
+      "id": "dsa-mix-09-q03",
+      "prompt": "In the house-robber problem (maximum non-adjacent sum), each state depends on:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only the first house"
+        },
+        {
+          "id": "B",
+          "text": "A sorted order of house values"
+        },
+        {
+          "id": "C",
+          "text": "All previous houses equally"
+        },
+        {
+          "id": "D",
+          "text": "The choice to rob the current house plus dp two back, or skip it and take dp one back"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "dp[i] = max(dp[i-1], dp[i-2] + value[i]) captures the adjacency constraint, and only two prior values are needed so space is O(1). It is the archetype of constant-space linear DP.",
+      "concept": "House Robber"
+    },
+    {
+      "id": "dsa-mix-09-q04",
+      "prompt": "The partition problem (split a set into two equal-sum halves) reduces to which classic DP?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Longest common subsequence"
+        },
+        {
+          "id": "B",
+          "text": "Subset sum, targeting half the total"
+        },
+        {
+          "id": "C",
+          "text": "Matrix chain multiplication"
+        },
+        {
+          "id": "D",
+          "text": "Edit distance"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "If any subset sums to half the total, the rest forms the other half, so it is a subset-sum decision with target sum/2. This is pseudo-polynomial in the total sum.",
+      "concept": "Partition"
+    },
+    {
+      "id": "dsa-mix-09-q05",
+      "prompt": "The coin-change problem of counting the number of ways to make an amount is order-independent. To avoid counting permutations, the DP loop order should be:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Outer loop over coins, inner loop over amounts"
+        },
+        {
+          "id": "B",
+          "text": "Outer loop over amounts, inner loop over coins"
+        },
+        {
+          "id": "C",
+          "text": "Both loops in any order give the same result"
+        },
+        {
+          "id": "D",
+          "text": "A single loop over amounts"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Fixing a coin in the outer loop ensures each combination is counted once, in a canonical coin order. Swapping the loops counts ordered sequences, which is the different minimum-coins or permutation variant.",
+      "concept": "Coin Change"
+    },
+    {
+      "id": "dsa-mix-09-q06",
+      "prompt": "The maximum-product subarray problem differs from the maximum-sum version because it must also track:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The sum in parallel"
+        },
+        {
+          "id": "B",
+          "text": "The number of zeros"
+        },
+        {
+          "id": "C",
+          "text": "The minimum product so far, since a negative times a negative can become the new maximum"
+        },
+        {
+          "id": "D",
+          "text": "The length of the subarray"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A large negative product can flip to a large positive when multiplied by another negative, so both the running max and min must be maintained. Kadane's sum version needs no such second quantity.",
+      "concept": "Maximum Product"
+    },
+    {
+      "id": "dsa-mix-09-q07",
+      "prompt": "The number of distinct ways to climb n stairs taking 1 or 2 steps equals:",
+      "options": [
+        {
+          "id": "A",
+          "text": "n factorial"
+        },
+        {
+          "id": "B",
+          "text": "2 raised to the power n"
+        },
+        {
+          "id": "C",
+          "text": "n squared"
+        },
+        {
+          "id": "D",
+          "text": "The (n+1)-th Fibonacci number"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Ways(n) = Ways(n-1) + Ways(n-2), which is the Fibonacci recurrence. It is computed in O(n) time and O(1) space with two rolling variables.",
+      "concept": "Climbing Stairs"
+    },
+    {
+      "id": "dsa-mix-09-q08",
+      "prompt": "The 'jump game' of reaching the last index, where each value is a maximum jump length, has an O(n) solution using:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Depth-first search of all jump sequences"
+        },
+        {
+          "id": "B",
+          "text": "A greedy scan tracking the farthest index reachable so far"
+        },
+        {
+          "id": "C",
+          "text": "A full O(n^2) DP with no faster option"
+        },
+        {
+          "id": "D",
+          "text": "Sorting the values"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Maintaining the farthest reachable index and failing if the current index exceeds it decides reachability in one pass. The greedy insight beats the straightforward quadratic DP.",
+      "concept": "Jump Game"
+    },
+    {
+      "id": "dsa-mix-09-q09",
+      "prompt": "Why is memoisation essential in the recursive solution to the longest common subsequence?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It sorts the input strings"
+        },
+        {
+          "id": "B",
+          "text": "It makes the answer exact"
+        },
+        {
+          "id": "C",
+          "text": "Without it, overlapping subproblems are recomputed, giving exponential time"
+        },
+        {
+          "id": "D",
+          "text": "It reduces the space to zero"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The same (i, j) subproblems recur across many branches, so caching each once collapses the exponential tree to O(mn). This is the defining benefit of dynamic programming.",
+      "concept": "Memoisation"
+    },
+    {
+      "id": "dsa-mix-09-q10",
+      "prompt": "The 0/1 knapsack DP can be flattened to a 1-D array if the inner capacity loop iterates:",
+      "options": [
+        {
+          "id": "A",
+          "text": "In any direction with the same result"
+        },
+        {
+          "id": "B",
+          "text": "From low capacity up to the maximum"
+        },
+        {
+          "id": "C",
+          "text": "Twice for each item"
+        },
+        {
+          "id": "D",
+          "text": "From high capacity down to the item weight, so each item is used at most once"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Iterating capacities downward ensures each item's contribution reads a value not yet updated for this item, enforcing the 0/1 constraint. Iterating upward instead allows reuse, which is the unbounded-knapsack variant.",
+      "concept": "Knapsack"
+    }
+  ]
+}

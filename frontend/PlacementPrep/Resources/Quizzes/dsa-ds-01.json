@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-01",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 1,
+  "title": "Arrays & Strings",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-01-q01",
+      "prompt": "What is the time complexity of accessing an element by index in an array?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(1)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Elements sit in contiguous memory, so the address of index i is base + i x elementSize — a single arithmetic step. This random access is the array's defining advantage over a linked list.",
+      "concept": "Arrays"
+    },
+    {
+      "id": "dsa-ds-01-q02",
+      "prompt": "What is the worst-case cost of inserting an element at the beginning of an array of n elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(1)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Every existing element must shift one position to the right to make room, which is n moves. Inserting at the end of a dynamic array, by contrast, is O(1) amortised.",
+      "concept": "Arrays"
+    },
+    {
+      "id": "dsa-ds-01-q03",
+      "prompt": "What is the amortised time to append one element to a dynamic array that doubles its capacity when full?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(1)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A resize costs O(n) but doubling means resizes happen geometrically rarely, so n appends cost O(n) in total — O(1) each on average. Doubling rather than growing by a constant is what makes this work.",
+      "concept": "Dynamic Arrays"
+    },
+    {
+      "id": "dsa-ds-01-q04",
+      "prompt": "Elements of a 2-D array A[m][n] are stored in row-major order. If A[0][0] is at address B and each element takes s bytes, what is the address of A[i][j]?",
+      "options": [
+        {
+          "id": "A",
+          "text": "B + (j x m + i) x s"
+        },
+        {
+          "id": "B",
+          "text": "B + (i x n + j) x s"
+        },
+        {
+          "id": "C",
+          "text": "B + (i + j) x s"
+        },
+        {
+          "id": "D",
+          "text": "B + (i x m + j) x s"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Row-major stores row 0, then row 1, and so on. Skipping i full rows of n elements and then j into the current row gives the offset i x n + j.",
+      "concept": "Multidimensional Arrays"
+    },
+    {
+      "id": "dsa-ds-01-q05",
+      "prompt": "Which technique finds a pair summing to a target in a SORTED array in O(n) time and O(1) space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sorting the array first"
+        },
+        {
+          "id": "B",
+          "text": "Two pointers, one from each end, moving inward"
+        },
+        {
+          "id": "C",
+          "text": "A nested loop over all pairs"
+        },
+        {
+          "id": "D",
+          "text": "Binary search for each element's complement"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "If the current sum is too large move the right pointer left, if too small move the left pointer right. Each pointer crosses the array once, giving O(n) with no extra memory.",
+      "concept": "Two Pointers"
+    },
+    {
+      "id": "dsa-ds-01-q06",
+      "prompt": "What distinguishes a subarray from a subsequence of an array?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They are two names for the same thing"
+        },
+        {
+          "id": "B",
+          "text": "A subarray is contiguous; a subsequence need not be but keeps relative order"
+        },
+        {
+          "id": "C",
+          "text": "A subsequence is contiguous; a subarray is not"
+        },
+        {
+          "id": "D",
+          "text": "A subarray may reorder elements; a subsequence may not"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A subarray is a run of consecutive elements. A subsequence drops some elements but preserves the order of those it keeps. An array of length n has n(n+1)/2 subarrays but 2^n subsequences.",
+      "concept": "Arrays"
+    },
+    {
+      "id": "dsa-ds-01-q07",
+      "prompt": "In many languages a String is immutable. What is the consequence of building a long string by repeated concatenation in a loop?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Each concatenation copies the whole string so far, giving O(n^2) total work"
+        },
+        {
+          "id": "B",
+          "text": "It mutates the original string in place"
+        },
+        {
+          "id": "C",
+          "text": "It runs in O(n) because strings share storage"
+        },
+        {
+          "id": "D",
+          "text": "It fails to compile"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Immutability means each += allocates a new string and copies the existing characters, so building length n costs 1 + 2 + ... + n = O(n^2). A mutable string builder avoids this.",
+      "concept": "Strings"
+    },
+    {
+      "id": "dsa-ds-01-q08",
+      "prompt": "How can an array be reversed using O(1) extra space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sort the array in descending order"
+        },
+        {
+          "id": "B",
+          "text": "Swap the elements at symmetric positions, walking two pointers toward the middle"
+        },
+        {
+          "id": "C",
+          "text": "Push all elements to a stack and pop them back"
+        },
+        {
+          "id": "D",
+          "text": "Copy elements into a new array in reverse order"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Swapping A[i] with A[n-1-i] for i up to the midpoint reverses in place. Copying to a new array or using a stack both cost O(n) extra space; sorting changes the values' arrangement, not just their order.",
+      "concept": "Arrays"
+    },
+    {
+      "id": "dsa-ds-01-q09",
+      "prompt": "The prefix sum array P of an array A is defined so P[i] is the sum of the first i elements. What does it let you compute in O(1)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Whether the array is sorted"
+        },
+        {
+          "id": "B",
+          "text": "The maximum element of the array"
+        },
+        {
+          "id": "C",
+          "text": "The sum of any contiguous range A[l..r]"
+        },
+        {
+          "id": "D",
+          "text": "The median of the array"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "After an O(n) precomputation, the sum of A[l..r] is P[r+1] - P[l], a constant-time subtraction. This turns many range-sum queries from O(n) each into O(1) each.",
+      "concept": "Prefix Sums"
+    },
+    {
+      "id": "dsa-ds-01-q10",
+      "prompt": "Why does searching for a value in an UNSORTED array take O(n) in the worst case?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Without order, every element may have to be examined before concluding"
+        },
+        {
+          "id": "B",
+          "text": "Binary search applies but is slow"
+        },
+        {
+          "id": "C",
+          "text": "Arrays cannot be searched at all"
+        },
+        {
+          "id": "D",
+          "text": "Array access is itself O(n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A linear scan must check each element, and the target may be last or absent. Binary search would be O(log n) but requires the array to be sorted first, which itself costs O(n log n).",
+      "concept": "Searching"
+    }
+  ]
+}

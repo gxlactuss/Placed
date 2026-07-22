@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-06",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 26,
+  "title": "Hashing & Set Patterns",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-06-q01",
+      "prompt": "To decide in O(n) whether an array contains any duplicate, the standard approach is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Use binary search for each element"
+        },
+        {
+          "id": "B",
+          "text": "Sort the array and scan"
+        },
+        {
+          "id": "C",
+          "text": "Insert elements into a hash set and report a duplicate on the first collision"
+        },
+        {
+          "id": "D",
+          "text": "Compare every pair of elements"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A hash set gives O(1) average membership tests, so one pass detects a repeat. Sorting first works but costs O(n log n); pairwise comparison is O(n^2).",
+      "concept": "Hash Set"
+    },
+    {
+      "id": "dsa-mix-06-q02",
+      "prompt": "The two-sum problem (find indices of two numbers adding to a target) is solved in O(n) using:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A nested loop over all pairs"
+        },
+        {
+          "id": "B",
+          "text": "A min-heap"
+        },
+        {
+          "id": "C",
+          "text": "Sorting then binary search"
+        },
+        {
+          "id": "D",
+          "text": "A hash map storing each value's index, checking for the complement"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "For each element, look up target minus that element in the map; a hit gives the pair. The single pass with O(1) lookups makes it linear.",
+      "concept": "Hash Map"
+    },
+    {
+      "id": "dsa-mix-06-q03",
+      "prompt": "To find the length of the longest consecutive run of integers in an unsorted array in O(n), you:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sort the array first"
+        },
+        {
+          "id": "B",
+          "text": "Put all values in a hash set and expand each run only from its smallest element"
+        },
+        {
+          "id": "C",
+          "text": "Use a segment tree"
+        },
+        {
+          "id": "D",
+          "text": "Binary search for each value"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Starting a count only when value - 1 is absent ensures each run is walked once, giving O(n) overall. Sorting would achieve the same result but in O(n log n).",
+      "concept": "Hash Set"
+    },
+    {
+      "id": "dsa-mix-06-q04",
+      "prompt": "Grouping a list of words into anagram groups is efficiently done by keying a hash map on:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The length of each word"
+        },
+        {
+          "id": "B",
+          "text": "A random hash"
+        },
+        {
+          "id": "C",
+          "text": "The sorted characters of each word"
+        },
+        {
+          "id": "D",
+          "text": "The first letter of each word"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Anagrams share the same multiset of letters, so their sorted form is identical and makes a canonical key. A character-count signature works equally well and avoids the sort.",
+      "concept": "Hash Map"
+    },
+    {
+      "id": "dsa-mix-06-q05",
+      "prompt": "A frequency map (counting occurrences of each element) is the core of which common task?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Balancing a binary tree"
+        },
+        {
+          "id": "B",
+          "text": "Detecting a cycle in a graph"
+        },
+        {
+          "id": "C",
+          "text": "Reversing a linked list"
+        },
+        {
+          "id": "D",
+          "text": "Finding the most frequent element or the top-k frequent elements"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Counting into a hash map in O(n), then selecting by count, answers frequency questions directly. Top-k then pairs the map with a heap or bucket sort.",
+      "concept": "Frequency Counting"
+    },
+    {
+      "id": "dsa-mix-06-q06",
+      "prompt": "The set intersection of two arrays is computed efficiently by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Putting one array in a hash set and testing membership of the other's elements"
+        },
+        {
+          "id": "B",
+          "text": "Comparing every pair across the two arrays"
+        },
+        {
+          "id": "C",
+          "text": "Sorting both and using a heap"
+        },
+        {
+          "id": "D",
+          "text": "Building a binary search tree of both"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Membership tests against a hash set give O(m + n) total time. Nested comparison is O(mn); sorting both and merging is O(m log m + n log n).",
+      "concept": "Hash Set"
+    },
+    {
+      "id": "dsa-mix-06-q07",
+      "prompt": "Why does the count-subarrays-with-sum-k pattern store prefix-sum counts in a hash map?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To reverse the array"
+        },
+        {
+          "id": "B",
+          "text": "So the number of earlier prefixes equal to current sum minus k is available in O(1)"
+        },
+        {
+          "id": "C",
+          "text": "To detect duplicates in the array"
+        },
+        {
+          "id": "D",
+          "text": "To sort the prefixes"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A subarray sums to k exactly when an earlier prefix equals the current prefix minus k, and the map counts such prefixes instantly. This turns an O(n^2) scan into O(n).",
+      "concept": "Prefix Sums"
+    },
+    {
+      "id": "dsa-mix-06-q08",
+      "prompt": "A hash set is preferred over a sorted structure for membership testing when:",
+      "options": [
+        {
+          "id": "A",
+          "text": "You need to iterate elements in sorted order"
+        },
+        {
+          "id": "B",
+          "text": "Memory is extremely constrained"
+        },
+        {
+          "id": "C",
+          "text": "Order is irrelevant and average O(1) lookups matter most"
+        },
+        {
+          "id": "D",
+          "text": "You need range queries"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Hashing gives constant-time average membership but no ordering. When ordered iteration or range queries are needed, a balanced tree or sorted array is the right choice despite its O(log n) operations.",
+      "concept": "Hash Set"
+    },
+    {
+      "id": "dsa-mix-06-q09",
+      "prompt": "To check whether two strings are anagrams in O(n), you can:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Build a character-count map for one and decrement it while scanning the other"
+        },
+        {
+          "id": "B",
+          "text": "Sort both and compare, which is optimal"
+        },
+        {
+          "id": "C",
+          "text": "Compare their lengths only"
+        },
+        {
+          "id": "D",
+          "text": "Reverse one and compare"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Counting characters up and down leaves an all-zero map exactly when they are anagrams, in linear time. Sorting also works but costs O(n log n).",
+      "concept": "Frequency Counting"
+    },
+    {
+      "id": "dsa-mix-06-q10",
+      "prompt": "What is the main risk of relying on a hash map's average O(1) guarantee?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Hash maps cannot store strings"
+        },
+        {
+          "id": "B",
+          "text": "They require sorted input"
+        },
+        {
+          "id": "C",
+          "text": "Lookups are always O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "Adversarial or unlucky keys can cause many collisions, degrading to O(n)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "If many keys collide, chains or probe sequences grow long and operations slow to linear. Randomised hashing defends against adversaries who try to force this worst case.",
+      "concept": "Hashing"
+    }
+  ]
+}

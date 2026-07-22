@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-05",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 5,
+  "title": "Trees & Binary Search Trees",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-05-q01",
+      "prompt": "What is the average-case time to search for a key in a balanced binary search tree with n nodes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A balanced tree keeps its height at O(log n), and each comparison discards one subtree. An unbalanced tree can degrade this to O(n).",
+      "concept": "Binary Search Trees"
+    },
+    {
+      "id": "dsa-ds-05-q02",
+      "prompt": "An in-order traversal of a binary search tree visits the keys in what order?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The order they were inserted"
+        },
+        {
+          "id": "B",
+          "text": "Level by level"
+        },
+        {
+          "id": "C",
+          "text": "Reverse sorted order"
+        },
+        {
+          "id": "D",
+          "text": "Sorted ascending order"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Visiting left subtree, then node, then right subtree yields keys in increasing order because of the BST ordering property. This is a common way to test whether a tree is a valid BST.",
+      "concept": "Tree Traversal"
+    },
+    {
+      "id": "dsa-ds-05-q03",
+      "prompt": "What is the height of a degenerate (completely skewed) binary search tree with n nodes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "log n"
+        },
+        {
+          "id": "B",
+          "text": "n - 1"
+        },
+        {
+          "id": "C",
+          "text": "n / 2"
+        },
+        {
+          "id": "D",
+          "text": "sqrt(n)"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Inserting already-sorted keys makes each node have a single child, so the tree becomes a linked list of height n - 1. All operations then cost O(n), which is what self-balancing trees prevent.",
+      "concept": "Binary Search Trees"
+    },
+    {
+      "id": "dsa-ds-05-q04",
+      "prompt": "What is the difference between a full and a complete binary tree?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They are the same"
+        },
+        {
+          "id": "B",
+          "text": "A full tree must be balanced; a complete tree need not be"
+        },
+        {
+          "id": "C",
+          "text": "A full tree's nodes have 0 or 2 children; a complete tree fills every level except possibly the last, filled left to right"
+        },
+        {
+          "id": "D",
+          "text": "A complete tree's nodes have 0 or 2 children; a full tree fills levels left to right"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Fullness constrains child count — every node has zero or two children. Completeness constrains shape — all levels packed except the last, which fills from the left. A heap is a complete binary tree.",
+      "concept": "Binary Trees"
+    },
+    {
+      "id": "dsa-ds-05-q05",
+      "prompt": "Which traversal of a binary tree uses a queue?",
+      "options": [
+        {
+          "id": "A",
+          "text": "In-order traversal"
+        },
+        {
+          "id": "B",
+          "text": "Pre-order traversal"
+        },
+        {
+          "id": "C",
+          "text": "Post-order traversal"
+        },
+        {
+          "id": "D",
+          "text": "Level-order (breadth-first) traversal"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Level-order dequeues a node and enqueues its children, processing the tree level by level. The depth-first traversals use a stack, explicitly or via recursion.",
+      "concept": "Tree Traversal"
+    },
+    {
+      "id": "dsa-ds-05-q06",
+      "prompt": "In a binary search tree, the in-order successor of a node that has a right subtree is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The leftmost node of its right subtree"
+        },
+        {
+          "id": "B",
+          "text": "The root of the tree"
+        },
+        {
+          "id": "C",
+          "text": "Its parent"
+        },
+        {
+          "id": "D",
+          "text": "The rightmost node of its left subtree"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The successor is the smallest key larger than the node, which is the minimum of its right subtree — reached by going right once, then left as far as possible.",
+      "concept": "Binary Search Trees"
+    },
+    {
+      "id": "dsa-ds-05-q07",
+      "prompt": "What is the maximum number of nodes in a binary tree of height h (root at height 0)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "h^2"
+        },
+        {
+          "id": "B",
+          "text": "2^(h+1) - 1"
+        },
+        {
+          "id": "C",
+          "text": "2h + 1"
+        },
+        {
+          "id": "D",
+          "text": "2^h"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Level i holds at most 2^i nodes, so a tree of height h holds at most 2^0 + 2^1 + ... + 2^h = 2^(h+1) - 1. This maximum is achieved by a perfect binary tree.",
+      "concept": "Binary Trees"
+    },
+    {
+      "id": "dsa-ds-05-q08",
+      "prompt": "What is the worst-case time to insert a key into an unbalanced binary search tree?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Insertion walks down to a leaf position, and in a skewed tree that path has length n. Balanced trees bound this at O(log n) by restructuring after insertion.",
+      "concept": "Binary Search Trees"
+    },
+    {
+      "id": "dsa-ds-05-q09",
+      "prompt": "Given the pre-order and in-order traversals of a binary tree with distinct keys, what can be said about the tree?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Multiple trees are always possible"
+        },
+        {
+          "id": "B",
+          "text": "Only its height is determined"
+        },
+        {
+          "id": "C",
+          "text": "The tree is uniquely determined"
+        },
+        {
+          "id": "D",
+          "text": "Nothing can be reconstructed"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Pre-order identifies the root, and in-order splits the remaining keys into left and right subtrees, applied recursively. Pre-order plus post-order, by contrast, is not always sufficient.",
+      "concept": "Tree Traversal"
+    },
+    {
+      "id": "dsa-ds-05-q10",
+      "prompt": "Why can deep recursion on a skewed binary tree cause a stack overflow?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Each node stores a copy of the whole tree"
+        },
+        {
+          "id": "B",
+          "text": "Traversal visits each node many times"
+        },
+        {
+          "id": "C",
+          "text": "The tree cannot fit in memory"
+        },
+        {
+          "id": "D",
+          "text": "The recursion depth equals the tree height, which is O(n) when skewed"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A recursive traversal nests one call per level, so a height-n skewed tree needs n stack frames. A balanced tree needs only O(log n), which is why balance protects against overflow.",
+      "concept": "Tree Traversal"
+    }
+  ]
+}

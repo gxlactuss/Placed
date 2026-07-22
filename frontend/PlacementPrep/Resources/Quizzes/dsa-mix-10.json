@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-10",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 30,
+  "title": "Amortized & Randomized Analysis",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-10-q01",
+      "prompt": "What does amortized analysis measure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The cost of the single most expensive operation"
+        },
+        {
+          "id": "B",
+          "text": "The average cost per operation over a worst-case sequence of operations"
+        },
+        {
+          "id": "C",
+          "text": "The best-case cost of one operation"
+        },
+        {
+          "id": "D",
+          "text": "The memory used across all operations"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Amortized analysis averages cost over a sequence so occasional expensive operations are paid for by many cheap ones. It is a worst-case guarantee on the sequence, not a probabilistic average.",
+      "concept": "Amortized Analysis"
+    },
+    {
+      "id": "dsa-mix-10-q02",
+      "prompt": "Why is appending to a dynamic array O(1) amortized despite occasional O(n) resizes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The array is always full"
+        },
+        {
+          "id": "B",
+          "text": "Resizes never actually copy elements"
+        },
+        {
+          "id": "C",
+          "text": "Doubling capacity makes resizes geometrically rare, so their cost spreads to O(1) per append"
+        },
+        {
+          "id": "D",
+          "text": "Appends are done in parallel"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Because capacity doubles, the total copying work over n appends is at most 2n, so each append averages O(1). Growing by a constant instead would make appends O(n) amortized.",
+      "concept": "Amortized Analysis"
+    },
+    {
+      "id": "dsa-mix-10-q03",
+      "prompt": "The accounting (banker's) method of amortized analysis works by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Ignoring the expensive operations"
+        },
+        {
+          "id": "B",
+          "text": "Assuming all operations cost the same"
+        },
+        {
+          "id": "C",
+          "text": "Measuring the exact time of each operation"
+        },
+        {
+          "id": "D",
+          "text": "Charging cheap operations extra to build credit that pays for later expensive ones"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Overcharging inexpensive operations stores credit that covers the rare costly ones, keeping the balance non-negative. The potential method is a related technique using a potential function.",
+      "concept": "Amortized Analysis"
+    },
+    {
+      "id": "dsa-mix-10-q04",
+      "prompt": "Randomized quicksort achieves expected O(n log n) time because random pivots:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Guarantee a perfectly balanced split every time"
+        },
+        {
+          "id": "B",
+          "text": "Make consistently unbalanced partitions extremely unlikely regardless of input order"
+        },
+        {
+          "id": "C",
+          "text": "Sort the array before partitioning"
+        },
+        {
+          "id": "D",
+          "text": "Eliminate all comparisons"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Choosing the pivot at random decouples performance from the input arrangement, so no particular input triggers the O(n^2) worst case. The expectation over random choices is O(n log n).",
+      "concept": "Randomized Algorithms"
+    },
+    {
+      "id": "dsa-mix-10-q05",
+      "prompt": "A Las Vegas randomized algorithm is one that:",
+      "options": [
+        {
+          "id": "A",
+          "text": "May return a wrong answer with small probability"
+        },
+        {
+          "id": "B",
+          "text": "Always runs in the same time"
+        },
+        {
+          "id": "C",
+          "text": "Always returns a correct answer, with running time that varies randomly"
+        },
+        {
+          "id": "D",
+          "text": "Never uses randomness"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Las Vegas algorithms guarantee correctness but their runtime is a random variable — randomized quicksort is an example. Monte Carlo algorithms trade the opposite way: fixed time, small error probability.",
+      "concept": "Randomized Algorithms"
+    },
+    {
+      "id": "dsa-mix-10-q06",
+      "prompt": "A Monte Carlo randomized algorithm is one that:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Uses no random choices"
+        },
+        {
+          "id": "B",
+          "text": "Is always correct but may run slowly"
+        },
+        {
+          "id": "C",
+          "text": "Never terminates"
+        },
+        {
+          "id": "D",
+          "text": "Runs in bounded time but may be wrong with small probability"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Monte Carlo methods fix the running time and accept a small chance of error, which repeated runs can drive down. The Miller-Rabin primality test is a well-known example.",
+      "concept": "Randomized Algorithms"
+    },
+    {
+      "id": "dsa-mix-10-q07",
+      "prompt": "A skip list uses randomization to achieve expected O(log n) search by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Balancing via rotations like an AVL tree"
+        },
+        {
+          "id": "B",
+          "text": "Promoting elements to higher express lanes with a random coin flip"
+        },
+        {
+          "id": "C",
+          "text": "Sorting the list on every insertion"
+        },
+        {
+          "id": "D",
+          "text": "Hashing each element"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Random level assignment creates a hierarchy of shortcut lists that skip over many elements, giving balanced-tree-like performance in expectation without explicit rebalancing. It is a simpler alternative to a balanced BST.",
+      "concept": "Skip List"
+    },
+    {
+      "id": "dsa-mix-10-q08",
+      "prompt": "In the potential method of amortized analysis, the amortized cost of an operation is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "The maximum over all operations"
+        },
+        {
+          "id": "B",
+          "text": "Always equal to its actual cost"
+        },
+        {
+          "id": "C",
+          "text": "Its actual cost plus the change in a potential function"
+        },
+        {
+          "id": "D",
+          "text": "Its actual cost divided by the number of operations"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Defining a potential that stores prepaid work, the amortized cost is the real cost plus the potential's change, and summing telescopes to bound the total. It generalises the accounting method.",
+      "concept": "Amortized Analysis"
+    },
+    {
+      "id": "dsa-mix-10-q09",
+      "prompt": "A Bloom filter is a randomized structure that answers set membership with:",
+      "options": [
+        {
+          "id": "A",
+          "text": "False negatives but no false positives"
+        },
+        {
+          "id": "B",
+          "text": "No errors at all"
+        },
+        {
+          "id": "C",
+          "text": "Exact membership like a hash set"
+        },
+        {
+          "id": "D",
+          "text": "No false negatives but a tunable rate of false positives, using little space"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Multiple hash functions set bits in a compact array; a query is definitely-absent or probably-present, so it never misses a real member but can falsely include one. This trades a small error rate for large space savings.",
+      "concept": "Bloom Filter"
+    },
+    {
+      "id": "dsa-mix-10-q10",
+      "prompt": "Why can the amortized cost of an operation be lower than its worst-case single-operation cost?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Amortized cost ignores expensive operations"
+        },
+        {
+          "id": "B",
+          "text": "Expensive operations occur rarely and their cost is spread over many cheap ones in the sequence"
+        },
+        {
+          "id": "C",
+          "text": "Operations run concurrently"
+        },
+        {
+          "id": "D",
+          "text": "The worst case never actually happens"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Amortized analysis accounts for the whole sequence, so a costly resize or rebuild that happens once every n operations contributes only O(1) per operation on average. It still counts every operation, unlike average-case analysis over random inputs.",
+      "concept": "Amortized Analysis"
+    }
+  ]
+}

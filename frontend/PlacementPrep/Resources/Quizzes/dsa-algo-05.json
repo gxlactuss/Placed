@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-05",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 15,
+  "title": "Greedy Algorithms",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-05-q01",
+      "prompt": "What defines a greedy algorithm?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It tries every possible solution"
+        },
+        {
+          "id": "B",
+          "text": "It caches subproblem results"
+        },
+        {
+          "id": "C",
+          "text": "It always splits the problem in half"
+        },
+        {
+          "id": "D",
+          "text": "It makes the locally optimal choice at each step, hoping to reach a global optimum"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A greedy algorithm commits to the best immediate option and never reconsiders. It is correct only when the problem has the greedy-choice property and optimal substructure.",
+      "concept": "Greedy"
+    },
+    {
+      "id": "dsa-algo-05-q02",
+      "prompt": "For the activity selection problem, the correct greedy strategy is to always pick the activity that:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Has the shortest duration"
+        },
+        {
+          "id": "B",
+          "text": "Finishes earliest among the remaining compatible ones"
+        },
+        {
+          "id": "C",
+          "text": "Starts earliest"
+        },
+        {
+          "id": "D",
+          "text": "Starts latest"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Choosing the earliest-finishing activity leaves the most room for the rest, and this can be proven optimal by an exchange argument. Shortest-duration or earliest-start strategies both fail on counterexamples.",
+      "concept": "Activity Selection"
+    },
+    {
+      "id": "dsa-algo-05-q03",
+      "prompt": "Why does the greedy coin-change algorithm (always take the largest coin) fail for some coin systems?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It cannot handle a coin of value 1"
+        },
+        {
+          "id": "B",
+          "text": "It never terminates"
+        },
+        {
+          "id": "C",
+          "text": "For non-canonical denominations it can use more coins than the true optimum"
+        },
+        {
+          "id": "D",
+          "text": "It requires the coins to be sorted descending"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "With coins {1, 3, 4} making 6, greedy takes 4 + 1 + 1 (three coins) but 3 + 3 uses only two. Standard currency systems are designed so greedy happens to be optimal, but not all are.",
+      "concept": "Greedy"
+    },
+    {
+      "id": "dsa-algo-05-q04",
+      "prompt": "Huffman coding builds an optimal prefix code by greedily:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Merging the two highest-frequency nodes"
+        },
+        {
+          "id": "B",
+          "text": "Assigning fixed-length codes to all symbols"
+        },
+        {
+          "id": "C",
+          "text": "Sorting symbols alphabetically"
+        },
+        {
+          "id": "D",
+          "text": "Merging the two lowest-frequency nodes repeatedly"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Combining the two rarest symbols first pushes them deepest in the tree, giving them the longest codes. This local choice provably yields the minimum total encoded length.",
+      "concept": "Huffman Coding"
+    },
+    {
+      "id": "dsa-algo-05-q05",
+      "prompt": "What two properties must a problem have for a greedy algorithm to be provably correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A sorted input and no duplicates"
+        },
+        {
+          "id": "B",
+          "text": "The greedy-choice property and optimal substructure"
+        },
+        {
+          "id": "C",
+          "text": "A balanced tree structure"
+        },
+        {
+          "id": "D",
+          "text": "Overlapping subproblems and memoisation"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The greedy-choice property means a locally optimal choice is part of some global optimum, and optimal substructure means the rest of the problem is solved the same way. Without both, greedy can be wrong.",
+      "concept": "Greedy"
+    },
+    {
+      "id": "dsa-algo-05-q06",
+      "prompt": "The fractional knapsack problem is solved optimally by greedily choosing items in order of:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Lowest weight"
+        },
+        {
+          "id": "B",
+          "text": "Highest value"
+        },
+        {
+          "id": "C",
+          "text": "Highest value-to-weight ratio"
+        },
+        {
+          "id": "D",
+          "text": "Order of arrival"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Because items can be split, filling the knapsack with the densest value first is optimal. The 0/1 version, where items cannot be split, is not solvable this way and needs dynamic programming.",
+      "concept": "Knapsack"
+    },
+    {
+      "id": "dsa-algo-05-q07",
+      "prompt": "How is a greedy algorithm typically proven correct?",
+      "options": [
+        {
+          "id": "A",
+          "text": "By measuring its runtime"
+        },
+        {
+          "id": "B",
+          "text": "By comparing it to brute force on small cases"
+        },
+        {
+          "id": "C",
+          "text": "By running it on all inputs"
+        },
+        {
+          "id": "D",
+          "text": "By an exchange argument showing the greedy choice is no worse than any other"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "An exchange argument shows any optimal solution can be transformed to include the greedy choice without becoming worse. This establishes correctness for all inputs, which testing cannot.",
+      "concept": "Greedy"
+    },
+    {
+      "id": "dsa-algo-05-q08",
+      "prompt": "Dijkstra's shortest-path algorithm is greedy in that it repeatedly:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Picks a random unvisited vertex"
+        },
+        {
+          "id": "B",
+          "text": "Finalises the unvisited vertex with the smallest tentative distance"
+        },
+        {
+          "id": "C",
+          "text": "Chooses the vertex with the most edges"
+        },
+        {
+          "id": "D",
+          "text": "Reconsiders finalised vertices"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "It greedily locks in the closest remaining vertex, knowing no shorter path to it can exist given non-negative weights. That assumption is exactly why Dijkstra fails on negative edges.",
+      "concept": "Greedy"
+    },
+    {
+      "id": "dsa-algo-05-q09",
+      "prompt": "For a set of jobs each with a deadline and a penalty for lateness, a common greedy scheduling rule is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Schedule the highest-penalty jobs last"
+        },
+        {
+          "id": "B",
+          "text": "Schedule jobs in arrival order"
+        },
+        {
+          "id": "C",
+          "text": "Schedule jobs by earliest deadline first"
+        },
+        {
+          "id": "D",
+          "text": "Schedule the longest jobs first"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Earliest-deadline-first minimises maximum lateness for single-machine scheduling. Interval and scheduling problems frequently reduce to sorting by an endpoint and greedily selecting.",
+      "concept": "Scheduling"
+    },
+    {
+      "id": "dsa-algo-05-q10",
+      "prompt": "Why can a greedy algorithm fail on the 0/1 knapsack problem?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The knapsack has infinite capacity"
+        },
+        {
+          "id": "B",
+          "text": "It runs in exponential time"
+        },
+        {
+          "id": "C",
+          "text": "Items cannot be compared by ratio"
+        },
+        {
+          "id": "D",
+          "text": "Committing to the densest item may block a better combination that a whole-item constraint requires"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Without the ability to take a fraction, the locally best ratio can leave capacity that a different, less dense set would have filled more valuably. The problem lacks the greedy-choice property, so DP is needed.",
+      "concept": "Knapsack"
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-03",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 13,
+  "title": "Recursion & Backtracking",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-03-q01",
+      "prompt": "What two components must every correct recursive function have?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Two recursive calls"
+        },
+        {
+          "id": "B",
+          "text": "A base case and progress toward that base case"
+        },
+        {
+          "id": "C",
+          "text": "A loop and a counter"
+        },
+        {
+          "id": "D",
+          "text": "A stack and a queue"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The base case stops the recursion, and each call must move nearer to it so the base case is eventually reached. Missing either one leads to infinite recursion and a stack overflow.",
+      "concept": "Recursion"
+    },
+    {
+      "id": "dsa-algo-03-q02",
+      "prompt": "What limits the maximum depth of recursion a program can reach?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The clock speed"
+        },
+        {
+          "id": "B",
+          "text": "The size of the heap"
+        },
+        {
+          "id": "C",
+          "text": "The size of the call stack"
+        },
+        {
+          "id": "D",
+          "text": "The number of CPU cores"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each call pushes a frame onto the call stack, which has a fixed limit. Exceeding it raises a stack overflow, which is why very deep recursion is sometimes rewritten iteratively.",
+      "concept": "Recursion"
+    },
+    {
+      "id": "dsa-algo-03-q03",
+      "prompt": "What is tail recursion?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Recursion with no base case"
+        },
+        {
+          "id": "B",
+          "text": "A call made at the start of the function"
+        },
+        {
+          "id": "C",
+          "text": "A function that calls itself twice"
+        },
+        {
+          "id": "D",
+          "text": "A recursive call that is the last operation in the function"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "When the recursive call is the final action, some compilers reuse the current frame instead of adding a new one, so it runs in constant stack space. This optimisation is called tail-call elimination.",
+      "concept": "Recursion"
+    },
+    {
+      "id": "dsa-algo-03-q04",
+      "prompt": "What is the core idea of backtracking?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Try every complete solution and keep the best"
+        },
+        {
+          "id": "B",
+          "text": "Build a solution incrementally and abandon a partial choice as soon as it cannot lead to a valid answer"
+        },
+        {
+          "id": "C",
+          "text": "Cache all subproblem results"
+        },
+        {
+          "id": "D",
+          "text": "Sort the input before solving"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Backtracking explores a decision tree, pruning any branch that violates the constraints before going deeper. This pruning is what makes it far better than blindly enumerating all candidates.",
+      "concept": "Backtracking"
+    },
+    {
+      "id": "dsa-algo-03-q05",
+      "prompt": "Which classic problem is a textbook example of backtracking?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Binary search"
+        },
+        {
+          "id": "B",
+          "text": "Merging two sorted lists"
+        },
+        {
+          "id": "C",
+          "text": "The N-Queens problem"
+        },
+        {
+          "id": "D",
+          "text": "Computing a prefix sum"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "N-Queens places queens column by column, abandoning any placement that shares a row or diagonal with an existing queen. Sudoku solving and generating permutations follow the same pattern.",
+      "concept": "Backtracking"
+    },
+    {
+      "id": "dsa-algo-03-q06",
+      "prompt": "What is the time complexity of the naive recursive Fibonacci that recomputes overlapping subproblems?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "Exponential, about O(2^n)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Each call spawns two more and the same values are recomputed repeatedly, producing an exponential call tree. Memoisation collapses this to O(n) by caching each result once.",
+      "concept": "Recursion"
+    },
+    {
+      "id": "dsa-algo-03-q07",
+      "prompt": "Any recursive algorithm can in principle be rewritten iteratively using:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A hash table"
+        },
+        {
+          "id": "B",
+          "text": "An explicit stack"
+        },
+        {
+          "id": "C",
+          "text": "A binary search tree"
+        },
+        {
+          "id": "D",
+          "text": "A priority queue"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Recursion is implemented by the call stack, so simulating it with an explicit stack reproduces the same behaviour without the depth limit of the language runtime.",
+      "concept": "Recursion"
+    },
+    {
+      "id": "dsa-algo-03-q08",
+      "prompt": "How many distinct permutations does a backtracking algorithm generate for n distinct elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "n squared"
+        },
+        {
+          "id": "B",
+          "text": "2 raised to the power n"
+        },
+        {
+          "id": "C",
+          "text": "n factorial"
+        },
+        {
+          "id": "D",
+          "text": "n log n"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "There are n choices for the first position, n-1 for the second and so on, giving n! total. This factorial growth is why permutation search is only feasible for small n.",
+      "concept": "Backtracking"
+    },
+    {
+      "id": "dsa-algo-03-q09",
+      "prompt": "In backtracking, what does pruning accomplish?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It guarantees a solution exists"
+        },
+        {
+          "id": "B",
+          "text": "It caches computed results"
+        },
+        {
+          "id": "C",
+          "text": "It sorts the remaining choices"
+        },
+        {
+          "id": "D",
+          "text": "It cuts off branches that cannot yield a valid solution, reducing the search"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "By rejecting a partial assignment the moment it violates a constraint, pruning avoids exploring an entire subtree of doomed candidates. Stronger pruning is what separates a fast solver from a slow one.",
+      "concept": "Backtracking"
+    },
+    {
+      "id": "dsa-algo-03-q10",
+      "prompt": "How many subsets does a backtracking algorithm generate for a set of n elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2n"
+        },
+        {
+          "id": "B",
+          "text": "2 raised to the power n"
+        },
+        {
+          "id": "C",
+          "text": "n squared"
+        },
+        {
+          "id": "D",
+          "text": "n factorial"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Each element is independently either in or out of a subset, giving 2^n combinations. The recursion branches on include-or-exclude at each element.",
+      "concept": "Backtracking"
+    }
+  ]
+}

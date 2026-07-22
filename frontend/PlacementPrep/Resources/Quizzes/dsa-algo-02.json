@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-02",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 12,
+  "title": "Sorting Basics",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-02-q01",
+      "prompt": "What is the worst-case time complexity of bubble sort, selection sort and insertion sort?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "All three simple comparison sorts perform on the order of n^2 comparisons in the worst case. Merge sort and heapsort improve this to O(n log n).",
+      "concept": "Sorting"
+    },
+    {
+      "id": "dsa-algo-02-q02",
+      "prompt": "What does it mean for a sorting algorithm to be stable?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It cannot crash on any input"
+        },
+        {
+          "id": "B",
+          "text": "It never uses extra memory"
+        },
+        {
+          "id": "C",
+          "text": "Its running time never varies"
+        },
+        {
+          "id": "D",
+          "text": "Equal elements keep their original relative order"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Stability preserves the input order of records that compare equal, which matters when sorting by one key after another. Merge sort is stable; heapsort and typical quicksort are not.",
+      "concept": "Sorting"
+    },
+    {
+      "id": "dsa-algo-02-q03",
+      "prompt": "On an array that is already sorted, insertion sort runs in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each element is already in place, so every inner comparison stops immediately and only n-1 comparisons are made overall. This best case makes insertion sort excellent for nearly-sorted data.",
+      "concept": "Insertion Sort"
+    },
+    {
+      "id": "dsa-algo-02-q04",
+      "prompt": "What is the average-case time complexity of merge sort?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The array is split log n times and each level does O(n) merging, giving O(n log n) in the best, average and worst cases. Its drawback is the O(n) auxiliary array it requires.",
+      "concept": "Merge Sort"
+    },
+    {
+      "id": "dsa-algo-02-q05",
+      "prompt": "Which sorting algorithm always makes exactly the same number of comparisons regardless of the input order?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Insertion sort"
+        },
+        {
+          "id": "B",
+          "text": "Selection sort"
+        },
+        {
+          "id": "C",
+          "text": "Bubble sort with an early-exit flag"
+        },
+        {
+          "id": "D",
+          "text": "Quicksort"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Selection sort scans the entire unsorted portion to find the minimum on every pass, so its comparison count is fixed at about n^2/2 no matter the arrangement. Its number of swaps, however, is only O(n).",
+      "concept": "Selection Sort"
+    },
+    {
+      "id": "dsa-algo-02-q06",
+      "prompt": "What is the space complexity of the standard merge sort on arrays?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Merging requires an auxiliary buffer the size of the input, so it uses O(n) extra space. This is the main reason an in-place algorithm like heapsort is sometimes preferred.",
+      "concept": "Merge Sort"
+    },
+    {
+      "id": "dsa-algo-02-q07",
+      "prompt": "Which simple sort is generally the best choice for small or nearly-sorted arrays?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Bubble sort"
+        },
+        {
+          "id": "B",
+          "text": "Selection sort"
+        },
+        {
+          "id": "C",
+          "text": "Insertion sort"
+        },
+        {
+          "id": "D",
+          "text": "Merge sort"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Insertion sort has low overhead and approaches O(n) on nearly-sorted input, which is why real library sorts switch to it for small subarrays. This is the idea behind hybrid sorts like Timsort.",
+      "concept": "Insertion Sort"
+    },
+    {
+      "id": "dsa-algo-02-q08",
+      "prompt": "The theoretical lower bound for any comparison-based sorting algorithm is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Omega(n log n)"
+        },
+        {
+          "id": "B",
+          "text": "Omega(n)"
+        },
+        {
+          "id": "C",
+          "text": "Omega(log n)"
+        },
+        {
+          "id": "D",
+          "text": "Omega(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "There are n! possible orderings and each comparison distinguishes at most two branches, so at least log2(n!) = Omega(n log n) comparisons are needed. Non-comparison sorts like counting sort can beat this.",
+      "concept": "Sorting Lower Bound"
+    },
+    {
+      "id": "dsa-algo-02-q09",
+      "prompt": "Counting sort achieves O(n + k) time for n integers in the range 0 to k. What is its main limitation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It requires the input to be sorted"
+        },
+        {
+          "id": "B",
+          "text": "It is unstable"
+        },
+        {
+          "id": "C",
+          "text": "It cannot sort integers"
+        },
+        {
+          "id": "D",
+          "text": "It needs O(k) space and is only practical when k is not much larger than n"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The count array has one slot per possible value, so a huge value range makes it wasteful or infeasible. When k is comparable to n, it beats the O(n log n) comparison bound.",
+      "concept": "Counting Sort"
+    },
+    {
+      "id": "dsa-algo-02-q10",
+      "prompt": "In selection sort, how many swaps are performed in the worst case?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each of the n passes performs at most one swap to place the minimum, so there are at most n-1 swaps. This makes it attractive when writes are far more expensive than reads.",
+      "concept": "Selection Sort"
+    }
+  ]
+}

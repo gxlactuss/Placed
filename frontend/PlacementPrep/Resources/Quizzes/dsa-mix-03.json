@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-03",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 23,
+  "title": "Number Theory & Math",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-03-q01",
+      "prompt": "The Sieve of Eratosthenes finds all primes up to n in what time complexity?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(sqrt n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Marking multiples of each prime costs the harmonic-over-primes sum, which is O(n log log n). Testing each number individually for primality would be far slower.",
+      "concept": "Primes"
+    },
+    {
+      "id": "dsa-mix-03-q02",
+      "prompt": "To test whether a single number n is prime by trial division, you only need to check divisors up to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "n / 2"
+        },
+        {
+          "id": "B",
+          "text": "n"
+        },
+        {
+          "id": "C",
+          "text": "log n"
+        },
+        {
+          "id": "D",
+          "text": "sqrt(n)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "If n has a factor larger than its square root, it must also have a matching factor smaller than the square root. So checking up to sqrt(n) is sufficient.",
+      "concept": "Primality"
+    },
+    {
+      "id": "dsa-mix-03-q03",
+      "prompt": "Euclid's algorithm computes the greatest common divisor of two numbers by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Listing all divisors of each"
+        },
+        {
+          "id": "B",
+          "text": "Repeatedly replacing the larger with the larger modulo the smaller"
+        },
+        {
+          "id": "C",
+          "text": "Adding the numbers repeatedly"
+        },
+        {
+          "id": "D",
+          "text": "Multiplying the two numbers"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "gcd(a, b) equals gcd(b, a mod b), and the remainders shrink quickly until one becomes zero. It runs in O(log(min(a, b))) — logarithmic, not linear.",
+      "concept": "GCD"
+    },
+    {
+      "id": "dsa-mix-03-q04",
+      "prompt": "The relationship between the GCD and LCM of two numbers a and b is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "lcm(a, b) = gcd(a, b)^2"
+        },
+        {
+          "id": "B",
+          "text": "gcd(a, b) + lcm(a, b) = a + b"
+        },
+        {
+          "id": "C",
+          "text": "gcd(a, b) x lcm(a, b) = a x b"
+        },
+        {
+          "id": "D",
+          "text": "gcd and lcm are always equal"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Their product equals the product of the numbers, so lcm can be computed as a / gcd(a, b) x b. Dividing first avoids overflow from the full product.",
+      "concept": "GCD and LCM"
+    },
+    {
+      "id": "dsa-mix-03-q05",
+      "prompt": "Modular exponentiation (computing a^b mod m) by repeated squaring runs in:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log b)"
+        },
+        {
+          "id": "B",
+          "text": "O(b)"
+        },
+        {
+          "id": "C",
+          "text": "O(b^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(sqrt b)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Squaring the base and halving the exponent needs only log b multiplications, each taken modulo m to keep numbers small. Naive repeated multiplication would be O(b).",
+      "concept": "Modular Arithmetic"
+    },
+    {
+      "id": "dsa-mix-03-q06",
+      "prompt": "Why is taking a running result modulo m at each step important in modular arithmetic?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is required for the result to be positive"
+        },
+        {
+          "id": "B",
+          "text": "It makes the answer approximate"
+        },
+        {
+          "id": "C",
+          "text": "It speeds up addition only"
+        },
+        {
+          "id": "D",
+          "text": "It keeps intermediate values small and prevents overflow"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Because (a x b) mod m = ((a mod m) x (b mod m)) mod m, reducing along the way gives the same answer while bounding the numbers. This is essential for large exponents and products.",
+      "concept": "Modular Arithmetic"
+    },
+    {
+      "id": "dsa-mix-03-q07",
+      "prompt": "The number of trailing zeros in n factorial is determined by counting factors of:",
+      "options": [
+        {
+          "id": "A",
+          "text": "2 only"
+        },
+        {
+          "id": "B",
+          "text": "5, since factors of 2 are always more plentiful"
+        },
+        {
+          "id": "C",
+          "text": "n itself"
+        },
+        {
+          "id": "D",
+          "text": "10 directly"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A trailing zero comes from a factor of 10 = 2 x 5, and factors of 2 are far more common, so the count of 5s is the bottleneck. Summing floor(n/5) + floor(n/25) + ... gives the answer.",
+      "concept": "Factorials"
+    },
+    {
+      "id": "dsa-mix-03-q08",
+      "prompt": "Two numbers are said to be coprime (relatively prime) when:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Their greatest common divisor is 1"
+        },
+        {
+          "id": "B",
+          "text": "Both are prime numbers"
+        },
+        {
+          "id": "C",
+          "text": "Their sum is prime"
+        },
+        {
+          "id": "D",
+          "text": "One divides the other"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Coprimality means they share no common factor beyond 1, though neither need be prime itself — for example 8 and 9. It is central to modular inverses and the Chinese Remainder Theorem.",
+      "concept": "Number Theory"
+    },
+    {
+      "id": "dsa-mix-03-q09",
+      "prompt": "The sum of the first n natural numbers, 1 + 2 + ... + n, equals:",
+      "options": [
+        {
+          "id": "A",
+          "text": "n^2"
+        },
+        {
+          "id": "B",
+          "text": "n(n - 1)"
+        },
+        {
+          "id": "C",
+          "text": "n(n + 1) / 2"
+        },
+        {
+          "id": "D",
+          "text": "2^n - 1"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Pairing terms from the ends gives n/2 pairs each summing to n + 1, so the total is n(n + 1)/2. This closed form replaces an O(n) loop with an O(1) computation.",
+      "concept": "Series"
+    },
+    {
+      "id": "dsa-mix-03-q10",
+      "prompt": "Which structure efficiently supports many GCD-based range queries on a static array?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A stack"
+        },
+        {
+          "id": "B",
+          "text": "A linked list"
+        },
+        {
+          "id": "C",
+          "text": "A hash table"
+        },
+        {
+          "id": "D",
+          "text": "A sparse table, since GCD is idempotent and associative"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "GCD, like min and max, is idempotent, so overlapping ranges can be combined, letting a sparse table answer each query in O(1) after O(n log n) preprocessing. A segment tree also works but is slower per query.",
+      "concept": "Range Queries"
+    }
+  ]
+}

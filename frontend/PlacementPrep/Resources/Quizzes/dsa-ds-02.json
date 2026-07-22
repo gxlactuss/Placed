@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-02",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 2,
+  "title": "Linked Lists",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-02-q01",
+      "prompt": "What is the time complexity of inserting a node at the head of a singly linked list, given the head pointer?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(1)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Point the new node's next at the current head and move the head pointer to the new node — two constant-time operations, independent of list length.",
+      "concept": "Linked Lists"
+    },
+    {
+      "id": "dsa-ds-02-q02",
+      "prompt": "What is the time complexity of accessing the k-th element of a singly linked list?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(1)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(k)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "There is no index arithmetic; you must follow next pointers from the head k times. This lack of random access is the linked list's main disadvantage against an array.",
+      "concept": "Linked Lists"
+    },
+    {
+      "id": "dsa-ds-02-q03",
+      "prompt": "What does a doubly linked list store in each node that a singly linked list does not?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A copy of the head pointer"
+        },
+        {
+          "id": "B",
+          "text": "A pointer to the previous node"
+        },
+        {
+          "id": "C",
+          "text": "The length of the list"
+        },
+        {
+          "id": "D",
+          "text": "A pointer to the tail"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The extra previous pointer allows backward traversal and O(1) deletion of a node given only that node. The cost is more memory per node and more pointers to maintain on every update.",
+      "concept": "Linked Lists"
+    },
+    {
+      "id": "dsa-ds-02-q04",
+      "prompt": "Which algorithm detects a cycle in a linked list using O(1) extra space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Storing every visited node in a hash set"
+        },
+        {
+          "id": "B",
+          "text": "Reversing the list twice"
+        },
+        {
+          "id": "C",
+          "text": "Sorting the nodes by address"
+        },
+        {
+          "id": "D",
+          "text": "Floyd's tortoise and hare (two pointers at different speeds)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A slow pointer moving one step and a fast pointer moving two will meet inside a cycle, and never meet if the list ends. The hash-set method also works but costs O(n) space.",
+      "concept": "Cycle Detection"
+    },
+    {
+      "id": "dsa-ds-02-q05",
+      "prompt": "How do you find the middle node of a singly linked list in a single pass?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Count all nodes, then traverse to n/2"
+        },
+        {
+          "id": "B",
+          "text": "Advance a slow pointer one step and a fast pointer two steps until the fast one reaches the end"
+        },
+        {
+          "id": "C",
+          "text": "Reverse the list and take the head"
+        },
+        {
+          "id": "D",
+          "text": "Use binary search on the node indices"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "When the fast pointer reaches the end after moving twice as fast, the slow pointer sits at the midpoint. Counting first also works but needs two passes; binary search is impossible without random access.",
+      "concept": "Two Pointers"
+    },
+    {
+      "id": "dsa-ds-02-q06",
+      "prompt": "How can a singly linked list be reversed iteratively using O(1) extra space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Swap the head and tail pointers"
+        },
+        {
+          "id": "B",
+          "text": "Recurse to the end and rebuild — this uses O(n) stack"
+        },
+        {
+          "id": "C",
+          "text": "Walk the list re-pointing each node's next to its predecessor, tracking previous and current"
+        },
+        {
+          "id": "D",
+          "text": "Copy all values into an array and reverse it"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Keeping previous, current and a saved next, you flip each link as you advance. The array copy and the recursive method both use O(n) extra space.",
+      "concept": "Linked Lists"
+    },
+    {
+      "id": "dsa-ds-02-q07",
+      "prompt": "A circular linked list is a natural fit for implementing which structure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A min-heap"
+        },
+        {
+          "id": "B",
+          "text": "A binary search tree"
+        },
+        {
+          "id": "C",
+          "text": "A hash table"
+        },
+        {
+          "id": "D",
+          "text": "A round-robin queue or buffer that wraps around"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Because the tail links back to the head, traversal naturally cycles, which suits round-robin scheduling and ring buffers. Reaching any node lets you reach all others.",
+      "concept": "Linked Lists"
+    },
+    {
+      "id": "dsa-ds-02-q08",
+      "prompt": "Compared with an array holding the same values, a linked list has which drawback?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Extra memory per element for pointers and poor cache locality"
+        },
+        {
+          "id": "B",
+          "text": "It cannot grow beyond a fixed size"
+        },
+        {
+          "id": "C",
+          "text": "Insertion at a known position is slower"
+        },
+        {
+          "id": "D",
+          "text": "It cannot store duplicate values"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each node stores at least one pointer besides its data, and nodes scattered across memory defeat the CPU cache. Arrays store values contiguously, which is far friendlier to the cache.",
+      "concept": "Linked Lists"
+    },
+    {
+      "id": "dsa-ds-02-q09",
+      "prompt": "What is the time complexity of merging two sorted linked lists of sizes m and n into one sorted list?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(m + n)"
+        },
+        {
+          "id": "B",
+          "text": "O(m x n)"
+        },
+        {
+          "id": "C",
+          "text": "O((m + n) log (m + n))"
+        },
+        {
+          "id": "D",
+          "text": "O(log(m + n))"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Walk both lists once, at each step splicing the smaller head onto the result. Every node is visited exactly once, giving linear time with O(1) extra space.",
+      "concept": "Linked Lists"
+    },
+    {
+      "id": "dsa-ds-02-q10",
+      "prompt": "To delete a node from a singly linked list given only a pointer to that node (not the head, and it is not the tail), a common trick is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set this node's pointer to null"
+        },
+        {
+          "id": "B",
+          "text": "Copy the next node's value into this node, then delete the next node"
+        },
+        {
+          "id": "C",
+          "text": "Traverse from the head to find the previous node"
+        },
+        {
+          "id": "D",
+          "text": "It is impossible under any circumstances"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "You cannot reach the predecessor, but overwriting this node with its successor's data and then unlinking the successor achieves the same effect in O(1). It fails only for the tail node, which has no successor to copy.",
+      "concept": "Linked Lists"
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-05",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 25,
+  "title": "Recurrences & Master Theorem",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-05-q01",
+      "prompt": "The Master Theorem applies to recurrences of the form T(n) = aT(n/b) + f(n). What do a and b represent?",
+      "options": [
+        {
+          "id": "A",
+          "text": "a is the number of subproblems and b is the factor by which the size shrinks"
+        },
+        {
+          "id": "B",
+          "text": "a is the input size and b is the recursion depth"
+        },
+        {
+          "id": "C",
+          "text": "a is the running time and b is the space"
+        },
+        {
+          "id": "D",
+          "text": "a and b are both constants with no meaning"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each level splits a problem into a subproblems each of size n/b, and f(n) is the work to divide and combine. The theorem compares f(n) against n^(log_b a).",
+      "concept": "Master Theorem"
+    },
+    {
+      "id": "dsa-mix-05-q02",
+      "prompt": "What does T(n) = 2T(n/2) + O(n) solve to?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Here n^(log_2 2) = n matches f(n) = n, the balanced case, which adds a logarithmic factor. This is the merge sort recurrence.",
+      "concept": "Master Theorem"
+    },
+    {
+      "id": "dsa-mix-05-q03",
+      "prompt": "What does T(n) = T(n/2) + O(1) solve to?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(1)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "One subproblem of half the size with constant work per level gives log n levels of O(1), so O(log n). This is the binary search recurrence.",
+      "concept": "Master Theorem"
+    },
+    {
+      "id": "dsa-mix-05-q04",
+      "prompt": "What does T(n) = 2T(n/2) + O(1) solve to?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "n^(log_2 2) = n dominates the constant combine work, so the leaf work rules and the answer is O(n). This is the cost of traversing a balanced binary tree.",
+      "concept": "Master Theorem"
+    },
+    {
+      "id": "dsa-mix-05-q05",
+      "prompt": "What does T(n) = 4T(n/2) + O(n) solve to?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2 log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "n^(log_2 4) = n^2 grows faster than f(n) = n, so the leaves dominate and the answer is O(n^2). This is naive schoolbook matrix multiplication's block recurrence.",
+      "concept": "Master Theorem"
+    },
+    {
+      "id": "dsa-mix-05-q06",
+      "prompt": "In the Master Theorem, when f(n) grows faster than n^(log_b a) (and regularity holds), the running time is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Theta(f(n))"
+        },
+        {
+          "id": "B",
+          "text": "Theta(n^(log_b a))"
+        },
+        {
+          "id": "C",
+          "text": "Theta(n^(log_b a) log n)"
+        },
+        {
+          "id": "D",
+          "text": "Theta(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "When the divide-and-combine work dominates the recursion, the top-level cost f(n) sets the total. This is case 3 of the theorem.",
+      "concept": "Master Theorem"
+    },
+    {
+      "id": "dsa-mix-05-q07",
+      "prompt": "Strassen's matrix multiplication follows T(n) = 7T(n/2) + O(n^2). Its complexity is approximately:",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n^2.81)"
+        },
+        {
+          "id": "B",
+          "text": "O(n^3)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2 log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "n^(log_2 7) is about n^2.81, which exceeds the O(n^2) combine cost, so the leaves dominate. This beats the O(n^3) of the naive algorithm.",
+      "concept": "Master Theorem"
+    },
+    {
+      "id": "dsa-mix-05-q08",
+      "prompt": "Which recurrence does the Master Theorem in its standard form NOT directly solve?",
+      "options": [
+        {
+          "id": "A",
+          "text": "T(n) = T(n/2) + O(1)"
+        },
+        {
+          "id": "B",
+          "text": "T(n) = 3T(n/2) + O(n)"
+        },
+        {
+          "id": "C",
+          "text": "T(n) = T(n - 1) + O(n), a subtract-and-conquer form"
+        },
+        {
+          "id": "D",
+          "text": "T(n) = 2T(n/2) + O(n)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The Master Theorem covers divide-by-a-factor recurrences of the form aT(n/b). A recurrence that subtracts a constant needs a different method, such as unrolling; T(n) = T(n-1) + O(n) unrolls to O(n^2).",
+      "concept": "Recurrences"
+    },
+    {
+      "id": "dsa-mix-05-q09",
+      "prompt": "The recurrence T(n) = T(n - 1) + O(1) describes which pattern, and what is its solution?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Exponential recursion, solving to O(2^n)"
+        },
+        {
+          "id": "B",
+          "text": "Divide and conquer, solving to O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "Balanced recursion, solving to O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "Linear recursion with constant work per level, solving to O(n)"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Each call reduces the size by one and does O(1) work, so there are n levels totalling O(n). Simple single-branch recursions like computing a factorial follow this form.",
+      "concept": "Recurrences"
+    },
+    {
+      "id": "dsa-mix-05-q10",
+      "prompt": "Which technique visualises a recurrence's total cost by summing the work at each level of the recursion?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The pigeonhole principle"
+        },
+        {
+          "id": "B",
+          "text": "The recursion tree method"
+        },
+        {
+          "id": "C",
+          "text": "Dynamic programming"
+        },
+        {
+          "id": "D",
+          "text": "Binary search"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A recursion tree lays out the cost of every level so the total is the sum across levels, giving intuition the Master Theorem then formalises. It is especially useful when the theorem does not directly apply.",
+      "concept": "Recurrences"
+    }
+  ]
+}

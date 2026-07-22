@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-06",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 6,
+  "title": "Heaps & Priority Queues",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-06-q01",
+      "prompt": "In a binary min-heap, where is the smallest element located?",
+      "options": [
+        {
+          "id": "A",
+          "text": "At the rightmost leaf"
+        },
+        {
+          "id": "B",
+          "text": "At the root"
+        },
+        {
+          "id": "C",
+          "text": "At the middle of the array"
+        },
+        {
+          "id": "D",
+          "text": "At any leaf"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The heap property makes every parent no greater than its children, so the global minimum sits at the root. The maximum, however, could be any leaf.",
+      "concept": "Heaps"
+    },
+    {
+      "id": "dsa-ds-06-q02",
+      "prompt": "What is the time complexity of building a heap from an unsorted array of n elements using the bottom-up heapify method?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Although each sift-down is O(log n), most nodes are near the bottom and sift a short distance. Summing the true costs gives O(n), tighter than the naive n insertions at O(n log n).",
+      "concept": "Heap Construction"
+    },
+    {
+      "id": "dsa-ds-06-q03",
+      "prompt": "What is the time complexity of extracting the minimum from a binary min-heap of n elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Removing the root and moving the last element there breaks the heap property, so it must sift down along one root-to-leaf path of length O(log n). Reading the minimum without removing it is O(1).",
+      "concept": "Heaps"
+    },
+    {
+      "id": "dsa-ds-06-q04",
+      "prompt": "In the array representation of a binary heap (0-indexed), the children of the node at index i are at:",
+      "options": [
+        {
+          "id": "A",
+          "text": "i/2 and i/2 + 1"
+        },
+        {
+          "id": "B",
+          "text": "i + 1 and i + 2"
+        },
+        {
+          "id": "C",
+          "text": "2i + 1 and 2i + 2"
+        },
+        {
+          "id": "D",
+          "text": "2i and 2i + 1"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "For a 0-indexed array the left child is 2i + 1 and the right is 2i + 2, and the parent of i is (i - 1) / 2. This implicit structure needs no pointers.",
+      "concept": "Heap Representation"
+    },
+    {
+      "id": "dsa-ds-06-q05",
+      "prompt": "Which task is a heap ideally suited for?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Maintaining elements in fully sorted order at all times"
+        },
+        {
+          "id": "B",
+          "text": "Searching for an arbitrary element by value"
+        },
+        {
+          "id": "C",
+          "text": "Answering range-sum queries"
+        },
+        {
+          "id": "D",
+          "text": "Repeatedly retrieving and removing the current minimum or maximum"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A heap gives O(1) access to the extreme and O(log n) removal, which suits scheduling and streaming top-k problems. Searching for an arbitrary value, though, is O(n) since the heap is only partially ordered.",
+      "concept": "Priority Queue"
+    },
+    {
+      "id": "dsa-ds-06-q06",
+      "prompt": "To find the k-th largest element in a stream of n numbers with k much smaller than n, the most space-efficient approach is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sort the entire stream"
+        },
+        {
+          "id": "B",
+          "text": "Maintain a min-heap of the k largest seen so far"
+        },
+        {
+          "id": "C",
+          "text": "Store the numbers in a hash set"
+        },
+        {
+          "id": "D",
+          "text": "Maintain a max-heap of all n numbers"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A size-k min-heap keeps the k largest in O(k) space; each new number is compared with the root and replaces it if larger. Its root is exactly the k-th largest, and total time is O(n log k).",
+      "concept": "Heaps"
+    },
+    {
+      "id": "dsa-ds-06-q07",
+      "prompt": "What is the time complexity of inserting a new element into a binary heap of n elements?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The element is appended at the end, then sifted up while it violates the heap property, travelling at most the tree height O(log n).",
+      "concept": "Heaps"
+    },
+    {
+      "id": "dsa-ds-06-q08",
+      "prompt": "How can the running median of a data stream be maintained efficiently?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A hash table keyed by value"
+        },
+        {
+          "id": "B",
+          "text": "A single sorted array, re-sorted on each insert"
+        },
+        {
+          "id": "C",
+          "text": "A max-heap for the lower half and a min-heap for the upper half"
+        },
+        {
+          "id": "D",
+          "text": "One min-heap of all elements"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Balancing two heaps keeps the two middle values at the heap roots, so the median is available in O(1) with O(log n) insertion. A re-sorted array would be O(n log n) per insert.",
+      "concept": "Two Heaps"
+    },
+    {
+      "id": "dsa-ds-06-q09",
+      "prompt": "Is a binary heap a sorted structure?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Yes — but only for min-heaps"
+        },
+        {
+          "id": "B",
+          "text": "Yes — an in-order traversal yields sorted output"
+        },
+        {
+          "id": "C",
+          "text": "Yes — the array is always fully sorted"
+        },
+        {
+          "id": "D",
+          "text": "No — it is only partially ordered along root-to-leaf paths"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The heap property orders each parent relative to its children but says nothing about siblings or across subtrees, so the array is not sorted. Repeatedly extracting the root does produce sorted output — that is heapsort.",
+      "concept": "Heaps"
+    },
+    {
+      "id": "dsa-ds-06-q10",
+      "prompt": "Heapsort sorts n elements in-place. What is its worst-case time complexity?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Building the heap is O(n), then n extractions each cost O(log n), giving O(n log n) worst case. Unlike quicksort it has no O(n^2) case, and unlike merge sort it needs no extra array.",
+      "concept": "Heapsort"
+    }
+  ]
+}

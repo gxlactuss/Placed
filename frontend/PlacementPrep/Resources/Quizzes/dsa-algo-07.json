@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-07",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 17,
+  "title": "Shortest Paths & Minimum Spanning Trees",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-07-q01",
+      "prompt": "Why does Dijkstra's algorithm fail on graphs with negative edge weights?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It only works on trees"
+        },
+        {
+          "id": "B",
+          "text": "It finalises a vertex assuming no shorter path exists, which a later negative edge can violate"
+        },
+        {
+          "id": "C",
+          "text": "It cannot handle more than one source"
+        },
+        {
+          "id": "D",
+          "text": "It runs out of memory"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Dijkstra greedily locks in the closest vertex, but a negative edge encountered later could have produced a cheaper path, breaking that assumption. Bellman-Ford handles negative weights instead.",
+      "concept": "Shortest Paths"
+    },
+    {
+      "id": "dsa-algo-07-q02",
+      "prompt": "What is the time complexity of Dijkstra's algorithm using a binary heap on a graph with V vertices and E edges?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O((V + E) log V)"
+        },
+        {
+          "id": "B",
+          "text": "O(V^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(V + E)"
+        },
+        {
+          "id": "D",
+          "text": "O(E^2)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each vertex extraction and each edge relaxation costs O(log V) with a binary heap, giving O((V + E) log V). A Fibonacci heap improves this to O(E + V log V).",
+      "concept": "Dijkstra"
+    },
+    {
+      "id": "dsa-algo-07-q03",
+      "prompt": "Bellman-Ford finds single-source shortest paths and can also:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Find the longest path in any graph"
+        },
+        {
+          "id": "B",
+          "text": "Sort the vertices topologically"
+        },
+        {
+          "id": "C",
+          "text": "Detect the presence of a negative-weight cycle"
+        },
+        {
+          "id": "D",
+          "text": "Build a minimum spanning tree"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "After V-1 relaxation passes distances should be final; if a V-th pass still relaxes an edge, a negative cycle is reachable. This detection is something Dijkstra cannot do.",
+      "concept": "Bellman-Ford"
+    },
+    {
+      "id": "dsa-algo-07-q04",
+      "prompt": "What is the time complexity of the Bellman-Ford algorithm?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(V x E)"
+        },
+        {
+          "id": "B",
+          "text": "O((V + E) log V)"
+        },
+        {
+          "id": "C",
+          "text": "O(V + E)"
+        },
+        {
+          "id": "D",
+          "text": "O(V^3)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "It relaxes all E edges across V-1 passes, giving O(V x E). This is slower than Dijkstra but is the price of handling negative weights.",
+      "concept": "Bellman-Ford"
+    },
+    {
+      "id": "dsa-algo-07-q05",
+      "prompt": "The Floyd-Warshall algorithm computes:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A topological ordering"
+        },
+        {
+          "id": "B",
+          "text": "A minimum spanning tree"
+        },
+        {
+          "id": "C",
+          "text": "A single-source shortest path only"
+        },
+        {
+          "id": "D",
+          "text": "Shortest paths between all pairs of vertices"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "It uses dynamic programming over intermediate vertices to fill an all-pairs distance matrix in O(V^3). It is convenient for dense graphs and tolerates negative edges without negative cycles.",
+      "concept": "Floyd-Warshall"
+    },
+    {
+      "id": "dsa-algo-07-q06",
+      "prompt": "Kruskal's minimum spanning tree algorithm processes edges by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Random order"
+        },
+        {
+          "id": "B",
+          "text": "Increasing weight, adding an edge if it does not form a cycle"
+        },
+        {
+          "id": "C",
+          "text": "The order they appear in the input"
+        },
+        {
+          "id": "D",
+          "text": "Decreasing weight, always adding the heaviest edge"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Sorting edges ascending and adding each unless it connects two already-joined components builds a minimum spanning tree. A union-find structure performs the cycle test efficiently.",
+      "concept": "Kruskal"
+    },
+    {
+      "id": "dsa-algo-07-q07",
+      "prompt": "Prim's minimum spanning tree algorithm grows the tree by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Removing the heaviest edges from the graph"
+        },
+        {
+          "id": "B",
+          "text": "Adding all edges of the lightest vertex"
+        },
+        {
+          "id": "C",
+          "text": "Repeatedly adding the cheapest edge that connects a new vertex to the tree"
+        },
+        {
+          "id": "D",
+          "text": "Sorting all edges once and adding them in order"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Prim's expands a single tree, each step pulling in the minimum-weight edge crossing to a new vertex, using a priority queue. Kruskal's, by contrast, may grow several fragments at once.",
+      "concept": "Prim"
+    },
+    {
+      "id": "dsa-algo-07-q08",
+      "prompt": "If every edge in a connected graph has a distinct weight, its minimum spanning tree is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Never unique"
+        },
+        {
+          "id": "B",
+          "text": "Unique only if the graph is a tree"
+        },
+        {
+          "id": "C",
+          "text": "Dependent on the starting vertex"
+        },
+        {
+          "id": "D",
+          "text": "Unique"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Distinct weights remove the ties that allow alternative trees, so the MST is unique. With repeated weights, several minimum spanning trees of equal total weight can exist.",
+      "concept": "Minimum Spanning Tree"
+    },
+    {
+      "id": "dsa-algo-07-q09",
+      "prompt": "For a directed acyclic graph, single-source shortest paths can be found in O(V + E) by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Running Dijkstra with a Fibonacci heap"
+        },
+        {
+          "id": "B",
+          "text": "Relaxing edges in topological order"
+        },
+        {
+          "id": "C",
+          "text": "Running Bellman-Ford V times"
+        },
+        {
+          "id": "D",
+          "text": "Sorting the edges by weight"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Because a DAG has no cycles, processing vertices in topological order guarantees each is finalised before its successors, needing just one linear pass. This even works with negative weights.",
+      "concept": "Shortest Paths"
+    },
+    {
+      "id": "dsa-algo-07-q10",
+      "prompt": "The minimum weight edge crossing any cut of a graph is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Irrelevant to the MST"
+        },
+        {
+          "id": "B",
+          "text": "Never in a minimum spanning tree"
+        },
+        {
+          "id": "C",
+          "text": "Always in some minimum spanning tree (the cut property)"
+        },
+        {
+          "id": "D",
+          "text": "Only in the MST if it is the global minimum edge"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The cut property states that the lightest edge crossing any partition of the vertices belongs to a minimum spanning tree. It is the theoretical foundation of both Prim's and Kruskal's correctness.",
+      "concept": "Minimum Spanning Tree"
+    }
+  ]
+}

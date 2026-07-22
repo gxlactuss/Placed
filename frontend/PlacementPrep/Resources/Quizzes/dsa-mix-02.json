@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-02",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 22,
+  "title": "Bit Manipulation",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-02-q01",
+      "prompt": "What does the bitwise AND of a number n with (n - 1) do?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Reverses all the bits"
+        },
+        {
+          "id": "B",
+          "text": "Negates the number"
+        },
+        {
+          "id": "C",
+          "text": "Clears the lowest set bit of n"
+        },
+        {
+          "id": "D",
+          "text": "Sets the lowest bit of n"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Subtracting 1 flips the lowest set bit and all zeros below it, so ANDing removes that lowest set bit. Repeatedly applying this counts set bits (Brian Kernighan's algorithm).",
+      "concept": "Bit Tricks"
+    },
+    {
+      "id": "dsa-mix-02-q02",
+      "prompt": "How do you check whether an integer n is a power of two using bit manipulation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "n % 2 == 0"
+        },
+        {
+          "id": "B",
+          "text": "n & 1 == 1"
+        },
+        {
+          "id": "C",
+          "text": "n | (n - 1) == 0"
+        },
+        {
+          "id": "D",
+          "text": "n > 0 and (n & (n - 1)) == 0"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A power of two has exactly one set bit, so clearing that bit with n & (n - 1) yields zero. The n > 0 guard rules out zero, which also satisfies the AND test.",
+      "concept": "Bit Tricks"
+    },
+    {
+      "id": "dsa-mix-02-q03",
+      "prompt": "What does a left shift by one (n << 1) do to an integer?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Reverses its bits"
+        },
+        {
+          "id": "B",
+          "text": "Multiplies it by 2"
+        },
+        {
+          "id": "C",
+          "text": "Adds 1"
+        },
+        {
+          "id": "D",
+          "text": "Divides it by 2"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Shifting bits one position toward the high end doubles the value, just as a decimal shift multiplies by ten. A right shift by one divides by two (for non-negative integers).",
+      "concept": "Bit Shifts"
+    },
+    {
+      "id": "dsa-mix-02-q04",
+      "prompt": "In an array where every element appears twice except one, how can the unique element be found in O(1) space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sum all elements"
+        },
+        {
+          "id": "B",
+          "text": "Use a hash set"
+        },
+        {
+          "id": "C",
+          "text": "XOR all the elements together"
+        },
+        {
+          "id": "D",
+          "text": "Sort and scan"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "XOR is its own inverse, so paired elements cancel to zero and only the unique value remains. This uses no extra memory and a single pass.",
+      "concept": "XOR"
+    },
+    {
+      "id": "dsa-mix-02-q05",
+      "prompt": "How do you test whether the k-th bit of n is set (bit 0 = least significant)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "n & k"
+        },
+        {
+          "id": "B",
+          "text": "n | (1 << k)"
+        },
+        {
+          "id": "C",
+          "text": "n % k"
+        },
+        {
+          "id": "D",
+          "text": "(n >> k) & 1"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Shifting n right by k brings the target bit to position 0, and ANDing with 1 isolates it. Alternatively, n & (1 << k) is non-zero exactly when the bit is set.",
+      "concept": "Bit Testing"
+    },
+    {
+      "id": "dsa-mix-02-q06",
+      "prompt": "What is the result of x XOR x for any integer x?",
+      "options": [
+        {
+          "id": "A",
+          "text": "x"
+        },
+        {
+          "id": "B",
+          "text": "0"
+        },
+        {
+          "id": "C",
+          "text": "-x"
+        },
+        {
+          "id": "D",
+          "text": "1"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Every bit XORed with itself is 0, so the whole value is 0. This self-cancelling property underlies the find-the-unique-number trick and in-place swaps.",
+      "concept": "XOR"
+    },
+    {
+      "id": "dsa-mix-02-q07",
+      "prompt": "How do you set the k-th bit of n to 1 without disturbing the other bits?",
+      "options": [
+        {
+          "id": "A",
+          "text": "n >> k"
+        },
+        {
+          "id": "B",
+          "text": "n ^ (1 << k)"
+        },
+        {
+          "id": "C",
+          "text": "n | (1 << k)"
+        },
+        {
+          "id": "D",
+          "text": "n & (1 << k)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "ORing with a mask that has only the k-th bit set turns that bit on and leaves the rest unchanged. Clearing uses n & ~(1 << k), and toggling uses XOR.",
+      "concept": "Bit Manipulation"
+    },
+    {
+      "id": "dsa-mix-02-q08",
+      "prompt": "The expression n & 1 tells you:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Whether n is negative"
+        },
+        {
+          "id": "B",
+          "text": "The number of set bits"
+        },
+        {
+          "id": "C",
+          "text": "Whether n is a power of two"
+        },
+        {
+          "id": "D",
+          "text": "Whether n is odd"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The lowest bit is 1 exactly for odd numbers, so n & 1 is the parity test. It is faster than n % 2 and avoids sign issues with modulo on negatives.",
+      "concept": "Bit Tricks"
+    },
+    {
+      "id": "dsa-mix-02-q09",
+      "prompt": "A bitmask is commonly used to represent:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A hash of a string"
+        },
+        {
+          "id": "B",
+          "text": "A subset of a small universe, one bit per possible element"
+        },
+        {
+          "id": "C",
+          "text": "A sorted list"
+        },
+        {
+          "id": "D",
+          "text": "A floating-point number"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Each element maps to a bit that is 1 when present, so an integer encodes a subset compactly. This underlies subset enumeration and bitmask dynamic programming.",
+      "concept": "Bitmask"
+    },
+    {
+      "id": "dsa-mix-02-q10",
+      "prompt": "Which operation counts the number of set bits (population count) most directly?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Dividing n by 2 until it reaches 1"
+        },
+        {
+          "id": "B",
+          "text": "XORing n with itself"
+        },
+        {
+          "id": "C",
+          "text": "Repeatedly applying n = n & (n - 1) until n is zero"
+        },
+        {
+          "id": "D",
+          "text": "Shifting n left until it overflows"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each n & (n - 1) clears one set bit, so the number of iterations equals the number of set bits. This runs in time proportional to the count of ones, not the total bit width.",
+      "concept": "Population Count"
+    }
+  ]
+}

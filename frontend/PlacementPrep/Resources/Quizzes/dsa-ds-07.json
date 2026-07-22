@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-07",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 7,
+  "title": "Tries & String Structures",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-07-q01",
+      "prompt": "What is the time complexity of searching for a word of length L in a trie?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(L)"
+        },
+        {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(L log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A search follows one edge per character, so the cost depends only on the word length, not on how many words the trie stores. This is the trie's key advantage for prefix work.",
+      "concept": "Tries"
+    },
+    {
+      "id": "dsa-ds-07-q02",
+      "prompt": "For which task is a trie better suited than a hash table?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Storing key-value pairs with arbitrary keys"
+        },
+        {
+          "id": "B",
+          "text": "Finding all keys that share a given prefix"
+        },
+        {
+          "id": "C",
+          "text": "Counting distinct elements"
+        },
+        {
+          "id": "D",
+          "text": "Testing exact membership of a single key"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A trie groups words by shared prefix along a common path, so prefix and autocomplete queries are natural. A hash scatters keys, destroying any prefix relationship.",
+      "concept": "Tries"
+    },
+    {
+      "id": "dsa-ds-07-q03",
+      "prompt": "What is the main disadvantage of a trie over a hash set for storing strings?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It cannot store variable-length words"
+        },
+        {
+          "id": "B",
+          "text": "Its lookups are slower than a hash on average"
+        },
+        {
+          "id": "C",
+          "text": "It can use a lot of memory, with many pointers per node"
+        },
+        {
+          "id": "D",
+          "text": "It requires the words to be sorted first"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each node may hold a child pointer for every symbol of the alphabet, so a sparse trie wastes space. Compressed tries and ternary search tries reduce this overhead.",
+      "concept": "Tries"
+    },
+    {
+      "id": "dsa-ds-07-q04",
+      "prompt": "What is the time complexity of inserting a word of length L into a trie?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(L)"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(L^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Insertion walks or creates one node per character of the word, so it is linear in the word length and independent of the number of stored words.",
+      "concept": "Tries"
+    },
+    {
+      "id": "dsa-ds-07-q05",
+      "prompt": "In a trie over the lowercase English alphabet, how many child pointers does a standard node have?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "It varies with the depth"
+        },
+        {
+          "id": "D",
+          "text": "26"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "One slot per possible next character gives 26 for the lowercase alphabet. Most slots are usually empty, which is the source of a trie's memory overhead.",
+      "concept": "Tries"
+    },
+    {
+      "id": "dsa-ds-07-q06",
+      "prompt": "Which real-world feature is most directly powered by a trie?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Detecting a cycle in a graph"
+        },
+        {
+          "id": "B",
+          "text": "Search-box autocomplete suggestions"
+        },
+        {
+          "id": "C",
+          "text": "Sorting a list of numbers"
+        },
+        {
+          "id": "D",
+          "text": "Computing a running average"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "As the user types a prefix, the trie descends to the matching node and enumerates the words in its subtree. The prefix-sharing structure is exactly what autocomplete needs.",
+      "concept": "Tries"
+    },
+    {
+      "id": "dsa-ds-07-q07",
+      "prompt": "A suffix of the string 'trie' is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "'tr'"
+        },
+        {
+          "id": "B",
+          "text": "'ti'"
+        },
+        {
+          "id": "C",
+          "text": "'ie'"
+        },
+        {
+          "id": "D",
+          "text": "'rie' reversed"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A suffix is a run of characters ending at the last position, so 'ie', 'rie', 'trie' and the empty string qualify. 'tr' is a prefix, and 'ti' is neither.",
+      "concept": "Strings"
+    },
+    {
+      "id": "dsa-ds-07-q08",
+      "prompt": "How does a compressed trie (radix tree) reduce a standard trie's space?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It limits words to a fixed length"
+        },
+        {
+          "id": "B",
+          "text": "It removes all the leaf nodes"
+        },
+        {
+          "id": "C",
+          "text": "It stores words in a hash table instead"
+        },
+        {
+          "id": "D",
+          "text": "It merges chains of single-child nodes into one edge labelled with a substring"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Long non-branching paths waste a node per character. Collapsing them into a single edge holding the shared substring keeps the branching structure while shrinking the node count.",
+      "concept": "Radix Tree"
+    },
+    {
+      "id": "dsa-ds-07-q09",
+      "prompt": "To find the longest common prefix of a set of words stored in a trie, you:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sort the words and compare the first and last"
+        },
+        {
+          "id": "B",
+          "text": "Descend from the root while each node has exactly one child and is not an end-of-word"
+        },
+        {
+          "id": "C",
+          "text": "Count the nodes in the trie"
+        },
+        {
+          "id": "D",
+          "text": "Traverse to the deepest leaf"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "As long as every word passes through the same single-child node, that character is shared by all. The descent stops at the first branch or word end, marking the end of the common prefix.",
+      "concept": "Tries"
+    },
+    {
+      "id": "dsa-ds-07-q10",
+      "prompt": "When searching a grid of letters for dictionary words (as in Boggle), why is a trie helpful?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It removes the need for backtracking"
+        },
+        {
+          "id": "B",
+          "text": "It guarantees only one word exists"
+        },
+        {
+          "id": "C",
+          "text": "A path can be abandoned as soon as its prefix is not in the trie"
+        },
+        {
+          "id": "D",
+          "text": "It sorts the grid letters"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "During the DFS over the grid, checking the current prefix against the trie prunes dead paths early. Without it, every path would have to be extended to full length before being rejected.",
+      "concept": "Tries"
+    }
+  ]
+}

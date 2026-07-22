@@ -1,0 +1,261 @@
+{
+  "id": "dsa-mix-04",
+  "category": "dsa",
+  "subject": "mixed",
+  "order": 24,
+  "title": "OOP for Interviews",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-mix-04-q01",
+      "prompt": "Which OOP principle hides an object's internal state behind a controlled interface?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Abstraction"
+        },
+        {
+          "id": "B",
+          "text": "Encapsulation"
+        },
+        {
+          "id": "C",
+          "text": "Polymorphism"
+        },
+        {
+          "id": "D",
+          "text": "Inheritance"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Encapsulation bundles data with the methods that operate on it and restricts direct access, so the object can protect its own invariants. Abstraction, by contrast, hides complexity behind a simpler model.",
+      "concept": "OOP Principles"
+    },
+    {
+      "id": "dsa-mix-04-q02",
+      "prompt": "What is method overriding?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Defining several methods with the same name but different parameters"
+        },
+        {
+          "id": "B",
+          "text": "Calling a method before it is declared"
+        },
+        {
+          "id": "C",
+          "text": "A subclass providing its own implementation of a method inherited from a superclass"
+        },
+        {
+          "id": "D",
+          "text": "Making a method static"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Overriding replaces inherited behaviour and is resolved at run time by the object's actual type, enabling polymorphism. Overloading, by contrast, varies the parameter list and is usually resolved at compile time.",
+      "concept": "Polymorphism"
+    },
+    {
+      "id": "dsa-mix-04-q03",
+      "prompt": "The Liskov Substitution Principle states that:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Private members are always inherited"
+        },
+        {
+          "id": "B",
+          "text": "Every class must have exactly one parent"
+        },
+        {
+          "id": "C",
+          "text": "Interfaces cannot contain methods"
+        },
+        {
+          "id": "D",
+          "text": "Objects of a subclass should be usable anywhere the superclass is expected, without breaking correctness"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A subtype must honour the contract of its base type so substituting it does not surprise callers. Violations, like a Square subclass of Rectangle that breaks width/height independence, are a classic warning sign.",
+      "concept": "SOLID"
+    },
+    {
+      "id": "dsa-mix-04-q04",
+      "prompt": "What is the key difference between composition and inheritance?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Inheritance cannot reuse code"
+        },
+        {
+          "id": "B",
+          "text": "Composition builds behaviour by holding other objects (has-a); inheritance derives from a base type (is-a)"
+        },
+        {
+          "id": "C",
+          "text": "They are identical in effect"
+        },
+        {
+          "id": "D",
+          "text": "Composition is always slower"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Composition assembles functionality from contained objects, giving looser coupling and more flexibility, which is why 'favour composition over inheritance' is common advice. Inheritance couples a subclass tightly to its parent's implementation.",
+      "concept": "Design"
+    },
+    {
+      "id": "dsa-mix-04-q05",
+      "prompt": "An abstract class differs from an interface (protocol) in that it:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Can be instantiated directly"
+        },
+        {
+          "id": "B",
+          "text": "Cannot declare any methods"
+        },
+        {
+          "id": "C",
+          "text": "Can hold state and provide partial implementations"
+        },
+        {
+          "id": "D",
+          "text": "May only contain constants"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "An abstract class shares fields and concrete methods with subclasses, but usually limits a type to one parent. An interface declares a contract that unrelated types can each adopt.",
+      "concept": "Abstraction"
+    },
+    {
+      "id": "dsa-mix-04-q06",
+      "prompt": "Which design pattern ensures a class has only one instance with a global access point?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Factory"
+        },
+        {
+          "id": "B",
+          "text": "Strategy"
+        },
+        {
+          "id": "C",
+          "text": "Observer"
+        },
+        {
+          "id": "D",
+          "text": "Singleton"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The Singleton restricts construction so exactly one instance exists, used for shared resources like a configuration or logger. It is often criticised for introducing hidden global state.",
+      "concept": "Design Patterns"
+    },
+    {
+      "id": "dsa-mix-04-q07",
+      "prompt": "The Factory pattern is used to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Notify observers of state changes"
+        },
+        {
+          "id": "B",
+          "text": "Create objects without exposing the concrete class to the caller"
+        },
+        {
+          "id": "C",
+          "text": "Sort a collection of objects"
+        },
+        {
+          "id": "D",
+          "text": "Guarantee only one instance exists"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A factory centralises object creation behind an interface, so callers depend on the abstraction rather than a specific implementation. This makes swapping concrete types easy.",
+      "concept": "Design Patterns"
+    },
+    {
+      "id": "dsa-mix-04-q08",
+      "prompt": "The Single Responsibility Principle says a class should:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Contain only one method"
+        },
+        {
+          "id": "B",
+          "text": "Have exactly one field"
+        },
+        {
+          "id": "C",
+          "text": "Have only one reason to change"
+        },
+        {
+          "id": "D",
+          "text": "Inherit from only one class"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A class focused on a single responsibility has one axis of change, making it easier to maintain and test. Mixing responsibilities means unrelated changes ripple into the same class.",
+      "concept": "SOLID"
+    },
+    {
+      "id": "dsa-mix-04-q09",
+      "prompt": "The Observer pattern establishes what kind of relationship?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A mutual exclusion lock"
+        },
+        {
+          "id": "B",
+          "text": "A strict inheritance hierarchy"
+        },
+        {
+          "id": "C",
+          "text": "A one-to-one ownership"
+        },
+        {
+          "id": "D",
+          "text": "A one-to-many notification, where subscribers are informed of a subject's changes"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "One subject maintains a list of observers and pushes updates to all of them when its state changes, decoupling the source from the consumers. UI event systems are built on this pattern.",
+      "concept": "Design Patterns"
+    },
+    {
+      "id": "dsa-mix-04-q10",
+      "prompt": "What does runtime polymorphism depend on?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Whether the method is static"
+        },
+        {
+          "id": "B",
+          "text": "Dynamic dispatch that selects the method implementation from the object's actual type"
+        },
+        {
+          "id": "C",
+          "text": "The number of parameters a method has"
+        },
+        {
+          "id": "D",
+          "text": "The order in which classes are declared"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A virtual method call is resolved at run time using the object's real type, often via a vtable, so a base-type reference invokes the subclass override. Static methods are bound at compile time and are not polymorphic.",
+      "concept": "Polymorphism"
+    }
+  ]
+}

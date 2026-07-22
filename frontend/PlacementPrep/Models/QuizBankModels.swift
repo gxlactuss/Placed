@@ -71,6 +71,9 @@ enum Subject: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
     /// Cross-cutting CS topics that do not belong to one named subject —
     /// theory of computation, compilers, architecture, digital logic, OOP.
     case general
+    /// The DSA "related concepts" track — bit manipulation, math, complexity,
+    /// OOP for interviews and analysis techniques.
+    case mixed
 
     var id: String { rawValue }
 
@@ -85,6 +88,7 @@ enum Subject: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
         case .quantitative: "Quantitative"
         case .logical: "Logical Reasoning"
         case .general: "General CS"
+        case .mixed: "Related Concepts"
         }
     }
 }

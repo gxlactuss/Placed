@@ -1,0 +1,261 @@
+{
+  "id": "dsa-algo-06",
+  "category": "dsa",
+  "subject": "algorithms",
+  "order": 16,
+  "title": "Graph Traversal (BFS & DFS)",
+  "difficulty": "medium",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-algo-06-q01",
+      "prompt": "Which data structure does breadth-first search use to order its exploration?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A hash table"
+        },
+        {
+          "id": "B",
+          "text": "A queue"
+        },
+        {
+          "id": "C",
+          "text": "A min-heap"
+        },
+        {
+          "id": "D",
+          "text": "A stack"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "BFS dequeues a vertex and enqueues its unvisited neighbours, so nodes are visited in order of increasing distance from the source. The FIFO queue is what produces the level-by-level order.",
+      "concept": "BFS"
+    },
+    {
+      "id": "dsa-algo-06-q02",
+      "prompt": "On an unweighted graph, breadth-first search from a source finds:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A topological ordering"
+        },
+        {
+          "id": "B",
+          "text": "The longest path to every vertex"
+        },
+        {
+          "id": "C",
+          "text": "The shortest path in edges to every reachable vertex"
+        },
+        {
+          "id": "D",
+          "text": "A minimum spanning tree"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Because BFS expands vertices in distance order, the first time it reaches a vertex is via a shortest path. This guarantee holds only when all edges have equal weight.",
+      "concept": "BFS"
+    },
+    {
+      "id": "dsa-algo-06-q03",
+      "prompt": "Depth-first search is naturally implemented using:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A hash set only"
+        },
+        {
+          "id": "B",
+          "text": "A queue"
+        },
+        {
+          "id": "C",
+          "text": "A priority queue"
+        },
+        {
+          "id": "D",
+          "text": "Recursion or an explicit stack"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "DFS goes as deep as possible before backtracking, which the call stack (or an explicit stack) captures directly. Swapping the stack for a queue turns DFS into BFS.",
+      "concept": "DFS"
+    },
+    {
+      "id": "dsa-algo-06-q04",
+      "prompt": "What is the time complexity of BFS or DFS on a graph with V vertices and E edges using an adjacency list?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(V + E)"
+        },
+        {
+          "id": "B",
+          "text": "O(V^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(E log V)"
+        },
+        {
+          "id": "D",
+          "text": "O(V x E)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each vertex is processed once and each edge examined once across all adjacency lists, giving O(V + E). On an adjacency matrix the traversal is O(V^2).",
+      "concept": "Graph Traversal"
+    },
+    {
+      "id": "dsa-algo-06-q05",
+      "prompt": "How can DFS detect a cycle in a directed graph?",
+      "options": [
+        {
+          "id": "A",
+          "text": "By checking the number of connected components"
+        },
+        {
+          "id": "B",
+          "text": "By finding a back edge to a vertex currently on the recursion stack"
+        },
+        {
+          "id": "C",
+          "text": "By sorting the vertices"
+        },
+        {
+          "id": "D",
+          "text": "By counting the number of edges"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A vertex still in the active recursion (grey) that is reached again indicates a back edge, which closes a cycle. Tracking three colours (white, grey, black) distinguishes back edges from forward and cross edges.",
+      "concept": "Cycle Detection"
+    },
+    {
+      "id": "dsa-algo-06-q06",
+      "prompt": "To count the connected components of an undirected graph, you can:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Count the edges and divide by two"
+        },
+        {
+          "id": "B",
+          "text": "Run a single BFS from vertex 0"
+        },
+        {
+          "id": "C",
+          "text": "Run a traversal from each unvisited vertex and count how many traversals you start"
+        },
+        {
+          "id": "D",
+          "text": "Sort the vertices by degree"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each fresh traversal marks one entire component; the number of fresh starts is the component count. A single traversal only reaches the component containing its start vertex.",
+      "concept": "Connected Components"
+    },
+    {
+      "id": "dsa-algo-06-q07",
+      "prompt": "Which traversal is better suited to finding the shortest path in an unweighted maze?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Either gives the shortest path"
+        },
+        {
+          "id": "B",
+          "text": "DFS, because it goes deep first"
+        },
+        {
+          "id": "C",
+          "text": "Neither can find a path"
+        },
+        {
+          "id": "D",
+          "text": "BFS, because it explores in order of distance"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "BFS reaches every cell by a fewest-moves path, so the first time it hits the target is optimal. DFS may reach the target by a long, winding route first.",
+      "concept": "BFS"
+    },
+    {
+      "id": "dsa-algo-06-q08",
+      "prompt": "In a DFS of a directed acyclic graph, listing vertices in decreasing order of their finish times yields:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A shortest-path tree"
+        },
+        {
+          "id": "B",
+          "text": "A valid topological ordering"
+        },
+        {
+          "id": "C",
+          "text": "A minimum spanning tree"
+        },
+        {
+          "id": "D",
+          "text": "The vertices sorted by degree"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A vertex finishes only after all vertices reachable from it, so ordering by decreasing finish time places every vertex before its descendants. This is the DFS-based topological sort.",
+      "concept": "Topological Sort"
+    },
+    {
+      "id": "dsa-algo-06-q09",
+      "prompt": "What is the space complexity of BFS in the worst case?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(E^2)"
+        },
+        {
+          "id": "B",
+          "text": "O(log V)"
+        },
+        {
+          "id": "C",
+          "text": "O(V), for the queue and visited set"
+        },
+        {
+          "id": "D",
+          "text": "O(1)"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "In the worst case the queue holds a whole level of vertices, which can be O(V), and the visited set is also O(V). DFS uses O(V) for its stack in the worst case too.",
+      "concept": "BFS"
+    },
+    {
+      "id": "dsa-algo-06-q10",
+      "prompt": "How can BFS be used to test whether an undirected graph is bipartite?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sort vertices by degree"
+        },
+        {
+          "id": "B",
+          "text": "Check whether it has a cycle of any length"
+        },
+        {
+          "id": "C",
+          "text": "Count the total number of edges"
+        },
+        {
+          "id": "D",
+          "text": "Two-colour vertices level by level; a conflict between adjacent same-colour vertices means it is not bipartite"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Assigning alternating colours across BFS levels works exactly when the graph has no odd cycle. Finding an edge joining two vertices of the same colour reveals such an odd cycle.",
+      "concept": "Bipartite Check"
+    }
+  ]
+}

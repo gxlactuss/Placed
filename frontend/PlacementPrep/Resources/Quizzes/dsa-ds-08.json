@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-08",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 8,
+  "title": "Balanced Trees (AVL, Red-Black, B-Tree)",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-08-q01",
+      "prompt": "What is the balance factor of a node in an AVL tree, and what range keeps the tree balanced?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The colour of the node, kept red or black"
+        },
+        {
+          "id": "B",
+          "text": "Number of nodes on the left minus on the right, kept in {-1, 0, +1}"
+        },
+        {
+          "id": "C",
+          "text": "Depth of the node, kept below log n"
+        },
+        {
+          "id": "D",
+          "text": "Height of left subtree minus height of right subtree, kept in {-1, 0, +1}"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "AVL balance is defined by subtree heights, and any node whose factor leaves {-1, 0, +1} triggers a rotation. This keeps the height within about 1.44 log n.",
+      "concept": "AVL Trees"
+    },
+    {
+      "id": "dsa-ds-08-q02",
+      "prompt": "What is the maximum number of rotations needed to rebalance an AVL tree after a single insertion?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n) rotations"
+        },
+        {
+          "id": "B",
+          "text": "One rotation (single or double)"
+        },
+        {
+          "id": "C",
+          "text": "No rotations are ever needed"
+        },
+        {
+          "id": "D",
+          "text": "O(log n) rotations"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "One insertion unbalances at most one node critically, and a single or double rotation there restores the whole tree. Deletion, by contrast, may require rotations up the whole path.",
+      "concept": "AVL Trees"
+    },
+    {
+      "id": "dsa-ds-08-q03",
+      "prompt": "A red-black tree guarantees what bound on its height for n nodes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(sqrt n)"
+        },
+        {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "Exactly log n"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The red-black invariants ensure no root-to-leaf path is more than twice any other, bounding height at 2 log(n+1). This gives O(log n) operations with fewer rotations than AVL on updates.",
+      "concept": "Red-Black Trees"
+    },
+    {
+      "id": "dsa-ds-08-q04",
+      "prompt": "Why are B-trees preferred over binary search trees for on-disk database indexes?",
+      "options": [
+        {
+          "id": "A",
+          "text": "They use less memory per key"
+        },
+        {
+          "id": "B",
+          "text": "They never require rebalancing"
+        },
+        {
+          "id": "C",
+          "text": "They keep keys unsorted for faster insertion"
+        },
+        {
+          "id": "D",
+          "text": "High fan-out makes the tree shallow, minimising expensive disk reads"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A B-tree node holds many keys and fills a disk block, so the tree is only a few levels deep. Since each level costs a disk seek, a shallow high-fan-out tree dramatically cuts I/O.",
+      "concept": "B-Trees"
+    },
+    {
+      "id": "dsa-ds-08-q05",
+      "prompt": "How does a B+ tree differ from a B-tree?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It is always a binary tree"
+        },
+        {
+          "id": "B",
+          "text": "All data pointers live in the leaves, which are linked for range scans"
+        },
+        {
+          "id": "C",
+          "text": "It stores at most two keys per node"
+        },
+        {
+          "id": "D",
+          "text": "It cannot be used on disk"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "In a B+ tree the internal nodes hold only separator keys for routing, and every record pointer sits in a leaf. The linked leaves make ordered range queries a simple leaf traversal.",
+      "concept": "B+ Trees"
+    },
+    {
+      "id": "dsa-ds-08-q06",
+      "prompt": "What is the practical trade-off between an AVL tree and a red-black tree?",
+      "options": [
+        {
+          "id": "A",
+          "text": "AVL trees cannot support deletion"
+        },
+        {
+          "id": "B",
+          "text": "Red-black trees do not support ordered traversal"
+        },
+        {
+          "id": "C",
+          "text": "AVL is more rigidly balanced, so faster lookups but more rotations on updates"
+        },
+        {
+          "id": "D",
+          "text": "Red-black trees are always shorter than AVL trees"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "AVL's tighter height limit favours read-heavy workloads, while red-black trees do less restructuring per update and suit write-heavy use, which is why many library maps use them.",
+      "concept": "Balanced Trees"
+    },
+    {
+      "id": "dsa-ds-08-q07",
+      "prompt": "In a B-tree of order m, how many children can an internal node have at most?",
+      "options": [
+        {
+          "id": "A",
+          "text": "m - 1"
+        },
+        {
+          "id": "B",
+          "text": "log m"
+        },
+        {
+          "id": "C",
+          "text": "2m"
+        },
+        {
+          "id": "D",
+          "text": "m"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Order m means up to m children and therefore up to m - 1 keys per node. A non-root node must be at least half full to keep the tree balanced.",
+      "concept": "B-Trees"
+    },
+    {
+      "id": "dsa-ds-08-q08",
+      "prompt": "An LL imbalance in an AVL tree (a node heavy on its left child's left subtree) is fixed by:",
+      "options": [
+        {
+          "id": "A",
+          "text": "A single right rotation"
+        },
+        {
+          "id": "B",
+          "text": "A left-then-right double rotation"
+        },
+        {
+          "id": "C",
+          "text": "Recolouring only"
+        },
+        {
+          "id": "D",
+          "text": "A single left rotation"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A left-left case is resolved by one right rotation about the unbalanced node. The zig-zag cases (LR and RL) need a double rotation; recolouring belongs to red-black trees.",
+      "concept": "AVL Trees"
+    },
+    {
+      "id": "dsa-ds-08-q09",
+      "prompt": "What is the height of an AVL tree with n nodes, asymptotically?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(log n)"
+        },
+        {
+          "id": "B",
+          "text": "O(sqrt n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The minimum node count for height h follows a Fibonacci recurrence, which grows exponentially, so height is logarithmic in n. This guarantees O(log n) search, insert and delete.",
+      "concept": "AVL Trees"
+    },
+    {
+      "id": "dsa-ds-08-q10",
+      "prompt": "Which property must every root-to-leaf path in a red-black tree satisfy?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It contains the same number of red nodes"
+        },
+        {
+          "id": "B",
+          "text": "It contains the same number of black nodes"
+        },
+        {
+          "id": "C",
+          "text": "It has exactly log n nodes"
+        },
+        {
+          "id": "D",
+          "text": "It alternates strictly red and black"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Equal black-height on every path, combined with the rule that a red node cannot have a red child, is what bounds the longest path at twice the shortest and keeps the tree balanced.",
+      "concept": "Red-Black Trees"
+    }
+  ]
+}

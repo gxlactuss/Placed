@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-03",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 3,
+  "title": "Stacks & Queues",
+  "difficulty": "easy",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-03-q01",
+      "prompt": "A stack follows which access discipline?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Highest priority first"
+        },
+        {
+          "id": "B",
+          "text": "First In First Out"
+        },
+        {
+          "id": "C",
+          "text": "Last In First Out"
+        },
+        {
+          "id": "D",
+          "text": "Random access"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The most recently pushed element is the first one popped. Push and pop both act on the same end, the top, and both run in O(1).",
+      "concept": "Stacks"
+    },
+    {
+      "id": "dsa-ds-03-q02",
+      "prompt": "Which data structure is the natural choice for checking whether the brackets in an expression are balanced?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Queue"
+        },
+        {
+          "id": "B",
+          "text": "Min-heap"
+        },
+        {
+          "id": "C",
+          "text": "Hash table"
+        },
+        {
+          "id": "D",
+          "text": "Stack"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Push each opening bracket and pop on each closing one, checking the pair matches. The last opened bracket must be the first closed — exactly LIFO order.",
+      "concept": "Stacks"
+    },
+    {
+      "id": "dsa-ds-03-q03",
+      "prompt": "A queue follows which access discipline?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Last In First Served"
+        },
+        {
+          "id": "B",
+          "text": "First In First Out"
+        },
+        {
+          "id": "C",
+          "text": "Sorted order"
+        },
+        {
+          "id": "D",
+          "text": "Last In First Out"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Elements are removed in the order they were added: enqueue at the rear, dequeue from the front. This models real-world waiting lines and breadth-first processing.",
+      "concept": "Queues"
+    },
+    {
+      "id": "dsa-ds-03-q04",
+      "prompt": "Why is a circular queue preferred over a linear array queue with front and rear indices?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It allows random access to any element"
+        },
+        {
+          "id": "B",
+          "text": "It keeps elements sorted"
+        },
+        {
+          "id": "C",
+          "text": "It reuses vacated front slots instead of wasting them"
+        },
+        {
+          "id": "D",
+          "text": "It removes the need for a rear index"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "In a linear array, dequeued front slots become unusable and the queue drifts toward the end. Wrapping the rear index around with modulo arithmetic reclaims that space.",
+      "concept": "Queues"
+    },
+    {
+      "id": "dsa-ds-03-q05",
+      "prompt": "Which structure is used to evaluate a postfix (reverse Polish) expression?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Priority queue"
+        },
+        {
+          "id": "B",
+          "text": "Binary search tree"
+        },
+        {
+          "id": "C",
+          "text": "Queue"
+        },
+        {
+          "id": "D",
+          "text": "Stack"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Push operands, and on each operator pop the top two, apply it, and push the result. The final value left on the stack is the answer.",
+      "concept": "Stacks"
+    },
+    {
+      "id": "dsa-ds-03-q06",
+      "prompt": "Which run-time mechanism is directly modelled by a stack?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The function call stack that supports recursion"
+        },
+        {
+          "id": "B",
+          "text": "The file system directory tree"
+        },
+        {
+          "id": "C",
+          "text": "The page table"
+        },
+        {
+          "id": "D",
+          "text": "The CPU scheduler's ready queue"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each call pushes an activation record and returning pops it, so the most recent call finishes first. Deep recursion can overflow this stack.",
+      "concept": "Stacks"
+    },
+    {
+      "id": "dsa-ds-03-q07",
+      "prompt": "A queue can be implemented using two stacks. What is the amortised cost per operation?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(n) always"
+        },
+        {
+          "id": "B",
+          "text": "O(1)"
+        },
+        {
+          "id": "C",
+          "text": "O(n log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(log n)"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Enqueue pushes onto an inbox stack. Dequeue pops from an outbox stack, refilling it by reversing the inbox only when empty. Each element is moved between stacks at most once, so cost is O(1) amortised.",
+      "concept": "Stacks & Queues"
+    },
+    {
+      "id": "dsa-ds-03-q08",
+      "prompt": "What distinguishes a deque from an ordinary queue?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Insertion and removal are allowed at both ends"
+        },
+        {
+          "id": "B",
+          "text": "It orders elements by priority"
+        },
+        {
+          "id": "C",
+          "text": "It only allows removal from the middle"
+        },
+        {
+          "id": "D",
+          "text": "It has a fixed capacity of two"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A double-ended queue supports push and pop at both front and rear, so it can behave as a stack, a queue, or both. It is the structure behind the sliding-window maximum pattern.",
+      "concept": "Deque"
+    },
+    {
+      "id": "dsa-ds-03-q09",
+      "prompt": "How does a priority queue differ from an ordinary FIFO queue?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It never allows duplicates"
+        },
+        {
+          "id": "B",
+          "text": "It dequeues the most recently added element"
+        },
+        {
+          "id": "C",
+          "text": "It dequeues the highest-priority element rather than the oldest"
+        },
+        {
+          "id": "D",
+          "text": "It can only hold integers"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Order of removal depends on a priority key, not arrival time. It is usually backed by a heap, giving O(log n) insert and extract rather than the O(1) of a plain queue.",
+      "concept": "Priority Queue"
+    },
+    {
+      "id": "dsa-ds-03-q10",
+      "prompt": "A program crashes with a stack overflow. Which is the most likely cause?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Allocating a large array on the heap"
+        },
+        {
+          "id": "B",
+          "text": "Dequeuing from an empty queue"
+        },
+        {
+          "id": "C",
+          "text": "A hash collision"
+        },
+        {
+          "id": "D",
+          "text": "Unbounded recursion with no reachable base case"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Each recursive call consumes a stack frame; without a base case the frames accumulate until the call stack's fixed space is exhausted. Large heap allocations fail differently, as out-of-memory.",
+      "concept": "Stacks"
+    }
+  ]
+}

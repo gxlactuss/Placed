@@ -1,0 +1,261 @@
+{
+  "id": "dsa-ds-10",
+  "category": "dsa",
+  "subject": "data-structures",
+  "order": 10,
+  "title": "Graph Representations",
+  "difficulty": "hard",
+  "pass_mark": 0.7,
+  "questions": [
+    {
+      "id": "dsa-ds-10-q01",
+      "prompt": "What is the space complexity of an adjacency matrix for a graph with V vertices?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(V^2)"
+        },
+        {
+          "id": "B",
+          "text": "O(V + E)"
+        },
+        {
+          "id": "C",
+          "text": "O(V)"
+        },
+        {
+          "id": "D",
+          "text": "O(E)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The matrix reserves a cell for every ordered pair of vertices whether or not an edge exists, so it always uses V^2 space. This is wasteful for sparse graphs but compact for dense ones.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q02",
+      "prompt": "What is the space complexity of an adjacency list for a graph with V vertices and E edges?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(V + E)"
+        },
+        {
+          "id": "B",
+          "text": "O(V^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(E^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(V x E)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "There is one list header per vertex and one entry per edge (two for an undirected edge), giving O(V + E). This makes the list the natural choice for sparse graphs.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q03",
+      "prompt": "How fast can you check whether an edge exists between two given vertices using an adjacency matrix?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(1)"
+        },
+        {
+          "id": "B",
+          "text": "O(log V)"
+        },
+        {
+          "id": "C",
+          "text": "O(V)"
+        },
+        {
+          "id": "D",
+          "text": "O(E)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The answer is a single cell lookup M[u][v]. With an adjacency list the same check costs up to O(degree), since you must scan u's neighbour list.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q04",
+      "prompt": "To iterate over all neighbours of a vertex, which representation is more efficient for a sparse graph?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Adjacency list — it visits only the actual neighbours"
+        },
+        {
+          "id": "B",
+          "text": "Adjacency matrix — it is always faster"
+        },
+        {
+          "id": "C",
+          "text": "Both cost the same"
+        },
+        {
+          "id": "D",
+          "text": "Neither can iterate neighbours"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A list yields the vertex's neighbours directly in O(degree). A matrix must scan a whole row of V cells regardless of how few neighbours exist, wasting time on a sparse graph.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q05",
+      "prompt": "For a dense graph where E is close to V^2, which representation is often preferred?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Edge list only"
+        },
+        {
+          "id": "B",
+          "text": "Adjacency matrix"
+        },
+        {
+          "id": "C",
+          "text": "A hash set of vertices"
+        },
+        {
+          "id": "D",
+          "text": "Adjacency list"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "When almost every pair is connected, the matrix's V^2 space is no worse than the list's O(V + E), and it adds O(1) edge tests and simpler code. Sparsity is what tilts the choice toward lists.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q06",
+      "prompt": "In an adjacency list, how do you determine the degree of a vertex in an undirected graph?",
+      "options": [
+        {
+          "id": "A",
+          "text": "The number of vertices in the graph"
+        },
+        {
+          "id": "B",
+          "text": "The sum of all list lengths"
+        },
+        {
+          "id": "C",
+          "text": "The length of that vertex's neighbour list"
+        },
+        {
+          "id": "D",
+          "text": "A full scan of the entire structure"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Each incident edge contributes one entry to the vertex's list, so its length is the degree. In a matrix the degree is the number of ones in the vertex's row, an O(V) count.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q07",
+      "prompt": "How is a directed graph stored differently from an undirected one in an adjacency list?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A directed edge u to v is recorded only in u's list, not in v's"
+        },
+        {
+          "id": "B",
+          "text": "A directed edge is stored in both lists"
+        },
+        {
+          "id": "C",
+          "text": "Directed graphs cannot use adjacency lists"
+        },
+        {
+          "id": "D",
+          "text": "The lists must be kept sorted for directed graphs"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Direction means the edge appears once, from source to destination. An undirected edge is symmetric and so appears in both endpoints' lists, which is why undirected lists hold 2E entries.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q08",
+      "prompt": "How is a weighted graph represented in an adjacency list?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Weights are ignored in adjacency lists"
+        },
+        {
+          "id": "B",
+          "text": "Only unweighted graphs can use lists"
+        },
+        {
+          "id": "C",
+          "text": "A separate matrix is always required"
+        },
+        {
+          "id": "D",
+          "text": "Each list entry stores the neighbour together with the edge weight"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Each entry becomes a (neighbour, weight) pair. In a matrix the cell holds the weight instead of a 0/1 flag, using a sentinel such as infinity for absent edges.",
+      "concept": "Graph Representation"
+    },
+    {
+      "id": "dsa-ds-10-q09",
+      "prompt": "What is the time complexity of breadth-first or depth-first search on a graph stored as an adjacency list?",
+      "options": [
+        {
+          "id": "A",
+          "text": "O(V + E)"
+        },
+        {
+          "id": "B",
+          "text": "O(V^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(E log V)"
+        },
+        {
+          "id": "D",
+          "text": "O(V x E)"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each vertex is visited once and each edge is examined once across all neighbour lists, giving O(V + E). On an adjacency matrix the same traversal is O(V^2) because scanning neighbours costs O(V) per vertex.",
+      "concept": "Graph Traversal"
+    },
+    {
+      "id": "dsa-ds-10-q10",
+      "prompt": "A social network with millions of users but only a few hundred friends each is best stored using:",
+      "options": [
+        {
+          "id": "A",
+          "text": "An adjacency matrix, because lookups are O(1)"
+        },
+        {
+          "id": "B",
+          "text": "An adjacency list, because the graph is sparse"
+        },
+        {
+          "id": "C",
+          "text": "A single sorted array of users"
+        },
+        {
+          "id": "D",
+          "text": "A min-heap of users"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "With E far smaller than V^2, a matrix would need an impossible amount of memory, most of it zeros. The list stores only real edges in O(V + E), which is the only feasible option at that scale.",
+      "concept": "Graph Representation"
+    }
+  ]
+}
