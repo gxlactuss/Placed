@@ -47,14 +47,6 @@ enum Category: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
         }
     }
 
-    var symbol: String {
-        switch self {
-        case .csFundamentals: "cpu"
-        case .dsa: "chevron.left.forwardslash.chevron.right"
-        case .aptitude: "puzzlepiece"
-        }
-    }
-
     /// The planned size of each track. Used for "3 of 30" style progress copy
     /// before every quiz file has been authored.
     var plannedQuizCount: Int {

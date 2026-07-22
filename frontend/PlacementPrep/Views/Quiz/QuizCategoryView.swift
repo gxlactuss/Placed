@@ -46,7 +46,7 @@ struct QuizCategoryView: View {
         return PPCard {
             VStack(alignment: .leading, spacing: PPSpacing.md) {
                 HStack(spacing: PPSpacing.md) {
-                    PPIconTile(systemName: category.symbol)
+                    PPCategoryBadge(category: category)
 
                     VStack(alignment: .leading, spacing: PPSpacing.xs) {
                         Text(category.title)
