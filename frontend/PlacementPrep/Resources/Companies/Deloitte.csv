@@ -1,0 +1,9 @@
+Difficulty,Title,Frequency,Acceptance Rate,Link,Topics
+HARD,Candy,88.0,0.43,https://leetcode.com/problems/candy,"Array, Greedy"
+EASY,Set Mismatch,84.0,0.44,https://leetcode.com/problems/set-mismatch,"Array, Hash Table, Bit Manipulation, Sorting"
+EASY,Two Sum,80.0,0.55,https://leetcode.com/problems/two-sum,"Array, Hash Table"
+MEDIUM,Longest Palindromic Substring,78.0,0.35,https://leetcode.com/problems/longest-palindromic-substring,"Two Pointers, String, Dynamic Programming"
+MEDIUM,Max Consecutive Ones III,74.0,0.65,https://leetcode.com/problems/max-consecutive-ones-iii,"Array, Binary Search, Sliding Window, Prefix Sum"
+EASY,Next Greater Element I,70.0,0.75,https://leetcode.com/problems/next-greater-element-i,"Array, Hash Table, Stack, Monotonic Stack"
+HARD,Merge k Sorted Lists,66.0,0.53,https://leetcode.com/problems/merge-k-sorted-lists,"Linked List, Divide and Conquer, Heap (Priority Queue), Merge Sort"
+HARD,Longest Increasing Path in a Matrix,60.0,0.55,https://leetcode.com/problems/longest-increasing-path-in-a-matrix,"Dynamic Programming, Depth-First Search, Breadth-First Search, Graph, Topological Sort, Memoization, Matrix"

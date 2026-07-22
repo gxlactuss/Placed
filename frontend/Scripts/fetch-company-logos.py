@@ -66,6 +66,12 @@ COMPANIES = {
     "Zepto":          ("zeptonow.com",      None),
     "Zoho":           ("zoho.com",          "zoho"),
     "Zomato":         ("zomato.com",        "zomato"),
+    # On-campus recruiters from the 2025-26 placement list.
+    "Accenture":      ("accenture.com",     "accenture"),
+    "Deloitte":       ("deloitte.com",      "deloitte"),
+    "IDFC First Bank":("idfcfirstbank.com", None),
+    "LTIMindtree":    ("ltimindtree.com",   None),
+    "Media.net":      ("media.net",         None),
 }
 
 # 48px is soft when upscaled to a 36pt chip on a 3x screen, but it is the real
@@ -210,9 +216,14 @@ def main():
     out = os.path.join(root, "PlacementPrep", "Resources", "Logos")
     os.makedirs(out, exist_ok=True)
 
+    # Optional name filter: `fetch-company-logos.py Deloitte "Media.net"` only
+    # refreshes the named companies, leaving every other logo untouched.
+    only = set(sys.argv[1:])
+    selected = {n: v for n, v in COMPANIES.items() if not only or n in only}
+
     rows, missing, glyphs = [], [], []  # glyphs retained for reporting shape
     with tempfile.TemporaryDirectory() as tmp:
-        for name, (domain, slug) in sorted(COMPANIES.items()):
+        for name, (domain, slug) in sorted(selected.items()):
             dest = os.path.join(out, f"{name}.png")
             if name in MANUAL and os.path.exists(dest):
                 w, h = png_size(dest)

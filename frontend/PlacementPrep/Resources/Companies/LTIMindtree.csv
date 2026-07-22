@@ -1,0 +1,8 @@
+Difficulty,Title,Frequency,Acceptance Rate,Link,Topics
+EASY,Reverse String,85.0,0.79,https://leetcode.com/problems/reverse-string,"Two Pointers, String"
+MEDIUM,Reverse Words in a String,78.0,0.36,https://leetcode.com/problems/reverse-words-in-a-string,"Two Pointers, String"
+MEDIUM,Reverse Integer,72.0,0.29,https://leetcode.com/problems/reverse-integer,"Math"
+EASY,Valid Anagram,68.0,0.65,https://leetcode.com/problems/valid-anagram,"Hash Table, String, Sorting"
+EASY,Palindrome Number,64.0,0.58,https://leetcode.com/problems/palindrome-number,"Math"
+MEDIUM,Second Highest Salary,60.0,0.40,https://leetcode.com/problems/second-highest-salary,"Database"
+MEDIUM,Nth Highest Salary,54.0,0.38,https://leetcode.com/problems/nth-highest-salary,"Database"
