@@ -1,0 +1,136 @@
+{
+  "id": "apt-verbal-03",
+  "category": "aptitude",
+  "subject": "verbal",
+  "order": 14,
+  "title": "Vocabulary & Word Analogies",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-verbal-03-q01",
+      "prompt": "Author is to Book as Composer is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Piano"
+        },
+        {
+          "id": "B",
+          "text": "Stage"
+        },
+        {
+          "id": "C",
+          "text": "Audience"
+        },
+        {
+          "id": "D",
+          "text": "Symphony"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "An author creates a book, just as a composer creates a symphony. The relationship is creator to creation.",
+      "concept": "Word Analogies"
+    },
+    {
+      "id": "apt-verbal-03-q02",
+      "prompt": "Choose the word that means 'a person who speaks many languages':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Linguist"
+        },
+        {
+          "id": "B",
+          "text": "Novice"
+        },
+        {
+          "id": "C",
+          "text": "Orator"
+        },
+        {
+          "id": "D",
+          "text": "Polyglot"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A 'polyglot' is someone who knows and can use several languages.",
+      "concept": "Vocabulary"
+    },
+    {
+      "id": "apt-verbal-03-q03",
+      "prompt": "Choose the word closest in meaning to 'Meticulous':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Careless"
+        },
+        {
+          "id": "B",
+          "text": "Careful"
+        },
+        {
+          "id": "C",
+          "text": "Lazy"
+        },
+        {
+          "id": "D",
+          "text": "Hasty"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "'Meticulous' means showing great attention to detail, which is best captured by 'careful'.",
+      "concept": "Vocabulary"
+    },
+    {
+      "id": "apt-verbal-03-q04",
+      "prompt": "Thermometer is to Temperature as Barometer is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Heat"
+        },
+        {
+          "id": "B",
+          "text": "Pressure"
+        },
+        {
+          "id": "C",
+          "text": "Rain"
+        },
+        {
+          "id": "D",
+          "text": "Wind"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A thermometer measures temperature, just as a barometer measures atmospheric pressure. The relationship is instrument to what it measures.",
+      "concept": "Word Analogies"
+    },
+    {
+      "id": "apt-verbal-03-q05",
+      "prompt": "Choose the word that means 'lasting for a very short time':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Eternal"
+        },
+        {
+          "id": "B",
+          "text": "Permanent"
+        },
+        {
+          "id": "C",
+          "text": "Ephemeral"
+        },
+        {
+          "id": "D",
+          "text": "Perpetual"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "'Ephemeral' describes something that lasts only briefly. The other three all mean long-lasting or endless.",
+      "concept": "Vocabulary"
+    }
+  ]
+}

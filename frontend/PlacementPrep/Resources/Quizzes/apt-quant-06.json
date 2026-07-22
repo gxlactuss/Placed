@@ -1,0 +1,136 @@
+{
+  "id": "apt-quant-06",
+  "category": "aptitude",
+  "subject": "quantitative",
+  "order": 6,
+  "title": "Permutations, Combinations & Probability",
+  "difficulty": "hard",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-quant-06-q01",
+      "prompt": "In how many ways can 5 distinct books be arranged in a row?",
+      "options": [
+        {
+          "id": "A",
+          "text": "25"
+        },
+        {
+          "id": "B",
+          "text": "120"
+        },
+        {
+          "id": "C",
+          "text": "60"
+        },
+        {
+          "id": "D",
+          "text": "20"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The number of arrangements of 5 distinct items is 5 factorial = 5 x 4 x 3 x 2 x 1 = 120.",
+      "concept": "Permutations"
+    },
+    {
+      "id": "apt-quant-06-q02",
+      "prompt": "In how many ways can 2 people be chosen from a group of 5?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10"
+        },
+        {
+          "id": "B",
+          "text": "20"
+        },
+        {
+          "id": "C",
+          "text": "25"
+        },
+        {
+          "id": "D",
+          "text": "5"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Order does not matter, so this is a combination: 5 choose 2 = (5 x 4) / (2 x 1) = 10.",
+      "concept": "Combinations"
+    },
+    {
+      "id": "apt-quant-06-q03",
+      "prompt": "When two fair dice are rolled, what is the probability that the sum is 7?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1/12"
+        },
+        {
+          "id": "B",
+          "text": "1/9"
+        },
+        {
+          "id": "C",
+          "text": "7/36"
+        },
+        {
+          "id": "D",
+          "text": "1/6"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "There are 6 favourable pairs summing to 7 out of 36 equally likely outcomes, so 6/36 = 1/6. Seven is the most likely dice sum.",
+      "concept": "Probability"
+    },
+    {
+      "id": "apt-quant-06-q04",
+      "prompt": "A bag has 3 red and 2 blue balls. What is the probability of drawing a red ball at random?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2/5"
+        },
+        {
+          "id": "B",
+          "text": "3/5"
+        },
+        {
+          "id": "C",
+          "text": "1/2"
+        },
+        {
+          "id": "D",
+          "text": "3/2"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "There are 3 red out of 5 balls total, so the probability is 3/5.",
+      "concept": "Probability"
+    },
+    {
+      "id": "apt-quant-06-q05",
+      "prompt": "How many distinct 3-letter arrangements can be made from the letters of the word CAT (all letters different)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6"
+        },
+        {
+          "id": "B",
+          "text": "3"
+        },
+        {
+          "id": "C",
+          "text": "9"
+        },
+        {
+          "id": "D",
+          "text": "27"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Three distinct letters can be arranged in 3 factorial = 6 ways.",
+      "concept": "Permutations"
+    }
+  ]
+}

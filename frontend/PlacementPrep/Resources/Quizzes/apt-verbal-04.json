@@ -1,0 +1,136 @@
+{
+  "id": "apt-verbal-04",
+  "category": "aptitude",
+  "subject": "verbal",
+  "order": 15,
+  "title": "Idioms & Critical Reasoning",
+  "difficulty": "hard",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-verbal-04-q01",
+      "prompt": "What does the idiom 'to bite the bullet' mean?",
+      "options": [
+        {
+          "id": "A",
+          "text": "To eat very quickly"
+        },
+        {
+          "id": "B",
+          "text": "To make a careless mistake"
+        },
+        {
+          "id": "C",
+          "text": "To face a difficult situation bravely"
+        },
+        {
+          "id": "D",
+          "text": "To win easily"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "'Bite the bullet' means to endure a painful or unpleasant situation with courage.",
+      "concept": "Idioms"
+    },
+    {
+      "id": "apt-verbal-04-q02",
+      "prompt": "What does 'once in a blue moon' mean?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Every night"
+        },
+        {
+          "id": "B",
+          "text": "Suddenly"
+        },
+        {
+          "id": "C",
+          "text": "Very rarely"
+        },
+        {
+          "id": "D",
+          "text": "Very often"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "'Once in a blue moon' refers to something that happens very rarely.",
+      "concept": "Idioms"
+    },
+    {
+      "id": "apt-verbal-04-q03",
+      "prompt": "All the students who studied hard passed the exam. Rahul passed the exam. Which statement is a valid conclusion?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It cannot be concluded that Rahul studied hard"
+        },
+        {
+          "id": "B",
+          "text": "Rahul definitely studied hard"
+        },
+        {
+          "id": "C",
+          "text": "Rahul did not study hard"
+        },
+        {
+          "id": "D",
+          "text": "No student who passed studied hard"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The statement says hard-studying students passed, but not that only they passed. Rahul may have passed by other means, so we cannot conclude he studied hard (affirming the consequent is invalid).",
+      "concept": "Critical Reasoning"
+    },
+    {
+      "id": "apt-verbal-04-q04",
+      "prompt": "A company claims: 'Our sales increased after we changed the logo, so the new logo boosted sales.' What is the flaw in this reasoning?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It assumes correlation implies causation"
+        },
+        {
+          "id": "B",
+          "text": "It uses a circular argument"
+        },
+        {
+          "id": "C",
+          "text": "It attacks the person, not the claim"
+        },
+        {
+          "id": "D",
+          "text": "It appeals to popularity"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Sales rising after the logo change does not prove the logo caused it; other factors could be responsible. Assuming one thing caused another merely because it came first is the correlation-causation fallacy.",
+      "concept": "Critical Reasoning"
+    },
+    {
+      "id": "apt-verbal-04-q05",
+      "prompt": "What does the idiom 'the elephant in the room' mean?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A very large object"
+        },
+        {
+          "id": "B",
+          "text": "A rare opportunity"
+        },
+        {
+          "id": "C",
+          "text": "An obvious problem that everyone avoids discussing"
+        },
+        {
+          "id": "D",
+          "text": "A crowded place"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "'The elephant in the room' is an obvious, important issue that people ignore or avoid talking about.",
+      "concept": "Idioms"
+    }
+  ]
+}

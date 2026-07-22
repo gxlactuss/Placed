@@ -1,0 +1,136 @@
+{
+  "id": "apt-quant-01",
+  "category": "aptitude",
+  "subject": "quantitative",
+  "order": 1,
+  "title": "Percentages & Ratios",
+  "difficulty": "easy",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-quant-01-q01",
+      "prompt": "What is 25% of 80?",
+      "options": [
+        {
+          "id": "A",
+          "text": "25"
+        },
+        {
+          "id": "B",
+          "text": "16"
+        },
+        {
+          "id": "C",
+          "text": "20"
+        },
+        {
+          "id": "D",
+          "text": "40"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "25% is one quarter, so 80 divided by 4 is 20.",
+      "concept": "Percentages"
+    },
+    {
+      "id": "apt-quant-01-q02",
+      "prompt": "In a class the ratio of boys to girls is 3 : 2 and there are 30 students in total. How many boys are there?",
+      "options": [
+        {
+          "id": "A",
+          "text": "12"
+        },
+        {
+          "id": "B",
+          "text": "15"
+        },
+        {
+          "id": "C",
+          "text": "20"
+        },
+        {
+          "id": "D",
+          "text": "18"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The ratio has 3 + 2 = 5 parts, so one part is 30 / 5 = 6 students. Boys are 3 parts, so 3 x 6 = 18.",
+      "concept": "Ratios"
+    },
+    {
+      "id": "apt-quant-01-q03",
+      "prompt": "A number is first increased by 20% and then the result is decreased by 20%. What is the net change?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No change"
+        },
+        {
+          "id": "B",
+          "text": "A 4% decrease"
+        },
+        {
+          "id": "C",
+          "text": "A 4% increase"
+        },
+        {
+          "id": "D",
+          "text": "A 20% decrease"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Multiplying by 1.2 then by 0.8 gives 0.96, which is a 4% decrease. Successive percentage changes multiply rather than cancel.",
+      "concept": "Percentages"
+    },
+    {
+      "id": "apt-quant-01-q04",
+      "prompt": "15 is what percent of 60?",
+      "options": [
+        {
+          "id": "A",
+          "text": "15%"
+        },
+        {
+          "id": "B",
+          "text": "25%"
+        },
+        {
+          "id": "C",
+          "text": "40%"
+        },
+        {
+          "id": "D",
+          "text": "20%"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "15 / 60 = 0.25, which is 25%.",
+      "concept": "Percentages"
+    },
+    {
+      "id": "apt-quant-01-q05",
+      "prompt": "Two quantities are in the ratio 4 : 5. If the first is 20, what is the second?",
+      "options": [
+        {
+          "id": "A",
+          "text": "25"
+        },
+        {
+          "id": "B",
+          "text": "16"
+        },
+        {
+          "id": "C",
+          "text": "24"
+        },
+        {
+          "id": "D",
+          "text": "30"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The first quantity 20 is 4 parts, so one part is 5. The second is 5 parts, giving 5 x 5 = 25.",
+      "concept": "Ratios"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "id": "apt-logical-03",
+  "category": "aptitude",
+  "subject": "logical",
+  "order": 9,
+  "title": "Blood Relations & Directions",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-logical-03-q01",
+      "prompt": "A is the father of B, and B is the father of C. How is A related to C?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Father"
+        },
+        {
+          "id": "B",
+          "text": "Uncle"
+        },
+        {
+          "id": "C",
+          "text": "Brother"
+        },
+        {
+          "id": "D",
+          "text": "Grandfather"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A is the father of C's father, which makes A the grandfather of C.",
+      "concept": "Blood Relations"
+    },
+    {
+      "id": "apt-logical-03-q02",
+      "prompt": "You are facing north and turn 90 degrees to your right. Which direction do you now face?",
+      "options": [
+        {
+          "id": "A",
+          "text": "East"
+        },
+        {
+          "id": "B",
+          "text": "West"
+        },
+        {
+          "id": "C",
+          "text": "South"
+        },
+        {
+          "id": "D",
+          "text": "North"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Turning right (clockwise) from north takes you to east.",
+      "concept": "Directions"
+    },
+    {
+      "id": "apt-logical-03-q03",
+      "prompt": "A person walks 5 km north, then 5 km east. In which direction is the endpoint from the starting point?",
+      "options": [
+        {
+          "id": "A",
+          "text": "North-West"
+        },
+        {
+          "id": "B",
+          "text": "North-East"
+        },
+        {
+          "id": "C",
+          "text": "South-East"
+        },
+        {
+          "id": "D",
+          "text": "East"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Moving equally north and then east places the endpoint diagonally up and to the right of the start, which is north-east.",
+      "concept": "Directions"
+    },
+    {
+      "id": "apt-logical-03-q04",
+      "prompt": "Pointing to a man, a woman says, 'His mother is the only daughter of my mother.' How is the woman related to the man?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sister"
+        },
+        {
+          "id": "B",
+          "text": "Mother"
+        },
+        {
+          "id": "C",
+          "text": "Aunt"
+        },
+        {
+          "id": "D",
+          "text": "Grandmother"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The only daughter of the woman's mother is the woman herself, so 'his mother' is the woman. Therefore she is the man's mother.",
+      "concept": "Blood Relations"
+    },
+    {
+      "id": "apt-logical-03-q05",
+      "prompt": "Your mother's brother is your:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Paternal uncle"
+        },
+        {
+          "id": "B",
+          "text": "Cousin"
+        },
+        {
+          "id": "C",
+          "text": "Nephew"
+        },
+        {
+          "id": "D",
+          "text": "Maternal uncle"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A brother on the mother's side is the maternal uncle.",
+      "concept": "Blood Relations"
+    }
+  ]
+}

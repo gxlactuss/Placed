@@ -1,0 +1,136 @@
+{
+  "id": "apt-quant-02",
+  "category": "aptitude",
+  "subject": "quantitative",
+  "order": 2,
+  "title": "Averages & Ages",
+  "difficulty": "easy",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-quant-02-q01",
+      "prompt": "What is the average of 10, 20, 30, 40 and 50?",
+      "options": [
+        {
+          "id": "A",
+          "text": "25"
+        },
+        {
+          "id": "B",
+          "text": "30"
+        },
+        {
+          "id": "C",
+          "text": "35"
+        },
+        {
+          "id": "D",
+          "text": "40"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Their sum is 150, and dividing by the count 5 gives 30.",
+      "concept": "Averages"
+    },
+    {
+      "id": "apt-quant-02-q02",
+      "prompt": "The average of three numbers is 20. Two of them are 15 and 25. What is the third?",
+      "options": [
+        {
+          "id": "A",
+          "text": "25"
+        },
+        {
+          "id": "B",
+          "text": "20"
+        },
+        {
+          "id": "C",
+          "text": "15"
+        },
+        {
+          "id": "D",
+          "text": "30"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The three numbers sum to 3 x 20 = 60. Subtracting 15 and 25 leaves 60 - 40 = 20.",
+      "concept": "Averages"
+    },
+    {
+      "id": "apt-quant-02-q03",
+      "prompt": "A father is 40 and his son is 10. In how many years will the father be twice as old as the son?",
+      "options": [
+        {
+          "id": "A",
+          "text": "15"
+        },
+        {
+          "id": "B",
+          "text": "25"
+        },
+        {
+          "id": "C",
+          "text": "20"
+        },
+        {
+          "id": "D",
+          "text": "10"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "After x years, 40 + x = 2(10 + x), so 40 + x = 20 + 2x, giving x = 20.",
+      "concept": "Ages"
+    },
+    {
+      "id": "apt-quant-02-q04",
+      "prompt": "A is 5 years older than B, and the sum of their ages is 25. How old is A?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10"
+        },
+        {
+          "id": "B",
+          "text": "15"
+        },
+        {
+          "id": "C",
+          "text": "20"
+        },
+        {
+          "id": "D",
+          "text": "12"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "If B is x, then x + (x + 5) = 25, so 2x = 20 and x = 10. A is 10 + 5 = 15.",
+      "concept": "Ages"
+    },
+    {
+      "id": "apt-quant-02-q05",
+      "prompt": "The average of the first five natural numbers (1, 2, 3, 4, 5) is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "2.5"
+        },
+        {
+          "id": "B",
+          "text": "5"
+        },
+        {
+          "id": "C",
+          "text": "15"
+        },
+        {
+          "id": "D",
+          "text": "3"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Their sum is 15, and dividing by 5 gives 3. For consecutive numbers the average is simply the middle value.",
+      "concept": "Averages"
+    }
+  ]
+}

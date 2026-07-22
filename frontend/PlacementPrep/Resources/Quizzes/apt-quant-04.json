@@ -1,0 +1,136 @@
+{
+  "id": "apt-quant-04",
+  "category": "aptitude",
+  "subject": "quantitative",
+  "order": 4,
+  "title": "Time & Work",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-quant-04-q01",
+      "prompt": "A can finish a job in 10 days and B in 15 days. Working together, how long do they take?",
+      "options": [
+        {
+          "id": "A",
+          "text": "12.5 days"
+        },
+        {
+          "id": "B",
+          "text": "6 days"
+        },
+        {
+          "id": "C",
+          "text": "5 days"
+        },
+        {
+          "id": "D",
+          "text": "25 days"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Their combined rate is 1/10 + 1/15 = 3/30 + 2/30 = 5/30 = 1/6 of the job per day, so together they finish in 6 days.",
+      "concept": "Time and Work"
+    },
+    {
+      "id": "apt-quant-04-q02",
+      "prompt": "10 men build a wall in 8 days. How long would 16 men take, working at the same rate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5 days"
+        },
+        {
+          "id": "B",
+          "text": "4 days"
+        },
+        {
+          "id": "C",
+          "text": "6 days"
+        },
+        {
+          "id": "D",
+          "text": "12 days"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The job is 10 x 8 = 80 man-days of work. Dividing among 16 men gives 80 / 16 = 5 days.",
+      "concept": "Time and Work"
+    },
+    {
+      "id": "apt-quant-04-q03",
+      "prompt": "A is twice as fast as B, and together they finish a task in 12 days. How long would A take alone?",
+      "options": [
+        {
+          "id": "A",
+          "text": "24 days"
+        },
+        {
+          "id": "B",
+          "text": "36 days"
+        },
+        {
+          "id": "C",
+          "text": "18 days"
+        },
+        {
+          "id": "D",
+          "text": "8 days"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "If B's rate is r, A's is 2r, so together 3r = 1/12, giving r = 1/36. A's rate is 2/36 = 1/18, so A alone takes 18 days.",
+      "concept": "Time and Work"
+    },
+    {
+      "id": "apt-quant-04-q04",
+      "prompt": "A pipe fills a tank in 6 hours and a drain empties it in 8 hours. With both open, how long to fill the tank?",
+      "options": [
+        {
+          "id": "A",
+          "text": "14 hours"
+        },
+        {
+          "id": "B",
+          "text": "2 hours"
+        },
+        {
+          "id": "C",
+          "text": "24 hours"
+        },
+        {
+          "id": "D",
+          "text": "48 hours"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The net rate is 1/6 - 1/8 = 4/24 - 3/24 = 1/24 of the tank per hour, so it fills in 24 hours.",
+      "concept": "Pipes and Cisterns"
+    },
+    {
+      "id": "apt-quant-04-q05",
+      "prompt": "If a worker completes one third of a job in 5 days, how many days does the whole job take at that rate?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10 days"
+        },
+        {
+          "id": "B",
+          "text": "20 days"
+        },
+        {
+          "id": "C",
+          "text": "8 days"
+        },
+        {
+          "id": "D",
+          "text": "15 days"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "One third takes 5 days, so the full job takes 3 x 5 = 15 days.",
+      "concept": "Time and Work"
+    }
+  ]
+}

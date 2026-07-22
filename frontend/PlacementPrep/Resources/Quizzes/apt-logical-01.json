@@ -1,0 +1,136 @@
+{
+  "id": "apt-logical-01",
+  "category": "aptitude",
+  "subject": "logical",
+  "order": 7,
+  "title": "Number & Letter Series",
+  "difficulty": "easy",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-logical-01-q01",
+      "prompt": "What comes next in the series: 2, 4, 6, 8, ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "9"
+        },
+        {
+          "id": "B",
+          "text": "12"
+        },
+        {
+          "id": "C",
+          "text": "16"
+        },
+        {
+          "id": "D",
+          "text": "10"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Each term increases by 2, so after 8 comes 10.",
+      "concept": "Number Series"
+    },
+    {
+      "id": "apt-logical-01-q02",
+      "prompt": "What comes next: 1, 4, 9, 16, ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "20"
+        },
+        {
+          "id": "B",
+          "text": "24"
+        },
+        {
+          "id": "C",
+          "text": "25"
+        },
+        {
+          "id": "D",
+          "text": "36"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "These are perfect squares: 1, 4, 9, 16 are 1^2, 2^2, 3^2, 4^2, so the next is 5^2 = 25.",
+      "concept": "Number Series"
+    },
+    {
+      "id": "apt-logical-01-q03",
+      "prompt": "What comes next in the letter series: A, C, E, G, ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "H"
+        },
+        {
+          "id": "B",
+          "text": "I"
+        },
+        {
+          "id": "C",
+          "text": "J"
+        },
+        {
+          "id": "D",
+          "text": "F"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The letters skip one each time (every alternate letter), so after G comes I.",
+      "concept": "Letter Series"
+    },
+    {
+      "id": "apt-logical-01-q04",
+      "prompt": "What comes next: 3, 6, 12, 24, ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "48"
+        },
+        {
+          "id": "B",
+          "text": "36"
+        },
+        {
+          "id": "C",
+          "text": "30"
+        },
+        {
+          "id": "D",
+          "text": "72"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each term is double the previous one, so after 24 comes 48.",
+      "concept": "Number Series"
+    },
+    {
+      "id": "apt-logical-01-q05",
+      "prompt": "What comes next in the Fibonacci-style series: 1, 1, 2, 3, 5, ?",
+      "options": [
+        {
+          "id": "A",
+          "text": "8"
+        },
+        {
+          "id": "B",
+          "text": "7"
+        },
+        {
+          "id": "C",
+          "text": "10"
+        },
+        {
+          "id": "D",
+          "text": "6"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Each term is the sum of the two before it, so 3 + 5 = 8.",
+      "concept": "Number Series"
+    }
+  ]
+}

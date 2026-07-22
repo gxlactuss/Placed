@@ -1,0 +1,136 @@
+{
+  "id": "apt-logical-04",
+  "category": "aptitude",
+  "subject": "logical",
+  "order": 10,
+  "title": "Seating & Arrangements",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-logical-04-q01",
+      "prompt": "Five people A, B, C, D, E sit in a row in that order from left to right. Who is in the middle?",
+      "options": [
+        {
+          "id": "A",
+          "text": "B"
+        },
+        {
+          "id": "B",
+          "text": "C"
+        },
+        {
+          "id": "C",
+          "text": "D"
+        },
+        {
+          "id": "D",
+          "text": "A"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "In a row of five, the third position is the middle, which is occupied by C.",
+      "concept": "Seating"
+    },
+    {
+      "id": "apt-logical-04-q02",
+      "prompt": "Six people sit evenly around a circular table numbered 1 to 6 in order. Which seat is directly opposite seat 1?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Seat 3"
+        },
+        {
+          "id": "B",
+          "text": "Seat 5"
+        },
+        {
+          "id": "C",
+          "text": "Seat 6"
+        },
+        {
+          "id": "D",
+          "text": "Seat 4"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "With six evenly spaced seats, the opposite seat is three positions away, so 1 + 3 = seat 4.",
+      "concept": "Circular Seating"
+    },
+    {
+      "id": "apt-logical-04-q03",
+      "prompt": "In a row of 5 people, P is second from the left. What is P's position from the right?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Fourth"
+        },
+        {
+          "id": "B",
+          "text": "Third"
+        },
+        {
+          "id": "C",
+          "text": "Second"
+        },
+        {
+          "id": "D",
+          "text": "Fifth"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Position from the right = total + 1 - position from the left = 5 + 1 - 2 = 4.",
+      "concept": "Positions"
+    },
+    {
+      "id": "apt-logical-04-q04",
+      "prompt": "A is taller than B, and B is taller than C. Who is the tallest?",
+      "options": [
+        {
+          "id": "A",
+          "text": "B"
+        },
+        {
+          "id": "B",
+          "text": "C"
+        },
+        {
+          "id": "C",
+          "text": "Cannot be determined"
+        },
+        {
+          "id": "D",
+          "text": "A"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Since A is taller than B and B is taller than C, A is taller than both, so A is the tallest.",
+      "concept": "Ranking"
+    },
+    {
+      "id": "apt-logical-04-q05",
+      "prompt": "In a row, A sits immediately to the left of B, and B immediately to the left of C. Who is at the rightmost of these three?",
+      "options": [
+        {
+          "id": "A",
+          "text": "A"
+        },
+        {
+          "id": "B",
+          "text": "B"
+        },
+        {
+          "id": "C",
+          "text": "C"
+        },
+        {
+          "id": "D",
+          "text": "Cannot be determined"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The order left to right is A, B, C, so C is the rightmost.",
+      "concept": "Seating"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "id": "apt-verbal-02",
+  "category": "aptitude",
+  "subject": "verbal",
+  "order": 13,
+  "title": "Grammar & Sentence Correction",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-verbal-02-q01",
+      "prompt": "Choose the grammatically correct sentence:",
+      "options": [
+        {
+          "id": "A",
+          "text": "She has been working here for 2020."
+        },
+        {
+          "id": "B",
+          "text": "She has been working here since 2020."
+        },
+        {
+          "id": "C",
+          "text": "She is working here since 2020."
+        },
+        {
+          "id": "D",
+          "text": "She working here since 2020."
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Present perfect continuous with 'since' plus a point in time (2020) is correct. 'For' is used with durations, and the other options misuse the tense.",
+      "concept": "Tenses"
+    },
+    {
+      "id": "apt-verbal-02-q02",
+      "prompt": "Fill in the blank: 'Each of the students ___ submitted the assignment.'",
+      "options": [
+        {
+          "id": "A",
+          "text": "has"
+        },
+        {
+          "id": "B",
+          "text": "have"
+        },
+        {
+          "id": "C",
+          "text": "were"
+        },
+        {
+          "id": "D",
+          "text": "are"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "'Each' is singular, so it takes the singular verb 'has' regardless of the plural noun that follows.",
+      "concept": "Subject-Verb Agreement"
+    },
+    {
+      "id": "apt-verbal-02-q03",
+      "prompt": "Choose the correct sentence:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Neither the manager nor the employees were informed."
+        },
+        {
+          "id": "B",
+          "text": "Neither the manager nor the employees was informed."
+        },
+        {
+          "id": "C",
+          "text": "Neither the manager or the employees were informed."
+        },
+        {
+          "id": "D",
+          "text": "Neither the manager nor the employees is informed."
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "With 'neither...nor', the verb agrees with the nearer subject. 'Employees' is plural, so 'were' is correct, and 'nor' is the right correlative.",
+      "concept": "Subject-Verb Agreement"
+    },
+    {
+      "id": "apt-verbal-02-q04",
+      "prompt": "Fill in the blank: 'If I ___ you, I would accept the offer.'",
+      "options": [
+        {
+          "id": "A",
+          "text": "was"
+        },
+        {
+          "id": "B",
+          "text": "am"
+        },
+        {
+          "id": "C",
+          "text": "be"
+        },
+        {
+          "id": "D",
+          "text": "were"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "In a hypothetical conditional, the subjunctive 'were' is used with all subjects, so 'If I were you' is correct.",
+      "concept": "Conditionals"
+    },
+    {
+      "id": "apt-verbal-02-q05",
+      "prompt": "Choose the correct preposition: 'She is good ___ mathematics.'",
+      "options": [
+        {
+          "id": "A",
+          "text": "in"
+        },
+        {
+          "id": "B",
+          "text": "on"
+        },
+        {
+          "id": "C",
+          "text": "with"
+        },
+        {
+          "id": "D",
+          "text": "at"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The idiomatic phrase is 'good at' when describing skill in a subject or activity.",
+      "concept": "Prepositions"
+    }
+  ]
+}

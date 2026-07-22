@@ -1,0 +1,136 @@
+{
+  "id": "apt-quant-03",
+  "category": "aptitude",
+  "subject": "quantitative",
+  "order": 3,
+  "title": "Time, Speed & Distance",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-quant-03-q01",
+      "prompt": "A car travels at 60 km/h for 2.5 hours. How far does it go?",
+      "options": [
+        {
+          "id": "A",
+          "text": "120 km"
+        },
+        {
+          "id": "B",
+          "text": "150 km"
+        },
+        {
+          "id": "C",
+          "text": "180 km"
+        },
+        {
+          "id": "D",
+          "text": "125 km"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Distance = speed x time = 60 x 2.5 = 150 km.",
+      "concept": "Speed"
+    },
+    {
+      "id": "apt-quant-03-q02",
+      "prompt": "A 120 m long train moving at 72 km/h crosses a pole in how many seconds?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6"
+        },
+        {
+          "id": "B",
+          "text": "10"
+        },
+        {
+          "id": "C",
+          "text": "12"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "72 km/h is 72 x 1000 / 3600 = 20 m/s. To pass a pole the train covers its own length, so 120 / 20 = 6 seconds.",
+      "concept": "Trains"
+    },
+    {
+      "id": "apt-quant-03-q03",
+      "prompt": "Two trains move toward each other at 60 km/h and 40 km/h. What is their relative speed?",
+      "options": [
+        {
+          "id": "A",
+          "text": "20 km/h"
+        },
+        {
+          "id": "B",
+          "text": "50 km/h"
+        },
+        {
+          "id": "C",
+          "text": "100 km/h"
+        },
+        {
+          "id": "D",
+          "text": "2400 km/h"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "For objects moving toward each other, relative speed is the sum: 60 + 40 = 100 km/h. Moving in the same direction, it would be the difference.",
+      "concept": "Relative Speed"
+    },
+    {
+      "id": "apt-quant-03-q04",
+      "prompt": "A train 150 m long travelling at 20 m/s crosses a platform 350 m long in how many seconds?",
+      "options": [
+        {
+          "id": "A",
+          "text": "17.5"
+        },
+        {
+          "id": "B",
+          "text": "25"
+        },
+        {
+          "id": "C",
+          "text": "20"
+        },
+        {
+          "id": "D",
+          "text": "30"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "To clear a platform the train covers its own length plus the platform: 150 + 350 = 500 m. At 20 m/s that takes 500 / 20 = 25 seconds.",
+      "concept": "Trains"
+    },
+    {
+      "id": "apt-quant-03-q05",
+      "prompt": "A person covers 300 km in 5 hours. What is the average speed?",
+      "options": [
+        {
+          "id": "A",
+          "text": "50 km/h"
+        },
+        {
+          "id": "B",
+          "text": "75 km/h"
+        },
+        {
+          "id": "C",
+          "text": "65 km/h"
+        },
+        {
+          "id": "D",
+          "text": "60 km/h"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Average speed = total distance / total time = 300 / 5 = 60 km/h.",
+      "concept": "Speed"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "id": "apt-verbal-01",
+  "category": "aptitude",
+  "subject": "verbal",
+  "order": 12,
+  "title": "Synonyms & Antonyms",
+  "difficulty": "easy",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-verbal-01-q01",
+      "prompt": "Choose the word most similar in meaning to 'Abundant':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Plentiful"
+        },
+        {
+          "id": "B",
+          "text": "Scarce"
+        },
+        {
+          "id": "C",
+          "text": "Empty"
+        },
+        {
+          "id": "D",
+          "text": "Tiny"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "'Abundant' means existing in large quantities, which is the same as 'plentiful'.",
+      "concept": "Synonyms"
+    },
+    {
+      "id": "apt-verbal-01-q02",
+      "prompt": "Choose the word most opposite in meaning to 'Ancient':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Modern"
+        },
+        {
+          "id": "B",
+          "text": "Old"
+        },
+        {
+          "id": "C",
+          "text": "Historic"
+        },
+        {
+          "id": "D",
+          "text": "Aged"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "'Ancient' means very old, so its antonym is 'modern', meaning of the present time.",
+      "concept": "Antonyms"
+    },
+    {
+      "id": "apt-verbal-01-q03",
+      "prompt": "Choose the synonym of 'Brave':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Fearful"
+        },
+        {
+          "id": "B",
+          "text": "Courageous"
+        },
+        {
+          "id": "C",
+          "text": "Weak"
+        },
+        {
+          "id": "D",
+          "text": "Timid"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "'Brave' and 'courageous' both describe someone who faces danger without fear.",
+      "concept": "Synonyms"
+    },
+    {
+      "id": "apt-verbal-01-q04",
+      "prompt": "Choose the antonym of 'Expand':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Grow"
+        },
+        {
+          "id": "B",
+          "text": "Enlarge"
+        },
+        {
+          "id": "C",
+          "text": "Contract"
+        },
+        {
+          "id": "D",
+          "text": "Stretch"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "'Expand' means to grow larger, so its opposite is 'contract', meaning to become smaller.",
+      "concept": "Antonyms"
+    },
+    {
+      "id": "apt-verbal-01-q05",
+      "prompt": "Choose the synonym of 'Rapid':",
+      "options": [
+        {
+          "id": "A",
+          "text": "Slow"
+        },
+        {
+          "id": "B",
+          "text": "Steady"
+        },
+        {
+          "id": "C",
+          "text": "Late"
+        },
+        {
+          "id": "D",
+          "text": "Quick"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "'Rapid' means happening fast, which is the same as 'quick'.",
+      "concept": "Synonyms"
+    }
+  ]
+}

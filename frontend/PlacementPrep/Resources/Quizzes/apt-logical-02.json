@@ -1,0 +1,136 @@
+{
+  "id": "apt-logical-02",
+  "category": "aptitude",
+  "subject": "logical",
+  "order": 8,
+  "title": "Analogies & Classification",
+  "difficulty": "easy",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-logical-02-q01",
+      "prompt": "Hand is to Glove as Foot is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Leg"
+        },
+        {
+          "id": "B",
+          "text": "Toe"
+        },
+        {
+          "id": "C",
+          "text": "Shoe"
+        },
+        {
+          "id": "D",
+          "text": "Hat"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A glove is worn on the hand, just as a shoe is worn on the foot. The relationship is a covering worn on that body part.",
+      "concept": "Analogies"
+    },
+    {
+      "id": "apt-logical-02-q02",
+      "prompt": "Which one does NOT belong: Rose, Lily, Mango, Jasmine?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Rose"
+        },
+        {
+          "id": "B",
+          "text": "Mango"
+        },
+        {
+          "id": "C",
+          "text": "Lily"
+        },
+        {
+          "id": "D",
+          "text": "Jasmine"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Rose, Lily and Jasmine are flowers, whereas Mango is a fruit, so it is the odd one out.",
+      "concept": "Classification"
+    },
+    {
+      "id": "apt-logical-02-q03",
+      "prompt": "Doctor is to Hospital as Teacher is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Book"
+        },
+        {
+          "id": "B",
+          "text": "Student"
+        },
+        {
+          "id": "C",
+          "text": "Lesson"
+        },
+        {
+          "id": "D",
+          "text": "School"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A doctor works in a hospital, just as a teacher works in a school. The relationship is a professional and their workplace.",
+      "concept": "Analogies"
+    },
+    {
+      "id": "apt-logical-02-q04",
+      "prompt": "Puppy is to Dog as Kitten is to:",
+      "options": [
+        {
+          "id": "A",
+          "text": "Mouse"
+        },
+        {
+          "id": "B",
+          "text": "Cub"
+        },
+        {
+          "id": "C",
+          "text": "Cat"
+        },
+        {
+          "id": "D",
+          "text": "Pet"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A puppy is the young of a dog, and a kitten is the young of a cat.",
+      "concept": "Analogies"
+    },
+    {
+      "id": "apt-logical-02-q05",
+      "prompt": "Which number does NOT belong: 2, 3, 5, 9, 11?",
+      "options": [
+        {
+          "id": "A",
+          "text": "3"
+        },
+        {
+          "id": "B",
+          "text": "9"
+        },
+        {
+          "id": "C",
+          "text": "5"
+        },
+        {
+          "id": "D",
+          "text": "11"
+        }
+      ],
+      "correct_option_id": "B",
+      "explanation": "2, 3, 5 and 11 are prime numbers, but 9 = 3 x 3 is composite, so it is the odd one out.",
+      "concept": "Classification"
+    }
+  ]
+}

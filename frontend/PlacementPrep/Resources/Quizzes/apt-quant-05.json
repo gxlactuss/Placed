@@ -1,0 +1,136 @@
+{
+  "id": "apt-quant-05",
+  "category": "aptitude",
+  "subject": "quantitative",
+  "order": 5,
+  "title": "Profit, Loss & Interest",
+  "difficulty": "hard",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-quant-05-q01",
+      "prompt": "An item costing 100 is sold for 125. What is the profit percentage?",
+      "options": [
+        {
+          "id": "A",
+          "text": "20%"
+        },
+        {
+          "id": "B",
+          "text": "12.5%"
+        },
+        {
+          "id": "C",
+          "text": "25%"
+        },
+        {
+          "id": "D",
+          "text": "125%"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Profit is 125 - 100 = 25, and profit percentage is profit over cost, so 25 / 100 = 25%.",
+      "concept": "Profit and Loss"
+    },
+    {
+      "id": "apt-quant-05-q02",
+      "prompt": "An article sold for 900 incurs a 10% loss. What was its cost price?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1000"
+        },
+        {
+          "id": "B",
+          "text": "990"
+        },
+        {
+          "id": "C",
+          "text": "810"
+        },
+        {
+          "id": "D",
+          "text": "1100"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A 10% loss means the selling price is 90% of cost, so cost = 900 / 0.9 = 1000.",
+      "concept": "Profit and Loss"
+    },
+    {
+      "id": "apt-quant-05-q03",
+      "prompt": "What is the simple interest on 1000 at 5% per annum for 2 years?",
+      "options": [
+        {
+          "id": "A",
+          "text": "50"
+        },
+        {
+          "id": "B",
+          "text": "110"
+        },
+        {
+          "id": "C",
+          "text": "100"
+        },
+        {
+          "id": "D",
+          "text": "200"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Simple interest = principal x rate x time / 100 = 1000 x 5 x 2 / 100 = 100.",
+      "concept": "Simple Interest"
+    },
+    {
+      "id": "apt-quant-05-q04",
+      "prompt": "The compound interest on 1000 at 10% per annum for 2 years (compounded annually) is:",
+      "options": [
+        {
+          "id": "A",
+          "text": "200"
+        },
+        {
+          "id": "B",
+          "text": "100"
+        },
+        {
+          "id": "C",
+          "text": "220"
+        },
+        {
+          "id": "D",
+          "text": "210"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The amount is 1000 x 1.1 x 1.1 = 1210, so the interest is 1210 - 1000 = 210. The extra 10 over simple interest is interest earned on the first year's interest.",
+      "concept": "Compound Interest"
+    },
+    {
+      "id": "apt-quant-05-q05",
+      "prompt": "Two items are sold at the same price; one at a 10% profit and the other at a 10% loss. What is the overall result?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No profit or loss"
+        },
+        {
+          "id": "B",
+          "text": "A 1% profit"
+        },
+        {
+          "id": "C",
+          "text": "A 1% loss"
+        },
+        {
+          "id": "D",
+          "text": "A 10% loss"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "When the selling prices are equal, equal percentage profit and loss always give a net loss of (10 x 10)/100 = 1%. The loss-making item had a higher cost, which tips the balance.",
+      "concept": "Profit and Loss"
+    }
+  ]
+}

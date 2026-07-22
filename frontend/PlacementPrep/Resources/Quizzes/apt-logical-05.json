@@ -1,0 +1,136 @@
+{
+  "id": "apt-logical-05",
+  "category": "aptitude",
+  "subject": "logical",
+  "order": 11,
+  "title": "Syllogisms & Statements",
+  "difficulty": "hard",
+  "pass_mark": 0.6,
+  "questions": [
+    {
+      "id": "apt-logical-05-q01",
+      "prompt": "All cats are animals. All animals are living things. Which conclusion follows?",
+      "options": [
+        {
+          "id": "A",
+          "text": "All living things are cats"
+        },
+        {
+          "id": "B",
+          "text": "Some animals are not living things"
+        },
+        {
+          "id": "C",
+          "text": "All cats are living things"
+        },
+        {
+          "id": "D",
+          "text": "No cat is a living thing"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Chaining the two universal statements, every cat is an animal and every animal is a living thing, so every cat is a living thing. The reverse claim about living things does not follow.",
+      "concept": "Syllogisms"
+    },
+    {
+      "id": "apt-logical-05-q02",
+      "prompt": "All books are papers. Some pens are books. Which conclusion follows?",
+      "options": [
+        {
+          "id": "A",
+          "text": "All pens are papers"
+        },
+        {
+          "id": "B",
+          "text": "No pen is a paper"
+        },
+        {
+          "id": "C",
+          "text": "Some pens are papers"
+        },
+        {
+          "id": "D",
+          "text": "All papers are pens"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The pens that are books must be papers, since all books are papers, so at least some pens are papers. Nothing forces all pens to be papers.",
+      "concept": "Syllogisms"
+    },
+    {
+      "id": "apt-logical-05-q03",
+      "prompt": "All roses are flowers. Some flowers fade quickly. Does 'Some roses fade quickly' follow?",
+      "options": [
+        {
+          "id": "A",
+          "text": "Yes, it definitely follows"
+        },
+        {
+          "id": "B",
+          "text": "Yes, all roses fade quickly"
+        },
+        {
+          "id": "C",
+          "text": "No, no rose fades quickly"
+        },
+        {
+          "id": "D",
+          "text": "No, it cannot be concluded"
+        }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The flowers that fade quickly might all be non-roses, so nothing links roses to fading. The conclusion is possible but not guaranteed, so it does not follow.",
+      "concept": "Syllogisms"
+    },
+    {
+      "id": "apt-logical-05-q04",
+      "prompt": "No dog is a cat. All cats are pets. Which conclusion follows?",
+      "options": [
+        {
+          "id": "A",
+          "text": "No pet is a dog"
+        },
+        {
+          "id": "B",
+          "text": "All pets are cats"
+        },
+        {
+          "id": "C",
+          "text": "Some pets are not dogs"
+        },
+        {
+          "id": "D",
+          "text": "All dogs are pets"
+        }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Cats are pets and no cat is a dog, so those cats are pets that are not dogs — hence some pets are not dogs. Dogs could still be pets, so 'no pet is a dog' is too strong.",
+      "concept": "Syllogisms"
+    },
+    {
+      "id": "apt-logical-05-q05",
+      "prompt": "If it rains, the ground gets wet. The ground is not wet. What can be concluded?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It did not rain"
+        },
+        {
+          "id": "B",
+          "text": "It rained"
+        },
+        {
+          "id": "C",
+          "text": "It might have rained"
+        },
+        {
+          "id": "D",
+          "text": "Nothing can be concluded"
+        }
+      ],
+      "correct_option_id": "A",
+      "explanation": "If rain always makes the ground wet, then a dry ground proves it did not rain. This valid form is called modus tollens — denying the consequent denies the antecedent.",
+      "concept": "Logical Deduction"
+    }
+  ]
+}

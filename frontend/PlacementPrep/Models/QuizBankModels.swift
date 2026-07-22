@@ -68,6 +68,7 @@ enum Subject: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
     case dataStructures = "data-structures"
     case quantitative
     case logical
+    case verbal
     /// Cross-cutting CS topics that do not belong to one named subject —
     /// theory of computation, compilers, architecture, digital logic, OOP.
     case general
@@ -87,6 +88,7 @@ enum Subject: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
         case .dataStructures: "Data Structures"
         case .quantitative: "Quantitative"
         case .logical: "Logical Reasoning"
+        case .verbal: "Verbal Ability"
         case .general: "General CS"
         case .mixed: "Related Concepts"
         }
