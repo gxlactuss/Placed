@@ -74,4 +74,13 @@ struct DSACompany: Identifiable, Hashable, Sendable {
     var id: String { name.lowercased() }
     let name: String
     let fileURL: URL
+
+    /// The subset that recruited on KJSIT's 2025-26 campus. Surfaced with a
+    /// green tag in the list so students can spot the companies that actually
+    /// visited, among the ~470 generic ones.
+    static let kjsitRecruiters: Set<String> = [
+        "deloitte", "media.net", "idfc first bank", "accenture", "ltimindtree",
+    ]
+
+    var isKJSITRecruiter: Bool { Self.kjsitRecruiters.contains(id) }
 }

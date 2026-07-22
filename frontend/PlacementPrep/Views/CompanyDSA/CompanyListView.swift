@@ -5,6 +5,7 @@ import SwiftUI
 struct CompanyListView: View {
 
     @Environment(CompanyBank.self) private var bank
+    @Environment(SolvedStore.self) private var solved
     @State private var query = ""
 
     var body: some View {
@@ -23,6 +24,7 @@ struct CompanyListView: View {
             .toolbar(.hidden, for: .navigationBar)
             .foregroundStyle(Color.ppText)
             .ppScreenBackground()
+            .task { await bank.loadCatalogIfNeeded() }
         }
     }
 
@@ -31,11 +33,53 @@ struct CompanyListView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: PPSpacing.lg) {
             Text("LeetCode").font(.ppDisplay)
+            overviewCard
             PPSearchField(placeholder: "Search companies", text: $query)
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.top, PPSpacing.lg)
         .padding(.bottom, PPSpacing.md)
+    }
+
+    /// Combined progress across every distinct problem in the bank. Deduped by
+    /// slug in `CompanyBank.catalog`, so solving "Two Sum" advances this once no
+    /// matter how many company lists carry it.
+    private var overviewCard: some View {
+        PPCard(padding: PPSpacing.lg) {
+            VStack(alignment: .leading, spacing: PPSpacing.md) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text("Overall progress").font(.ppBodyMedium)
+                    Spacer()
+                    if bank.isCatalogReady {
+                        Text("\(stats.solved) / \(stats.total) solved")
+                            .font(.ppCaption)
+                            .foregroundStyle(Color.ppMuted)
+                            .contentTransition(.numericText())
+                    }
+                }
+
+                PPProgressBar(
+                    progress: stats.total == 0 ? 0 : Double(stats.solved) / Double(stats.total)
+                )
+
+                if bank.isCatalogReady {
+                    HStack(spacing: PPSpacing.lg) {
+                        ForEach(DSADifficulty.allCases) { level in
+                            HStack(spacing: 5) {
+                                Circle().fill(level.accent).frame(width: 7, height: 7)
+                                Text("\(stats.solvedByLevel[level, default: 0])/\(bank.catalogTotals[level, default: 0]) \(level.title)")
+                                    .font(.ppMicro)
+                                    .foregroundStyle(Color.ppMuted)
+                            }
+                        }
+                    }
+                } else {
+                    Text("Calculating…")
+                        .font(.ppMicro)
+                        .foregroundStyle(Color.ppMuted)
+                }
+            }
+        }
     }
 
     private var list: some View {
@@ -50,6 +94,10 @@ struct CompanyListView: View {
                                 Text(company.name)
                                     .font(.ppBodyMedium)
                                     .foregroundStyle(Color.ppText)
+
+                                if company.isKJSITRecruiter {
+                                    PPBadge("KJSIT", tone: .tinted(.ppEasy))
+                                }
 
                                 Spacer(minLength: PPSpacing.sm)
 
@@ -69,6 +117,17 @@ struct CompanyListView: View {
         .navigationDestination(for: DSACompany.self) { company in
             CompanyQuestionsView(company: company)
         }
+    }
+
+    /// One pass over the deduped catalog: total, solved, and solved-per-level.
+    private var stats: (total: Int, solved: Int, solvedByLevel: [DSADifficulty: Int]) {
+        var solvedByLevel: [DSADifficulty: Int] = [:]
+        var solvedTotal = 0
+        for (slug, level) in bank.catalog where solved.isSolved(slug) {
+            solvedTotal += 1
+            solvedByLevel[level, default: 0] += 1
+        }
+        return (bank.catalog.count, solvedTotal, solvedByLevel)
     }
 
     private var filtered: [DSACompany] {

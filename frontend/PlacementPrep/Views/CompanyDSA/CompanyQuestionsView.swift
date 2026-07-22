@@ -138,7 +138,11 @@ struct CompanyQuestionsView: View {
                 PPCheckbox(
                     isOn: Binding(
                         get: { isSolved },
-                        set: { _ in solved.toggle(problem.id) }
+                        set: { _ in
+                            // Animate so the row slides down to the solved
+                            // section (or back up) rather than jumping.
+                            withAnimation(PPMotion.settle) { solved.toggle(problem.id) }
+                        }
                     )
                 )
 
@@ -192,7 +196,17 @@ struct CompanyQuestionsView: View {
             }
         }
 
-        return result
+        // Solved problems sink to the bottom, keeping the app-wide "done, move
+        // on" feel. Each group stays in its original frequency order — the
+        // enumerated offset is a stable tiebreaker, since `sorted` is not stable.
+        return result.enumerated()
+            .sorted { lhs, rhs in
+                let lSolved = solved.isSolved(lhs.element.id)
+                let rSolved = solved.isSolved(rhs.element.id)
+                if lSolved != rSolved { return !lSolved }
+                return lhs.offset < rhs.offset
+            }
+            .map(\.element)
     }
 
     private var solvedTotal: Int { solved.solvedCount(in: problems) }
