@@ -9,6 +9,7 @@ struct QuizView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(QuizProgressStore.self) private var progress
+    @Environment(SavedQuestionsStore.self) private var saved
     @State private var model: QuizSessionModel
 
     init(quiz: Quiz) {
@@ -101,9 +102,25 @@ struct QuizView: View {
             .padding(.horizontal, PPSpacing.md)
             .frame(height: 30)
             .background(Color.ppSurface, in: .capsule)
+
+            saveButton
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.vertical, PPSpacing.md)
+    }
+
+    /// Bookmarks the current question for review on the Saved page. Filled and
+    /// accent-tinted once saved.
+    private var saveButton: some View {
+        let isSaved = saved.isSaved(model.current.id)
+        return PPIconButton(
+            systemName: isSaved ? "bookmark.fill" : "bookmark",
+            diameter: 36,
+            tint: isSaved ? .ppAccent : .ppText
+        ) {
+            withAnimation(PPMotion.snappy) { saved.toggle(model.current.id) }
+        }
+        .accessibilityLabel(isSaved ? "Saved" : "Save question")
     }
 
     private var progressHeader: some View {
@@ -177,6 +194,7 @@ struct QuizView: View {
     if let quiz = QuizBank().quizzes(in: .aptitude).first {
         QuizView(quiz: quiz)
             .environment(QuizProgressStore.preview())
+            .environment(SavedQuestionsStore.preview())
     } else {
         Text("No quiz JSON bundled").ppScreenBackground()
     }

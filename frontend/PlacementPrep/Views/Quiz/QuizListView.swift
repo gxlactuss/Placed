@@ -136,4 +136,5 @@ struct QuizListView: View {
     }
     .environment(QuizBank())
     .environment(QuizProgressStore.preview())
+    .environment(SavedQuestionsStore.preview())
 }

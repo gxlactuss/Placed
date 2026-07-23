@@ -43,4 +43,5 @@ struct DashboardView: View {
         .environment(SolvedStore.preview())
         .environment(QuizBank())
         .environment(QuizProgressStore.preview())
+        .environment(SavedQuestionsStore.preview())
 }

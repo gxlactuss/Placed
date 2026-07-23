@@ -11,6 +11,7 @@ struct HomeView: View {
     @Environment(CompanyBank.self) private var companyBank
 
     @State private var showThemeSheet = false
+    @State private var showSavedSheet = false
 
     var body: some View {
         ScrollView {
@@ -31,6 +32,7 @@ struct HomeView: View {
         // count; it runs once, off the main actor, and flips the card when ready.
         .task { await companyBank.loadCatalogIfNeeded() }
         .sheet(isPresented: $showThemeSheet) { ThemePickerView() }
+        .sheet(isPresented: $showSavedSheet) { SavedQuestionsView() }
     }
 
     // MARK: - Top bar
@@ -44,6 +46,11 @@ struct HomeView: View {
             // Tapping the avatar opens the profile menu. It holds just the theme
             // switcher today; account/settings items land here later.
             Menu {
+                Button {
+                    showSavedSheet = true
+                } label: {
+                    Label("Saved questions", systemImage: "bookmark")
+                }
                 Button {
                     showThemeSheet = true
                 } label: {

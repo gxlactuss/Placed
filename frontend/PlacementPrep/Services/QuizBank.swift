@@ -32,6 +32,24 @@ final class QuizBank {
         quizzes.first { $0.id == id }
     }
 
+    /// Resolves saved question ids back to their content and originating quiz,
+    /// dropping any id whose quiz is no longer bundled. Grouped by category then
+    /// quiz order, so the saved list reads in the same order the quizzes do.
+    /// O(all questions) — fine for the ~675-question bank on a page open.
+    func savedQuestions(ids: Set<String>) -> [SavedQuestion] {
+        guard !ids.isEmpty else { return [] }
+        let ordered = quizzes.sorted {
+            $0.category.rawValue != $1.category.rawValue
+                ? $0.category.rawValue < $1.category.rawValue
+                : $0.order < $1.order
+        }
+        return ordered.flatMap { quiz in
+            quiz.questions
+                .filter { ids.contains($0.id) }
+                .map { SavedQuestion(quiz: quiz, question: $0) }
+        }
+    }
+
     private static func load(from bundle: Bundle) -> ([Quiz], [String]) {
         let urls = bundle.urls(forResourcesWithExtension: "json", subdirectory: "Quizzes")
             ?? bundle.urls(forResourcesWithExtension: "json", subdirectory: nil)

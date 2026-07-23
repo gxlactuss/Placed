@@ -114,12 +114,13 @@ Visual conventions worth keeping: depth comes from hairline borders, not shadows
 
 ### Frontend data layer
 
-Four `@MainActor @Observable` stores are owned as `@State` in `PlacementPrepApp` and injected with `.environment(...)`; views read them with `@Environment(QuizBank.self)` etc. Previews construct their own throwaway instances, so `#Preview`s never touch real data or `UserDefaults`.
+Five `@MainActor @Observable` stores are owned as `@State` in `PlacementPrepApp` and injected with `.environment(...)`; views read them with `@Environment(QuizBank.self)` etc. Previews construct their own throwaway instances, so `#Preview`s never touch real data or `UserDefaults`. Note these are inherited by sheets and `fullScreenCover`s (e.g. `QuizView` reads them inside its cover), so presented screens don't re-inject.
 
 - `QuizBank` — decodes every `Resources/Quizzes/*.json` once at launch. **One file per quiz** (adding quiz 07 means adding a file, touching nothing else). Decode failures are collected into `loadFailures` rather than silently shortening the list.
 - `CompanyBank` — lists companies from **filenames alone** (opening the picker parses nothing); a company's CSV is parsed off the main actor on first open and cached. Also builds a deduped `catalog` (each LeetCode slug counted once across all ~38 lists) for global progress totals.
 - `QuizProgressStore` — best score per quiz in `UserDefaults`, and the **pass-to-unlock** progression: quiz 1 is always open, quiz N opens when N−1 is passed. ⚠️ `unlockAllForTesting` is currently `true`, so every quiz reports unlocked; flip it to `false` to restore the real gate (saved scores survive).
 - `SolvedStore` — set of solved LeetCode slugs in `UserDefaults`. Keyed by slug, so solving "Two Sum" marks it solved in every company list that carries it.
+- `SavedQuestionsStore` — set of bookmarked `Question.id`s in `UserDefaults` (same shape as `SolvedStore`). The bookmark control lives top-right of the quiz session; `QuizBank.savedQuestions(ids:)` resolves the ids back to live questions for the Saved page (`Views/Saved/SavedQuestionsView.swift`), opened from the Home avatar menu next to Themes.
 
 Shape and parsing rules that are load-bearing:
 

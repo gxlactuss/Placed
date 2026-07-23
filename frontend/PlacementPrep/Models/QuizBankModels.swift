@@ -198,3 +198,12 @@ struct QuizListItem: Identifiable, Hashable, Sendable {
     var id: String { quiz.id }
     var isPassed: Bool { (bestScore ?? 0) >= quiz.passPercentage }
 }
+
+/// A bookmarked question resolved back to its content and the quiz it came from,
+/// which is what the saved-questions page renders.
+struct SavedQuestion: Identifiable, Hashable, Sendable {
+    let quiz: Quiz
+    let question: Question
+
+    var id: String { question.id }
+}

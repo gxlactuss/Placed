@@ -8,6 +8,7 @@ struct PlacementPrepApp: App {
     @State private var solvedStore = SolvedStore()
     @State private var quizBank = QuizBank()
     @State private var quizProgress = QuizProgressStore()
+    @State private var savedQuestions = SavedQuestionsStore()
     /// The active theme drives every `Color.pp*` token; reading it here also
     /// keeps the scene's colour scheme in step with the chosen theme.
     @Bindable private var theme = ThemeStore.shared
@@ -26,6 +27,7 @@ struct PlacementPrepApp: App {
                 .environment(solvedStore)
                 .environment(quizBank)
                 .environment(quizProgress)
+                .environment(savedQuestions)
                 .preferredColorScheme(theme.activeTheme.palette.colorScheme)
         }
         // Catch a day/night boundary that passed while the app was suspended.
