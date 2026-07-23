@@ -54,7 +54,7 @@ struct PPSegmentedChips<ID: Hashable>: View {
         } label: {
             Text(item.title)
                 .font(.ppCaption)
-                .foregroundStyle(isSelected ? Color.ppGround : Color.ppText)
+                .foregroundStyle(isSelected ? Color.ppOnAccent : Color.ppText)
                 .padding(.horizontal, PPSpacing.lg)
                 .frame(height: 36)
                 .background {

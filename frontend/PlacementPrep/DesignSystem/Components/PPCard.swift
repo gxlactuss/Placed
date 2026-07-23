@@ -17,8 +17,8 @@ struct PPCard<Content: View>: View {
         case surface
         /// A card nested inside another surface, or a selected row.
         case elevated
-        /// The solid amber hero card. Content inside must use ink
-        /// (`Color.ppGround`) for text, not the usual light palette.
+        /// The solid accent hero card. Content inside must use the accent's ink
+        /// (`Color.ppOnAccent`) for text, not the usual light palette.
         case accent
     }
 
@@ -77,8 +77,8 @@ extension ButtonStyle where Self == PPPressableStyle {
                     .init(value: "78%", label: "Avg score"),
                     .init(value: "6", label: "Interviews"),
                 ],
-                valueColor: .ppGround,
-                labelColor: Color.ppGround.opacity(0.65)
+                valueColor: .ppOnAccent,
+                labelColor: Color.ppOnAccent.opacity(0.65)
             )
         }
 

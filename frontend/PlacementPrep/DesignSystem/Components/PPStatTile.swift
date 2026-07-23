@@ -86,8 +86,8 @@ struct PPStatRow: View {
                     .init(value: "78%", label: "Avg score"),
                     .init(value: "6", label: "Interviews"),
                 ],
-                valueColor: .ppGround,
-                labelColor: Color.ppGround.opacity(0.65)
+                valueColor: .ppOnAccent,
+                labelColor: Color.ppOnAccent.opacity(0.65)
             )
         }
 

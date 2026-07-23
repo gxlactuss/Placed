@@ -85,7 +85,7 @@ struct PPFilterChip: View {
         Button(action: action) {
             Text(title)
                 .font(.ppCaption)
-                .foregroundStyle(isSelected ? Color.ppGround : Color.ppText)
+                .foregroundStyle(isSelected ? Color.ppOnAccent : Color.ppText)
                 .padding(.horizontal, PPSpacing.lg)
                 .frame(height: 36)
                 .background(isSelected ? Color.ppAccent400 : Color.ppSurface, in: .capsule)

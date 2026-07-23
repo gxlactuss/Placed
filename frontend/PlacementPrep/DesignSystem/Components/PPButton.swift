@@ -34,7 +34,7 @@ struct PPButtonStyle: ButtonStyle {
 
     private var foreground: Color {
         switch variant {
-        case .primary: .ppGround
+        case .primary: .ppOnAccent
         case .secondary: .ppText
         case .ghost: .ppAccent400
         }

@@ -13,51 +13,62 @@ extension Color {
     }
 }
 
-// MARK: - Ledger palette
+// MARK: - Palette tokens
 //
-// Editorial dark: a neutral ink ground with no blue cast, warm paper-white
-// text, and a single amber accent used sparingly — headlines, selection, and
-// the hero card. Depth comes from hairlines and typography, not shadows or
-// gradients. Difficulty colours are desaturated so they read as annotations,
-// not candy.
+// Every screen reads colour only through these tokens — never a raw literal.
+// Each one resolves through `ThemeStore.shared`, so swapping the active theme
+// repaints the whole app without touching a call site. The values themselves
+// live in `Theme.swift` (`Palette`), one struct per theme.
+//
+// Because the getters read the observable store inside each view's body, a
+// theme change invalidates exactly the views that draw a themed colour.
+//
+// The original "Ledger" reading still holds for the default theme: an editorial
+// ink ground, warm paper-white text, one amber accent, depth from hairlines not
+// shadows. The other themes re-map the same slots.
 
 extension Color {
 
-    // Core surfaces — neutral greys, warmed very slightly.
-    static let ppGround = Color(hex: 0x0E0F12)
-    static let ppSurface = Color(hex: 0x17181D)
-    static let ppElevated = Color(hex: 0x202127)
+    private static var palette: Palette { ThemeStore.shared.activeTheme.palette }
 
-    // Content
-    static let ppText = Color(hex: 0xF2F1EC)
-    static let ppMuted = Color(hex: 0x8E9099)
+    // Core surfaces.
+    static var ppGround: Color { palette.ground }
+    static var ppSurface: Color { palette.surface }
+    static var ppElevated: Color { palette.elevated }
 
-    // Accent · amber. The tint scale keeps the old token names so call sites
-    // don't churn: 300/400 are lighter tints, 700 is dim, `section` is a wash.
-    static let ppAccent300 = Color(hex: 0xF2CD8C)
-    static let ppAccent400 = Color(hex: 0xECB55E)
-    static let ppAccent = Color(hex: 0xE8A33D)
-    static let ppAccent700 = Color(hex: 0x8F6320)
-    static let ppAccentSection = Color(hex: 0x261E10)
+    // Content.
+    static var ppText: Color { palette.text }
+    static var ppMuted: Color { palette.muted }
 
-    // Difficulty semantics — muted sage / ochre / clay.
-    static let ppEasy = Color(hex: 0x84B394)
-    static let ppMedium = Color(hex: 0xC9A15E)
-    static let ppHard = Color(hex: 0xC97F74)
+    // Accent. 300/400 are the tints that read as accent *text* on the theme's
+    // ground; 700 is dim; `section` is the wash behind the hero card.
+    static var ppAccent300: Color { palette.accent300 }
+    static var ppAccent400: Color { palette.accent400 }
+    static var ppAccent: Color { palette.accent }
+    static var ppAccent700: Color { palette.accent700 }
+    static var ppAccentSection: Color { palette.accentSection }
+    /// The mark colour that sits on top of the accent (button labels, ticks).
+    static var ppOnAccent: Color { palette.onAccent }
+
+    // Difficulty semantics.
+    static var ppEasy: Color { palette.easy }
+    static var ppMedium: Color { palette.medium }
+    static var ppHard: Color { palette.hard }
 
     /// Hairlines — the only depth cue in this system.
-    static let ppBorder = Color.white.opacity(0.08)
-    static let ppBorderStrong = Color.white.opacity(0.16)
+    static var ppBorder: Color { palette.border }
+    static var ppBorderStrong: Color { palette.borderStrong }
 }
 
 // MARK: - Screen chrome
 
 extension View {
-    /// Applies the app ground colour edge to edge and locks the view to dark mode.
-    /// Use on screen roots so previews match the shipped appearance.
+    /// Applies the app ground colour edge to edge and matches the system colour
+    /// scheme to the active theme (dark or light). Use on screen roots so
+    /// previews match the shipped appearance.
     func ppScreenBackground() -> some View {
         self
             .background(Color.ppGround.ignoresSafeArea())
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(ThemeStore.shared.activeTheme.palette.colorScheme)
     }
 }

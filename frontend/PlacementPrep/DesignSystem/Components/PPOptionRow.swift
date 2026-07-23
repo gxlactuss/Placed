@@ -117,7 +117,7 @@ struct PPOptionRow: View {
     }
 
     private var markerForeground: Color {
-        isHighlighted ? .ppGround : .ppMuted
+        isHighlighted ? .ppOnAccent : .ppMuted
     }
 
     private var trailingSymbol: String? {

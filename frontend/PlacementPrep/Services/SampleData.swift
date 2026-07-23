@@ -13,6 +13,7 @@ enum SampleData {
     static let userName = "Khushi Shelke"
     static let targetRole = "Software Engineer"
     static let streakDays = 12
+    static let bestStreakDays = 21
     static let weekProgress: [Bool] = [true, true, true, true, true, true, false]
     static let quizzesTaken = 24
     static let averageScore = 78

@@ -103,7 +103,7 @@ struct QuizListView: View {
             if item.isPassed {
                 Image(systemName: "checkmark")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(Color.ppGround)
+                    .foregroundStyle(Color.ppOnAccent)
             } else {
                 Text("\(item.quiz.order)")
                     .font(.ppMicro)

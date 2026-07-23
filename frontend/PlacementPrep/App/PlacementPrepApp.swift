@@ -8,6 +8,10 @@ struct PlacementPrepApp: App {
     @State private var solvedStore = SolvedStore()
     @State private var quizBank = QuizBank()
     @State private var quizProgress = QuizProgressStore()
+    /// The active theme drives every `Color.pp*` token; reading it here also
+    /// keeps the scene's colour scheme in step with the chosen theme.
+    @Bindable private var theme = ThemeStore.shared
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         PPAppearance.configure()
@@ -22,8 +26,11 @@ struct PlacementPrepApp: App {
                 .environment(solvedStore)
                 .environment(quizBank)
                 .environment(quizProgress)
-                // Dark-only for now; remove once the themes feature lands.
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(theme.activeTheme.palette.colorScheme)
+        }
+        // Catch a day/night boundary that passed while the app was suspended.
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { theme.refresh() }
         }
     }
 }
