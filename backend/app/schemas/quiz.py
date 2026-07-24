@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
-from app.models.quiz import QuizDifficulty, QuizTopic
+from database.models.quiz import QuizDifficulty, QuizTopic
 
 
 class QuizQuestionOption(BaseModel):
@@ -11,8 +11,7 @@ class QuizQuestionOption(BaseModel):
 
 
 class QuizQuestion(BaseModel):
-    """Question shape returned to the client. Correct answer/explanation are
-    withheld until QuizSubmit is scored server-side."""
+    """Question shape for the (still-stubbed) server-side question bank."""
 
     id: str
     topic: QuizTopic
@@ -21,33 +20,31 @@ class QuizQuestion(BaseModel):
     options: list[QuizQuestionOption]
 
 
-class QuizAnswer(BaseModel):
-    question_id: str
-    selected_option_id: str
+class QuizAttemptSubmit(BaseModel):
+    """A finished quiz attempt. Quizzes are bundled and scored on-device, so the
+    client sends the computed result keyed by the quiz's stable id."""
 
-
-class QuizSubmit(BaseModel):
-    topic: QuizTopic
-    difficulty: QuizDifficulty
-    answers: list[QuizAnswer]
-
-
-class QuizQuestionFeedback(BaseModel):
-    question_id: str
-    correct: bool
-    correct_option_id: str
-    explanation: str
+    quiz_id: str
+    total_questions: int
+    correct_answers: int
+    score_percentage: int
 
 
 class QuizResultRead(BaseModel):
     id: int
-    topic: QuizTopic
-    difficulty: QuizDifficulty
+    quiz_id: str
     total_questions: int
     correct_answers: int
-    score_percentage: float
+    score_percentage: int
     completed_at: datetime
-    feedback: list[QuizQuestionFeedback] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
+
+
+class QuizProgressItem(BaseModel):
+    """Best score achieved for a single quiz — what the client's per-quiz
+    progress store mirrors."""
+
+    quiz_id: str
+    best_score: int

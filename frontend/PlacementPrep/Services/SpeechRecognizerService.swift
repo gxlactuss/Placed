@@ -20,7 +20,7 @@ final class SpeechRecognizerService: NSObject {
             case .recognizerUnavailable:
                 return "Speech recognition isn't available right now — check your network connection and try again."
             case .noAudioInput:
-                return "No microphone input was found. On the Simulator, enable I/O ▸ Audio Input and allow the mic in macoS System Settings ▸ Privacy ▸ Microphone."
+                return "No microphone input was found. On the Simulator, enable I/O ▸ Audio Input and allow the mic in macOS System Settings ▸ Privacy ▸ Microphone."
             }
         }
     }

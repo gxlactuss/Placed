@@ -14,9 +14,14 @@ import Foundation
 final class SolvedStore {
 
     private static let defaultsKey = "solvedProblemIDs"
+    /// Which user this device's cache belongs to (see `QuizProgressStore`).
+    private static let ownerKey = "solvedProblemsOwner"
 
     private(set) var solvedIDs: Set<String>
     private let defaults: UserDefaults
+    /// Set once `sync(userId:)` runs; `nil` disables network writes.
+    private var userId: Int?
+    private let network = NetworkManager.shared
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -33,11 +38,59 @@ final class SolvedStore {
     }
 
     func toggle(_ id: DSAProblem.ID) {
+        let nowSolved: Bool
         if solvedIDs.contains(id) {
             solvedIDs.remove(id)
+            nowSolved = false
         } else {
             solvedIDs.insert(id)
+            nowSolved = true
         }
+        persist()
+
+        guard userId != nil else { return }
+        Task {
+            if nowSolved {
+                try? await network.send(path: "/api/dsa/solved", method: .post, body: SolvedSlugRequest(slug: id))
+            } else {
+                try? await network.send(path: "/api/dsa/solved/\(id)", method: .delete)
+            }
+        }
+    }
+
+    // MARK: - Server sync
+
+    /// Pulls this user's solved slugs and reconciles with the local cache. On
+    /// first sign-in for a user, local-only slugs are pushed up (migration); a
+    /// different user's cache is discarded first. Offline: local is kept as-is.
+    func sync(userId: Int) async {
+        if let owner = defaults.object(forKey: Self.ownerKey) as? Int, owner != userId {
+            solvedIDs = []
+            persist()
+        }
+        self.userId = userId
+        defaults.set(userId, forKey: Self.ownerKey)
+
+        do {
+            let serverSlugs: [String] = try await network.request(path: "/api/dsa/solved")
+            var merged = Set(serverSlugs)
+
+            for slug in solvedIDs.subtracting(merged) {
+                try? await network.send(path: "/api/dsa/solved", method: .post, body: SolvedSlugRequest(slug: slug))
+                merged.insert(slug)
+            }
+
+            solvedIDs = merged
+            persist()
+        } catch {
+            // Offline / server down — keep the local cache as-is.
+        }
+    }
+
+    /// Clears the in-memory cache on sign-out.
+    func clear() {
+        userId = nil
+        solvedIDs = []
         persist()
     }
 

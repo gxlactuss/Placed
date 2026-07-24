@@ -2,8 +2,13 @@ import Foundation
 
 @MainActor
 final class AuthViewModel: ObservableObject {
+
+    /// The three states the app gate switches on. `.checking` is the brief window
+    /// on launch while a stored token is validated against `/api/auth/me`.
+    enum SessionState: Equatable { case checking, authenticated, unauthenticated }
+
+    @Published var sessionState: SessionState = .unauthenticated
     @Published var currentUser: User?
-    @Published var isAuthenticated = false
     @Published var errorMessage: String?
     @Published var isLoading = false
 
@@ -11,7 +16,35 @@ final class AuthViewModel: ObservableObject {
 
     init() {
         network.authTokenProvider = { KeychainService.loadToken() }
-        isAuthenticated = KeychainService.loadToken() != nil
+        network.onUnauthorized = { [weak self] in
+            Task { @MainActor in self?.handleExpiredSession() }
+        }
+        // A stored token is only *trusted* after `/me` confirms it — otherwise a
+        // stale/expired token would drop the user into a dashboard that 401s on
+        // every call. Validate before showing the tabs.
+        if KeychainService.loadToken() != nil {
+            sessionState = .checking
+            Task { await validateSession() }
+        }
+    }
+
+    private func validateSession() async {
+        do {
+            let user: User = try await network.request(path: "/api/auth/me")
+            currentUser = user
+            sessionState = .authenticated
+        } catch NetworkError.unauthorized {
+            // Token is genuinely invalid/expired — clear it and show login.
+            KeychainService.deleteToken()
+            currentUser = nil
+            sessionState = .unauthenticated
+        } catch {
+            // Couldn't reach the backend (offline / server down). Don't punish
+            // the user or discard a possibly-valid token — trust it for now; a
+            // real 401 on a later authed call will bounce to login via
+            // `handleExpiredSession`. (Quiz + company content works offline.)
+            sessionState = .authenticated
+        }
     }
 
     func login(email: String, password: String) async {
@@ -48,6 +81,29 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
+    func logout() {
+        KeychainService.deleteToken()
+        currentUser = nil
+        errorMessage = nil
+        sessionState = .unauthenticated
+    }
+
+    /// An authenticated request came back 401 mid-session — the token lapsed, so
+    /// drop straight back to login.
+    private func handleExpiredSession() {
+        guard sessionState != .unauthenticated else { return }
+        KeychainService.deleteToken()
+        currentUser = nil
+        sessionState = .unauthenticated
+    }
+
+    private func handleAuthSuccess(_ response: TokenResponse) {
+        KeychainService.saveToken(response.accessToken)
+        currentUser = response.user
+        errorMessage = nil
+        sessionState = .authenticated
+    }
+
     /// Surfaces the backend's `detail` string (e.g. "Email already registered")
     /// rather than the generic "Server error (400): ..." wrapper.
     private func message(for error: Error) -> String {
@@ -60,16 +116,4 @@ final class AuthViewModel: ObservableObject {
     }
 
     private struct ServerDetail: Decodable { let detail: String }
-
-    func logout() {
-        KeychainService.deleteToken()
-        currentUser = nil
-        isAuthenticated = false
-    }
-
-    private func handleAuthSuccess(_ response: TokenResponse) {
-        KeychainService.saveToken(response.accessToken)
-        currentUser = response.user
-        isAuthenticated = true
-    }
 }

@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app.core.auth import get_current_user_id
-from app.database import get_session
-from app.models.interview import InterviewSession, InterviewStatus
+from database.db import get_session
+from database.models.interview import InterviewSession, InterviewStatus
 from app.schemas.interview import (
     InterviewAiResponse,
     InterviewAnswerSubmit,

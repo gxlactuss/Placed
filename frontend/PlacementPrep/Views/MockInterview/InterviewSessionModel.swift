@@ -42,6 +42,10 @@ final class InterviewSessionModel {
     let totalRounds = 5
 
     private var sessionId: Int?
+    /// Guards `startIfNeeded` against re-entry: `.task` re-runs each time the
+    /// Interview tab reappears, and the opener request may still be in flight
+    /// (sessionId nil, turns empty) — without this a second session could start.
+    private var hasRequestedStart = false
     private let network = NetworkManager.shared
     private let speech = SpeechRecognizerService()
 
@@ -58,7 +62,8 @@ final class InterviewSessionModel {
     // MARK: - Session lifecycle
 
     func startIfNeeded(targetRole: String) async {
-        guard sessionId == nil, turns.isEmpty else { return }
+        guard !hasRequestedStart else { return }
+        hasRequestedStart = true
         role = targetRole
         // Ask for mic + speech permission early so the first hold-to-talk just
         // works instead of racing the permission dialogs.

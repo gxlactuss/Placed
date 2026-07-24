@@ -4,10 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository shape
 
-Two halves that now talk over HTTP for **auth and mock interviews** (see "Current wiring state"); quiz + company content stays local:
+Three top-level folders. The frontend now talks to the backend over HTTP for **auth and mock interviews** (see "Current wiring state"); quiz + company content stays local:
 
-- `backend/` — FastAPI + SQLModel + SQLite, JWT auth, Google Gemini for mock interviews
+- `backend/` — FastAPI app: JWT auth, Google Gemini for mock interviews. Imports the `database` package.
+- `database/` — standalone SQLModel package: the table models (`database/models/`) and the engine/session (`database/db.py`). Kept separate from the backend so the schema lives in one place; it reads `DATABASE_URL` from the environment and has no dependency on the backend.
 - `frontend/` — SwiftUI iOS app (iOS 17+), no third-party dependencies
+
+Deployment config (`Dockerfile`, `fly.toml`, `.dockerignore`, `DEPLOY.md`) lives at the **repo root**, because the image needs both `backend/` and `database/` — so the Docker build context is the whole repo and `fly deploy` runs from the root.
 
 ## Commands
 
@@ -70,7 +73,7 @@ Interactive API docs at `http://localhost:8000/docs`.
 
 Two dependency pins are load-bearing: `email-validator` (required by the `EmailStr` fields — the app won't import without it) and `bcrypt==4.0.1` (passlib 1.7.4 crashes on bcrypt 4.1+).
 
-**Deployment**: `Dockerfile` + `fly.toml` deploy to Fly.io with a persistent volume for the SQLite file; `DEPLOY.md` is the runbook. The Release build of the iOS app points at `https://<app>.fly.dev`.
+**Deployment**: `Dockerfile` + `fly.toml` at the **repo root** deploy to Fly.io with a persistent volume for the SQLite file; `DEPLOY.md` is the runbook (run `fly deploy` from the root — the build context is the whole repo so both `backend/` and `database/` land in the image). The Release build of the iOS app points at `https://<app>.fly.dev`.
 
 ### Tests
 
@@ -95,12 +98,14 @@ Networking specifics worth knowing:
 - `NetworkManager.baseURL` is build-aware: `http://localhost:8000` in DEBUG, `https://<app>.fly.dev` in Release (keep in sync with `backend/fly.toml`). `Info.plist` carries an `NSAllowsLocalNetworking` ATS exception so DEBUG can reach the local HTTP backend.
 - The JSON decoder uses a **lenient date strategy** (`LenientDate`), not `.iso8601`: the backend emits both timezone-aware ISO8601 and *naive* microsecond strings (datetimes round-tripped through SQLite), and stock `.iso8601` rejects both fractional seconds and a missing timezone.
 
-Backend endpoints that are still `NotImplementedError` stubs (unused by the app):
+- **Per-user progress is now DB-backed and synced.** `QuizProgressStore` and `SolvedStore` are write-through caches: they mutate `UserDefaults` instantly (offline + instant), and — once signed in — mirror to the backend. `record(...)` POSTs `/api/quiz/submit`; `toggle(...)` POSTs/DELETEs `/api/dsa/solved`. Each store carries an **owner user id** so a different account signing in on the same device discards the previous user's cache instead of inheriting it, and `sync(userId:)` (fired from `PlacementPrepApp` on login/validated relaunch) pulls server state and pushes any local-only progress up (legacy migration). `clear()` runs on sign-out.
 
-- `GET /api/quiz/questions` and `POST /api/quiz/submit` — no question bank exists
+Backend endpoints still `NotImplementedError` stubs (unused by the app):
+
+- `GET /api/quiz/questions` — quizzes are bundled client-side, so there's no server question bank
 - `company_data_service.list_companies` / `get_company_questions` — expects ingested JSON at `backend/data/companies/<slug>.json` from the `leetcode-company-wise-problems` dataset; the directory is empty
 
-Working today: auth routes, `GET /api/quiz/history`, and the interview routes (real Gemini calls, with clean 502/503 error mapping).
+Working today: auth routes; **quiz progress** (`POST /api/quiz/submit`, `GET /api/quiz/progress`, `GET /api/quiz/history`); **DSA solved** (`GET/POST /api/dsa/solved`, `DELETE /api/dsa/solved/{slug}`) backed by the `SolvedProblem` table; and the interview routes (real Gemini calls, with clean 502/503 error mapping).
 
 ## Frontend architecture
 
@@ -151,10 +156,10 @@ Shape and parsing rules that are load-bearing:
 
 ## Backend architecture
 
-Standard FastAPI layering: `routes/` → `services/` → `models/` (SQLModel tables) with `schemas/` as the Pydantic request/response boundary. `main.py` wires four routers under `/api/*` and calls `init_db()` (`SQLModel.metadata.create_all`) on startup — there are no migrations, so schema changes mean dropping the SQLite file.
+Standard FastAPI layering: `routes/` → `services/` → the `database` package (SQLModel tables, imported) with `schemas/` as the Pydantic request/response boundary. `main.py` wires four routers under `/api/*` and calls `init_db()` (`SQLModel.metadata.create_all`) on startup — there are no migrations, so schema changes mean dropping the SQLite file. The table models are **not** under `backend/`; they live in the top-level `database/` package (see below).
 
 - `core/auth.py` — bcrypt hashing plus JWT encode/decode. `get_current_user_id` is the dependency every protected route injects; it returns the user id as a **string** subject, so routes cast with `int(user_id)`.
 - `core/config.py` — pydantic-settings reading `.env`. Defaults are dev-only (`jwt_secret_key` literally defaults to `CHANGE_ME_IN_ENV`).
-- `database.py` — SQLite with `check_same_thread=False`; `get_session` is the per-request session dependency.
+- `database/db.py` (top-level package, **not** in `backend/`) — SQLite engine with `check_same_thread=False`; `get_session` is the per-request session dependency, `init_db()` runs `create_all`. Reads `DATABASE_URL` from the environment (default matches the committed `.env`). Table models live in `database/models/`. The backend imports these as `from database.db import ...` / `from database.models.x import ...`; `backend/app/__init__.py` bootstraps `sys.path` (finds the `database` package by walking up) and loads `backend/.env` via `python-dotenv` so the run directory doesn't matter.
 - `services/gemini_service.py` — model is configurable via `GEMINI_MODEL` (defaults to the rolling alias `gemini-flash-latest`; `gemini-1.5-flash` was retired, and free-tier keys often see `limit: 0` on `gemini-2.0-flash` / 404 on `gemini-2.5-flash`). All calls funnel through one `_generate()` helper that maps failures to a clean **502** (model/transport error) or **503** (no API key) instead of a bare 500. Interview completion is still hardcoded `False`; the client caps the round count instead.
 - Interview transcripts are stored as a JSON string in `transcript_json`, not a relational table.

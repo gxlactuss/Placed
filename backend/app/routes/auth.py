@@ -1,12 +1,30 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 
-from app.core.auth import create_access_token, hash_password, verify_password
-from app.database import get_session
-from app.models.user import User
+from app.core.auth import (
+    create_access_token,
+    get_current_user_id,
+    hash_password,
+    verify_password,
+)
+from database.db import get_session
+from database.models.user import User
 from app.schemas.user import TokenResponse, UserCreate, UserLogin, UserRead
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
+
+
+@router.get("/me", response_model=UserRead)
+def me(
+    user_id: str = Depends(get_current_user_id),
+    session: Session = Depends(get_session),
+):
+    """Returns the signed-in user. The client calls this on launch to validate a
+    stored token — a 401/404 here means the saved session is stale."""
+    user = session.get(User, int(user_id))
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return UserRead.model_validate(user)
 
 
 @router.post("/signup", response_model=TokenResponse, status_code=status.HTTP_201_CREATED)

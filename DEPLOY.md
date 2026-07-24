@@ -3,6 +3,10 @@
 The API ships as a Docker image (`Dockerfile`) with a persistent volume for the
 SQLite database (`fly.toml`). One-time setup, then `fly deploy` for every push.
 
+**Run every command below from the repo root.** The `Dockerfile`, `fly.toml`,
+and `.dockerignore` live at the root because the image needs both `backend/` and
+the sibling `database/` package, so the Docker build context is the whole repo.
+
 ## Prerequisites
 
 ```bash
@@ -20,7 +24,6 @@ fly auth login
 2. **Create the app** (skips the interactive builder; keeps our `fly.toml`):
 
    ```bash
-   cd backend
    fly apps create placementprep-api      # use your chosen name
    ```
 
@@ -43,8 +46,7 @@ fly auth login
 ## Deploy
 
 ```bash
-cd backend
-fly deploy
+fly deploy        # from the repo root
 ```
 
 Then smoke-test the live host:
@@ -61,8 +63,8 @@ curl -s -X POST $BASE/api/auth/signup -H 'Content-Type: application/json' \
 - **DB migrations**: there are none. `init_db()` runs `create_all` on startup, so
   additive models are fine; a breaking schema change means deleting the volume's
   `.db` file (`fly ssh console` → `rm /data/placement_prep.db`) and redeploying.
-- **Gemini model**: `GEMINI_MODEL` is set in `fly.toml` (`gemini-2.0-flash`).
-  Change it there, or override with `fly secrets set GEMINI_MODEL=gemini-2.5-flash`.
+- **Gemini model**: `GEMINI_MODEL` is set in `fly.toml` (`gemini-flash-latest`).
+  Change it there, or override with `fly secrets set GEMINI_MODEL=<model>`.
 - **Cost**: `auto_stop_machines`/`min_machines_running = 0` lets the machine sleep
   when idle, so a demo app costs ~nothing. First request after sleep is slower.
 - **CORS** is `["*"]`; tighten it once the client origins are known.

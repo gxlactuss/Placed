@@ -46,8 +46,21 @@ final class NetworkManager {
     /// owning auth state itself.
     var authTokenProvider: (() -> String?)?
 
-    private init(session: URLSession = .shared) {
-        self.session = session
+    /// Fired when an *authenticated* request comes back 401 — i.e. the stored
+    /// session has lapsed. The auth layer uses this to drop back to login.
+    var onUnauthorized: (() -> Void)?
+
+    private init(session: URLSession? = nil) {
+        // A bounded timeout so an unreachable backend fails fast instead of
+        // hanging the launch splash (which waits on `/api/auth/me`).
+        if let session {
+            self.session = session
+        } else {
+            let config = URLSessionConfiguration.default
+            config.timeoutIntervalForRequest = 20
+            config.waitsForConnectivity = false
+            self.session = URLSession(configuration: config)
+        }
 
         let decoder = JSONDecoder()
         // The backend emits two flavours of timestamp: timezone-aware ISO8601
@@ -72,12 +85,38 @@ final class NetworkManager {
         self.encoder = encoder
     }
 
+    /// Performs a request and decodes the JSON response body.
     func request<Response: Decodable>(
         path: String,
         method: HTTPMethod = .get,
         body: Encodable? = nil,
         requiresAuth: Bool = true
     ) async throws -> Response {
+        let data = try await rawRequest(path: path, method: method, body: body, requiresAuth: requiresAuth)
+        do {
+            return try decoder.decode(Response.self, from: data)
+        } catch {
+            throw NetworkError.decoding(error)
+        }
+    }
+
+    /// Performs a request and ignores the response body — for endpoints that
+    /// return 204 No Content (e.g. marking a problem solved).
+    func send(
+        path: String,
+        method: HTTPMethod = .get,
+        body: Encodable? = nil,
+        requiresAuth: Bool = true
+    ) async throws {
+        _ = try await rawRequest(path: path, method: method, body: body, requiresAuth: requiresAuth)
+    }
+
+    private func rawRequest(
+        path: String,
+        method: HTTPMethod,
+        body: Encodable?,
+        requiresAuth: Bool
+    ) async throws -> Data {
         guard let url = URL(string: path, relativeTo: baseURL) else {
             throw NetworkError.invalidURL
         }
@@ -108,12 +147,11 @@ final class NetworkManager {
 
         switch httpResponse.statusCode {
         case 200..<300:
-            do {
-                return try decoder.decode(Response.self, from: data)
-            } catch {
-                throw NetworkError.decoding(error)
-            }
+            return data
         case 401:
+            // Only a lapsed *session* should bounce to login — a 401 on an
+            // unauthenticated call (e.g. wrong password on login) is not that.
+            if requiresAuth { onUnauthorized?() }
             throw NetworkError.unauthorized
         default:
             let message = String(data: data, encoding: .utf8) ?? "Unknown error"

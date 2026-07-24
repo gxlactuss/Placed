@@ -24,20 +24,37 @@ struct PlacementPrepApp: App {
     var body: some Scene {
         WindowGroup {
             Group {
-                if auth.isAuthenticated {
+                switch auth.sessionState {
+                case .checking:
+                    LaunchSplashView()
+                case .authenticated:
                     DashboardView()
                         .environment(companyBank)
                         .environment(solvedStore)
                         .environment(quizBank)
                         .environment(quizProgress)
                         .environment(savedQuestions)
-                } else {
+                        // Reconcile per-user progress with the server whenever the
+                        // signed-in user becomes known (login or validated relaunch).
+                        .task(id: auth.currentUser?.id) {
+                            guard let id = auth.currentUser?.id else { return }
+                            await quizProgress.sync(userId: id)
+                            await solvedStore.sync(userId: id)
+                        }
+                case .unauthenticated:
                     AuthView()
                 }
             }
             .environmentObject(auth)
-            .animation(PPMotion.settle, value: auth.isAuthenticated)
+            .animation(PPMotion.settle, value: auth.sessionState)
             .preferredColorScheme(theme.activeTheme.palette.colorScheme)
+            // Drop cached progress on sign-out so the next account starts clean.
+            .onChange(of: auth.sessionState) { _, state in
+                if state == .unauthenticated {
+                    quizProgress.clear()
+                    solvedStore.clear()
+                }
+            }
         }
         // Catch a day/night boundary that passed while the app was suspended.
         .onChange(of: scenePhase) { _, phase in

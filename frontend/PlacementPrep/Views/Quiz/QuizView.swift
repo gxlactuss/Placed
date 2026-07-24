@@ -35,7 +35,14 @@ struct QuizView: View {
         .onChange(of: model.isFinished) { _, finished in
             // Record on completion, not on every answer, so an abandoned run
             // never counts toward unlocking.
-            if finished { progress.record(score: model.scorePercentage, for: quiz) }
+            if finished {
+                progress.record(
+                    score: model.scorePercentage,
+                    correct: model.correctCount,
+                    total: model.questions.count,
+                    for: quiz
+                )
+            }
         }
     }
 

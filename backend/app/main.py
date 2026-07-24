@@ -4,8 +4,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.database import init_db
-from app.routes import auth, companies, interview, quiz
+from database.db import init_db
+from app.routes import auth, companies, dsa, interview, quiz
 
 
 @asynccontextmanager
@@ -26,6 +26,7 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(quiz.router)
+app.include_router(dsa.router)
 app.include_router(interview.router)
 app.include_router(companies.router)
 

@@ -12,8 +12,16 @@ struct PPTextField: View {
     var isSecure: Bool = false
     var keyboard: UIKeyboardType = .default
     var textContentType: UITextContentType? = nil
+    /// Capitalization for free-text fields (name, role). Ignored for secure and
+    /// email fields, which never auto-capitalize (a capital would corrupt a
+    /// password, email, or username like "admin").
+    var autocapitalization: TextInputAutocapitalization = .sentences
     var submitLabel: SubmitLabel = .next
     var onSubmit: () -> Void = {}
+
+    private var effectiveCapitalization: TextInputAutocapitalization {
+        (isSecure || keyboard == .emailAddress || textContentType == .username) ? .never : autocapitalization
+    }
 
     @State private var isRevealed = false
     @FocusState private var isFocused: Bool
@@ -35,7 +43,7 @@ struct PPTextField: View {
                 .keyboardType(keyboard)
                 .textContentType(textContentType)
                 .autocorrectionDisabled()
-                .textInputAutocapitalization(keyboard == .emailAddress ? .never : .sentences)
+                .textInputAutocapitalization(effectiveCapitalization)
                 .submitLabel(submitLabel)
                 .focused($isFocused)
                 .onSubmit(onSubmit)
