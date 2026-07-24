@@ -12,13 +12,17 @@ class UserCreate(BaseModel):
 
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    # Accepts a username *or* an email so plain identifiers like the seeded
+    # "admin" test account can sign in. Signup (UserCreate) still requires a
+    # real email address.
+    email: str
     password: str
 
 
 class UserRead(BaseModel):
     id: int
-    email: EmailStr
+    # str, not EmailStr, so username accounts (e.g. the seeded "admin") serialize.
+    email: str
     full_name: Optional[str] = None
     target_role: Optional[str] = None
     created_at: datetime

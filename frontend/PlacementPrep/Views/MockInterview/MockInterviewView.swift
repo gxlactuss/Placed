@@ -2,22 +2,19 @@ import SwiftUI
 
 /// Mock interview transcript with a hold-to-talk control.
 ///
-/// Speech recognition is not wired up yet, so holding the mic streams a canned
-/// transcription and releasing commits it. Swap `SampleData.sampleTranscription`
-/// for `SpeechRecognizerService` output when that lands — the view does not need
-/// to change shape.
+/// The screen is a thin render of `InterviewSessionModel`, which runs the real
+/// round-trip: Apple's on-device speech recogniser transcribes the held answer,
+/// and the Gemini-backed `/api/interview/*` routes supply the questions and
+/// follow-ups. Holding the mic streams the live transcription; releasing submits.
 struct MockInterviewView: View {
 
-    @State private var turns: [Turn] = [
-        Turn(speaker: .ai, text: SampleData.interviewOpener, isFollowUp: false)
-    ]
-    @State private var isRecording = false
-    @State private var liveText = ""
-    @State private var round = 1
-    @State private var isThinking = false
-    @State private var level: Double = 0
+    @EnvironmentObject private var auth: AuthViewModel
+    @State private var model = InterviewSessionModel()
 
-    private let totalRounds = 5
+    private var resolvedRole: String {
+        let role = auth.currentUser?.targetRole?.trimmingCharacters(in: .whitespaces) ?? ""
+        return role.isEmpty ? "Software Engineer" : role
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -27,6 +24,7 @@ struct MockInterviewView: View {
         }
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
+        .task { await model.startIfNeeded(targetRole: resolvedRole) }
     }
 
     // MARK: - Header
@@ -35,14 +33,14 @@ struct MockInterviewView: View {
         HStack {
             VStack(alignment: .leading, spacing: PPSpacing.xs) {
                 Text("Mock Interview").font(.ppTitle)
-                Text(SampleData.targetRole)
+                Text(model.role)
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
             }
 
             Spacer()
 
-            PPBadge("Round \(round) of \(totalRounds)", tone: .accent)
+            PPBadge("Round \(min(model.round, model.totalRounds)) of \(model.totalRounds)", tone: .accent)
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.vertical, PPSpacing.lg)
@@ -54,17 +52,17 @@ struct MockInterviewView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: PPSpacing.lg) {
-                    ForEach(turns) { turn in
+                    ForEach(model.turns) { turn in
                         bubble(turn)
                             .id(turn.id)
                             .transition(.move(edge: .bottom).combined(with: .opacity))
                     }
 
-                    if isThinking {
+                    if model.isThinking {
                         thinkingBubble.id("thinking")
                     }
 
-                    if isRecording && !liveText.isEmpty {
+                    if model.isRecording && !model.liveText.isEmpty {
                         liveBubble.id("live")
                     }
                 }
@@ -72,14 +70,15 @@ struct MockInterviewView: View {
                 .padding(.bottom, PPSpacing.lg)
             }
             .scrollIndicators(.hidden)
-            .onChange(of: turns.count) { _, _ in scrollToEnd(proxy) }
-            .onChange(of: liveText) { _, _ in scrollToEnd(proxy) }
-            .onChange(of: isThinking) { _, _ in scrollToEnd(proxy) }
+            .animation(PPMotion.settle, value: model.turns.count)
+            .onChange(of: model.turns.count) { _, _ in scrollToEnd(proxy) }
+            .onChange(of: model.liveText) { _, _ in scrollToEnd(proxy) }
+            .onChange(of: model.isThinking) { _, _ in scrollToEnd(proxy) }
         }
     }
 
     @ViewBuilder
-    private func bubble(_ turn: Turn) -> some View {
+    private func bubble(_ turn: InterviewSessionModel.Turn) -> some View {
         HStack(alignment: .top, spacing: PPSpacing.sm) {
             if turn.speaker == .ai {
                 aiAvatar
@@ -128,7 +127,7 @@ struct MockInterviewView: View {
         HStack(spacing: PPSpacing.sm) {
             Image(systemName: "waveform")
                 .foregroundStyle(Color.ppAccent400)
-            Text(liveText)
+            Text(model.liveText)
                 .font(.ppBody)
                 .italic()
                 .foregroundStyle(Color.ppMuted)
@@ -142,21 +141,23 @@ struct MockInterviewView: View {
 
     private var controls: some View {
         VStack(spacing: PPSpacing.md) {
-            if isFinished {
+            if model.isFinished {
                 Text("Interview complete — nice work.")
                     .font(.ppHeadline)
-                Button("Start over") { reset() }
+                Button("Start over") { Task { await model.restart() } }
                     .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+            } else if let error = model.errorMessage {
+                errorState(error)
             } else {
-                PPHoldToTalkButton(level: level, isRecording: isRecording) {
-                    startRecording()
+                PPHoldToTalkButton(level: model.level, isRecording: model.isRecording) {
+                    model.startRecording()
                 } onStop: {
-                    stopRecording()
+                    model.stopRecording()
                 }
-                .disabled(isThinking)
-                .opacity(isThinking ? 0.4 : 1)
+                .disabled(model.isThinking)
+                .opacity(model.isThinking ? 0.4 : 1)
 
-                Text(isRecording ? "Listening… release when you're done" : "Hold to answer")
+                Text(promptText)
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
             }
@@ -169,104 +170,45 @@ struct MockInterviewView: View {
         .overlay(alignment: .top) {
             Rectangle().fill(Color.ppBorder).frame(height: 1)
         }
-        .animation(PPMotion.snappy, value: isRecording)
+        .animation(PPMotion.snappy, value: model.isRecording)
     }
 
-    // MARK: - Behaviour
-
-    private var isFinished: Bool { round > totalRounds }
-
-    private func startRecording() {
-        guard !isThinking else { return }
-        isRecording = true
-        liveText = ""
-        level = 0.5
-        streamSampleTranscription()
-    }
-
-    /// Reveals the canned answer word by word so the live bubble behaves like a
-    /// real streaming recogniser.
-    private func streamSampleTranscription() {
-        let words = SampleData.sampleTranscription.split(separator: " ").map(String.init)
-
-        for (index, word) in words.enumerated() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.12) {
-                guard isRecording else { return }
-                liveText += liveText.isEmpty ? word : " " + word
-                // Fake an input level so the mic halo moves while "speaking".
-                level = 0.35 + 0.4 * abs(sin(Double(index)))
+    private func errorState(_ message: String) -> some View {
+        VStack(spacing: PPSpacing.md) {
+            HStack(alignment: .top, spacing: PPSpacing.sm) {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .foregroundStyle(Color.ppHard)
+                Text(message)
+                    .font(.ppCaption)
+                    .fixedSize(horizontal: false, vertical: true)
             }
+            Button("Try again") { Task { await model.recover() } }
+                .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
         }
+        .padding(.horizontal, PPSpacing.xl)
     }
 
-    private func stopRecording() {
-        isRecording = false
-        level = 0
-
-        let answer = liveText.trimmingCharacters(in: .whitespaces)
-        liveText = ""
-        guard !answer.isEmpty else { return }
-
-        withAnimation(PPMotion.settle) {
-            turns.append(Turn(speaker: .user, text: answer, isFollowUp: false))
-        }
-        respond()
-    }
-
-    private func respond() {
-        isThinking = true
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
-            isThinking = false
-            let followUpIndex = round - 1
-
-            if followUpIndex < SampleData.interviewFollowUps.count {
-                withAnimation(PPMotion.settle) {
-                    turns.append(
-                        Turn(
-                            speaker: .ai,
-                            text: SampleData.interviewFollowUps[followUpIndex],
-                            isFollowUp: true
-                        )
-                    )
-                }
-            }
-            round += 1
-        }
-    }
-
-    private func reset() {
-        turns = [Turn(speaker: .ai, text: SampleData.interviewOpener, isFollowUp: false)]
-        round = 1
-        liveText = ""
-        isRecording = false
-        isThinking = false
+    private var promptText: String {
+        if model.isThinking { return "Thinking…" }
+        if model.isRecording { return "Listening… release when you're done" }
+        if !model.micAuthorized { return "Hold to allow the microphone, then answer" }
+        return "Hold to answer"
     }
 
     private func scrollToEnd(_ proxy: ScrollViewProxy) {
         withAnimation(.easeOut(duration: 0.25)) {
-            if isRecording && !liveText.isEmpty {
+            if model.isRecording && !model.liveText.isEmpty {
                 proxy.scrollTo("live", anchor: .bottom)
-            } else if isThinking {
+            } else if model.isThinking {
                 proxy.scrollTo("thinking", anchor: .bottom)
-            } else if let last = turns.last {
+            } else if let last = model.turns.last {
                 proxy.scrollTo(last.id, anchor: .bottom)
             }
         }
-    }
-
-    // MARK: - Local model
-
-    struct Turn: Identifiable {
-        enum Speaker { case ai, user }
-
-        let id = UUID()
-        let speaker: Speaker
-        let text: String
-        let isFollowUp: Bool
     }
 }
 
 #Preview {
     MockInterviewView()
+        .environmentObject(AuthViewModel())
 }

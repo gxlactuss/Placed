@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository shape
 
-Two independent halves that are **not currently talking to each other** (see "Current wiring state"):
+Two halves that now talk over HTTP for **auth and mock interviews** (see "Current wiring state"); quiz + company content stays local:
 
 - `backend/` — FastAPI + SQLModel + SQLite, JWT auth, Google Gemini for mock interviews
 - `frontend/` — SwiftUI iOS app (iOS 17+), no third-party dependencies
@@ -56,11 +56,11 @@ xcodegen generate                        # required after any data file add/dele
 
 ### Backend
 
-No `.env` exists yet; copy `.env.example` and fill in `JWT_SECRET_KEY` and `GEMINI_API_KEY`.
+**Requires Python 3.10+** — the code uses `X | None` union syntax. macOS system Python is 3.9; use `python@3.12` from Homebrew. Copy `.env.example` to `.env` and fill in `JWT_SECRET_KEY` and `GEMINI_API_KEY`.
 
 ```bash
 cd backend
-python3 -m venv .venv && source .venv/bin/activate
+python3.12 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 uvicorn app.main:app --reload --port 8000
@@ -68,31 +68,39 @@ uvicorn app.main:app --reload --port 8000
 
 Interactive API docs at `http://localhost:8000/docs`.
 
+Two dependency pins are load-bearing: `email-validator` (required by the `EmailStr` fields — the app won't import without it) and `bcrypt==4.0.1` (passlib 1.7.4 crashes on bcrypt 4.1+).
+
+**Deployment**: `Dockerfile` + `fly.toml` deploy to Fly.io with a persistent volume for the SQLite file; `DEPLOY.md` is the runbook. The Release build of the iOS app points at `https://<app>.fly.dev`.
+
 ### Tests
 
 There is no test suite and no test tooling configured in either half.
 
 ## Current wiring state (read this first)
 
-**The frontend does not call the backend.** Auth was removed and the app opens straight into `DashboardView` (four tabs: Home, Quiz, Interview, LeetCode/companies). Quiz and company content now comes from **bundled files parsed locally** — not from the backend and no longer from `SampleData` either.
+**The frontend now calls the backend for two things: auth and mock interviews.** Everything else (quiz + company content) is still **bundled files parsed locally**, by design — it works offline and there's no reason to move it server-side.
+
+What's now live end-to-end:
+
+- **Auth gate.** `PlacementPrepApp` shows `AuthView` (login/register) until a JWT is in the Keychain, then `DashboardView`. `AuthViewModel` (owned as `@StateObject`, injected via `.environmentObject`) posts to `/api/auth/{login,signup}`, stores the token via `KeychainService`, and sets `NetworkManager.authTokenProvider`. Home's avatar menu holds **Log out**, and the greeting/role read from `auth.currentUser` (falling back to `SampleData` when a Keychain token is restored without a user — there is no `/me` endpoint yet).
+- **Mock interview.** `MockInterviewView` is a thin render of `InterviewSessionModel` (`@MainActor @Observable`, co-located with the view like `QuizSessionModel`). It runs the real loop: `SpeechRecognizerService` transcribes the held answer (with a live audio-level halo) and the Gemini-backed `/api/interview/{start,respond}` routes supply questions and follow-ups. The round count is **capped client-side** (5) to give the interview an ending, because the backend never signals completion (see gemini_service TODO). The old `MockInterviewViewModel` was deleted as superseded.
+
+Still local / still sample:
 
 - Quizzes load from `Resources/Quizzes/*.json` via `QuizBank`; company DSA lists load from `Resources/Companies/*.csv` via `CompanyBank`. See "Frontend data layer" below.
-- `SampleData.swift` has shrunk to what has no real source yet: **profile stats on Home** (name, streak, week grid, counters) and the **canned mock-interview dialogue**. Its old quiz/company arrays (`SampleQuizQuestion`, `CompanySummary`, `DSAQuestion`) are now dead — no view references them.
+- `SampleData.swift` still supplies **profile stats on Home** (streak, week grid, counters) and its now-unused canned interview dialogue. Its old quiz/company arrays are dead.
 
-Other orphaned-but-intact pieces:
+Networking specifics worth knowing:
 
-- `ViewModels/` (`QuizViewModel`, `CompanyDSAViewModel`, `MockInterviewViewModel`, `AuthViewModel`) are **orphaned** — fully written against `NetworkManager`, but no view references them. Don't assume they are live.
-- `LoginView` was deleted. `PlacementPrepApp` has a comment marking where to reinstate the auth gate; `AuthViewModel`, `KeychainService`, and `NetworkManager.authTokenProvider` were left intact for that.
-- `SpeechRecognizerService` exists but isn't connected; the mic control in `MockInterviewView` streams `SampleData.sampleTranscription` word by word.
+- `NetworkManager.baseURL` is build-aware: `http://localhost:8000` in DEBUG, `https://<app>.fly.dev` in Release (keep in sync with `backend/fly.toml`). `Info.plist` carries an `NSAllowsLocalNetworking` ATS exception so DEBUG can reach the local HTTP backend.
+- The JSON decoder uses a **lenient date strategy** (`LenientDate`), not `.iso8601`: the backend emits both timezone-aware ISO8601 and *naive* microsecond strings (datetimes round-tripped through SQLite), and stock `.iso8601` rejects both fractional seconds and a missing timezone.
 
-Consequences when working on the backend — these endpoints are `NotImplementedError` stubs:
+Backend endpoints that are still `NotImplementedError` stubs (unused by the app):
 
 - `GET /api/quiz/questions` and `POST /api/quiz/submit` — no question bank exists
-- `company_data_service.list_companies` / `get_company_questions` — expects ingested JSON at `backend/data/companies/<slug>.json`, sourced from the `leetcode-company-wise-problems` dataset; the directory is empty
+- `company_data_service.list_companies` / `get_company_questions` — expects ingested JSON at `backend/data/companies/<slug>.json` from the `leetcode-company-wise-problems` dataset; the directory is empty
 
-Working today: auth routes, `GET /api/quiz/history`, and the interview routes (real Gemini calls).
-
-The intended path back to a live app is to make the API return the same shapes the local layer already vends — decode into `Quiz`/`Question` and `DSACompany`/`DSAProblem`, and replace the profile/interview stubs still in `SampleData` — so views don't change shape.
+Working today: auth routes, `GET /api/quiz/history`, and the interview routes (real Gemini calls, with clean 502/503 error mapping).
 
 ## Frontend architecture
 
@@ -148,5 +156,5 @@ Standard FastAPI layering: `routes/` → `services/` → `models/` (SQLModel tab
 - `core/auth.py` — bcrypt hashing plus JWT encode/decode. `get_current_user_id` is the dependency every protected route injects; it returns the user id as a **string** subject, so routes cast with `int(user_id)`.
 - `core/config.py` — pydantic-settings reading `.env`. Defaults are dev-only (`jwt_secret_key` literally defaults to `CHANGE_ME_IN_ENV`).
 - `database.py` — SQLite with `check_same_thread=False`; `get_session` is the per-request session dependency.
-- `services/gemini_service.py` — `gemini-1.5-flash`. Interview completion is currently hardcoded `False`; the TODO notes it should come from a structured JSON signal rather than being inferred from response text.
+- `services/gemini_service.py` — model is configurable via `GEMINI_MODEL` (defaults to the rolling alias `gemini-flash-latest`; `gemini-1.5-flash` was retired, and free-tier keys often see `limit: 0` on `gemini-2.0-flash` / 404 on `gemini-2.5-flash`). All calls funnel through one `_generate()` helper that maps failures to a clean **502** (model/transport error) or **503** (no API key) instead of a bare 500. Interview completion is still hardcoded `False`; the client caps the round count instead.
 - Interview transcripts are stored as a JSON string in `transcript_json`, not a relational table.

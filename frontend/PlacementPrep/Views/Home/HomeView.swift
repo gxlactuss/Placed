@@ -9,6 +9,7 @@ struct HomeView: View {
 
     @Environment(QuizBank.self) private var quizBank
     @Environment(CompanyBank.self) private var companyBank
+    @EnvironmentObject private var auth: AuthViewModel
 
     @State private var showThemeSheet = false
     @State private var showSavedSheet = false
@@ -56,8 +57,14 @@ struct HomeView: View {
                 } label: {
                     Label("Themes", systemImage: "paintpalette")
                 }
+                Divider()
+                Button(role: .destructive) {
+                    auth.logout()
+                } label: {
+                    Label("Log out", systemImage: "rectangle.portrait.and.arrow.right")
+                }
             } label: {
-                PPAvatar(initials: initials(from: SampleData.userName))
+                PPAvatar(initials: initials(from: displayName))
             }
         }
     }
@@ -76,7 +83,7 @@ struct HomeView: View {
             (
                 Text("Ready when you are. Let's train for ")
                     .foregroundStyle(Color.ppMuted)
-                + Text(SampleData.targetRole)
+                + Text(displayRole)
                     .foregroundStyle(Color.ppAccent400)
                 + Text(".")
                     .foregroundStyle(Color.ppMuted)
@@ -284,8 +291,21 @@ struct HomeView: View {
         }
     }
 
+    /// Real signed-in name when the account carries one, else the sample name
+    /// (a token restored from the Keychain has no user attached until a `/me`
+    /// endpoint exists, so the fallback keeps the header populated).
+    private var displayName: String {
+        let name = auth.currentUser?.fullName?.trimmingCharacters(in: .whitespaces) ?? ""
+        return name.isEmpty ? SampleData.userName : name
+    }
+
+    private var displayRole: String {
+        let role = auth.currentUser?.targetRole?.trimmingCharacters(in: .whitespaces) ?? ""
+        return role.isEmpty ? SampleData.targetRole : role
+    }
+
     private var firstName: String {
-        SampleData.userName.split(separator: " ").first.map(String.init) ?? SampleData.userName
+        displayName.split(separator: " ").first.map(String.init) ?? displayName
     }
 
     private func initials(from name: String) -> String {
@@ -303,4 +323,5 @@ struct HomeView: View {
         .environment(QuizBank())
         .environment(CompanyBank())
         .environment(SolvedStore.preview())
+        .environmentObject(AuthViewModel())
 }

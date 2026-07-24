@@ -20,6 +20,13 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<!-- Allows cleartext HTTP to localhost / LAN for local backend dev. Public
+	     domains still require HTTPS, so the deployed backend is unaffected. -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Placement Prep needs microphone access so you can speak your answers during mock interviews.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>

@@ -44,4 +44,5 @@ struct DashboardView: View {
         .environment(QuizBank())
         .environment(QuizProgressStore.preview())
         .environment(SavedQuestionsStore.preview())
+        .environmentObject(AuthViewModel())
 }

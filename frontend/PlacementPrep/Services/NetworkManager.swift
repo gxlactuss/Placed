@@ -29,8 +29,14 @@ enum NetworkError: Error, LocalizedError {
 final class NetworkManager {
     static let shared = NetworkManager()
 
-    // TODO: swap for the deployed backend URL in Release builds (e.g. via xcconfig)
+    /// Debug builds talk to a local backend; Release builds talk to the deployed
+    /// Fly.io app. Keep the Release host in sync with `fly.toml`'s `app` name
+    /// (Fly serves it at `https://<app>.fly.dev`).
+    #if DEBUG
     private let baseURL = URL(string: "http://localhost:8000")!
+    #else
+    private let baseURL = URL(string: "https://placementprep-api.fly.dev")!
+    #endif
 
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -44,7 +50,21 @@ final class NetworkManager {
         self.session = session
 
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        // The backend emits two flavours of timestamp: timezone-aware ISO8601
+        // for freshly generated values, and *naive* strings with microseconds
+        // (e.g. "2026-07-24T12:45:15.865875") for datetimes round-tripped through
+        // SQLite. The stock `.iso8601` strategy rejects both fractional seconds
+        // and a missing timezone, so we parse leniently across the known shapes.
+        decoder.dateDecodingStrategy = .custom { decoder in
+            let raw = try decoder.singleValueContainer().decode(String.self)
+            guard let date = LenientDate.parse(raw) else {
+                throw DecodingError.dataCorruptedError(
+                    in: try decoder.singleValueContainer(),
+                    debugDescription: "Unrecognized date format: \(raw)"
+                )
+            }
+            return date
+        }
         self.decoder = decoder
 
         let encoder = JSONEncoder()
@@ -99,6 +119,39 @@ final class NetworkManager {
             let message = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw NetworkError.server(statusCode: httpResponse.statusCode, message: message)
         }
+    }
+}
+
+/// Tolerant parser for the timestamp shapes the backend can produce.
+/// Tries, in order: ISO8601 with timezone (± fractional seconds), then
+/// timezone-naive strings (assumed UTC, ± fractional seconds).
+enum LenientDate {
+    private static let iso8601: [ISO8601DateFormatter] = {
+        let withFraction = ISO8601DateFormatter()
+        withFraction.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let plain = ISO8601DateFormatter()
+        plain.formatOptions = [.withInternetDateTime]
+        return [withFraction, plain]
+    }()
+
+    private static let naive: [DateFormatter] = {
+        ["yyyy-MM-dd'T'HH:mm:ss.SSSSSS", "yyyy-MM-dd'T'HH:mm:ss"].map { format in
+            let df = DateFormatter()
+            df.locale = Locale(identifier: "en_US_POSIX")
+            df.timeZone = TimeZone(identifier: "UTC")
+            df.dateFormat = format
+            return df
+        }
+    }()
+
+    static func parse(_ string: String) -> Date? {
+        for formatter in iso8601 {
+            if let date = formatter.date(from: string) { return date }
+        }
+        for formatter in naive {
+            if let date = formatter.date(from: string) { return date }
+        }
+        return nil
     }
 }
 
