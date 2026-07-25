@@ -38,7 +38,10 @@ struct MockInterviewView: View {
                     .foregroundStyle(Color.ppMuted)
             }
 
-            Spacer()
+            Spacer(minLength: PPSpacing.sm)
+
+            // Icon-only here: the title and round badge already claim this row.
+            FocusModeToggle(compact: true)
 
             PPBadge("Round \(min(model.round, model.totalRounds)) of \(model.totalRounds)", tone: .accent)
         }
@@ -210,5 +213,6 @@ struct MockInterviewView: View {
 
 #Preview {
     MockInterviewView()
+        .environment(FocusModeStore.preview())
         .environmentObject(AuthViewModel())
 }

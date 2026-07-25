@@ -9,6 +9,9 @@ struct PlacementPrepApp: App {
     @State private var quizBank = QuizBank()
     @State private var quizProgress = QuizProgressStore()
     @State private var savedQuestions = SavedQuestionsStore()
+    /// Device-wide, not per-account: it's a property of how you're practising
+    /// right now, so it deliberately isn't reset on sign-out.
+    @State private var focusMode = FocusModeStore()
     /// The JWT gate. When a token is in the Keychain the app opens straight to
     /// the tabs; otherwise `AuthView` is shown until sign-in succeeds.
     @StateObject private var auth = AuthViewModel()
@@ -41,6 +44,7 @@ struct PlacementPrepApp: App {
                             .environment(quizBank)
                             .environment(quizProgress)
                             .environment(savedQuestions)
+                            .environment(focusMode)
                             // Reconcile per-user progress with the server whenever
                             // the signed-in user becomes known (login/relaunch).
                             .task(id: auth.currentUser?.id) {

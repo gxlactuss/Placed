@@ -43,7 +43,9 @@ struct HomeView: View {
             Text(todayLine)
                 .font(.ppCaption)
                 .foregroundStyle(Color.ppMuted)
-            Spacer()
+            Spacer(minLength: PPSpacing.md)
+            FocusModeToggle()
+                .padding(.trailing, PPSpacing.sm)
             // Tapping the avatar opens the profile menu. It holds just the theme
             // switcher today; account/settings items land here later.
             Menu {
@@ -323,5 +325,6 @@ struct HomeView: View {
         .environment(QuizBank())
         .environment(CompanyBank())
         .environment(SolvedStore.preview())
+        .environment(FocusModeStore.preview())
         .environmentObject(AuthViewModel())
 }
