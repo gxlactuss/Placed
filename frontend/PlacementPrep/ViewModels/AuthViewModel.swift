@@ -13,6 +13,7 @@ final class AuthViewModel: ObservableObject {
     @Published var isLoading = false
 
     private let network = NetworkManager.shared
+    private let oauthService = OAuthService()
 
     init() {
         network.authTokenProvider = { KeychainService.loadToken() }
@@ -81,6 +82,37 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
+    /// Confirms the emailed code. On success `currentUser` updates (isVerified
+    /// true) and the gate advances past the verify screen.
+    @discardableResult
+    func verifyEmail(code: String) async -> Bool {
+        errorMessage = nil
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            let updated: User = try await network.request(
+                path: "/api/auth/verify",
+                method: .post,
+                body: VerifyCodeRequest(code: code)
+            )
+            currentUser = updated
+            return true
+        } catch {
+            errorMessage = message(for: error)
+            return false
+        }
+    }
+
+    /// Requests a fresh verification code for the signed-in user.
+    func resendVerification() async {
+        errorMessage = nil
+        do {
+            try await network.send(path: "/api/auth/resend-verification", method: .post)
+        } catch {
+            errorMessage = message(for: error)
+        }
+    }
+
     /// Saves the onboarding answers and flips `onboarded`. Returns whether it
     /// succeeded; on success `currentUser` updates and the gate moves to the tabs.
     @discardableResult
@@ -96,6 +128,41 @@ final class AuthViewModel: ObservableObject {
         } catch {
             errorMessage = message(for: error)
             return false
+        }
+    }
+
+    /// Social sign-in (Google/GitHub). Opens the backend-brokered flow, stores
+    /// the returned JWT, then validates it to load the user (which advances the
+    /// gate — new accounts land on onboarding, verified by the provider).
+    func signInWithOAuth(_ provider: String) async {
+        errorMessage = nil
+        isLoading = true
+        defer { isLoading = false }
+        do {
+            let token = try await oauthService.authenticate(
+                url: network.oauthLoginURL(provider: provider),
+                callbackScheme: "placementprep"
+            )
+            KeychainService.saveToken(token)
+            await validateSession()
+            if sessionState != .authenticated {
+                errorMessage = "Signed in, but couldn't load your profile. Please try again."
+            }
+        } catch OAuthError.cancelled {
+            // User dismissed the sheet — not an error.
+        } catch let OAuthError.provider(code) {
+            errorMessage = Self.oauthMessage(for: code)
+        } catch {
+            errorMessage = "Sign-in didn't complete. Please try again."
+        }
+    }
+
+    private static func oauthMessage(for code: String) -> String {
+        switch code {
+        case "provider_not_configured": return "This sign-in option isn't set up yet."
+        case "no_email": return "That account has no shareable email. Try another way."
+        case "invalid_state": return "Sign-in expired. Please try again."
+        default: return "Sign-in didn't complete. Please try again."
         }
     }
 

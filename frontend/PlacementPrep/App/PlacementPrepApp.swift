@@ -28,9 +28,11 @@ struct PlacementPrepApp: App {
                 case .checking:
                     LaunchSplashView()
                 case .authenticated:
-                    // New accounts run first-time onboarding before the tabs.
-                    // (currentUser is nil only offline — then skip onboarding.)
-                    if let user = auth.currentUser, !user.onboarded {
+                    // Gate order once signed in: verify email → onboard → tabs.
+                    // (currentUser is nil only offline — then go straight to tabs.)
+                    if let user = auth.currentUser, !user.isVerified {
+                        VerifyEmailView()
+                    } else if let user = auth.currentUser, !user.onboarded {
                         OnboardingView()
                     } else {
                         DashboardView()
@@ -43,6 +45,7 @@ struct PlacementPrepApp: App {
                             // the signed-in user becomes known (login/relaunch).
                             .task(id: auth.currentUser?.id) {
                                 guard let id = auth.currentUser?.id else { return }
+                                savedQuestions.adopt(userId: id)
                                 await quizProgress.sync(userId: id)
                                 await solvedStore.sync(userId: id)
                             }
@@ -59,6 +62,7 @@ struct PlacementPrepApp: App {
                 if state == .unauthenticated {
                     quizProgress.clear()
                     solvedStore.clear()
+                    savedQuestions.clear()
                 }
             }
         }

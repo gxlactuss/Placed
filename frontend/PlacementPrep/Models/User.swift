@@ -5,6 +5,7 @@ struct User: Codable, Identifiable {
     let email: String
     let fullName: String?
     let targetRole: String?
+    let isVerified: Bool
     let onboarded: Bool
     let createdAt: Date
 
@@ -12,8 +13,14 @@ struct User: Codable, Identifiable {
         case id, email, onboarded
         case fullName = "full_name"
         case targetRole = "target_role"
+        case isVerified = "is_verified"
         case createdAt = "created_at"
     }
+}
+
+/// Body for `POST /api/auth/verify`.
+struct VerifyCodeRequest: Codable {
+    let code: String
 }
 
 /// Partial profile update for `PATCH /api/auth/me`. Nil fields are omitted by

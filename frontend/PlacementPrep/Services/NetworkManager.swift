@@ -86,6 +86,11 @@ final class NetworkManager {
         self.encoder = encoder
     }
 
+    /// The backend URL that starts a social sign-in flow for `provider`.
+    func oauthLoginURL(provider: String) -> URL {
+        URL(string: "/api/auth/oauth/\(provider)/login", relativeTo: baseURL)!.absoluteURL
+    }
+
     /// Performs a request and decodes the JSON response body.
     func request<Response: Decodable>(
         path: String,

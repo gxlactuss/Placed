@@ -14,12 +14,17 @@ struct PPButtonStyle: ButtonStyle {
     var variant: Variant = .primary
     /// Set false for buttons that should hug their label instead of filling the row.
     var expands: Bool = true
+    /// Breathing room either side of the label. Buttons that sit *inside* a line
+    /// of text zero this out: otherwise the padding is invisible but still
+    /// measured, so a centred sentence ends up centred on the padding rather
+    /// than on the words, and reads as off-centre.
+    var horizontalPadding: CGFloat = PPSpacing.xl
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.ppBodyMedium)
             .foregroundStyle(foreground)
-            .padding(.horizontal, PPSpacing.xl)
+            .padding(.horizontal, horizontalPadding)
             .frame(maxWidth: expands ? .infinity : nil, minHeight: PPSize.control)
             .background(background)
             .clipShape(.rect(cornerRadius: PPRadius.md))
@@ -61,6 +66,11 @@ extension ButtonStyle where Self == PPButtonStyle {
     static var ppPrimary: PPButtonStyle { PPButtonStyle(variant: .primary) }
     static var ppSecondary: PPButtonStyle { PPButtonStyle(variant: .secondary) }
     static var ppGhost: PPButtonStyle { PPButtonStyle(variant: .ghost, expands: false) }
+    /// A ghost button that reads as a word in a sentence ("New here? **Create one**").
+    /// No side padding, so the sentence centres on its visible text.
+    static var ppInlineLink: PPButtonStyle {
+        PPButtonStyle(variant: .ghost, expands: false, horizontalPadding: 0)
+    }
 }
 
 /// Places the icon after the title, as on the "Next →" control.
@@ -123,6 +133,16 @@ struct PPIconButton: View {
 
         Button("Start") {}
             .buttonStyle(.ppGhost)
+
+        // Inline link: the pair should sit optically centred in the row.
+        HStack(spacing: PPSpacing.sm) {
+            Text("New here?")
+                .font(.ppBody)
+                .foregroundStyle(Color.ppMuted)
+            Button("Create one") {}
+                .buttonStyle(.ppInlineLink)
+        }
+        .frame(maxWidth: .infinity)
 
         HStack(spacing: PPSpacing.xl) {
             PPIconButton(systemName: "xmark", diameter: 36) {}

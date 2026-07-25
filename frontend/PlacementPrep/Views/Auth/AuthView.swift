@@ -23,6 +23,7 @@ struct AuthView: View {
                 fields
                 errorBanner
                 primaryButton
+                socialSection
                 modeToggle
             }
             .padding(PPSpacing.xl)
@@ -136,10 +137,54 @@ struct AuthView: View {
         .animation(PPMotion.snappy, value: auth.isLoading)
     }
 
+    // MARK: - Social sign-in
+
+    private var socialSection: some View {
+        VStack(spacing: PPSpacing.md) {
+            HStack(spacing: PPSpacing.md) {
+                dividerLine
+                Text("or")
+                    .font(.ppCaption)
+                    .foregroundStyle(Color.ppMuted)
+                dividerLine
+            }
+
+            Button {
+                Task { await auth.signInWithOAuth("google") }
+            } label: {
+                Label {
+                    Text("Continue with Google")
+                } icon: {
+                    PPBrandMark(provider: .google)
+                }
+            }
+            .buttonStyle(.ppSecondary)
+
+            Button {
+                Task { await auth.signInWithOAuth("github") }
+            } label: {
+                Label {
+                    Text("Continue with GitHub")
+                } icon: {
+                    PPBrandMark(provider: .github)
+                }
+            }
+            .buttonStyle(.ppSecondary)
+        }
+        .disabled(auth.isLoading)
+    }
+
+    private var dividerLine: some View {
+        Rectangle()
+            .fill(Color.ppBorder)
+            .frame(height: 1)
+            .frame(maxWidth: .infinity)
+    }
+
     // MARK: - Mode toggle
 
     private var modeToggle: some View {
-        HStack(spacing: PPSpacing.xs) {
+        HStack(spacing: PPSpacing.sm) {
             Text(mode == .login ? "New here?" : "Already have an account?")
                 .font(.ppBody)
                 .foregroundStyle(Color.ppMuted)
@@ -147,7 +192,7 @@ struct AuthView: View {
                 auth.errorMessage = nil
                 mode = mode == .login ? .signup : .login
             }
-            .buttonStyle(.ppGhost)
+            .buttonStyle(.ppInlineLink)
         }
         .frame(maxWidth: .infinity)
         .padding(.top, PPSpacing.sm)
