@@ -25,10 +25,20 @@ class UserRead(BaseModel):
     email: str
     full_name: Optional[str] = None
     target_role: Optional[str] = None
+    onboarded: bool = False
     created_at: datetime
 
     class Config:
         from_attributes = True
+
+
+class UserUpdate(BaseModel):
+    """Partial profile update (PATCH /api/auth/me). Only the fields sent are
+    applied — used by the onboarding flow to save name/role and flip onboarded."""
+
+    full_name: Optional[str] = None
+    target_role: Optional[str] = None
+    onboarded: Optional[bool] = None
 
 
 class TokenResponse(BaseModel):

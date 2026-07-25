@@ -9,7 +9,7 @@ from app.core.auth import (
 )
 from database.db import get_session
 from database.models.user import User
-from app.schemas.user import TokenResponse, UserCreate, UserLogin, UserRead
+from app.schemas.user import TokenResponse, UserCreate, UserLogin, UserRead, UserUpdate
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -24,6 +24,27 @@ def me(
     user = session.get(User, int(user_id))
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
+    return UserRead.model_validate(user)
+
+
+@router.patch("/me", response_model=UserRead)
+def update_me(
+    payload: UserUpdate,
+    user_id: str = Depends(get_current_user_id),
+    session: Session = Depends(get_session),
+):
+    """Partial profile update — used by the onboarding flow to save name/role
+    and mark the user onboarded. Only the fields present in the body are applied."""
+    user = session.get(User, int(user_id))
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    for field, value in payload.model_dump(exclude_unset=True).items():
+        setattr(user, field, value)
+
+    session.add(user)
+    session.commit()
+    session.refresh(user)
     return UserRead.model_validate(user)
 
 

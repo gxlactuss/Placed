@@ -12,4 +12,6 @@ class User(SQLModel, table=True):
     hashed_password: str
     full_name: Optional[str] = None
     target_role: Optional[str] = None  # e.g. "Backend Engineer", used to tailor interview questions
+    # False until the first-run onboarding flow is completed.
+    onboarded: bool = Field(default=False)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))

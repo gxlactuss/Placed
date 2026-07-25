@@ -131,8 +131,8 @@ private struct ThemeOptionRow: View {
 // MARK: - Swatch
 
 /// A miniature of a home screen, drawn entirely in one theme's palette so the
-/// four options read as four distinct looks at a glance.
-private struct ThemeSwatch: View {
+/// four options read as four distinct looks at a glance. Reused by onboarding.
+struct ThemeSwatch: View {
 
     let palette: Palette
 

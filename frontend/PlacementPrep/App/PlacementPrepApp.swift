@@ -28,19 +28,25 @@ struct PlacementPrepApp: App {
                 case .checking:
                     LaunchSplashView()
                 case .authenticated:
-                    DashboardView()
-                        .environment(companyBank)
-                        .environment(solvedStore)
-                        .environment(quizBank)
-                        .environment(quizProgress)
-                        .environment(savedQuestions)
-                        // Reconcile per-user progress with the server whenever the
-                        // signed-in user becomes known (login or validated relaunch).
-                        .task(id: auth.currentUser?.id) {
-                            guard let id = auth.currentUser?.id else { return }
-                            await quizProgress.sync(userId: id)
-                            await solvedStore.sync(userId: id)
-                        }
+                    // New accounts run first-time onboarding before the tabs.
+                    // (currentUser is nil only offline — then skip onboarding.)
+                    if let user = auth.currentUser, !user.onboarded {
+                        OnboardingView()
+                    } else {
+                        DashboardView()
+                            .environment(companyBank)
+                            .environment(solvedStore)
+                            .environment(quizBank)
+                            .environment(quizProgress)
+                            .environment(savedQuestions)
+                            // Reconcile per-user progress with the server whenever
+                            // the signed-in user becomes known (login/relaunch).
+                            .task(id: auth.currentUser?.id) {
+                                guard let id = auth.currentUser?.id else { return }
+                                await quizProgress.sync(userId: id)
+                                await solvedStore.sync(userId: id)
+                            }
+                    }
                 case .unauthenticated:
                     AuthView()
                 }

@@ -5,13 +5,28 @@ struct User: Codable, Identifiable {
     let email: String
     let fullName: String?
     let targetRole: String?
+    let onboarded: Bool
     let createdAt: Date
 
     enum CodingKeys: String, CodingKey {
-        case id, email
+        case id, email, onboarded
         case fullName = "full_name"
         case targetRole = "target_role"
         case createdAt = "created_at"
+    }
+}
+
+/// Partial profile update for `PATCH /api/auth/me`. Nil fields are omitted by
+/// the synthesized encoder, so only what's set is sent.
+struct UserUpdate: Codable {
+    var fullName: String?
+    var targetRole: String?
+    var onboarded: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case onboarded
+        case fullName = "full_name"
+        case targetRole = "target_role"
     }
 }
 

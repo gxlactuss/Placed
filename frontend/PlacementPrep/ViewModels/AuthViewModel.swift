@@ -81,6 +81,24 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
+    /// Saves the onboarding answers and flips `onboarded`. Returns whether it
+    /// succeeded; on success `currentUser` updates and the gate moves to the tabs.
+    @discardableResult
+    func completeOnboarding(fullName: String, targetRole: String) async -> Bool {
+        errorMessage = nil
+        isLoading = true
+        defer { isLoading = false }
+        let body = UserUpdate(fullName: fullName, targetRole: targetRole, onboarded: true)
+        do {
+            let updated: User = try await network.request(path: "/api/auth/me", method: .patch, body: body)
+            currentUser = updated
+            return true
+        } catch {
+            errorMessage = message(for: error)
+            return false
+        }
+    }
+
     func logout() {
         KeychainService.deleteToken()
         currentUser = nil
