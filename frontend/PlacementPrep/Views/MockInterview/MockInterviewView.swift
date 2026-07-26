@@ -3,9 +3,11 @@ import SwiftUI
 /// Mock interview transcript with a hold-to-talk control.
 ///
 /// The screen is a thin render of `InterviewSessionModel`, which runs the real
-/// round-trip: Apple's on-device speech recogniser transcribes the held answer,
-/// and the Gemini-backed `/api/interview/*` routes supply the questions and
-/// follow-ups. Holding the mic streams the live transcription; releasing submits.
+/// round-trip: `VoiceService` records the held answer, it's uploaded to
+/// `/api/interview/transcribe` (Whisper) for text, and `/api/interview/*`
+/// supplies the questions and follow-ups. There's no live word-by-word bubble —
+/// the transcript only exists once the recording is sent, so the mic halo and
+/// `promptText` carry the feedback while recording.
 struct MockInterviewView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
@@ -86,9 +88,6 @@ struct MockInterviewView: View {
                         thinkingBubble.id("thinking")
                     }
 
-                    if model.isRecording && !model.liveText.isEmpty {
-                        liveBubble.id("live")
-                    }
                 }
                 .padding(.horizontal, PPSpacing.xl)
                 .padding(.bottom, PPSpacing.lg)
@@ -96,7 +95,6 @@ struct MockInterviewView: View {
             .scrollIndicators(.hidden)
             .animation(PPMotion.settle, value: model.turns.count)
             .onChange(of: model.turns.count) { _, _ in scrollToEnd(proxy) }
-            .onChange(of: model.liveText) { _, _ in scrollToEnd(proxy) }
             .onChange(of: model.isThinking) { _, _ in scrollToEnd(proxy) }
         }
     }
@@ -147,19 +145,6 @@ struct MockInterviewView: View {
         }
     }
 
-    private var liveBubble: some View {
-        HStack(spacing: PPSpacing.sm) {
-            Image(systemName: "waveform")
-                .foregroundStyle(Color.ppAccent400)
-            Text(model.liveText)
-                .font(.ppBody)
-                .italic()
-                .foregroundStyle(Color.ppMuted)
-            Spacer()
-        }
-        .padding(PPSpacing.lg)
-        .background(Color.ppElevated, in: .rect(cornerRadius: PPRadius.lg))
-    }
 
     // MARK: - Controls
 
@@ -213,17 +198,16 @@ struct MockInterviewView: View {
     }
 
     private var promptText: String {
+        if model.phase == .transcribing { return "Transcribing your answer…" }
         if model.isThinking { return "Thinking…" }
-        if model.isRecording { return "Listening… release when you're done" }
+        if model.isRecording { return "Recording… release when you're done" }
         if !model.micAuthorized { return "Hold to allow the microphone, then answer" }
         return "Hold to answer"
     }
 
     private func scrollToEnd(_ proxy: ScrollViewProxy) {
         withAnimation(.easeOut(duration: 0.25)) {
-            if model.isRecording && !model.liveText.isEmpty {
-                proxy.scrollTo("live", anchor: .bottom)
-            } else if model.isThinking {
+            if model.isThinking {
                 proxy.scrollTo("thinking", anchor: .bottom)
             } else if let last = model.turns.last {
                 proxy.scrollTo(last.id, anchor: .bottom)

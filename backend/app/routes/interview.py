@@ -1,10 +1,11 @@
 import json
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlmodel import Session
 
 from app.core.auth import get_current_user_id
+from app.core.config import settings
 from database.db import get_session
 from database.models.interview import InterviewSession, InterviewStatus
 from app.schemas.interview import (
@@ -14,11 +15,13 @@ from app.schemas.interview import (
     InterviewStart,
     ResumeSummaryRequest,
     ResumeSummaryResponse,
+    TranscriptionResponse,
 )
 from app.services.llm_service import (
     generate_first_question,
     generate_follow_up,
     summarize_projects,
+    transcribe_audio,
 )
 
 router = APIRouter(prefix="/api/interview", tags=["interview"])
@@ -78,6 +81,29 @@ def resume_summary(
     """
     summary, none_found = summarize_projects(payload.target_role, payload.projects_text)
     return ResumeSummaryResponse(summary=summary, no_projects_found=none_found)
+
+
+@router.post("/transcribe", response_model=TranscriptionResponse)
+async def transcribe(
+    audio: UploadFile = File(...),
+    # Auth gate; see `resume_summary`.
+    user_id: str = Depends(get_current_user_id),  # noqa: ARG001
+):
+    """Transcribes a spoken answer the client couldn't handle on-device.
+
+    The app uses Apple's on-device recogniser wherever it works — free, instant,
+    and the audio never leaves the phone. This exists for the cases where that
+    recogniser won't initialise (notably the Simulator, which ships no on-device
+    model), so voice answers still work there.
+    """
+    data = await audio.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="The recording was empty.")
+    if len(data) > settings.max_audio_upload_bytes:
+        raise HTTPException(status_code=413, detail="That recording is too long.")
+
+    text = transcribe_audio(data, audio.filename or "answer.m4a", audio.content_type)
+    return TranscriptionResponse(text=text)
 
 
 @router.post("/respond", response_model=InterviewAiResponse)

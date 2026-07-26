@@ -31,6 +31,12 @@ struct InterviewAnswerSubmitRequest: Codable {
     }
 }
 
+/// Reply from `/api/interview/transcribe` — used only when the device can't run
+/// Apple's on-device recogniser and the recording had to be uploaded.
+struct TranscriptionResponse: Codable {
+    let text: String
+}
+
 struct InterviewAiResponse: Codable {
     let sessionId: Int
     let aiMessage: String

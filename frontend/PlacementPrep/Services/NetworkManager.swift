@@ -139,6 +139,58 @@ final class NetworkManager {
             urlRequest.httpBody = try encoder.encode(AnyEncodable(body))
         }
 
+        return try await perform(urlRequest, requiresAuth: requiresAuth)
+    }
+
+    /// Uploads a file as `multipart/form-data` and decodes the JSON response —
+    /// used for the spoken-answer recording, which can't go through the JSON
+    /// body path.
+    func upload<Response: Decodable>(
+        path: String,
+        fileURL: URL,
+        fieldName: String,
+        mimeType: String,
+        requiresAuth: Bool = true
+    ) async throws -> Response {
+        guard let url = URL(string: path, relativeTo: baseURL) else {
+            throw NetworkError.invalidURL
+        }
+
+        let fileData: Data
+        do {
+            fileData = try Data(contentsOf: fileURL)
+        } catch {
+            throw NetworkError.transport(error)
+        }
+
+        let boundary = "PPBoundary-\(UUID().uuidString)"
+        var body = Data()
+        func append(_ string: String) { body.append(Data(string.utf8)) }
+        append("--\(boundary)\r\n")
+        append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileURL.lastPathComponent)\"\r\n")
+        append("Content-Type: \(mimeType)\r\n\r\n")
+        body.append(fileData)
+        append("\r\n--\(boundary)--\r\n")
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = HTTPMethod.post.rawValue
+        urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        if requiresAuth, let token = authTokenProvider?() {
+            urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        urlRequest.httpBody = body
+
+        let data = try await perform(urlRequest, requiresAuth: requiresAuth)
+        do {
+            return try decoder.decode(Response.self, from: data)
+        } catch {
+            throw NetworkError.decoding(error)
+        }
+    }
+
+    /// Sends a prepared request and maps the status code — shared by the JSON
+    /// and multipart paths so 401 handling can't drift between them.
+    private func perform(_ urlRequest: URLRequest, requiresAuth: Bool) async throws -> Data {
         let data: Data
         let response: URLResponse
         do {

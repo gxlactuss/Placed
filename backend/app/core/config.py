@@ -38,6 +38,13 @@ class Settings(BaseSettings):
     # A retired id returns 404, which the chain treats as exhausted and skips.
     groq_model: str = "llama-3.3-70b-versatile"
     groq_fallback_models: str = "openai/gpt-oss-120b,openai/gpt-oss-20b"
+    # Speech-to-text for clients that can't use Apple's on-device recogniser
+    # (the Simulator has no on-device model, and the server recogniser 1101s
+    # there). `-turbo` is the fast variant and plenty accurate for spoken answers.
+    groq_transcription_model: str = "whisper-large-v3-turbo"
+    # Groq caps uploads at 25 MB; a spoken answer is a few hundred KB, so this
+    # ceiling exists to reject something pathological before we spend the call.
+    max_audio_upload_bytes: int = 10 * 1024 * 1024
 
     @staticmethod
     def _split(csv: str) -> list[str]:

@@ -26,6 +26,7 @@ final class InterviewSessionModel {
         case connecting   // opening the session / awaiting the first question
         case ready        // idle, waiting for the user to hold-to-talk
         case recording    // mic live, streaming partial transcription
+        case transcribing // recording uploaded, awaiting text (cloud mode only)
         case thinking     // answer submitted, awaiting the follow-up
         case finished
         case error(String)
@@ -35,7 +36,6 @@ final class InterviewSessionModel {
     private(set) var round = 1
     private(set) var phase: Phase = .connecting
     private(set) var role = "Software Engineer"
-    var liveText = ""
     private(set) var level: Double = 0
     private(set) var micAuthorized = false
 
@@ -47,13 +47,13 @@ final class InterviewSessionModel {
     /// (sessionId nil, turns empty) — without this a second session could start.
     private var hasRequestedStart = false
     private let network = NetworkManager.shared
-    private let speech = SpeechRecognizerService()
+    private let voice = VoiceService()
 
     // MARK: - Derived state the view reads
 
     var isRecording: Bool { phase == .recording }
     /// Both the pre-first-question wait and the post-answer wait show a spinner.
-    var isThinking: Bool { phase == .connecting || phase == .thinking }
+    var isThinking: Bool { phase == .connecting || phase == .thinking || phase == .transcribing }
     var isFinished: Bool { phase == .finished }
     var errorMessage: String? { if case let .error(m) = phase { return m }; return nil }
     /// The mic is only offered when we're settled and waiting for an answer.
@@ -72,7 +72,7 @@ final class InterviewSessionModel {
     }
 
     private func requestMicPermission() {
-        speech.requestPermissions { [weak self] granted in
+        voice.requestPermissions { [weak self] granted in
             Task { @MainActor in self?.micAuthorized = granted }
         }
     }
@@ -95,9 +95,9 @@ final class InterviewSessionModel {
     }
 
     func restart() async {
-        speech.stopListening()
+        // Drop any half-finished recording rather than leaving it in temp.
+        if let url = voice.stopRecording() { voice.discard(url) }
         turns = []
-        liveText = ""
         level = 0
         round = 1
         sessionId = nil
@@ -122,7 +122,7 @@ final class InterviewSessionModel {
         // If permission hasn't been granted yet, ask now and let the user hold
         // again once granted, rather than starting with a dead mic.
         guard micAuthorized else {
-            speech.requestPermissions { [weak self] granted in
+            voice.requestPermissions { [weak self] granted in
                 Task { @MainActor in
                     guard let self else { return }
                     self.micAuthorized = granted
@@ -138,19 +138,10 @@ final class InterviewSessionModel {
     }
 
     private func beginListening() {
-        liveText = ""
         do {
-            try speech.startListening(
-                onPartialResult: { [weak self] text in
-                    Task { @MainActor in self?.liveText = text }
-                },
-                onError: { [weak self] error in
-                    Task { @MainActor in self?.handleRecordingError(error) }
-                },
-                onLevel: { [weak self] value in
-                    Task { @MainActor in self?.level = value }
-                }
-            )
+            try voice.startRecording { [weak self] value in
+                Task { @MainActor in self?.level = value }
+            }
             phase = .recording
         } catch {
             phase = .error(Self.friendly(error))
@@ -159,30 +150,37 @@ final class InterviewSessionModel {
 
     func stopRecording() {
         guard case .recording = phase else { return }
-
-        // Leave the recording phase *before* tearing down the recogniser, so any
-        // late teardown error is ignored by `handleRecordingError` and doesn't
-        // clobber the answer we're about to submit.
-        let answer = liveText.trimmingCharacters(in: .whitespaces)
-        phase = answer.isEmpty ? .ready : .thinking
-        speech.stopListening()
         level = 0
-        liveText = ""
 
-        guard !answer.isEmpty else { return }
+        guard let url = voice.stopRecording() else { phase = .ready; return }
+        phase = .transcribing
+        Task { await transcribeThenRespond(url) }
+    }
+
+    /// Upload the held audio, then treat the returned text as the answer.
+    private func transcribeThenRespond(_ url: URL) async {
+        defer { voice.discard(url) }
+        do {
+            let resp: TranscriptionResponse = try await network.upload(
+                path: "/api/interview/transcribe",
+                fileURL: url,
+                fieldName: "audio",
+                mimeType: "audio/m4a"
+            )
+            let answer = resp.text.trimmingCharacters(in: .whitespaces)
+            // Nothing audible — drop back to ready rather than submit silence.
+            guard !answer.isEmpty else { phase = .ready; return }
+            await appendAndRespond(answer)
+        } catch {
+            phase = .error(Self.friendly(error))
+        }
+    }
+
+    private func appendAndRespond(_ answer: String) async {
         turns.append(Turn(speaker: .user, text: answer, isFollowUp: false))
-        Task { await respond(answer: answer) }
+        await respond(answer: answer)
     }
 
-    /// Only fires for a failure *during* live recording (teardown errors are
-    /// filtered by the phase guard) — so it's a real problem worth surfacing.
-    private func handleRecordingError(_ error: Error) {
-        guard case .recording = phase else { return }
-        speech.stopListening()
-        level = 0
-        liveText = ""
-        phase = .error(Self.friendly(error))
-    }
 
     // MARK: - Networking the answer
 

@@ -59,6 +59,12 @@ class ResumeSummaryResponse(BaseModel):
     no_projects_found: bool = False
 
 
+class TranscriptionResponse(BaseModel):
+    """Text for a spoken answer the client couldn't transcribe on-device."""
+
+    text: str
+
+
 class InterviewAiResponse(BaseModel):
     """Returned to the client so AVSpeechSynthesizer can speak it back."""
 

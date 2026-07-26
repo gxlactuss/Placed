@@ -67,6 +67,49 @@ def _call_groq(model: str, prompt: str) -> str:
     return _strip_reasoning(response.json()["choices"][0]["message"]["content"])
 
 
+def transcribe_audio(data: bytes, filename: str, content_type: str | None) -> str:
+    """Speech-to-text via Groq Whisper.
+
+    Only used by clients that can't run Apple's on-device recogniser — the app
+    prefers on-device transcription, which is free, instant and never leaves the
+    phone. This is the fallback that keeps the Simulator (and any device without
+    the on-device model) usable.
+
+    Unlike `_generate` there's no provider chain: Gemini's audio support is a
+    different API shape, and a second one isn't worth maintaining for a fallback.
+    """
+    if not settings.groq_api_key:
+        raise HTTPException(status_code=503, detail="Voice transcription is not configured.")
+
+    try:
+        response = httpx.post(
+            f"{settings.groq_base_url}/audio/transcriptions",
+            headers={"Authorization": f"Bearer {settings.groq_api_key}"},
+            files={"file": (filename, data, content_type or "application/octet-stream")},
+            data={"model": settings.groq_transcription_model, "response_format": "json"},
+            timeout=120.0,  # generous: upload + transcode + transcribe
+        )
+    except httpx.HTTPError as exc:
+        logger.exception("Transcription transport failure")
+        raise HTTPException(
+            status_code=502, detail="Couldn't reach the transcription service."
+        ) from exc
+
+    if response.status_code == 429:
+        raise HTTPException(
+            status_code=503,
+            detail="Voice transcription has hit its usage limit for now. Try again shortly.",
+        )
+    if response.status_code in (401, 403):
+        logger.error("Groq rejected our key for transcription")
+        raise HTTPException(status_code=503, detail="Voice transcription is not configured.")
+    if response.status_code >= 400:
+        logger.error("Transcription failed (%s): %s", response.status_code, response.text[:300])
+        raise HTTPException(status_code=502, detail="Couldn't transcribe that recording.")
+
+    return response.json().get("text", "").strip()
+
+
 def _call_gemini(model: str, prompt: str) -> str:
     try:
         return genai.GenerativeModel(model).generate_content(prompt).text.strip()

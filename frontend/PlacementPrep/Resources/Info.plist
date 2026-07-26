@@ -29,8 +29,6 @@
 	</dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Placement Prep needs microphone access so you can speak your answers during mock interviews.</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Placement Prep uses speech recognition to transcribe your spoken interview answers.</string>
 	<!-- Custom scheme the backend redirects the finished OAuth JWT back to;
 	     ASWebAuthenticationSession intercepts it (see OAuthService). -->
 	<key>CFBundleURLTypes</key>
