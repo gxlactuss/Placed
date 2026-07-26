@@ -82,6 +82,18 @@ class TranscriptionResponse(BaseModel):
     text: str
 
 
+class InterviewFeedbackResponse(BaseModel):
+    """The debrief shown once a round is over."""
+
+    #: Out of 10, against campus-placement expectations for the target role.
+    rating: int
+    summary: str
+    improvements: list[str] = []
+    #: Answers that were wrong or badly incomplete, each carrying its correction.
+    #: Empty is a legitimate result, not a failure to produce one.
+    mistakes: list[str] = []
+
+
 class InterviewAiResponse(BaseModel):
     """Returned to the client so AVSpeechSynthesizer can speak it back."""
 

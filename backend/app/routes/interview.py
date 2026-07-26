@@ -11,6 +11,7 @@ from database.models.interview import InterviewSession, InterviewStatus
 from app.schemas.interview import (
     InterviewAiResponse,
     InterviewAnswerSubmit,
+    InterviewFeedbackResponse,
     InterviewSessionRead,
     InterviewStart,
     ResumeSummaryRequest,
@@ -19,6 +20,7 @@ from app.schemas.interview import (
 )
 from app.services.interview_prompts import InterviewMode, decode_context
 from app.services.llm_service import (
+    generate_feedback,
     generate_first_question,
     generate_follow_up,
     summarize_projects,
@@ -132,7 +134,7 @@ def submit_answer(
         {"speaker": "user", "text": payload.transcribed_answer, "at": datetime.now(timezone.utc).isoformat()}
     )
 
-    ai_message, ended_early = generate_follow_up(
+    follow_up = generate_follow_up(
         interview.target_role,
         InterviewMode.parse(interview.mode),
         decode_context(interview.context_json),
@@ -140,28 +142,80 @@ def submit_answer(
         payload.transcribed_answer,
     )
     transcript.append(
-        {"speaker": "ai", "text": ai_message, "at": datetime.now(timezone.utc).isoformat()}
+        {
+            "speaker": "ai",
+            "text": follow_up.message,
+            "at": datetime.now(timezone.utc).isoformat(),
+        }
     )
 
     interview.transcript_json = json.dumps(transcript)
-    if ended_early:
+    if follow_up.complete:
         # Closed on the server too, not just in the UI, so the round can't be
         # resumed by replaying `/respond` with the same session id.
-        interview.status = InterviewStatus.ABANDONED
+        interview.status = (
+            InterviewStatus.ABANDONED if follow_up.ended_early else InterviewStatus.COMPLETED
+        )
         interview.ended_at = datetime.now(timezone.utc)
-        # TODO: generate interview.overall_feedback via Gemini once the session ends
 
     session.add(interview)
     session.commit()
 
     return InterviewAiResponse(
         session_id=_require_id(interview),
-        ai_message=ai_message,
+        ai_message=follow_up.message,
         is_follow_up=True,
         # The client stops on either, but only one of them earns a "nice work".
-        interview_complete=ended_early,
-        ended_early=ended_early,
+        interview_complete=follow_up.complete,
+        ended_early=follow_up.ended_early,
     )
+
+
+@router.post("/{session_id}/feedback", response_model=InterviewFeedbackResponse)
+def interview_feedback(
+    session_id: int,
+    user_id: str = Depends(get_current_user_id),
+    session: Session = Depends(get_session),
+):
+    """Marks a finished round out of 10 and says what to work on.
+
+    Cached on the session after the first call: the debrief is stable once the
+    transcript stops changing, and regenerating it every time the student scrolls
+    back would spend a request from an allowance measured in tens per day.
+    """
+    interview = session.get(InterviewSession, session_id)
+    if not interview or interview.user_id != int(user_id):
+        raise HTTPException(status_code=404, detail="Interview session not found")
+
+    if interview.overall_feedback:
+        return InterviewFeedbackResponse(**json.loads(interview.overall_feedback))
+
+    transcript: list[dict] = json.loads(interview.transcript_json)
+    # Nothing said means nothing to assess, and the model would invent a score.
+    if not any(turn.get("speaker") == "user" for turn in transcript):
+        raise HTTPException(
+            status_code=409, detail="This interview has no answers to review yet."
+        )
+
+    feedback = generate_feedback(
+        interview.target_role, InterviewMode.parse(interview.mode), transcript
+    )
+    response = InterviewFeedbackResponse(
+        rating=feedback.rating,
+        summary=feedback.summary,
+        improvements=feedback.improvements,
+        mistakes=feedback.mistakes,
+    )
+
+    interview.overall_feedback = response.model_dump_json()
+    # A round the student finished is over even if the client never said so.
+    if interview.status == InterviewStatus.IN_PROGRESS:
+        interview.status = InterviewStatus.COMPLETED
+        interview.ended_at = datetime.now(timezone.utc)
+    session.add(interview)
+    session.commit()
+
+    return response
 
 
 @router.get("/{session_id}", response_model=InterviewSessionRead)

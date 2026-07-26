@@ -9,8 +9,10 @@ Groq speaks the OpenAI chat-completions API, so it needs no SDK — just the
 `httpx` we already depend on for the OAuth exchange.
 """
 
+import json
 import logging
 import re
+from typing import NamedTuple
 
 import google.generativeai as genai
 import httpx
@@ -19,10 +21,13 @@ from fastapi import HTTPException
 from app.core.config import settings
 from app.services.interview_prompts import (
     END_INTERVIEW_SENTINEL,
+    ROUND_COMPLETE_SENTINEL,
     InterviewMode,
+    feedback_prompt,
     follow_up_prompt,
     opening_prompt,
 )
+from app.services.quiz_prompts import quiz_summary_prompt
 
 genai.configure(api_key=settings.gemini_api_key)
 
@@ -222,29 +227,164 @@ def summarize_projects(target_role: str, projects_text: str) -> tuple[str, bool]
     return summary, False
 
 
+class Feedback(NamedTuple):
+    """A finished round's debrief, as rendered on the results screen."""
+
+    rating: int
+    summary: str
+    improvements: list[str]
+    mistakes: list[str]
+
+
+def _extract_json_object(raw: str) -> dict:
+    """Pulls the JSON object out of a model reply.
+
+    Models wrap JSON in ```json fences or bracket it with a line of commentary
+    however firmly you ask them not to, so take the outermost braces rather than
+    trusting the whole reply to parse.
+    """
+    start, end = raw.find("{"), raw.rfind("}")
+    if start == -1 or end <= start:
+        raise ValueError("no JSON object in reply")
+    value = json.loads(raw[start : end + 1])
+    if not isinstance(value, dict):
+        raise ValueError("JSON was not an object")
+    return value
+
+
+def _clean_list(value, limit: int) -> list[str]:
+    """Coerces a model-supplied list into displayable strings."""
+    if not isinstance(value, list):
+        return []
+    items = [str(v).strip() for v in value if str(v).strip()]
+    return items[:limit]
+
+
+def generate_feedback(
+    target_role: str, mode: InterviewMode, transcript: list[dict]
+) -> Feedback:
+    """Marks a finished round out of 10 and says what to fix.
+
+    One call per completed interview, and the route caches the result on the
+    session — a student rereading their results shouldn't spend another request
+    from a daily allowance measured in tens.
+
+    A malformed reply raises, and the route turns that into a 502 rather than
+    inventing a score: a made-up mark on a screen that looks authoritative is
+    worse than telling them the debrief didn't come through.
+    """
+    raw = _generate(feedback_prompt(target_role, mode, transcript))
+    try:
+        data = _extract_json_object(raw)
+    except (ValueError, json.JSONDecodeError) as exc:
+        logger.warning("Feedback reply was not usable JSON: %s", raw[:300])
+        raise HTTPException(
+            status_code=502, detail="Couldn't put your results together. Try again in a moment."
+        ) from exc
+
+    try:
+        rating = int(float(data.get("rating", 0)))
+    except (TypeError, ValueError):
+        rating = 0
+
+    return Feedback(
+        # Clamped because the rubric asks for 0-10 and models still hand back 11
+        # or 8.5 often enough that the UI would otherwise draw a broken score.
+        rating=max(0, min(10, rating)),
+        summary=str(data.get("summary", "")).strip(),
+        improvements=_clean_list(data.get("improvements"), limit=5),
+        mistakes=_clean_list(data.get("mistakes"), limit=8),
+    )
+
+
+class QuizSummary(NamedTuple):
+    """A finished quiz's debrief, as rendered on the results screen."""
+
+    summary: str
+    focus: list[str]
+
+
+def generate_quiz_summary(
+    quiz_title: str,
+    subject: str,
+    score_percentage: int,
+    correct_count: int,
+    total_questions: int,
+    missed: list[dict],
+) -> QuizSummary:
+    """Explains a quiz result rather than restating it.
+
+    Quizzes are scored entirely on-device, so the missed questions arrive from
+    the client — this is the one thing about a quiz the server ever sees.
+    """
+    raw = _generate(
+        quiz_summary_prompt(
+            quiz_title, subject, score_percentage, correct_count, total_questions, missed
+        )
+    )
+    try:
+        data = _extract_json_object(raw)
+    except (ValueError, json.JSONDecodeError) as exc:
+        logger.warning("Quiz summary reply was not usable JSON: %s", raw[:300])
+        raise HTTPException(
+            status_code=502, detail="Couldn't put your summary together. Try again in a moment."
+        ) from exc
+
+    return QuizSummary(
+        summary=str(data.get("summary", "")).strip(),
+        focus=_clean_list(data.get("focus"), limit=4),
+    )
+
+
+class FollowUp(NamedTuple):
+    """What came back from a turn, and whether the round survived it."""
+
+    message: str
+    #: The round is over, by either route below.
+    complete: bool
+    #: It was over because the interviewer stopped it, not because it finished.
+    ended_early: bool
+
+
 def generate_follow_up(
     target_role: str,
     mode: InterviewMode,
     context: dict | None,
     transcript: list[dict],
     latest_answer: str,
-) -> tuple[str, bool]:
+) -> FollowUp:
     """Given the running transcript and the candidate's latest spoken answer,
-    returns (next_ai_message, ended_early).
+    returns the next message and how (or whether) the round ended.
 
-    `ended_early` is the interviewer walking out — today the only reason is a
-    candidate acting in bad faith (see `_CONDUCT_RULES`). It is *not* the round
-    finishing normally: the model is never asked to judge when enough ground has
-    been covered, because it has no idea how many rounds the client allows. The
-    client still caps the count for that.
+    Two different endings, which the client presents differently:
+
+    * `ended_early` — the interviewer walked out, because the candidate wasn't
+      acting in good faith (see `_CONDUCT_RULES`). Not something to congratulate.
+    * `complete` without `ended_early` — the round reached its natural end. Only
+      the group discussion can do this today, when its moderator closes the
+      floor; the interviewer rounds are still ended by the client's round cap.
     """
     prompt = follow_up_prompt(target_role, mode, context or {}, transcript, latest_answer)
     reply = _generate(prompt)
 
-    if END_INTERVIEW_SENTINEL not in reply:
-        return reply, False
+    ended_early = END_INTERVIEW_SENTINEL in reply
+    # Bad faith wins if the model somehow emits both: being walked out on is the
+    # more consequential of the two to report accurately.
+    finished = ended_early or ROUND_COMPLETE_SENTINEL in reply
+    if not finished:
+        return FollowUp(reply, False, False)
 
-    cleaned = reply.replace(END_INTERVIEW_SENTINEL, "").strip()
+    cleaned = reply
+    for sentinel in (END_INTERVIEW_SENTINEL, ROUND_COMPLETE_SENTINEL):
+        cleaned = cleaned.replace(sentinel, "")
+    cleaned = cleaned.strip()
+
     # A reply that was *only* the marker would render as an empty bubble at the
     # one moment the student most needs to be told what just happened.
-    return cleaned or "I'm going to stop the interview here. Let's try again another time.", True
+    if not cleaned:
+        cleaned = (
+            "I'm going to stop the interview here. Let's try again another time."
+            if ended_early
+            else "That's where we'll close the discussion. Thank you both."
+        )
+    return FollowUp(cleaned, True, ended_early)

@@ -17,6 +17,7 @@ struct MockInterviewView: View {
     @State private var showSetup = false
     /// `nil` means no round is running, so the tab shows the picker.
     @State private var mode: InterviewMode?
+    @State private var showResults = false
 
     /// The setup screen's answer wins — it's the more deliberate one, collected
     /// for this specific interview. Falls back to the account's role, then a
@@ -68,6 +69,24 @@ struct MockInterviewView: View {
                 targetRole: resolvedRole,
                 mode: mode,
                 context: context(for: mode)
+            )
+        }
+        // The debrief is the point of finishing, so it comes up on its own. Not
+        // offered when the interviewer walked out: there's nothing to mark, and
+        // a score would land as a second telling-off.
+        .onChange(of: model.isFinished) { _, finished in
+            guard finished, !model.wasEndedByInterviewer else { return }
+            showResults = true
+            Task { await model.loadFeedback() }
+        }
+        .sheet(isPresented: $showResults) {
+            InterviewResultsView(
+                model: model,
+                onAnotherRound: {
+                    showResults = false
+                    leaveRound()
+                },
+                onClose: { showResults = false }
             )
         }
     }
@@ -215,6 +234,15 @@ struct MockInterviewView: View {
                     .font(.ppHeadline)
                     .multilineTextAlignment(.center)
                 HStack(spacing: PPSpacing.md) {
+                    // Reopens the debrief they were shown automatically, so
+                    // dismissing it isn't the same as throwing it away.
+                    if !model.wasEndedByInterviewer {
+                        Button("See results") {
+                            showResults = true
+                            Task { await model.loadFeedback() }
+                        }
+                        .buttonStyle(PPButtonStyle(variant: .primary, expands: false))
+                    }
                     Button("Another round") { leaveRound() }
                         .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
                     Button("Start over") { Task { await model.restart() } }

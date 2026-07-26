@@ -42,6 +42,13 @@ class InterviewMode(str, Enum):
 #: fight the hard rules. `llm_service` strips it before the text is returned.
 END_INTERVIEW_SENTINEL = "[[END_INTERVIEW]]"
 
+#: Appended when a round reaches its natural end, as opposed to being walked out
+#: of. Only the group discussion uses it today — its moderator closes the floor
+#: once the topic has been argued out. Deliberately *not* offered to the
+#: interviewer rounds: those are still ended by the client's round cap, and a
+#: model that can close whenever it likes tends to wrap up after two questions.
+ROUND_COMPLETE_SENTINEL = "[[ROUND_COMPLETE]]"
+
 
 #: Applies to every round. These are the rules that keep replies speakable:
 #: the client reads them aloud with AVSpeechSynthesizer, so markdown, numbering
@@ -210,28 +217,36 @@ def _debate_brief(context: dict) -> str:
     chosen = (
         f'The topic is: "{topic}".'
         if topic
-        else "Choose one contemporary discussion topic — AI in hiring, remote work, "
-             "social media regulation, gig economy, privacy versus safety, and so on. "
-             "Announce it in your first message."
+        else "Choose one contemporary discussion topic the candidate can argue without "
+             "specialist knowledge — AI in hiring, remote work, social media regulation, "
+             "the gig economy, privacy versus safety, and so on."
     )
     return f"""\
 FORMAT EXCEPTION — read carefully. In this round you are NOT the interviewer.
 
-You are simulating a group discussion panel. Play TWO other participants with
-different, genuinely opposing positions. Give them ordinary first names and keep
-those names consistent for the whole discussion.
+You play TWO people, and the candidate is the third person in the room:
+
+- A MODERATOR, with an ordinary first name. They run the discussion. They speak in the opening message to set the topic, and once more at the very end to close it. They take no side and do NOT speak in between.
+- ONE OPPONENT, with a different ordinary first name. They hold a clear position on the topic and argue it against the candidate for the whole discussion. This is the only person the candidate goes back and forth with.
+
+Keep both names the same throughout. Never introduce a third voice.
 
 {chosen}
 
 How this works:
-- Each of your replies contains at most TWO short turns, one per participant, formatted as "Name: what they say". Nothing else — no narration, no "the discussion continues".
-- Keep each turn to two sentences at most. Group discussions move fast.
-- Disagree with each other, not just with the candidate. The candidate has to find a gap to speak into, which is the actual skill being practised.
-- Occasionally address the candidate directly by asking what they think — but do not do it every time, because being handed the floor is exactly what does not happen in a real group discussion.
-- Never evaluate the candidate's contribution. You are a participant, not a judge.
+- Opening message: the moderator alone. Name the topic in one sentence, invite the candidate to open, and stop there.
+- Every message after that: the opponent alone, at most two sentences, formatted as "Name: what they say". Nothing else — no narration, no stage directions.
+- The opponent argues one consistent side. Push back on the candidate's reasoning, ask what they are basing a claim on, and concede a point only when it is genuinely well made.
+- The opponent is a peer, not a judge. Never score the candidate or declare who won.
+- The moderator must not interject mid-discussion. Being handed the floor is exactly what does not happen in a real group discussion.
 
-The "one question" hard rule does not apply to this round; the two-turn limit
-replaces it. Every other hard rule still applies, especially plain speakable text."""
+Closing the discussion:
+- Once the topic has been argued from both sides — usually after the candidate has made three or four substantive contributions — the MODERATOR closes it, and only the moderator ever does.
+- That closing message is the moderator alone: thank both speakers and say in one sentence that the discussion is over. Take no side and pick no winner. Then put {ROUND_COMPLETE_SENTINEL} alone on the final line.
+- Never say that marker out loud as part of a sentence, and never use it in any other message.
+
+The "one question" hard rule does not apply to this round; the one-speaker-per-message
+rule replaces it. Every other hard rule still applies, especially plain speakable text."""
 
 
 def _dsa_brief(context: dict) -> str:
@@ -306,6 +321,75 @@ def follow_up_prompt(
         f"Their latest answer: {latest_answer}\n\n"
         f"{closing}"
     )
+
+
+def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> str:
+    """The post-round debrief: a mark out of 10 and what to fix.
+
+    The only prompt in this file that asks for JSON rather than speech. It can:
+    nothing here is read aloud — the client renders it as a report — so the hard
+    rules that keep every other reply speakable don't apply.
+    """
+    # Relabelled from the stored "ai"/"user" speakers: given the raw labels the
+    # model echoes them back into its own output ("ai: What is a deadlock? should
+    # be answered with…"), which reads as a leaked internal format on screen.
+    speakers = {"ai": "Interviewer", "user": "Candidate"}
+    history = "\n".join(
+        f"{speakers.get(turn['speaker'], turn['speaker'])}: {turn['text']}"
+        for turn in transcript
+    )
+
+    if mode is InterviewMode.PANEL_DEBATE:
+        lens = (
+            "This was a group discussion, not a question-and-answer interview. Judge how "
+            "clearly they staked out a position, how well they backed it with reasoning, "
+            "whether they answered the push-back they got, and whether they found room to "
+            "speak without talking over anyone. For 'mistakes', list claims that were "
+            "factually wrong or arguments that collapsed when challenged."
+        )
+    else:
+        lens = (
+            "Judge the substance of what they said against what this role demands. For "
+            "'mistakes', list answers that were factually wrong or badly incomplete, each "
+            "with the correction in the same sentence, so the student learns the right "
+            "answer and not just that they missed one."
+        )
+
+    return f"""You are assessing a mock interview a student has just finished, for a '{role}' role.
+
+{lens}
+
+The transcript below came from speech recognition, so it contains misheard words,
+missing punctuation and false starts. Those are the recogniser's errors, not the
+candidate's — never mark them down for spelling, grammar, accent or fluency, and
+never comment on how they speak.
+
+Transcript:
+---
+{history}
+---
+
+Rate out of 10 against what an interviewer for '{role}' at campus-placement level
+would actually expect. Be honest and useful rather than kind — an inflated score
+teaches them nothing, and they came here to find out where they stand:
+- 1-3: would not get through this round.
+- 4-5: borderline; some real content, but too thin or too vague to convince.
+- 6-7: a solid pass with clear gaps.
+- 8-10: strong; specific, well-reasoned answers that stand up to follow-ups.
+If they barely engaged or gave almost nothing to assess, score low and say so.
+
+Reply with ONLY a JSON object and nothing else — no markdown fence, no commentary
+before or after. Exactly this shape:
+{{"rating": <whole number 0-10>, "summary": "<2 to 3 sentences on how it went, addressed to them as 'you'>", "improvements": ["<specific, actionable thing to work on>", "..."], "mistakes": ["<what they got wrong, with the correction>", "..."]}}
+
+Give two to four improvements. Give as many mistakes as there genuinely were, and
+an empty list if there were none — do not invent one to fill the field.
+
+Each entry in "mistakes" must be ONE sentence naming the topic and giving the
+correct answer, written so it stands on its own on a results screen — for example
+"Deadlock needs all four Coffman conditions to hold at once: mutual exclusion,
+hold and wait, no preemption and circular wait." Never prefix an entry with a
+speaker label, never quote the transcript back, and never start with "you said"."""
 
 
 def decode_context(context_json: str | None) -> dict:

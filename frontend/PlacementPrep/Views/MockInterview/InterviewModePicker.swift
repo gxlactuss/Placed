@@ -19,9 +19,9 @@ enum InterviewMode: String, CaseIterable, Identifiable, Codable {
         switch self {
         case .hr: "HR & behavioural"
         case .projects: "Your projects"
-        case .techStack: "Your tech stack"
+        case .techStack: "Technical Round"
         case .coreCs: "Core CS"
-        case .dsaApproach: "DSA out loud"
+        case .dsaApproach: "DSA Round"
         case .panelDebate: "Group discussion"
         }
     }
@@ -33,18 +33,22 @@ enum InterviewMode: String, CaseIterable, Identifiable, Codable {
         case .techStack: "Depth on the technologies your resume claims."
         case .coreCs: "OS, DBMS, networks, OOP — asked in every campus interview."
         case .dsaApproach: "Talk through a problem's approach. No code."
-        case .panelDebate: "Debate two AI panellists on a current topic."
+        case .panelDebate: "A moderator sets the topic. Argue it out with one opponent."
         }
     }
 
+    /// All outline, no filled variants: the tiles already carry a hairline
+    /// border, and mixing `.fill` marks in made some rounds read heavier than
+    /// others in the same list. Shapes are deliberately unalike so no two rounds
+    /// are confusable at tile size.
     var icon: String {
         switch self {
-        case .hr: "person.2.fill"
-        case .projects: "hammer.fill"
-        case .techStack: "chevron.left.forwardslash.chevron.right"
-        case .coreCs: "cpu"
-        case .dsaApproach: "function"
-        case .panelDebate: "bubble.left.and.bubble.right.fill"
+        case .hr: "person.text.rectangle"
+        case .projects: "wrench.and.screwdriver"
+        case .techStack: "terminal"
+        case .coreCs: "memorychip"
+        case .dsaApproach: "arrow.triangle.branch"
+        case .panelDebate: "bubble.left.and.text.bubble.right"
         }
     }
 

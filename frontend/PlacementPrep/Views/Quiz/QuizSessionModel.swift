@@ -22,6 +22,59 @@ final class QuizSessionModel {
     /// holds `self` weakly and exits on its own if the model goes away.
     private var ticker: Task<Void, Never>?
 
+    // MARK: - Debrief
+
+    private(set) var summary: QuizSummaryResponse?
+    private(set) var isLoadingSummary = false
+    private(set) var summaryError: String?
+
+    /// Asks the backend to explain the result rather than restate it.
+    ///
+    /// The only network call in this model, and it happens once, after the last
+    /// question — scoring stays entirely on-device, so a student with no
+    /// connection still gets their score, their answers and their explanations.
+    /// Only this extra layer is missing.
+    func loadSummary() async {
+        guard summary == nil, !isLoadingSummary else { return }
+        isLoadingSummary = true
+        summaryError = nil
+        defer { isLoadingSummary = false }
+
+        let missed = questions.enumerated().compactMap { position, question -> MissedQuestionPayload? in
+            let chosen = answers[position]
+            guard chosen != question.correctOptionID else { return nil }
+            return MissedQuestionPayload(
+                prompt: question.prompt,
+                chosenText: chosen.flatMap { id in question.options.first { $0.id == id }?.text },
+                correctText: question.options.first { $0.id == question.correctOptionID }?.text ?? "",
+                concept: question.concept
+            )
+        }
+
+        do {
+            summary = try await NetworkManager.shared.request(
+                path: "/api/quiz/summary",
+                method: .post,
+                body: QuizSummaryRequestPayload(
+                    quizTitle: quiz.title,
+                    subject: quiz.subject?.title ?? quiz.category.title,
+                    scorePercentage: scorePercentage,
+                    correctCount: correctCount,
+                    totalQuestions: questions.count,
+                    missed: missed
+                )
+            )
+        } catch {
+            summaryError = "Couldn't load your summary. Your score and answers above are unaffected."
+        }
+    }
+
+    private func resetSummary() {
+        summary = nil
+        summaryError = nil
+        isLoadingSummary = false
+    }
+
     init(quiz: Quiz) {
         self.quiz = quiz
     }
@@ -128,6 +181,51 @@ final class QuizSessionModel {
         secondsOnQuestion = 0
         totalSeconds = 0
         isFinished = false
+        // A retake is a different attempt, so last attempt's debrief must not
+        // survive into it.
+        resetSummary()
         startTimer()
     }
+}
+
+// MARK: - Wire types
+
+/// One question the student got wrong. Carries the question itself, not just its
+/// concept tag — a summary written from tags alone can only restate the tags.
+struct MissedQuestionPayload: Encodable {
+    let prompt: String
+    /// `nil` when the timer ran out and nothing was picked.
+    let chosenText: String?
+    let correctText: String
+    let concept: String
+
+    enum CodingKeys: String, CodingKey {
+        case prompt, concept
+        case chosenText = "chosen_text"
+        case correctText = "correct_text"
+    }
+}
+
+struct QuizSummaryRequestPayload: Encodable {
+    let quizTitle: String
+    let subject: String
+    let scorePercentage: Int
+    let correctCount: Int
+    let totalQuestions: Int
+    let missed: [MissedQuestionPayload]
+
+    enum CodingKeys: String, CodingKey {
+        case subject, missed
+        case quizTitle = "quiz_title"
+        case scorePercentage = "score_percentage"
+        case correctCount = "correct_count"
+        case totalQuestions = "total_questions"
+    }
+}
+
+/// Reply from `/api/quiz/summary` — the pattern behind the wrong answers, and
+/// what to revise. `focus` is legitimately empty after a clean sweep.
+struct QuizSummaryResponse: Decodable {
+    let summary: String
+    let focus: [String]
 }

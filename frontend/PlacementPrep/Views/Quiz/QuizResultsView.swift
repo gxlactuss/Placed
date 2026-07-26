@@ -20,6 +20,7 @@ struct QuizResultsView: View {
                     ring
                     verdict
                     statRow
+                    aiSummary
                     weakAreas
                     recommendations
                 }
@@ -36,6 +37,9 @@ struct QuizResultsView: View {
             }
             revealed = true
         }
+        // Fires once per attempt — the model guards against a second request,
+        // and a retake resets it.
+        .task { await model.loadSummary() }
     }
 
     private var header: some View {
@@ -100,6 +104,57 @@ struct QuizResultsView: View {
                 valueColor: .ppEasy
             )
             PPStatTile(value: "+\(model.correctCount * 10)", label: "XP")
+        }
+    }
+
+    /// The part of this screen that says something the student couldn't work out
+    /// themselves. Everything else here is arithmetic on their own answers; this
+    /// is the pattern behind them and what to do about it.
+    @ViewBuilder
+    private var aiSummary: some View {
+        if let summary = model.summary {
+            VStack(alignment: .leading, spacing: PPSpacing.md) {
+                PPSectionHeader("What this tells you")
+
+                PPCard(tone: .elevated) {
+                    VStack(alignment: .leading, spacing: PPSpacing.md) {
+                        Text(summary.summary)
+                            .font(.ppBody)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        ForEach(Array(summary.focus.enumerated()), id: \.offset) { _, item in
+                            HStack(alignment: .top, spacing: PPSpacing.md) {
+                                Circle()
+                                    .fill(Color.ppAccent400)
+                                    .frame(width: 6, height: 6)
+                                    .padding(.top, 7)
+                                Text(item)
+                                    .font(.ppCaption)
+                                    .foregroundStyle(Color.ppMuted)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer(minLength: 0)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+        } else if model.isLoadingSummary {
+            HStack(spacing: PPSpacing.md) {
+                ProgressView().tint(Color.ppAccent400)
+                Text("Working out what to focus on…")
+                    .font(.ppCaption)
+                    .foregroundStyle(Color.ppMuted)
+                Spacer(minLength: 0)
+            }
+        } else if let error = model.summaryError {
+            // Deliberately quiet: the score, the answers and the per-question
+            // explanations are all already on screen and all still correct. This
+            // is the one extra layer, and losing it isn't worth an alarm.
+            Text(error)
+                .font(.ppMicro)
+                .foregroundStyle(Color.ppMuted)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 

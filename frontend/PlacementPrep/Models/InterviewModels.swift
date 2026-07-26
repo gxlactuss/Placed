@@ -83,6 +83,18 @@ struct InterviewAiResponse: Codable {
     }
 }
 
+/// The debrief for a finished round, from `POST /api/interview/{id}/feedback`.
+/// The backend caches it on the session, so asking twice is free.
+struct InterviewFeedback: Codable {
+    /// Out of 10, against campus-placement expectations for the target role.
+    let rating: Int
+    let summary: String
+    let improvements: [String]
+    /// Answers that were wrong or incomplete, each carrying its correction.
+    /// Legitimately empty when there weren't any.
+    let mistakes: [String]
+}
+
 struct InterviewSession: Codable, Identifiable {
     let id: Int
     let targetRole: String

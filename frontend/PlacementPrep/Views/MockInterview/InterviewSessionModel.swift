@@ -12,9 +12,12 @@ import Foundation
 ///
 /// The mode and its resume context are fixed for the life of a round: the
 /// backend stores both on the session, so only `start` carries them. `endSession`
-/// tears the round down so the picker can start a different one. The backend
-/// never signals completion yet (see gemini_service TODO), so the round count is
-/// capped here to give the interview a real ending.
+/// tears the round down so the picker can start a different one.
+///
+/// A round ends one of three ways: the backend reports the interviewer walked out
+/// (`wasEndedByInterviewer`), the backend reports a natural close (the group
+/// discussion's moderator), or the round cap here runs out — the interviewer
+/// rounds have no natural end of their own, so the cap is what gives them one.
 @MainActor
 @Observable
 final class InterviewSessionModel {
@@ -46,6 +49,38 @@ final class InterviewSessionModel {
     /// The interviewer ended this round rather than it running its course. Only
     /// changes the closing copy — being thrown out shouldn't read "nice work".
     private(set) var wasEndedByInterviewer = false
+
+    // MARK: - Debrief
+
+    private(set) var feedback: InterviewFeedback?
+    private(set) var isLoadingFeedback = false
+    private(set) var feedbackError: String?
+
+    /// Fetches the mark out of 10 and the notes on what to fix.
+    ///
+    /// Costs one model call the first time and nothing after — the backend caches
+    /// it on the session — so the guard here is about not firing two concurrent
+    /// requests, not about saving quota.
+    func loadFeedback() async {
+        guard let sessionId, feedback == nil, !isLoadingFeedback else { return }
+        isLoadingFeedback = true
+        feedbackError = nil
+        defer { isLoadingFeedback = false }
+        do {
+            feedback = try await network.request(
+                path: "/api/interview/\(sessionId)/feedback",
+                method: .post
+            )
+        } catch {
+            feedbackError = Self.friendly(error)
+        }
+    }
+
+    private func resetFeedback() {
+        feedback = nil
+        feedbackError = nil
+        isLoadingFeedback = false
+    }
 
     let totalRounds = 5
 
@@ -97,6 +132,7 @@ final class InterviewSessionModel {
         round = 1
         level = 0
         wasEndedByInterviewer = false
+        resetFeedback()
         phase = .connecting
     }
 
@@ -135,6 +171,7 @@ final class InterviewSessionModel {
         round = 1
         sessionId = nil
         wasEndedByInterviewer = false
+        resetFeedback()
         await start()
     }
 
