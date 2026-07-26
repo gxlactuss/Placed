@@ -6,8 +6,25 @@ from pydantic import BaseModel, Field
 from database.models.interview import InterviewStatus
 
 
+class InterviewContext(BaseModel):
+    """Resume-derived material the round is tailored to. All optional — a round
+    started without a resume simply gets an untailored prompt."""
+
+    projects_text: Optional[str] = Field(default=None, max_length=8000)
+    skills: Optional[str] = Field(default=None, max_length=2000)
+    # For the DSA round: the problem title the client picked from its bundled
+    # company lists (the backend has no problem bank of its own).
+    dsa_problem: Optional[str] = Field(default=None, max_length=300)
+    # For the group-discussion round; the model picks one if absent.
+    topic: Optional[str] = Field(default=None, max_length=300)
+
+
 class InterviewStart(BaseModel):
     target_role: str
+    #: An `InterviewMode` value. Unknown/absent falls back to core CS rather than
+    #: failing, so an older client keeps working.
+    mode: str = "core_cs"
+    context: Optional[InterviewContext] = None
 
 
 class InterviewTurn(BaseModel):

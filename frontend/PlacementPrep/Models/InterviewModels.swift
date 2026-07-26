@@ -15,9 +15,14 @@ struct InterviewTurn: Codable, Identifiable {
 
 struct InterviewStartRequest: Codable {
     let targetRole: String
+    /// `InterviewMode.rawValue`. The backend parses it and stores it on the
+    /// session, so follow-up turns stay in the same round.
+    let mode: String
+    let context: InterviewContextPayload?
 
     enum CodingKeys: String, CodingKey {
         case targetRole = "target_role"
+        case mode, context
     }
 }
 
@@ -31,8 +36,27 @@ struct InterviewAnswerSubmitRequest: Codable {
     }
 }
 
-/// Reply from `/api/interview/transcribe` — used only when the device can't run
-/// Apple's on-device recogniser and the recording had to be uploaded.
+/// Resume-derived material the round is tailored to. Everything optional — a
+/// round with no context simply gets an untailored prompt.
+struct InterviewContextPayload: Codable {
+    var projectsText: String?
+    var skills: String?
+    var dsaProblem: String?
+    var topic: String?
+
+    var isEmpty: Bool {
+        projectsText == nil && skills == nil && dsaProblem == nil && topic == nil
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case projectsText = "projects_text"
+        case skills
+        case dsaProblem = "dsa_problem"
+        case topic
+    }
+}
+
+/// Reply from `/api/interview/transcribe` — the text Whisper heard.
 struct TranscriptionResponse: Codable {
     let text: String
 }

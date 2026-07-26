@@ -2,13 +2,18 @@ import Foundation
 
 /// The one piece of real state logic behind the mock interview, mirroring
 /// `QuizSessionModel`: `@MainActor @Observable` so the view is a thin render of
-/// it. It drives the round-trip between Apple's on-device speech recogniser and
-/// the Gemini-backed `/api/interview/*` routes.
+/// it. It drives the round-trip between the mic and the `/api/interview/*`
+/// routes.
 ///
-/// Flow: `startIfNeeded` opens a session and shows the AI's opening question →
-/// the user holds to talk (live partial transcription) → releasing submits the
-/// transcript, and the model appends Gemini's follow-up. The backend never
-/// signals completion yet (see gemini_service TODO), so the round count is
+/// Flow: `startIfNeeded` opens a session in the picked `InterviewMode` and shows
+/// the opening question → the user holds to talk → releasing uploads the
+/// recording, which comes back as text, and the model appends the follow-up.
+/// There's no live transcript because none exists until that upload returns.
+///
+/// The mode and its resume context are fixed for the life of a round: the
+/// backend stores both on the session, so only `start` carries them. `endSession`
+/// tears the round down so the picker can start a different one. The backend
+/// never signals completion yet (see gemini_service TODO), so the round count is
 /// capped here to give the interview a real ending.
 @MainActor
 @Observable
@@ -25,8 +30,8 @@ final class InterviewSessionModel {
     enum Phase: Equatable {
         case connecting   // opening the session / awaiting the first question
         case ready        // idle, waiting for the user to hold-to-talk
-        case recording    // mic live, streaming partial transcription
-        case transcribing // recording uploaded, awaiting text (cloud mode only)
+        case recording    // mic live, capturing to file
+        case transcribing // recording uploaded, awaiting text
         case thinking     // answer submitted, awaiting the follow-up
         case finished
         case error(String)
@@ -42,6 +47,8 @@ final class InterviewSessionModel {
     let totalRounds = 5
 
     private var sessionId: Int?
+    private var mode: InterviewMode = .coreCs
+    private var context = InterviewContextPayload()
     /// Guards `startIfNeeded` against re-entry: `.task` re-runs each time the
     /// Interview tab reappears, and the opener request may still be in flight
     /// (sessionId nil, turns empty) — without this a second session could start.
@@ -61,14 +68,32 @@ final class InterviewSessionModel {
 
     // MARK: - Session lifecycle
 
-    func startIfNeeded(targetRole: String) async {
+    func startIfNeeded(
+        targetRole: String,
+        mode: InterviewMode,
+        context: InterviewContextPayload
+    ) async {
         guard !hasRequestedStart else { return }
         hasRequestedStart = true
         role = targetRole
-        // Ask for mic + speech permission early so the first hold-to-talk just
-        // works instead of racing the permission dialogs.
+        self.mode = mode
+        self.context = context
+        // Ask for mic permission early so the first hold-to-talk just works
+        // instead of racing the permission dialog.
         requestMicPermission()
         await start()
+    }
+
+    /// Tears the round down so the picker can start a different one. The mode
+    /// and context are per-round, so they reset with everything else.
+    func endSession() {
+        if let url = voice.stopRecording() { voice.discard(url) }
+        hasRequestedStart = false
+        sessionId = nil
+        turns = []
+        round = 1
+        level = 0
+        phase = .connecting
     }
 
     private func requestMicPermission() {
@@ -83,7 +108,11 @@ final class InterviewSessionModel {
             let resp: InterviewAiResponse = try await network.request(
                 path: "/api/interview/start",
                 method: .post,
-                body: InterviewStartRequest(targetRole: role)
+                body: InterviewStartRequest(
+                    targetRole: role,
+                    mode: mode.rawValue,
+                    context: context.isEmpty ? nil : context
+                )
             )
             sessionId = resp.sessionId
             turns = [Turn(speaker: .ai, text: resp.aiMessage, isFollowUp: false)]

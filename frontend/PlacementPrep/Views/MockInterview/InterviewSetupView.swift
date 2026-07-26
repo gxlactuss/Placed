@@ -17,6 +17,10 @@ struct InterviewSetupView: View {
     @State private var role = ""
     @State private var phase: Phase = .idle
     @State private var showFileImporter = false
+    /// Held from the on-device parse so `finish()` can persist them — the rounds
+    /// are prompted with these, not with the model's summary.
+    @State private var projectsText: String?
+    @State private var skills: String?
 
     /// Where the resume half of the screen has got to. The role field stays
     /// live throughout — only the resume work has stages.
@@ -52,7 +56,17 @@ struct InterviewSetupView: View {
         .onAppear {
             // Prefill from the account so the common case is one tap.
             if role.isEmpty {
-                role = auth.currentUser?.targetRole?.trimmingCharacters(in: .whitespaces) ?? ""
+                role = (store.setup?.targetRole ?? auth.currentUser?.targetRole)?
+                    .trimmingCharacters(in: .whitespaces) ?? ""
+            }
+            // Reopened to change something — carry the existing resume forward.
+            // These are `@State`, so without this a student who came back only
+            // to fix their role would save nil over a resume that was fine and
+            // silently re-lock the rounds it had unlocked.
+            if case .idle = phase, let saved = store.setup, saved.hasProjects {
+                projectsText = saved.projectsText
+                skills = saved.skills
+                if let summary = saved.projectsSummary { phase = .done(summary) }
             }
         }
         .fileImporter(
@@ -172,6 +186,12 @@ struct InterviewSetupView: View {
                 .font(.ppCaption)
                 .foregroundStyle(Color.ppMuted)
                 .fixedSize(horizontal: false, vertical: true)
+            if let skills, !skills.isEmpty {
+                Text("Skills found — unlocks the tech-stack round.")
+                    .font(.ppMicro)
+                    .foregroundStyle(Color.ppEasy)
+            }
+
             Button("Use a different file") { showFileImporter = true }
                 .buttonStyle(.ppInlineLink)
         }
@@ -222,6 +242,11 @@ struct InterviewSetupView: View {
             do {
                 let text = try await ResumeTextExtractor.extractText(from: url)
                 let extraction = ResumeParser.extractProjects(from: text)
+                // Keep the extracted material: the projects round needs the real
+                // text, and the tech-stack round needs the skills list. Only the
+                // projects half is sent for summarising.
+                projectsText = extraction.foundProjectsSection ? extraction.text : nil
+                skills = ResumeParser.extractSkills(from: text)
 
                 phase = .summarising
                 let trimmedRole = role.trimmingCharacters(in: .whitespaces)
@@ -247,7 +272,12 @@ struct InterviewSetupView: View {
         guard !trimmedRole.isEmpty else { return }
 
         let summary: String? = if case .done(let text) = phase { text } else { nil }
-        store.save(InterviewSetup(targetRole: trimmedRole, projectsSummary: summary))
+        store.save(InterviewSetup(
+            targetRole: trimmedRole,
+            projectsSummary: summary,
+            projectsText: projectsText,
+            skills: skills
+        ))
 
         // Keep the account's role in step, so Home's greeting and the interview
         // don't disagree about what the student is preparing for.

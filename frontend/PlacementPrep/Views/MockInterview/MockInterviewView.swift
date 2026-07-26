@@ -12,8 +12,11 @@ struct MockInterviewView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
     @Environment(InterviewSetupStore.self) private var setupStore
+    @Environment(CompanyBank.self) private var companyBank
     @State private var model = InterviewSessionModel()
     @State private var showSetup = false
+    /// `nil` means no round is running, so the tab shows the picker.
+    @State private var mode: InterviewMode?
 
     /// The setup screen's answer wins — it's the more deliberate one, collected
     /// for this specific interview. Falls back to the account's role, then a
@@ -31,6 +34,27 @@ struct MockInterviewView: View {
     }
 
     var body: some View {
+        Group {
+            if let mode {
+                round(mode)
+            } else {
+                InterviewModePicker(
+                    setup: setupStore.setup,
+                    onPick: { mode = $0 },
+                    onEditSetup: { showSetup = true }
+                )
+            }
+        }
+        // First visit for this account: collect role (+ optional resume) before
+        // anything else, so the rounds have something to be tailored to.
+        .onAppear { showSetup = !setupStore.isComplete }
+        .fullScreenCover(isPresented: $showSetup) { InterviewSetupView() }
+        // The DSA round needs a problem to talk about, and the catalog is built
+        // off the main actor on first use.
+        .task { await companyBank.loadCatalogIfNeeded() }
+    }
+
+    private func round(_ mode: InterviewMode) -> some View {
         VStack(spacing: 0) {
             header
             transcript
@@ -38,16 +62,48 @@ struct MockInterviewView: View {
         }
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
-        // First visit for this account: collect role (+ optional resume) before
-        // the interview starts, so the opening question is already informed.
-        .onAppear { showSetup = !setupStore.isComplete }
-        .fullScreenCover(isPresented: $showSetup) { InterviewSetupView() }
-        // Keyed on setup completion so the interview starts only once setup is
-        // done, and restarts if the student redoes it with a different role.
-        .task(id: setupStore.isComplete) {
-            guard setupStore.isComplete else { return }
-            await model.startIfNeeded(targetRole: resolvedRole)
+        // Keyed on the mode so switching rounds starts a fresh session.
+        .task(id: mode) {
+            await model.startIfNeeded(
+                targetRole: resolvedRole,
+                mode: mode,
+                context: context(for: mode)
+            )
         }
+    }
+
+    /// Only ever sends what the round actually needs — the projects round has no
+    /// use for a DSA problem, and shipping unused resume text would widen what
+    /// leaves the device for no benefit.
+    private func context(for mode: InterviewMode) -> InterviewContextPayload {
+        var payload = InterviewContextPayload()
+        switch mode {
+        case .projects:
+            payload.projectsText = setupStore.setup?.projectsText
+        case .techStack:
+            payload.skills = setupStore.setup?.skills
+        case .dsaApproach:
+            payload.dsaProblem = randomProblemTitle()
+        case .hr, .coreCs, .panelDebate:
+            break
+        }
+        return payload
+    }
+
+    /// A problem drawn from the bundled company lists. The catalog is keyed by
+    /// LeetCode slug, so the slug is title-cased back into something speakable.
+    /// `nil` is fine — the prompt tells the model to choose its own.
+    private func randomProblemTitle() -> String? {
+        guard let slug = companyBank.catalog.keys.randomElement() else { return nil }
+        return slug
+            .split(separator: "-")
+            .map { $0.prefix(1).uppercased() + $0.dropFirst() }
+            .joined(separator: " ")
+    }
+
+    private func leaveRound() {
+        model.endSession()
+        mode = nil
     }
 
     // MARK: - Header
@@ -55,7 +111,7 @@ struct MockInterviewView: View {
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: PPSpacing.xs) {
-                Text("Mock Interview").font(.ppTitle)
+                Text(mode?.title ?? "Mock Interview").font(.ppTitle)
                 Text(model.role)
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
@@ -65,6 +121,8 @@ struct MockInterviewView: View {
 
             // Icon-only here: the title and round badge already claim this row.
             FocusModeToggle(compact: true)
+
+            PPIconButton(systemName: "xmark", diameter: 36) { leaveRound() }
 
             PPBadge("Round \(min(model.round, model.totalRounds)) of \(model.totalRounds)", tone: .accent)
         }
@@ -153,8 +211,12 @@ struct MockInterviewView: View {
             if model.isFinished {
                 Text("Interview complete — nice work.")
                     .font(.ppHeadline)
-                Button("Start over") { Task { await model.restart() } }
-                    .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+                HStack(spacing: PPSpacing.md) {
+                    Button("Another round") { leaveRound() }
+                        .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+                    Button("Start over") { Task { await model.restart() } }
+                        .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+                }
             } else if let error = model.errorMessage {
                 errorState(error)
             } else {

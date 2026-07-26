@@ -17,6 +17,13 @@ class InterviewSession(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id", index=True)
     target_role: str  # role the mock interview is tailored to, e.g. "SDE Intern"
+    # Which round this is (see `InterviewMode`). NULL on sessions created before
+    # modes existed — those fall back to the general interview prompt.
+    mode: Optional[str] = Field(default=None, index=True)
+    # The resume-derived material the round was started with, as JSON. Persisted
+    # so follow-up turns are prompted with the same projects/skills the opening
+    # question came from, instead of the client resending it every turn.
+    context_json: Optional[str] = None
     status: InterviewStatus = Field(default=InterviewStatus.IN_PROGRESS)
     # Serialized JSON transcript: [{"speaker": "ai"|"user", "text": "...", "at": "..."}]
     # TODO: consider a separate InterviewTurn table if transcripts grow large

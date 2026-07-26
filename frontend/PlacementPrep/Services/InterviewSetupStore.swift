@@ -2,15 +2,21 @@ import Foundation
 
 /// What the student told us before their first mock interview.
 struct InterviewSetup: Codable, Equatable {
-    /// Compulsory — the interview is framed around it.
+    /// Compulsory — every round is framed around it.
     var targetRole: String
-    /// Gemini's brief on the resume's projects. `nil` when the resume was
-    /// skipped, or when no projects could be found in it.
+    /// The model's brief on the resume's projects. Shown to the student; `nil`
+    /// when the resume was skipped or held no recognisable projects.
     var projectsSummary: String?
+    /// The redacted projects section itself. This is what the interviewer is
+    /// actually prompted with — the summary is a lossy paraphrase, and the
+    /// projects round needs the real detail to ask about specific decisions.
+    var projectsText: String?
+    /// The redacted skills section, for the tech-stack round. `nil` when the
+    /// resume had no skills heading.
+    var skills: String?
 
-    var hasProjects: Bool {
-        !(projectsSummary?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true)
-    }
+    var hasProjects: Bool { !(projectsText ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    var hasSkills: Bool { !(skills ?? "").trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 }
 
 /// Persists the interview setup per account.

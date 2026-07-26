@@ -17,6 +17,11 @@ import httpx
 from fastapi import HTTPException
 
 from app.core.config import settings
+from app.services.interview_prompts import (
+    InterviewMode,
+    follow_up_prompt,
+    opening_prompt,
+)
 
 genai.configure(api_key=settings.gemini_api_key)
 
@@ -68,15 +73,11 @@ def _call_groq(model: str, prompt: str) -> str:
 
 
 def transcribe_audio(data: bytes, filename: str, content_type: str | None) -> str:
-    """Speech-to-text via Groq Whisper.
-
-    Only used by clients that can't run Apple's on-device recogniser — the app
-    prefers on-device transcription, which is free, instant and never leaves the
-    phone. This is the fallback that keeps the Simulator (and any device without
-    the on-device model) usable.
+    """Speech-to-text via Groq Whisper — how every spoken answer becomes text.
 
     Unlike `_generate` there's no provider chain: Gemini's audio support is a
-    different API shape, and a second one isn't worth maintaining for a fallback.
+    different API shape, and maintaining a second one isn't worth it until this
+    actually falls over.
     """
     if not settings.groq_api_key:
         raise HTTPException(status_code=503, detail="Voice transcription is not configured.")
@@ -180,14 +181,12 @@ def _generate(prompt: str) -> str:
     )
 
 
-def generate_first_question(target_role: str) -> str:
-    """Kicks off a mock interview with a role-specific opening question."""
-    prompt = (
-        f"You are a technical interviewer conducting a mock interview for a "
-        f"'{target_role}' position. Ask a single, focused opening interview question. "
-        f"Do not include any preamble, just the question."
-    )
-    return _generate(prompt)
+def generate_first_question(
+    target_role: str, mode: InterviewMode, context: dict | None = None
+) -> str:
+    """Opens a round. The prompt is entirely mode-dependent — see
+    `interview_prompts`, which owns the wording."""
+    return _generate(opening_prompt(target_role, mode, context or {}))
 
 
 #: Sentinel the model returns when the extracted text holds no recognisable
@@ -222,22 +221,17 @@ def summarize_projects(target_role: str, projects_text: str) -> tuple[str, bool]
     return summary, False
 
 
-def generate_follow_up(target_role: str, transcript: list[dict], latest_answer: str) -> tuple[str, bool]:
-    """
-    Given the running transcript and the candidate's latest spoken answer,
-    returns (next_ai_message, interview_complete).
-    """
-    history_text = "\n".join(f"{turn['speaker']}: {turn['text']}" for turn in transcript)
-    prompt = (
-        f"You are interviewing a candidate for a '{target_role}' role.\n"
-        f"Conversation so far:\n{history_text}\n"
-        f"Candidate's latest answer: {latest_answer}\n\n"
-        f"Respond with either a relevant follow-up question, or, if enough ground has "
-        f"been covered, a closing remark. Keep it concise and conversational."
-    )
+def generate_follow_up(
+    target_role: str,
+    mode: InterviewMode,
+    context: dict | None,
+    transcript: list[dict],
+    latest_answer: str,
+) -> tuple[str, bool]:
+    """Given the running transcript and the candidate's latest spoken answer,
+    returns (next_ai_message, interview_complete)."""
+    prompt = follow_up_prompt(target_role, mode, context or {}, transcript, latest_answer)
     # TODO: parse a structured signal (e.g. JSON with `complete: bool`) instead of
     # inferring completion from response text. For now the client caps the round
     # count, so this always reports the interview as still in progress.
-    ai_message = _generate(prompt)
-    interview_complete = False
-    return ai_message, interview_complete
+    return _generate(prompt), False

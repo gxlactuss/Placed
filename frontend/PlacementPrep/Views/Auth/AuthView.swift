@@ -67,7 +67,7 @@ struct AuthView: View {
 
             PPTextField(
                 label: mode == .signup ? "Email" : "Email or username",
-                placeholder: mode == .signup ? "you@example.com" : "you@example.com or admin",
+                placeholder: "you@example.com",
                 text: $email,
                 keyboard: mode == .signup ? .emailAddress : .default,
                 textContentType: mode == .signup ? .emailAddress : .username

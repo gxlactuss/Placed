@@ -11,16 +11,31 @@ enum ResumeParser {
     /// block; `projects` starts it.
     private static let projectHeadings = [
         "projects", "project", "personal projects", "academic projects",
-        "key projects", "selected projects", "project experience", "project work"
+        "key projects", "selected projects", "project experience", "project work",
+        // Research-heavy resumes routinely file projects and papers under one
+        // heading. These must stay longer than the bare "publications" in
+        // `otherHeadings`, which would otherwise match first and end the block
+        // before it started — see `splittingGluedHeadings`, which tries the
+        // longest heading first for exactly this reason.
+        "projects & publications", "projects and publications",
+        "publications & projects", "publications and projects"
+    ]
+
+    /// Headings that begin the skills block. Kept separate from `otherHeadings`
+    /// so the same scanner can pull either section out.
+    private static let skillHeadings = [
+        "skills", "technical skills", "technologies", "tech stack",
+        "skills and tools", "tools and technologies", "technical proficiencies",
+        "programming languages", "languages", "core competencies"
     ]
 
     private static let otherHeadings = [
         "experience", "work experience", "professional experience", "employment",
-        "internship", "internships", "education", "academics", "skills",
-        "technical skills", "achievements", "accomplishments", "certifications",
+        "internship", "internships", "education", "academics",
+        "achievements", "accomplishments", "certifications",
         "certificates", "awards", "honors", "honours", "activities",
         "extracurricular", "positions of responsibility", "publications",
-        "coursework", "languages", "interests", "hobbies", "summary",
+        "coursework", "interests", "hobbies", "summary",
         "objective", "profile", "references", "volunteer", "leadership"
     ]
 
@@ -35,30 +50,7 @@ enum ResumeParser {
     private static let characterLimit = 6000
 
     static func extractProjects(from resumeText: String) -> Extraction {
-        let lines = resumeText
-            .components(separatedBy: .newlines)
-            .map { $0.trimmingCharacters(in: .whitespaces) }
-
-        var collected: [String] = []
-        var inProjects = false
-        var sawProjectsHeading = false
-
-        for line in lines {
-            guard let heading = headingKey(for: line) else {
-                if inProjects, !line.isEmpty { collected.append(line) }
-                continue
-            }
-            if projectHeadings.contains(heading) {
-                // A second projects heading (e.g. "Projects" then "Academic
-                // Projects") continues the same block rather than restarting it.
-                inProjects = true
-                sawProjectsHeading = true
-            } else if inProjects {
-                break  // reached the next unrelated section — done
-            }
-        }
-
-        let joined = collected.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+        let joined = section(under: projectHeadings, in: resumeText)
 
         // Only fall back when there was genuinely nothing to find. An earlier
         // version required the block to clear a length floor, which quietly
@@ -66,10 +58,120 @@ enum ResumeParser {
         // resume" — the exact PII leak this type exists to prevent. If the
         // heading was there and anything followed it, that's the answer; the
         // backend's NO_PROJECTS_FOUND sentinel handles genuine junk.
-        guard sawProjectsHeading, !joined.isEmpty else {
+        guard let joined else {
             return Extraction(text: redactAndCap(resumeText), foundProjectsSection: false)
         }
         return Extraction(text: redactAndCap(joined), foundProjectsSection: true)
+    }
+
+    /// The skills block, or `nil` when the resume has none.
+    ///
+    /// Deliberately has **no** whole-document fallback, unlike projects: sending
+    /// an entire resume labelled "claimed skills" would produce nonsense
+    /// questions, and the tech-stack round already degrades gracefully by asking
+    /// the candidate what they're strongest in.
+    static func extractSkills(from resumeText: String) -> String? {
+        guard let joined = section(under: skillHeadings, in: resumeText) else { return nil }
+        // Skills lists are short; a long one means the heading detection ran on
+        // past the section, so keep the cap tight.
+        return redact(joined, limit: 1200)
+    }
+
+    /// Collects the lines under any heading in `startHeadings`, stopping at the
+    /// next heading that isn't one of them. Returns `nil` if no such heading
+    /// appeared, or nothing followed it.
+    private static func section(under startHeadings: [String], in resumeText: String) -> String? {
+        let lines = splittingGluedHeadings(
+            resumeText
+                .components(separatedBy: .newlines)
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+        )
+
+        var collected: [String] = []
+        var inSection = false
+        var sawHeading = false
+
+        for line in lines {
+            guard let heading = headingKey(for: line) else {
+                if inSection, !line.isEmpty { collected.append(line) }
+                continue
+            }
+            if startHeadings.contains(heading) {
+                // A second heading of the same kind (e.g. "Projects" then
+                // "Academic Projects") continues the block rather than
+                // restarting it.
+                inSection = true
+                sawHeading = true
+            } else if inSection {
+                break  // reached the next unrelated section — done
+            }
+        }
+
+        let joined = collected.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+        return sawHeading && !joined.isEmpty ? joined : nil
+    }
+
+    /// Every heading we know, longest first.
+    ///
+    /// The ordering is load-bearing for `splittingGluedHeadings`: "PROJECTS &
+    /// PUBLICATIONS" also ends with the shorter "PUBLICATIONS", and matching
+    /// that one would split the heading in half and end the projects block
+    /// instead of starting it.
+    private static let headingsLongestFirst: [String] =
+        (projectHeadings + skillHeadings + otherHeadings).sorted { $0.count > $1.count }
+
+    /// Breaks a heading back onto its own line when the extracted text glued it
+    /// to the tail of the previous one.
+    ///
+    /// PDF text layers do this constantly — LaTeX templates that set a section
+    /// heading tight against the preceding block emit both in one run, so a
+    /// resume with a real projects section reads as having none. Observed on a
+    /// real CV as `"…submitted for the COLM 2026 conference. PROJECTS &
+    /// PUBLICATIONS"`, which silently cost the student the projects round.
+    ///
+    /// **Vision OCR does not rescue this** — it sees the heading and the line
+    /// above as one visual row and garbles the overlap ("PROJECTS PUBECAT18N"),
+    /// so this has to be fixed in the text, not the extractor.
+    ///
+    /// Requiring the trailing heading to be capitalised in the source is what
+    /// stops prose like "shipped two personal projects" being split apart:
+    /// headings are typeset in caps, sentences aren't. Only trailing headings
+    /// are handled — a heading glued to the *front* of its own content stays
+    /// unrecognised, which is the safer failure since it just means the whole
+    /// resume is sent instead.
+    private static func splittingGluedHeadings(_ lines: [String]) -> [String] {
+        var result: [String] = []
+
+        for line in lines {
+            // Already a clean heading, or far too long to be one with a tail.
+            guard headingKey(for: line) == nil, line.count <= 400 else {
+                result.append(line)
+                continue
+            }
+
+            let upperLine = line.uppercased()
+            var split = false
+
+            for heading in headingsLongestFirst {
+                let candidate = heading.uppercased()
+                guard upperLine.hasSuffix(candidate), line.count > candidate.count else { continue }
+
+                let cut = line.index(line.endIndex, offsetBy: -candidate.count)
+                let tail = String(line[cut...])
+                let head = String(line[..<cut]).trimmingCharacters(in: .whitespaces)
+                // Capitalised in the source, and something real precedes it.
+                guard tail == tail.uppercased(), !head.isEmpty else { continue }
+
+                result.append(head)
+                result.append(tail)
+                split = true
+                break
+            }
+
+            if !split { result.append(line) }
+        }
+
+        return result
     }
 
     /// Returns the normalised heading if `line` looks like a section heading.
@@ -81,7 +183,10 @@ enum ResumeParser {
             .trimmingCharacters(in: CharacterSet(charactersIn: " \t:•·-–—_*#|"))
             .lowercased()
         guard !cleaned.isEmpty, cleaned.count <= 40 else { return nil }
-        guard projectHeadings.contains(cleaned) || otherHeadings.contains(cleaned) else { return nil }
+        let known = projectHeadings.contains(cleaned)
+            || skillHeadings.contains(cleaned)
+            || otherHeadings.contains(cleaned)
+        guard known else { return nil }
         return cleaned
     }
 
@@ -101,6 +206,10 @@ enum ResumeParser {
     ]
 
     private static func redactAndCap(_ text: String) -> String {
+        redact(text, limit: characterLimit)
+    }
+
+    private static func redact(_ text: String, limit: Int) -> String {
         var redacted = text
         for pattern in [emailPattern] + phonePatterns {
             redacted = redacted.replacingOccurrences(
@@ -110,7 +219,7 @@ enum ResumeParser {
             )
         }
         redacted = redacted.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard redacted.count > characterLimit else { return redacted }
-        return String(redacted.prefix(characterLimit))
+        guard redacted.count > limit else { return redacted }
+        return String(redacted.prefix(limit))
     }
 }

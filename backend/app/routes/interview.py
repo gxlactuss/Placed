@@ -17,6 +17,7 @@ from app.schemas.interview import (
     ResumeSummaryResponse,
     TranscriptionResponse,
 )
+from app.services.interview_prompts import InterviewMode, decode_context
 from app.services.llm_service import (
     generate_first_question,
     generate_follow_up,
@@ -46,7 +47,10 @@ def start_interview(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    opening_question = generate_first_question(payload.target_role)
+    mode = InterviewMode.parse(payload.mode)
+    context = payload.context.model_dump(exclude_none=True) if payload.context else {}
+
+    opening_question = generate_first_question(payload.target_role, mode, context)
     transcript = [
         {"speaker": "ai", "text": opening_question, "at": datetime.now(timezone.utc).isoformat()}
     ]
@@ -54,6 +58,10 @@ def start_interview(
     interview = InterviewSession(
         user_id=int(user_id),
         target_role=payload.target_role,
+        mode=mode.value,
+        # Persisted so follow-ups are prompted with the same resume material the
+        # opening question came from, rather than the client resending it.
+        context_json=json.dumps(context) if context else None,
         status=InterviewStatus.IN_PROGRESS,
         transcript_json=json.dumps(transcript),
     )
@@ -89,12 +97,11 @@ async def transcribe(
     # Auth gate; see `resume_summary`.
     user_id: str = Depends(get_current_user_id),  # noqa: ARG001
 ):
-    """Transcribes a spoken answer the client couldn't handle on-device.
+    """Turns a recorded answer into text — the only path a spoken answer takes.
 
-    The app uses Apple's on-device recogniser wherever it works — free, instant,
-    and the audio never leaves the phone. This exists for the cases where that
-    recogniser won't initialise (notably the Simulator, which ships no on-device
-    model), so voice answers still work there.
+    Apple's `SFSpeechRecognizer` was dropped rather than kept as a fast path: it
+    won't initialise in the Simulator, which made voice untestable without
+    physical hardware. So every answer is uploaded and transcribed here.
     """
     data = await audio.read()
     if not data:
@@ -122,7 +129,11 @@ def submit_answer(
     )
 
     ai_message, interview_complete = generate_follow_up(
-        interview.target_role, transcript, payload.transcribed_answer
+        interview.target_role,
+        InterviewMode.parse(interview.mode),
+        decode_context(interview.context_json),
+        transcript,
+        payload.transcribed_answer,
     )
     transcript.append(
         {"speaker": "ai", "text": ai_message, "at": datetime.now(timezone.utc).isoformat()}
