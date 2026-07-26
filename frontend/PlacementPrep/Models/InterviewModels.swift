@@ -66,12 +66,20 @@ struct InterviewAiResponse: Codable {
     let aiMessage: String
     let isFollowUp: Bool
     let interviewComplete: Bool
+    /// The interviewer stopped the round itself, rather than it running its
+    /// course — today, only when the candidate wasn't answering in good faith.
+    ///
+    /// Optional, not a defaulted `Bool`: the synthesized decoder ignores property
+    /// defaults and throws on a missing key, so a deployed backend older than
+    /// this field would fail to decode the whole response.
+    let endedEarly: Bool?
 
     enum CodingKeys: String, CodingKey {
         case sessionId = "session_id"
         case aiMessage = "ai_message"
         case isFollowUp = "is_follow_up"
         case interviewComplete = "interview_complete"
+        case endedEarly = "ended_early"
     }
 }
 

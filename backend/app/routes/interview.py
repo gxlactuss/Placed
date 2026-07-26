@@ -122,13 +122,17 @@ def submit_answer(
     interview = session.get(InterviewSession, payload.session_id)
     if not interview or interview.user_id != int(user_id):
         raise HTTPException(status_code=404, detail="Interview session not found")
+    # An interviewer who has walked out doesn't come back because the client
+    # posted again. Without this, an ended round is one retry away from resuming.
+    if interview.status != InterviewStatus.IN_PROGRESS:
+        raise HTTPException(status_code=409, detail="This interview has already ended.")
 
     transcript: list[dict] = json.loads(interview.transcript_json)
     transcript.append(
         {"speaker": "user", "text": payload.transcribed_answer, "at": datetime.now(timezone.utc).isoformat()}
     )
 
-    ai_message, interview_complete = generate_follow_up(
+    ai_message, ended_early = generate_follow_up(
         interview.target_role,
         InterviewMode.parse(interview.mode),
         decode_context(interview.context_json),
@@ -140,8 +144,10 @@ def submit_answer(
     )
 
     interview.transcript_json = json.dumps(transcript)
-    if interview_complete:
-        interview.status = InterviewStatus.COMPLETED
+    if ended_early:
+        # Closed on the server too, not just in the UI, so the round can't be
+        # resumed by replaying `/respond` with the same session id.
+        interview.status = InterviewStatus.ABANDONED
         interview.ended_at = datetime.now(timezone.utc)
         # TODO: generate interview.overall_feedback via Gemini once the session ends
 
@@ -152,7 +158,9 @@ def submit_answer(
         session_id=_require_id(interview),
         ai_message=ai_message,
         is_follow_up=True,
-        interview_complete=interview_complete,
+        # The client stops on either, but only one of them earns a "nice work".
+        interview_complete=ended_early,
+        ended_early=ended_early,
     )
 
 

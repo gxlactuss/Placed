@@ -43,6 +43,9 @@ final class InterviewSessionModel {
     private(set) var role = "Software Engineer"
     private(set) var level: Double = 0
     private(set) var micAuthorized = false
+    /// The interviewer ended this round rather than it running its course. Only
+    /// changes the closing copy — being thrown out shouldn't read "nice work".
+    private(set) var wasEndedByInterviewer = false
 
     let totalRounds = 5
 
@@ -93,6 +96,7 @@ final class InterviewSessionModel {
         turns = []
         round = 1
         level = 0
+        wasEndedByInterviewer = false
         phase = .connecting
     }
 
@@ -130,6 +134,7 @@ final class InterviewSessionModel {
         level = 0
         round = 1
         sessionId = nil
+        wasEndedByInterviewer = false
         await start()
     }
 
@@ -227,6 +232,7 @@ final class InterviewSessionModel {
             )
             turns.append(Turn(speaker: .ai, text: resp.aiMessage, isFollowUp: true))
             round += 1
+            wasEndedByInterviewer = resp.endedEarly ?? false
             phase = (resp.interviewComplete || round > totalRounds) ? .finished : .ready
         } catch {
             phase = .error(Self.friendly(error))

@@ -209,8 +209,11 @@ struct MockInterviewView: View {
     private var controls: some View {
         VStack(spacing: PPSpacing.md) {
             if model.isFinished {
-                Text("Interview complete — nice work.")
+                Text(model.wasEndedByInterviewer
+                     ? "The interviewer ended this round early."
+                     : "Interview complete — nice work.")
                     .font(.ppHeadline)
+                    .multilineTextAlignment(.center)
                 HStack(spacing: PPSpacing.md) {
                     Button("Another round") { leaveRound() }
                         .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))

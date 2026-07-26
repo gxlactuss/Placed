@@ -89,3 +89,9 @@ class InterviewAiResponse(BaseModel):
     ai_message: str
     is_follow_up: bool
     interview_complete: bool = False
+    #: The interviewer stopped the round itself rather than it running its course
+    #: — currently only when the candidate wasn't answering in good faith. Kept
+    #: separate from `interview_complete` so the client can close on "nice work"
+    #: or not; the two coincide today only because graceful completion is still
+    #: the client's round cap.
+    ended_early: bool = False

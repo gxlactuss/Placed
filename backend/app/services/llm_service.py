@@ -18,6 +18,7 @@ from fastapi import HTTPException
 
 from app.core.config import settings
 from app.services.interview_prompts import (
+    END_INTERVIEW_SENTINEL,
     InterviewMode,
     follow_up_prompt,
     opening_prompt,
@@ -229,9 +230,21 @@ def generate_follow_up(
     latest_answer: str,
 ) -> tuple[str, bool]:
     """Given the running transcript and the candidate's latest spoken answer,
-    returns (next_ai_message, interview_complete)."""
+    returns (next_ai_message, ended_early).
+
+    `ended_early` is the interviewer walking out — today the only reason is a
+    candidate acting in bad faith (see `_CONDUCT_RULES`). It is *not* the round
+    finishing normally: the model is never asked to judge when enough ground has
+    been covered, because it has no idea how many rounds the client allows. The
+    client still caps the count for that.
+    """
     prompt = follow_up_prompt(target_role, mode, context or {}, transcript, latest_answer)
-    # TODO: parse a structured signal (e.g. JSON with `complete: bool`) instead of
-    # inferring completion from response text. For now the client caps the round
-    # count, so this always reports the interview as still in progress.
-    return _generate(prompt), False
+    reply = _generate(prompt)
+
+    if END_INTERVIEW_SENTINEL not in reply:
+        return reply, False
+
+    cleaned = reply.replace(END_INTERVIEW_SENTINEL, "").strip()
+    # A reply that was *only* the marker would render as an empty bubble at the
+    # one moment the student most needs to be told what just happened.
+    return cleaned or "I'm going to stop the interview here. Let's try again another time.", True
