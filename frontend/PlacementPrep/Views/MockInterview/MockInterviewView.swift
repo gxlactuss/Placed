@@ -9,11 +9,23 @@ import SwiftUI
 struct MockInterviewView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
+    @Environment(InterviewSetupStore.self) private var setupStore
     @State private var model = InterviewSessionModel()
+    @State private var showSetup = false
 
+    /// The setup screen's answer wins — it's the more deliberate one, collected
+    /// for this specific interview. Falls back to the account's role, then a
+    /// generic default so the interview can always start.
     private var resolvedRole: String {
-        let role = auth.currentUser?.targetRole?.trimmingCharacters(in: .whitespaces) ?? ""
-        return role.isEmpty ? "Software Engineer" : role
+        let candidates = [
+            setupStore.setup?.targetRole,
+            auth.currentUser?.targetRole
+        ]
+        for candidate in candidates {
+            let role = candidate?.trimmingCharacters(in: .whitespaces) ?? ""
+            if !role.isEmpty { return role }
+        }
+        return "Software Engineer"
     }
 
     var body: some View {
@@ -24,7 +36,16 @@ struct MockInterviewView: View {
         }
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
-        .task { await model.startIfNeeded(targetRole: resolvedRole) }
+        // First visit for this account: collect role (+ optional resume) before
+        // the interview starts, so the opening question is already informed.
+        .onAppear { showSetup = !setupStore.isComplete }
+        .fullScreenCover(isPresented: $showSetup) { InterviewSetupView() }
+        // Keyed on setup completion so the interview starts only once setup is
+        // done, and restarts if the student redoes it with a different role.
+        .task(id: setupStore.isComplete) {
+            guard setupStore.isComplete else { return }
+            await model.startIfNeeded(targetRole: resolvedRole)
+        }
     }
 
     // MARK: - Header
@@ -214,5 +235,8 @@ struct MockInterviewView: View {
 #Preview {
     MockInterviewView()
         .environment(FocusModeStore.preview())
+        .environment(InterviewSetupStore.preview(
+            InterviewSetup(targetRole: "Backend Engineer", projectsSummary: nil)
+        ))
         .environmentObject(AuthViewModel())
 }

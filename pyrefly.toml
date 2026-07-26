@@ -1,0 +1,34 @@
+# Type-checker config for the Python half of the repo.
+#
+# This exists for one reason: without it the editor's Pyrefly extension queries
+# whatever interpreter the IDE happens to have selected — on a Mac that defaults
+# to Xcode's bundled Python 3.9 — and then reports every third-party import
+# (`fastapi`, `httpx`, `pydantic_settings`, `google.generativeai`) as missing.
+# The code is fine; the interpreter was wrong. Pinning it here fixes the editor
+# and CI alike, rather than relying on each developer's IDE selection.
+#
+# Note the backend needs 3.10+ anyway — it uses `X | None` union syntax, which
+# is a syntax error on the 3.9 the IDE was reaching for.
+
+# Relative to this file, so it works on any checkout.
+python-interpreter-path = "backend/.venv/bin/python"
+
+# Only the Python lives here; `frontend/` is Swift.
+project-includes = ["backend/**/*.py", "database/**/*.py"]
+project-excludes = ["**/.venv/**", "**/__pycache__/**"]
+
+# `backend/` so `app.*` resolves, and the repo root so the standalone
+# `database` package does — matching the sys.path bootstrap in
+# backend/app/__init__.py.
+search-path = ["backend", "."]
+
+# SQLModel inherits SQLAlchemy's `__tablename__`, which is typed as a
+# *descriptor* (`declared_attr`). Assigning the plain string every SQLModel
+# tutorial prescribes therefore reads as an inconsistent override, in all four
+# table models. It's a false positive about the library's typing, not our code —
+# scoped here rather than disabled globally, so a genuine bad override anywhere
+# else in the backend is still reported.
+[[sub-config]]
+matches = "database/models/*.py"
+[sub-config.errors]
+bad-override = false

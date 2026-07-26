@@ -12,6 +12,8 @@ struct PlacementPrepApp: App {
     /// Device-wide, not per-account: it's a property of how you're practising
     /// right now, so it deliberately isn't reset on sign-out.
     @State private var focusMode = FocusModeStore()
+    /// Role + resume-derived project summary, gathered before the first interview.
+    @State private var interviewSetup = InterviewSetupStore()
     /// The JWT gate. When a token is in the Keychain the app opens straight to
     /// the tabs; otherwise `AuthView` is shown until sign-in succeeds.
     @StateObject private var auth = AuthViewModel()
@@ -45,11 +47,13 @@ struct PlacementPrepApp: App {
                             .environment(quizProgress)
                             .environment(savedQuestions)
                             .environment(focusMode)
+                            .environment(interviewSetup)
                             // Reconcile per-user progress with the server whenever
                             // the signed-in user becomes known (login/relaunch).
                             .task(id: auth.currentUser?.id) {
                                 guard let id = auth.currentUser?.id else { return }
                                 savedQuestions.adopt(userId: id)
+                                interviewSetup.adopt(userId: id)
                                 await quizProgress.sync(userId: id)
                                 await solvedStore.sync(userId: id)
                             }
@@ -67,6 +71,7 @@ struct PlacementPrepApp: App {
                     quizProgress.clear()
                     solvedStore.clear()
                     savedQuestions.clear()
+                    interviewSetup.clear()
                 }
             }
         }

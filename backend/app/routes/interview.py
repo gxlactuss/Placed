@@ -12,10 +12,29 @@ from app.schemas.interview import (
     InterviewAnswerSubmit,
     InterviewSessionRead,
     InterviewStart,
+    ResumeSummaryRequest,
+    ResumeSummaryResponse,
 )
-from app.services.gemini_service import generate_first_question, generate_follow_up
+from app.services.llm_service import (
+    generate_first_question,
+    generate_follow_up,
+    summarize_projects,
+)
 
 router = APIRouter(prefix="/api/interview", tags=["interview"])
+
+
+def _require_id(interview: InterviewSession) -> int:
+    """Narrows the primary key from `Optional[int]` to `int`.
+
+    SQLModel declares `id` optional because it's unset until the row is flushed.
+    Every caller below runs after a commit or a successful `session.get`, so it
+    is always populated in practice — this makes that assumption explicit, and
+    fails loudly rather than silently emitting `null` if it ever stops holding.
+    """
+    if interview.id is None:  # pragma: no cover — unreachable after a commit
+        raise HTTPException(status_code=500, detail="Interview session was not persisted.")
+    return interview.id
 
 
 @router.post("/start", response_model=InterviewAiResponse)
@@ -40,8 +59,25 @@ def start_interview(
     session.refresh(interview)
 
     return InterviewAiResponse(
-        session_id=interview.id, ai_message=opening_question, is_follow_up=False
+        session_id=_require_id(interview), ai_message=opening_question, is_follow_up=False
     )
+
+
+@router.post("/resume-summary", response_model=ResumeSummaryResponse)
+def resume_summary(
+    payload: ResumeSummaryRequest,
+    # Unused, but the dependency is the auth gate — it rejects an absent or
+    # invalid JWT before we spend one of the five Gemini calls a minute buys.
+    user_id: str = Depends(get_current_user_id),  # noqa: ARG001
+):
+    """Summarises the projects the client extracted from the candidate's resume.
+
+    Stateless on purpose — nothing resume-derived is written to the database.
+    The client keeps the summary locally and feeds it into the interview, so a
+    student's project text never lands in our storage on top of Google's.
+    """
+    summary, none_found = summarize_projects(payload.target_role, payload.projects_text)
+    return ResumeSummaryResponse(summary=summary, no_projects_found=none_found)
 
 
 @router.post("/respond", response_model=InterviewAiResponse)
@@ -76,7 +112,7 @@ def submit_answer(
     session.commit()
 
     return InterviewAiResponse(
-        session_id=interview.id,
+        session_id=_require_id(interview),
         ai_message=ai_message,
         is_follow_up=True,
         interview_complete=interview_complete,
@@ -94,7 +130,7 @@ def get_interview(
         raise HTTPException(status_code=404, detail="Interview session not found")
 
     return InterviewSessionRead(
-        id=interview.id,
+        id=_require_id(interview),
         target_role=interview.target_role,
         status=interview.status,
         transcript=json.loads(interview.transcript_json),

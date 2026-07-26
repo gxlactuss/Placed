@@ -15,6 +15,59 @@ class Settings(BaseSettings):
     # and free-tier keys can see `limit: 0` on gemini-2.0-flash / 404 on 2.5-flash.
     # Override via GEMINI_MODEL in .env if a specific pinned version is needed.
     gemini_model: str = "gemini-flash-latest"
+    # The free tier's daily cap is **per model** (quota id
+    # `GenerateRequestsPerDayPerProjectPerModel-FreeTier`), measured at 20/day
+    # for gemini-3.6-flash. So exhausting one model leaves the others untouched,
+    # and walking down this list buys roughly 20 more calls per entry.
+    # Comma-separated; set GEMINI_FALLBACK_MODELS in .env to change.
+    gemini_fallback_models: str = (
+        "gemini-3.5-flash,gemini-flash-lite-latest,gemini-3.5-flash-lite,gemini-3.1-flash-lite"
+    )
+
+    # Groq is the primary LLM provider: its free tier allows on the order of
+    # 14,400 requests/day against Gemini's measured 20/day, and it speaks the
+    # OpenAI chat-completions API, so the whole integration is one HTTP POST.
+    # Gemini stays configured as a fallback — see `llm_chain`.
+    groq_api_key: str = ""
+    groq_base_url: str = "https://api.groq.com/openai/v1"
+    # Verified live against GET {groq_base_url}/models. Measured limits:
+    # llama-3.3-70b-versatile gets 1000 requests/day and 12,000 tokens/minute;
+    # the gpt-oss pair get 1000/day and 8,000 TPM — hence the ordering.
+    # `qwen/qwen3.6-27b` is deliberately absent: it emits its <think> reasoning
+    # trace inside `content`, which would land verbatim in the interview.
+    # A retired id returns 404, which the chain treats as exhausted and skips.
+    groq_model: str = "llama-3.3-70b-versatile"
+    groq_fallback_models: str = "openai/gpt-oss-120b,openai/gpt-oss-20b"
+
+    @staticmethod
+    def _split(csv: str) -> list[str]:
+        return [name.strip() for name in csv.split(",") if name.strip()]
+
+    @property
+    def gemini_model_chain(self) -> list[str]:
+        """Primary model first, then fallbacks, de-duplicated in order."""
+        names = [self.gemini_model] + self._split(self.gemini_fallback_models)
+        seen: set[str] = set()
+        return [n for n in names if not (n in seen or seen.add(n))]
+
+    @property
+    def llm_chain(self) -> list[tuple[str, str]]:
+        """(provider, model) pairs, tried in order until one answers.
+
+        Groq first, then Gemini. Keeping a second *provider* rather than just a
+        second model is deliberate: free-tier quotas are per-model **and** per
+        project, so a chain within one provider still dies when that provider
+        does. Only providers with a key configured appear.
+        """
+        chain: list[tuple[str, str]] = []
+        if self.groq_api_key:
+            for model in [self.groq_model] + self._split(self.groq_fallback_models):
+                chain.append(("groq", model))
+        if self.gemini_api_key:
+            for model in self.gemini_model_chain:
+                chain.append(("gemini", model))
+        seen: set[tuple[str, str]] = set()
+        return [c for c in chain if not (c in seen or seen.add(c))]
 
     # Email verification. With no RESEND_API_KEY the sender runs in dev mode and
     # logs the code to the server console (fully testable offline). Set the key

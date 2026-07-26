@@ -45,5 +45,6 @@ struct DashboardView: View {
         .environment(QuizProgressStore.preview())
         .environment(SavedQuestionsStore.preview())
         .environment(FocusModeStore.preview())
+        .environment(InterviewSetupStore.preview())
         .environmentObject(AuthViewModel())
 }

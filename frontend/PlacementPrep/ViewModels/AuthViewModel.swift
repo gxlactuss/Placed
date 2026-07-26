@@ -131,6 +131,18 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
+    /// Updates just the target role, from the interview setup screen. Silent:
+    /// the interview proceeds on the locally saved role either way, so a failure
+    /// here isn't worth interrupting the student for.
+    func updateTargetRole(_ role: String) async {
+        guard let updated: User = try? await network.request(
+            path: "/api/auth/me",
+            method: .patch,
+            body: UserUpdate(targetRole: role)
+        ) else { return }
+        currentUser = updated
+    }
+
     /// Social sign-in (Google/GitHub). Opens the backend-brokered flow, stores
     /// the returned JWT, then validates it to load the user (which advances the
     /// gate — new accounts land on onboarding, verified by the provider).
