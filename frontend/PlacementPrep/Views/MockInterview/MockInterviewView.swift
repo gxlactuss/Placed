@@ -58,6 +58,7 @@ struct MockInterviewView: View {
     private func round(_ mode: InterviewMode) -> some View {
         VStack(spacing: 0) {
             header
+            voiceWave
             transcript
             controls
         }
@@ -123,6 +124,26 @@ struct MockInterviewView: View {
     private func leaveRound() {
         model.endSession()
         mode = nil
+    }
+
+    /// Sits between the header and the transcript so it reads as part of the
+    /// chrome rather than as another message in the conversation.
+    ///
+    /// It is driven by the mic meter, so it only has something real to show while
+    /// the student is holding to talk. The thinking state is not decoration for
+    /// its own sake: the gap between releasing the button and the reply arriving
+    /// covers an upload, a transcription and a generation, and a strip that keeps
+    /// moving is the cheapest way to say the app has not stalled.
+    private var voiceWave: some View {
+        PPVoiceWave(level: model.level, mode: waveMode)
+            .padding(.horizontal, PPSpacing.xl)
+            .padding(.bottom, PPSpacing.md)
+    }
+
+    private var waveMode: PPVoiceWave.Mode {
+        if model.isRecording { return .listening }
+        if model.isThinking { return .thinking }
+        return .idle
     }
 
     // MARK: - Header
