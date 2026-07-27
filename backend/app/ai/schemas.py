@@ -33,12 +33,37 @@ class InterviewTurn(BaseModel):
     at: datetime
 
 
+class InterviewSummary(BaseModel):
+    """One row in the saved-interviews list.
+
+    Carries enough to render the row without opening the transcript: which round
+    it was, how far it got, and the mark if one was ever generated.
+    """
+
+    id: int
+    target_role: str
+    #: An `InterviewMode` value. NULL on sessions created before modes existed.
+    mode: Optional[str] = None
+    status: InterviewStatus
+    #: How many questions the student actually answered — the honest measure of
+    #: how far a round got, since every session has at least an opening question.
+    answer_count: int
+    #: Present only if the debrief was generated and cached on the session.
+    rating: Optional[int] = None
+    started_at: datetime
+    ended_at: Optional[datetime] = None
+
+
 class InterviewSessionRead(BaseModel):
     id: int
     target_role: str
+    mode: Optional[str] = None
     status: InterviewStatus
     transcript: list[InterviewTurn]
-    overall_feedback: Optional[str] = None
+    #: The cached debrief, already decoded. Saves the client a second round trip
+    #: when reopening a finished interview, and — unlike calling the feedback
+    #: endpoint — never generates one, so browsing history costs no model quota.
+    feedback: Optional["InterviewFeedbackResponse"] = None
     started_at: datetime
     ended_at: Optional[datetime] = None
 
@@ -107,3 +132,8 @@ class InterviewAiResponse(BaseModel):
     #: or not; the two coincide today only because graceful completion is still
     #: the client's round cap.
     ended_early: bool = False
+
+
+# `InterviewSessionRead.feedback` refers to a class declared further down this
+# file, so the forward reference has to be resolved once everything exists.
+InterviewSessionRead.model_rebuild()

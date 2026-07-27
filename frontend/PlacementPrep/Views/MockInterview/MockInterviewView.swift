@@ -18,6 +18,7 @@ struct MockInterviewView: View {
     /// `nil` means no round is running, so the tab shows the picker.
     @State private var mode: InterviewMode?
     @State private var showResults = false
+    @State private var showHistory = false
 
     /// The setup screen's answer wins — it's the more deliberate one, collected
     /// for this specific interview. Falls back to the account's role, then a
@@ -42,7 +43,8 @@ struct MockInterviewView: View {
                 InterviewModePicker(
                     setup: setupStore.setup,
                     onPick: { mode = $0 },
-                    onEditSetup: { showSetup = true }
+                    onEditSetup: { showSetup = true },
+                    onOpenHistory: { showHistory = true }
                 )
             }
         }
@@ -50,6 +52,7 @@ struct MockInterviewView: View {
         // anything else, so the rounds have something to be tailored to.
         .onAppear { showSetup = !setupStore.isComplete }
         .fullScreenCover(isPresented: $showSetup) { InterviewSetupView() }
+        .sheet(isPresented: $showHistory) { InterviewHistoryView() }
         // The DSA round needs a problem to talk about, and the catalog is built
         // off the main actor on first use.
         .task { await companyBank.loadCatalogIfNeeded() }

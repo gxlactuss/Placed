@@ -2,7 +2,7 @@ import json
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from app.auth.jwt import get_current_user_id
 from app.core.config import settings
@@ -14,6 +14,7 @@ from app.ai.schemas import (
     InterviewFeedbackResponse,
     InterviewSessionRead,
     InterviewStart,
+    InterviewSummary,
     ResumeSummaryRequest,
     ResumeSummaryResponse,
     TranscriptionResponse,
@@ -218,6 +219,63 @@ def interview_feedback(
     return response
 
 
+def _decode_feedback(raw: str | None) -> InterviewFeedbackResponse | None:
+    """Reads the cached debrief off a session.
+
+    Tolerant on purpose: a debrief that fails to parse should cost the student
+    the debrief, not the transcript they came back to read.
+    """
+    if not raw:
+        return None
+    try:
+        return InterviewFeedbackResponse(**json.loads(raw))
+    except (TypeError, ValueError):
+        return None
+
+
+@router.get("", response_model=list[InterviewSummary])
+def list_interviews(
+    user_id: str = Depends(get_current_user_id),
+    session: Session = Depends(get_session),
+):
+    """Every saved interview for this student, newest first.
+
+    Rounds where nothing was ever answered are left out. Opening a round always
+    writes a session with its first question, so without this filter the list
+    fills up with interviews that never happened.
+    """
+    rows = session.exec(
+        select(InterviewSession)
+        .where(InterviewSession.user_id == int(user_id))
+        .order_by(InterviewSession.started_at.desc())  # type: ignore[union-attr]
+    ).all()
+
+    summaries: list[InterviewSummary] = []
+    for interview in rows:
+        try:
+            transcript: list[dict] = json.loads(interview.transcript_json)
+        except (TypeError, ValueError):
+            continue
+        answers = sum(1 for turn in transcript if turn.get("speaker") == "user")
+        if answers == 0:
+            continue
+
+        feedback = _decode_feedback(interview.overall_feedback)
+        summaries.append(
+            InterviewSummary(
+                id=_require_id(interview),
+                target_role=interview.target_role,
+                mode=interview.mode,
+                status=interview.status,
+                answer_count=answers,
+                rating=feedback.rating if feedback else None,
+                started_at=interview.started_at,
+                ended_at=interview.ended_at,
+            )
+        )
+    return summaries
+
+
 @router.get("/{session_id}", response_model=InterviewSessionRead)
 def get_interview(
     session_id: int,
@@ -231,9 +289,12 @@ def get_interview(
     return InterviewSessionRead(
         id=_require_id(interview),
         target_role=interview.target_role,
+        mode=interview.mode,
         status=interview.status,
         transcript=json.loads(interview.transcript_json),
-        overall_feedback=interview.overall_feedback,
+        # Read, never generated — reopening an old interview must not spend a
+        # model request, and an unmarked one simply shows no debrief.
+        feedback=_decode_feedback(interview.overall_feedback),
         started_at=interview.started_at,
         ended_at=interview.ended_at,
     )

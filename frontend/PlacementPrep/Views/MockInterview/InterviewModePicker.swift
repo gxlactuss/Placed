@@ -77,6 +77,9 @@ struct InterviewModePicker: View {
     /// without this a student who skipped the resume (or whose upload failed)
     /// is stuck looking at two rounds they can never unlock.
     let onEditSetup: () -> Void
+    /// Opens the saved interviews. Lives on the picker because this is the
+    /// interview hub, and a past round is a thing you reach for from here.
+    let onOpenHistory: () -> Void
 
     @Environment(FocusModeStore.self) private var focus
 
@@ -104,10 +107,15 @@ struct InterviewModePicker: View {
                 .foregroundStyle(Color.ppMuted)
             // Named for whichever job the student still has to do: adding a
             // resume is the one that unlocks rounds, so it leads when missing.
-            Button(setup?.hasProjects == true ? "Change role or resume" : "Add your resume") {
-                onEditSetup()
+            HStack(spacing: PPSpacing.lg) {
+                Button(setup?.hasProjects == true ? "Change role or resume" : "Add your resume") {
+                    onEditSetup()
+                }
+                .buttonStyle(.ppInlineLink)
+
+                Button("Saved interviews") { onOpenHistory() }
+                    .buttonStyle(.ppInlineLink)
             }
-            .buttonStyle(.ppInlineLink)
         }
         .padding(.top, PPSpacing.sm)
     }
@@ -176,7 +184,8 @@ struct InterviewModePicker: View {
             skills: "Go, Redis, Docker"
         ),
         onPick: { _ in },
-        onEditSetup: {}
+        onEditSetup: {},
+        onOpenHistory: {}
     )
     .environment(FocusModeStore.preview())
 }
@@ -185,7 +194,8 @@ struct InterviewModePicker: View {
     InterviewModePicker(
         setup: InterviewSetup(targetRole: "Backend Engineer"),
         onPick: { _ in },
-        onEditSetup: {}
+        onEditSetup: {},
+        onOpenHistory: {}
     )
     .environment(FocusModeStore.preview(on: true))
 }

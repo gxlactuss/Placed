@@ -95,20 +95,53 @@ struct InterviewFeedback: Codable {
     let mistakes: [String]
 }
 
-struct InterviewSession: Codable, Identifiable {
+/// One row in the saved-interviews list, from `GET /api/interview`.
+///
+/// Deliberately not the full session: the list renders from this alone, so
+/// opening the screen doesn't pull every transcript the student has ever
+/// recorded.
+/// `Hashable` so it can drive `navigationDestination(item:)` directly.
+struct InterviewSummary: Codable, Identifiable, Hashable {
     let id: Int
     let targetRole: String
+    /// `InterviewMode.rawValue`, or `nil` on sessions recorded before modes.
+    let mode: String?
     let status: InterviewStatus
-    let transcript: [InterviewTurn]
-    let overallFeedback: String?
+    /// Questions actually answered — how far the round really got.
+    let answerCount: Int
+    /// Only present once a debrief was generated for this round.
+    let rating: Int?
     let startedAt: Date
     let endedAt: Date?
 
+    var round: InterviewMode? { mode.flatMap(InterviewMode.init(rawValue:)) }
+
     enum CodingKeys: String, CodingKey {
-        case id
+        case id, mode, status, rating
         case targetRole = "target_role"
-        case status, transcript
-        case overallFeedback = "overall_feedback"
+        case answerCount = "answer_count"
+        case startedAt = "started_at"
+        case endedAt = "ended_at"
+    }
+}
+
+struct InterviewSession: Codable, Identifiable {
+    let id: Int
+    let targetRole: String
+    let mode: String?
+    let status: InterviewStatus
+    let transcript: [InterviewTurn]
+    /// The debrief as stored when the round finished. Read-only here — fetching
+    /// a past interview never generates one, so an unmarked round shows none.
+    let feedback: InterviewFeedback?
+    let startedAt: Date
+    let endedAt: Date?
+
+    var round: InterviewMode? { mode.flatMap(InterviewMode.init(rawValue:)) }
+
+    enum CodingKeys: String, CodingKey {
+        case id, mode, status, transcript, feedback
+        case targetRole = "target_role"
         case startedAt = "started_at"
         case endedAt = "ended_at"
     }
