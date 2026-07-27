@@ -1,0 +1,336 @@
+{
+  "id": "role-mobile",
+  "category": "role",
+  "order": 5,
+  "title": "Mobile Development",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "role_group": "mobile",
+  "questions": [
+    {
+      "id": "role-mobile-q01",
+      "prompt": "On Android, what happens to an Activity when the device is rotated, by default?",
+      "options": [
+        { "id": "A", "text": "Nothing; the Activity keeps running untouched" },
+        { "id": "B", "text": "It is destroyed and recreated" },
+        { "id": "C", "text": "It is paused but never destroyed" },
+        { "id": "D", "text": "Only the layout is re-measured" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A rotation is a configuration change, so the Activity is destroyed and recreated to pick up new resources. State must be preserved with a ViewModel or onSaveInstanceState.",
+      "concept": "Android Lifecycle"
+    },
+    {
+      "id": "role-mobile-q02",
+      "prompt": "In Swift, what is the key difference between a struct and a class?",
+      "options": [
+        { "id": "A", "text": "Structs are value types; classes are reference types" },
+        { "id": "B", "text": "Structs cannot have methods" },
+        { "id": "C", "text": "Classes cannot conform to protocols" },
+        { "id": "D", "text": "Structs are always stored on the heap" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A struct is copied on assignment, while a class passes a reference to shared storage. This is why mutating a copied struct never affects the original.",
+      "concept": "Swift Types"
+    },
+    {
+      "id": "role-mobile-q03",
+      "prompt": "In Flutter, why does marking a widget's constructor as const help performance?",
+      "options": [
+        { "id": "A", "text": "It compiles the widget to native code" },
+        { "id": "B", "text": "It lets Flutter skip rebuilding that subtree" },
+        { "id": "C", "text": "It moves the widget off the main isolate" },
+        { "id": "D", "text": "It caches the widget's network calls" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A const widget is canonicalised at compile time, so the framework can recognise it as unchanged and skip rebuilding and re-laying out that subtree.",
+      "concept": "Flutter Rendering"
+    },
+    {
+      "id": "role-mobile-q04",
+      "prompt": "What is the main cause of a retain cycle in Swift?",
+      "options": [
+        { "id": "A", "text": "Using too many optionals" },
+        { "id": "B", "text": "Declaring variables with var instead of let" },
+        { "id": "C", "text": "Two objects holding strong references to each other" },
+        { "id": "D", "text": "Force-unwrapping a nil value" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "ARC frees an object when its strong reference count hits zero. If two objects reference each other strongly, neither count reaches zero and both leak. Break it with weak or unowned.",
+      "concept": "Memory Management"
+    },
+    {
+      "id": "role-mobile-q05",
+      "prompt": "In React Native, what does the bridge do?",
+      "options": [
+        { "id": "A", "text": "Compiles JavaScript into Java and Objective-C" },
+        { "id": "B", "text": "Passes serialised messages between JavaScript and native code" },
+        { "id": "C", "text": "Renders the UI inside a WebView" },
+        { "id": "D", "text": "Synchronises state with the backend" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "JavaScript and native run in separate contexts and communicate by passing serialised, asynchronous messages. Chatty traffic across that boundary is a common source of jank.",
+      "concept": "React Native Architecture"
+    },
+    {
+      "id": "role-mobile-q06",
+      "prompt": "Why does an Android ViewModel survive a screen rotation?",
+      "options": [
+        { "id": "A", "text": "It is stored in SharedPreferences automatically" },
+        { "id": "B", "text": "It runs on a background thread" },
+        { "id": "C", "text": "It is scoped to the Activity's lifecycle owner, not the instance" },
+        { "id": "D", "text": "It is a singleton shared across the whole app" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "The ViewModel is retained across configuration changes because it is scoped to the lifecycle owner rather than to the destroyed Activity instance. It is cleared when the owner finishes for good.",
+      "concept": "Android Architecture"
+    },
+    {
+      "id": "role-mobile-q07",
+      "prompt": "In SwiftUI, when should you use @StateObject rather than @ObservedObject?",
+      "options": [
+        { "id": "A", "text": "When the view creates and owns the object" },
+        { "id": "B", "text": "When the object is passed in from a parent" },
+        { "id": "C", "text": "Only for objects stored in UserDefaults" },
+        { "id": "D", "text": "They are interchangeable in all cases" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "@StateObject makes the view the owner, so the object survives view re-creation. @ObservedObject on a view-created object would be re-instantiated on every redraw, silently resetting its state.",
+      "concept": "SwiftUI State"
+    },
+    {
+      "id": "role-mobile-q08",
+      "prompt": "In Flutter, what problem do Keys solve in a list of widgets?",
+      "options": [
+        { "id": "A", "text": "They encrypt data passed between screens" },
+        { "id": "B", "text": "They let the framework match widgets to the right state when items move" },
+        { "id": "C", "text": "They make scrolling smoother by caching images" },
+        { "id": "D", "text": "They uniquely identify routes for navigation" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Without keys, Flutter matches widgets by position and type, so reordering or deleting an item can attach the wrong State to the wrong widget. A key ties state to identity instead.",
+      "concept": "Flutter Widget Identity"
+    },
+    {
+      "id": "role-mobile-q09",
+      "prompt": "Which best describes an ANR on Android?",
+      "options": [
+        { "id": "A", "text": "The app was denied a runtime permission" },
+        { "id": "B", "text": "A network request timed out" },
+        { "id": "C", "text": "The main thread was blocked too long to respond to input" },
+        { "id": "D", "text": "The app exceeded its memory limit" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "An Application Not Responding dialog appears when the main thread is blocked past a threshold, usually by disk or network work that should have been moved off it.",
+      "concept": "Android Performance"
+    },
+    {
+      "id": "role-mobile-q10",
+      "prompt": "In Kotlin coroutines, what does structured concurrency give you?",
+      "options": [
+        { "id": "A", "text": "Coroutines run in parallel on separate CPU cores" },
+        { "id": "B", "text": "Child coroutines are cancelled when their scope is cancelled" },
+        { "id": "C", "text": "Every coroutine runs on the main thread" },
+        { "id": "D", "text": "Exceptions are silently swallowed" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Coroutines launched in a scope are children of it, so cancelling the scope cancels them all. This is what stops work leaking after a screen is destroyed.",
+      "concept": "Kotlin Coroutines"
+    },
+    {
+      "id": "role-mobile-q11",
+      "prompt": "Why is [weak self] commonly used inside an escaping closure in Swift?",
+      "options": [
+        { "id": "A", "text": "To let the closure run on a background thread" },
+        { "id": "B", "text": "To make the closure execute faster" },
+        { "id": "C", "text": "To allow the closure to mutate self" },
+        { "id": "D", "text": "To stop the closure keeping self alive and creating a cycle" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "An escaping closure stored on an object captures self strongly by default, so the object holds the closure and the closure holds the object. Capturing weakly breaks that cycle.",
+      "concept": "Memory Management"
+    },
+    {
+      "id": "role-mobile-q12",
+      "prompt": "What is the purpose of Android's RecyclerView ViewHolder pattern?",
+      "options": [
+        { "id": "A", "text": "It avoids repeated view lookups by caching references" },
+        { "id": "B", "text": "It stores list data in a database" },
+        { "id": "C", "text": "It renders the list on the GPU" },
+        { "id": "D", "text": "It sorts the list automatically" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The ViewHolder holds direct references to a row's views, so scrolling reuses recycled rows instead of inflating layouts and calling findViewById repeatedly.",
+      "concept": "Android UI Performance"
+    },
+    {
+      "id": "role-mobile-q13",
+      "prompt": "In Dart, what does async/await actually do?",
+      "options": [
+        { "id": "A", "text": "Runs the function on a separate thread" },
+        { "id": "B", "text": "Suspends the function until a Future completes, without blocking the isolate" },
+        { "id": "C", "text": "Forces the code to run synchronously" },
+        { "id": "D", "text": "Spawns a new isolate per call" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Dart is single-threaded per isolate. await suspends the function and returns control to the event loop, resuming when the Future completes. Heavy CPU work still needs a separate isolate.",
+      "concept": "Dart Concurrency"
+    },
+    {
+      "id": "role-mobile-q14",
+      "prompt": "Which of these can NOT be shipped through a React Native over-the-air update?",
+      "options": [
+        { "id": "A", "text": "A change to a JavaScript component" },
+        { "id": "B", "text": "A bug fix in business logic" },
+        { "id": "C", "text": "A newly added native module" },
+        { "id": "D", "text": "An updated image bundled with the JS" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "OTA updates replace the JavaScript bundle and its assets. Anything requiring recompiled native code, such as a new native module, needs a full store release.",
+      "concept": "React Native Deployment"
+    },
+    {
+      "id": "role-mobile-q15",
+      "prompt": "In SwiftUI, what does @State exist for?",
+      "options": [
+        { "id": "A", "text": "Sharing state across the whole app" },
+        { "id": "B", "text": "Persisting values to disk between launches" },
+        { "id": "C", "text": "Injecting dependencies into child views" },
+        { "id": "D", "text": "Local, view-owned value state that triggers a redraw when it changes" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "@State stores small, view-local value state outside the struct so it survives redraws, and invalidates the body when it changes. Shared reference state belongs in @StateObject or @Observable.",
+      "concept": "SwiftUI State"
+    },
+    {
+      "id": "role-mobile-q16",
+      "prompt": "Why is it bad practice to do long-running work inside an Android BroadcastReceiver's onReceive?",
+      "options": [
+        { "id": "A", "text": "onReceive cannot access the file system" },
+        { "id": "B", "text": "It runs on the main thread and the receiver is short-lived" },
+        { "id": "C", "text": "Broadcasts are delivered only once per day" },
+        { "id": "D", "text": "onReceive cannot start any other component" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "onReceive runs on the main thread and the receiver is considered finished when it returns, so long work blocks the UI and may be killed. Hand off to WorkManager or a service.",
+      "concept": "Android Components"
+    },
+    {
+      "id": "role-mobile-q17",
+      "prompt": "What does Jetpack Compose recomposition mean?",
+      "options": [
+        { "id": "A", "text": "The app process restarts" },
+        { "id": "B", "text": "The layout file is re-parsed from XML" },
+        { "id": "C", "text": "Composables re-run because state they read changed" },
+        { "id": "D", "text": "The navigation stack is rebuilt" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Compose tracks which state each composable reads and re-runs only those that depend on changed state. Reading state too high in the tree causes unnecessary recomposition.",
+      "concept": "Jetpack Compose"
+    },
+    {
+      "id": "role-mobile-q18",
+      "prompt": "In iOS, why must UI updates happen on the main thread?",
+      "options": [
+        { "id": "A", "text": "UIKit and SwiftUI are not thread-safe" },
+        { "id": "B", "text": "Background threads have no memory access" },
+        { "id": "C", "text": "The GPU only accepts commands from the main thread" },
+        { "id": "D", "text": "It makes animations run faster" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The UI frameworks assume single-threaded access. Touching views from a background thread causes intermittent corruption and crashes, which is why the main actor exists in Swift concurrency.",
+      "concept": "iOS Concurrency"
+    },
+    {
+      "id": "role-mobile-q19",
+      "prompt": "What is the main advantage of Flutter's own rendering engine over using native widgets?",
+      "options": [
+        { "id": "A", "text": "It removes the need for platform-specific code entirely" },
+        { "id": "B", "text": "It guarantees smaller app binaries" },
+        { "id": "C", "text": "It gives identical pixel output across platforms" },
+        { "id": "D", "text": "It makes network calls faster" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Flutter draws every pixel itself with Skia, so a screen looks the same everywhere. The cost is a larger binary and UI that does not automatically match platform conventions.",
+      "concept": "Flutter Architecture"
+    },
+    {
+      "id": "role-mobile-q20",
+      "prompt": "What is the correct fix for a flaky test that only passes when you add a fixed sleep before tapping a button?",
+      "options": [
+        { "id": "A", "text": "Increase the sleep until it stops failing" },
+        { "id": "B", "text": "Wait for an explicit condition, such as the button becoming enabled" },
+        { "id": "C", "text": "Retry the whole test three times" },
+        { "id": "D", "text": "Disable the test on slower devices" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A sleep encodes a guess about timing and breaks on a slower machine. Waiting on the actual condition removes the race rather than hiding it.",
+      "concept": "Mobile Testing"
+    },
+    {
+      "id": "role-mobile-q21",
+      "prompt": "Which storage option is appropriate for a user's authentication token on mobile?",
+      "options": [
+        { "id": "A", "text": "SharedPreferences or UserDefaults in plain text" },
+        { "id": "B", "text": "A hardcoded constant in the source" },
+        { "id": "C", "text": "An in-memory variable only" },
+        { "id": "D", "text": "The Keychain on iOS or EncryptedSharedPreferences on Android" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Preferences files are plain text and readable from a backup or a rooted device. The Keychain and EncryptedSharedPreferences are backed by the platform's secure storage.",
+      "concept": "Mobile Security"
+    },
+    {
+      "id": "role-mobile-q22",
+      "prompt": "In Flutter, what does setState do?",
+      "options": [
+        { "id": "A", "text": "Marks the widget dirty so its build method runs again" },
+        { "id": "B", "text": "Persists the widget's state to disk" },
+        { "id": "C", "text": "Rebuilds the entire widget tree from the root" },
+        { "id": "D", "text": "Pushes a new route onto the navigator" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "setState notifies the framework that this State object changed, scheduling a rebuild of that widget's subtree only, not the whole app.",
+      "concept": "Flutter State"
+    },
+    {
+      "id": "role-mobile-q23",
+      "prompt": "Why does a mobile app usually paginate a long list from the server instead of fetching everything?",
+      "options": [
+        { "id": "A", "text": "Servers cannot return large JSON responses" },
+        { "id": "B", "text": "It reduces memory use, data cost and time to first render" },
+        { "id": "C", "text": "Pagination is required by the app stores" },
+        { "id": "D", "text": "It makes the data more secure" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Devices have limited memory and users are often on metered, slow connections. Paging keeps the first screen fast and avoids holding thousands of rows in memory.",
+      "concept": "Mobile Networking"
+    },
+    {
+      "id": "role-mobile-q24",
+      "prompt": "On Android, what is the difference between StateFlow and LiveData for exposing UI state?",
+      "options": [
+        { "id": "A", "text": "LiveData works only in Compose" },
+        { "id": "B", "text": "StateFlow cannot hold a current value" },
+        { "id": "C", "text": "StateFlow is a coroutines primitive and always has a value; LiveData is lifecycle-aware by design" },
+        { "id": "D", "text": "They are the same class with different names" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "StateFlow comes from coroutines and always holds a current value, but collection must be tied to the lifecycle manually. LiveData was built around lifecycle awareness from the start.",
+      "concept": "Android Architecture"
+    },
+    {
+      "id": "role-mobile-q25",
+      "prompt": "What does it mean for a mobile app to work offline-first?",
+      "options": [
+        { "id": "A", "text": "The app refuses to launch without a network connection" },
+        { "id": "B", "text": "The app reads and writes locally, then syncs when a connection returns" },
+        { "id": "C", "text": "All data is stored only on the server" },
+        { "id": "D", "text": "The app disables all features until it is online" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Offline-first treats the local store as the source of truth for the session, so the UI stays responsive without a connection and reconciles with the server later.",
+      "concept": "Mobile Architecture"
+    }
+  ]
+}

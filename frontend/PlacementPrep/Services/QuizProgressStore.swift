@@ -115,9 +115,13 @@ final class QuizProgressStore {
         var previousPassed = true
 
         return quizzes.map { quiz in
+            // Role quizzes sit outside the chain. A student sees exactly one of
+            // them, so there is no earlier quiz to have passed — walking the
+            // chain would leave it permanently shut.
+            let chained = quiz.category != .role
             let item = QuizListItem(
                 quiz: quiz,
-                isUnlocked: Self.unlockAllForTesting || previousPassed,
+                isUnlocked: Self.unlockAllForTesting || !chained || previousPassed,
                 bestScore: bestScores[quiz.id]
             )
             previousPassed = hasPassed(quiz)

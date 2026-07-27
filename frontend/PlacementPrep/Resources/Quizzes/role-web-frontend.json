@@ -1,0 +1,336 @@
+{
+  "id": "role-web-frontend",
+  "category": "role",
+  "order": 1,
+  "title": "Frontend Web",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "role_group": "web_frontend",
+  "questions": [
+    {
+      "id": "role-web-frontend-q01",
+      "prompt": "In React, why does a list of items need a stable key prop?",
+      "options": [
+        { "id": "A", "text": "So React can match elements to state across re-renders" },
+        { "id": "B", "text": "To sort the list automatically" },
+        { "id": "C", "text": "To make the list accessible to screen readers" },
+        { "id": "D", "text": "To cache the list in localStorage" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Keys let React identify which item is which between renders. Using the array index as a key breaks when items are inserted or reordered, because state stays attached to the position rather than the item.",
+      "concept": "React Reconciliation"
+    },
+    {
+      "id": "role-web-frontend-q02",
+      "prompt": "What does the CSS box-sizing: border-box setting change?",
+      "options": [
+        { "id": "A", "text": "It centres the element horizontally" },
+        { "id": "B", "text": "Padding and border are included in the declared width" },
+        { "id": "C", "text": "It removes the element's margin" },
+        { "id": "D", "text": "It makes the element position: absolute" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "With the default content-box, padding and border are added on top of the width. border-box includes them, which is why a 50% wide box with padding stops overflowing its container.",
+      "concept": "CSS Box Model"
+    },
+    {
+      "id": "role-web-frontend-q03",
+      "prompt": "Why does a click handler's console.log run before a fetch .then() that was called first?",
+      "options": [
+        { "id": "A", "text": "fetch always takes at least one second" },
+        { "id": "B", "text": "Click handlers have higher CPU priority" },
+        { "id": "C", "text": "Promise callbacks are queued and run after the current synchronous work" },
+        { "id": "D", "text": "console.log is synchronous but fetch is not supported" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "JavaScript runs the current call stack to completion first. Promise resolutions are queued as microtasks and only run once the stack is empty, so synchronous code always wins.",
+      "concept": "JavaScript Event Loop"
+    },
+    {
+      "id": "role-web-frontend-q04",
+      "prompt": "What is the purpose of the dependency array in React's useEffect?",
+      "options": [
+        { "id": "A", "text": "It lists which npm packages the effect needs" },
+        { "id": "B", "text": "It sets how many times the effect may run" },
+        { "id": "C", "text": "It orders effects within a component" },
+        { "id": "D", "text": "It controls when the effect re-runs by comparing values between renders" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "React compares each dependency to its previous value and re-runs the effect only when one changed. An empty array runs it once; omitting the array runs it after every render.",
+      "concept": "React Hooks"
+    },
+    {
+      "id": "role-web-frontend-q05",
+      "prompt": "Which best describes the difference between localStorage and sessionStorage?",
+      "options": [
+        { "id": "A", "text": "sessionStorage is cleared when the tab closes; localStorage persists" },
+        { "id": "B", "text": "localStorage is encrypted; sessionStorage is not" },
+        { "id": "C", "text": "sessionStorage is shared across all domains" },
+        { "id": "D", "text": "localStorage is sent with every HTTP request" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Both are origin-scoped and unencrypted. The difference is lifetime: sessionStorage dies with the tab, localStorage survives until it is cleared. Neither is sent with requests, unlike cookies.",
+      "concept": "Browser Storage"
+    },
+    {
+      "id": "role-web-frontend-q06",
+      "prompt": "In flexbox, what does justify-content control?",
+      "options": [
+        { "id": "A", "text": "Alignment along the cross axis" },
+        { "id": "B", "text": "Whether items wrap onto a new line" },
+        { "id": "C", "text": "Alignment along the main axis" },
+        { "id": "D", "text": "The order in which items are painted" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "justify-content distributes items along the main axis, which flex-direction determines. align-items handles the cross axis, which is the pair most often confused.",
+      "concept": "CSS Flexbox"
+    },
+    {
+      "id": "role-web-frontend-q07",
+      "prompt": "What problem does React's virtual DOM actually solve?",
+      "options": [
+        { "id": "A", "text": "It makes JavaScript execution faster than native code" },
+        { "id": "B", "text": "It batches and minimises expensive real DOM mutations" },
+        { "id": "C", "text": "It removes the need for CSS" },
+        { "id": "D", "text": "It renders pages on the server only" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Touching the real DOM triggers layout and paint. React diffs a cheap in-memory tree and applies the minimum set of real mutations. It is not faster than hand-tuned direct DOM work, just far easier to get right.",
+      "concept": "React Rendering"
+    },
+    {
+      "id": "role-web-frontend-q08",
+      "prompt": "Why is using a div with an onClick handler worse than a real button for accessibility?",
+      "options": [
+        { "id": "A", "text": "A div cannot be styled to look like a button" },
+        { "id": "B", "text": "Click events do not fire on a div" },
+        { "id": "C", "text": "Divs are slower to render" },
+        { "id": "D", "text": "It is not focusable and not announced as a control" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A button is keyboard focusable, activates on Enter and Space, and is announced as a button by assistive technology. A div gets none of that unless you rebuild it all by hand.",
+      "concept": "Web Accessibility"
+    },
+    {
+      "id": "role-web-frontend-q09",
+      "prompt": "What is a debounce typically used for on the frontend?",
+      "options": [
+        { "id": "A", "text": "Delaying work until input has stopped for a set period" },
+        { "id": "B", "text": "Retrying a failed request automatically" },
+        { "id": "C", "text": "Compressing images before upload" },
+        { "id": "D", "text": "Preventing cross-site scripting" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Debouncing waits for a quiet period before acting, which is why a search box fires one request after typing stops instead of one per keystroke. Throttling instead caps the rate.",
+      "concept": "Frontend Performance"
+    },
+    {
+      "id": "role-web-frontend-q10",
+      "prompt": "Why does CORS block a request that Postman completes fine?",
+      "options": [
+        { "id": "A", "text": "Postman uses a faster network stack" },
+        { "id": "B", "text": "CORS is a browser-enforced policy, and Postman is not a browser" },
+        { "id": "C", "text": "The server rejects requests without a UI" },
+        { "id": "D", "text": "Postman automatically disables HTTPS" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "CORS is enforced by the browser to protect a user's credentials on other origins. The server still received the request; the browser refused to hand the response to your JavaScript.",
+      "concept": "Browser Security"
+    },
+    {
+      "id": "role-web-frontend-q11",
+      "prompt": "What does semantic HTML mean in practice?",
+      "options": [
+        { "id": "A", "text": "Writing all markup in lowercase" },
+        { "id": "B", "text": "Avoiding inline styles" },
+        { "id": "C", "text": "Choosing elements that describe their content, such as nav and article" },
+        { "id": "D", "text": "Minifying HTML before deploying" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Semantic elements carry meaning that browsers, assistive technology and search engines can use. A page built entirely from divs looks identical but conveys no structure.",
+      "concept": "HTML Semantics"
+    },
+    {
+      "id": "role-web-frontend-q12",
+      "prompt": "In JavaScript, what is a closure?",
+      "options": [
+        { "id": "A", "text": "A function that keeps access to variables from where it was defined" },
+        { "id": "B", "text": "A way to close a browser tab from script" },
+        { "id": "C", "text": "A method that ends a network connection" },
+        { "id": "D", "text": "A loop that always terminates" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A closure captures its defining scope, so the inner function can still read those variables after the outer function returned. This is what makes counters and private state work.",
+      "concept": "JavaScript Fundamentals"
+    },
+    {
+      "id": "role-web-frontend-q13",
+      "prompt": "What does code splitting achieve in a frontend bundle?",
+      "options": [
+        { "id": "A", "text": "It removes all unused CSS" },
+        { "id": "B", "text": "It defers loading code until the route that needs it" },
+        { "id": "C", "text": "It converts JavaScript to WebAssembly" },
+        { "id": "D", "text": "It duplicates code for redundancy" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Splitting the bundle means the initial page ships only what it needs, and other chunks load on demand. It is the main lever on time-to-interactive for a large app.",
+      "concept": "Frontend Performance"
+    },
+    {
+      "id": "role-web-frontend-q14",
+      "prompt": "Why can two elements with the same specificity behave differently in CSS?",
+      "options": [
+        { "id": "A", "text": "Rules are applied alphabetically by selector" },
+        { "id": "B", "text": "The browser picks one at random" },
+        { "id": "C", "text": "Later rules in source order win" },
+        { "id": "D", "text": "The shorter selector always wins" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "When specificity ties, the cascade falls back to source order and the last declaration wins. This is why stylesheet import order changes behaviour without any selector changing.",
+      "concept": "CSS Cascade"
+    },
+    {
+      "id": "role-web-frontend-q15",
+      "prompt": "What is the risk of rendering user-supplied HTML with dangerouslySetInnerHTML?",
+      "options": [
+        { "id": "A", "text": "It slows down rendering significantly" },
+        { "id": "B", "text": "It breaks server-side rendering" },
+        { "id": "C", "text": "It disables React's key checking" },
+        { "id": "D", "text": "It allows cross-site scripting if the input is not sanitised" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "React escapes text by default, which is what prevents XSS. Bypassing that with raw HTML means any injected script tag or event handler executes with the user's session.",
+      "concept": "Web Security"
+    },
+    {
+      "id": "role-web-frontend-q16",
+      "prompt": "What is the difference between == and === in JavaScript?",
+      "options": [
+        { "id": "A", "text": "=== compares values without type coercion" },
+        { "id": "B", "text": "== only works on numbers" },
+        { "id": "C", "text": "=== compares memory addresses only" },
+        { "id": "D", "text": "There is no difference in modern JavaScript" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "== coerces operands before comparing, so '1' == 1 is true and surprises follow. === requires matching types, which is why it is the default recommendation.",
+      "concept": "JavaScript Fundamentals"
+    },
+    {
+      "id": "role-web-frontend-q17",
+      "prompt": "In React, what is lifting state up?",
+      "options": [
+        { "id": "A", "text": "Storing state in localStorage" },
+        { "id": "B", "text": "Moving shared state to the closest common ancestor" },
+        { "id": "C", "text": "Using a global variable outside React" },
+        { "id": "D", "text": "Moving state into a useRef to avoid re-renders" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "When two siblings need the same value, it moves to their common parent and flows down as props. Duplicating it in both is what causes the two to drift out of sync.",
+      "concept": "React State"
+    },
+    {
+      "id": "role-web-frontend-q18",
+      "prompt": "What does a Content Security Policy header do?",
+      "options": [
+        { "id": "A", "text": "Encrypts the response body" },
+        { "id": "B", "text": "Compresses assets before sending" },
+        { "id": "C", "text": "Restricts which sources the page may load scripts and styles from" },
+        { "id": "D", "text": "Forces the browser to use HTTP/2" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "CSP declares the allowed origins for scripts, styles and other resources, so an injected script from an unapproved host is blocked. It is a second line of defence behind proper escaping.",
+      "concept": "Web Security"
+    },
+    {
+      "id": "role-web-frontend-q19",
+      "prompt": "Why might a component re-render even though its props look unchanged?",
+      "options": [
+        { "id": "A", "text": "React re-renders every component on a timer" },
+        { "id": "B", "text": "The parent re-rendered, and a new object or function prop was created" },
+        { "id": "C", "text": "The browser window lost focus" },
+        { "id": "D", "text": "CSS changed on the element" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "An inline object or arrow function is a new reference on every parent render, so a shallow comparison sees it as changed. useMemo and useCallback exist to keep those references stable.",
+      "concept": "React Rendering"
+    },
+    {
+      "id": "role-web-frontend-q20",
+      "prompt": "What is the main benefit of server-side rendering for a content site?",
+      "options": [
+        { "id": "A", "text": "It removes the need for JavaScript entirely" },
+        { "id": "B", "text": "It makes the server cheaper to run" },
+        { "id": "C", "text": "It guarantees the page never changes" },
+        { "id": "D", "text": "Faster first paint and content crawlers can read" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The browser receives real markup instead of an empty shell, so content appears sooner and does not depend on JavaScript running for indexing. The cost is server work per request.",
+      "concept": "Rendering Strategies"
+    },
+    {
+      "id": "role-web-frontend-q21",
+      "prompt": "What does the defer attribute on a script tag do?",
+      "options": [
+        { "id": "A", "text": "Downloads the script in parallel and runs it after parsing completes" },
+        { "id": "B", "text": "Stops the script from ever loading" },
+        { "id": "C", "text": "Runs the script before the HTML is parsed" },
+        { "id": "D", "text": "Loads the script only on user interaction" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "defer lets the parser continue while the script downloads, then executes it in document order before DOMContentLoaded. async also downloads in parallel but runs as soon as it arrives, in any order.",
+      "concept": "Browser Loading"
+    },
+    {
+      "id": "role-web-frontend-q22",
+      "prompt": "Which approach correctly makes a layout responsive without JavaScript?",
+      "options": [
+        { "id": "A", "text": "Detecting the user agent string and swapping stylesheets" },
+        { "id": "B", "text": "Using media queries and relative units" },
+        { "id": "C", "text": "Setting a fixed pixel width for every breakpoint" },
+        { "id": "D", "text": "Rendering a separate mobile site" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Media queries respond to the actual viewport, and relative units let content adapt between breakpoints. User-agent sniffing is brittle and misses resized desktop windows entirely.",
+      "concept": "Responsive Design"
+    },
+    {
+      "id": "role-web-frontend-q23",
+      "prompt": "What is the purpose of a source map in a production build?",
+      "options": [
+        { "id": "A", "text": "It compresses the bundle further" },
+        { "id": "B", "text": "It lists every network request the page makes" },
+        { "id": "C", "text": "It maps minified code back to the original source for debugging" },
+        { "id": "D", "text": "It stores the application's routing table" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A source map lets the browser show a readable stack trace against original files despite the shipped code being minified. Whether to expose it publicly is a separate decision.",
+      "concept": "Build Tooling"
+    },
+    {
+      "id": "role-web-frontend-q24",
+      "prompt": "Why is storing a JWT in localStorage considered riskier than in an httpOnly cookie?",
+      "options": [
+        { "id": "A", "text": "localStorage has a much smaller size limit" },
+        { "id": "B", "text": "Cookies are encrypted by default" },
+        { "id": "C", "text": "localStorage is cleared on refresh" },
+        { "id": "D", "text": "Any injected script can read localStorage, but not an httpOnly cookie" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "An httpOnly cookie is invisible to JavaScript, so an XSS payload cannot exfiltrate it. localStorage is fully readable by any script on the page. Cookies then need CSRF protection in exchange.",
+      "concept": "Web Security"
+    },
+    {
+      "id": "role-web-frontend-q25",
+      "prompt": "What does the browser's repaint versus reflow distinction mean for performance?",
+      "options": [
+        { "id": "A", "text": "Reflow recalculates layout and is more expensive than repaint" },
+        { "id": "B", "text": "Repaint recalculates geometry; reflow only changes colour" },
+        { "id": "C", "text": "Both are equally cheap in modern browsers" },
+        { "id": "D", "text": "Reflow only happens on page load" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Changing a colour repaints; changing size or position forces the browser to recompute layout for affected elements. Animating transform and opacity avoids reflow, which is why they stay smooth.",
+      "concept": "Rendering Performance"
+    }
+  ]
+}

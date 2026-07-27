@@ -27,6 +27,9 @@ extension Category {
         case .aptitude:         // insight violet
             Palette(top: Color(hex: 0x3A2659), bottom: Color(hex: 0x1A1029),
                     border: Color(hex: 0x5E4784), glyph: Color(hex: 0xDAC4FF))
+        case .role:             // ember — the track that is uniquely theirs
+            Palette(top: Color(hex: 0x5A3210), bottom: Color(hex: 0x291606),
+                    border: Color(hex: 0x8A5A21), glyph: Color(hex: 0xFFD9A8))
         }
     }
 
@@ -37,6 +40,7 @@ extension Category {
         case .csFundamentals: "cpu"
         case .dsa: "point.3.connected.trianglepath.dotted"
         case .aptitude: "brain"
+        case .role: "person.crop.rectangle.badge.plus"
         }
     }
 }

@@ -15,6 +15,8 @@ from __future__ import annotations
 import json
 from enum import Enum
 
+from app.ai.roles import technical_brief
+
 
 class InterviewMode(str, Enum):
     HR = "hr"
@@ -128,7 +130,7 @@ Then ask only questions that serve that.
 - If something on their resume is irrelevant to this role, leave it alone. Interview time is short and a real interviewer would spend it on what matters."""
 
 
-def _projects_brief(context: dict) -> str:
+def _projects_brief(role: str, context: dict) -> str:
     projects = (context.get("projects_text") or "").strip()
     if not projects:
         # Resume was skipped. Say so rather than inventing projects.
@@ -157,27 +159,54 @@ How to interview on this:
 - Once a project has been properly covered, move to a different one from the list rather than repeating yourself."""
 
 
-def _tech_stack_brief(context: dict) -> str:
+def _tech_stack_brief(role: str, context: dict) -> str:
+    """The technical round, specialised to the role the student picked.
+
+    The role material matters more than the resume here: a skills list says what
+    they claim, but the role says what an interviewer for that job would actually
+    dig into. A student who picked iOS should be asked about retain cycles even
+    if their resume only says "Swift".
+    """
     skills = (context.get("skills") or "").strip()
-    if not skills:
-        return """\
+    specific = technical_brief(role)
+
+    if specific:
+        focus = f"""\
+FOCUS: whether this candidate can really do this job.
+
+Interview them as a candidate for {role} specifically, not as a generic
+developer. What to dig into:
+{specific}"""
+    else:
+        focus = """\
 FOCUS: the technologies the candidate actually works with.
 
-You have NOT been given their skills list, so open by asking which technology
-they would call themselves strongest in, then test that claim for the rest of
-the round."""
+Interview them on the specific stack their role implies rather than on
+programming in the abstract."""
 
-    return f"""\
-FOCUS: the technologies the candidate claims on their resume.
+    if skills:
+        claimed = f"""
 
-Claimed skills:
+They claim these skills on their resume:
 {skills}
 
+Prefer a skill that appears on BOTH that list and the areas above — that is where a
+claim can actually be tested. If nothing overlaps, follow the role rather than the
+resume, since the role is what they are being hired against."""
+    else:
+        claimed = """
+
+You have NOT been given a skills list, so open by asking which of the areas above
+they would call themselves strongest in, then test that claim for the rest of the
+round."""
+
+    return f"""{focus}{claimed}
+
 How to interview on this:
-- Pick ONE named skill from that list and test whether the claim holds up. Name it explicitly.
 - Ask how and why, never what. "What is a Docker container" is a definition they memorised; "why did you containerise that service rather than just run it" is not.
-- Prefer questions that only someone who has actually used the tool can answer: what it does badly, what surprised them, what they got wrong the first time.
-- If they clearly know a skill well, move to a different one from the list rather than digging past the point of usefulness."""
+- Prefer questions only someone who has actually used the tool can answer: what it does badly, what surprised them, what they got wrong the first time.
+- One topic at a time. Follow a good answer with a harder question on the same topic before moving on.
+- If they clearly know an area well, move to a different one rather than digging past the point of usefulness."""
 
 
 _CORE_CS_BRIEF = """\
@@ -212,7 +241,7 @@ How to interview on this:
 - Stay warm. This round should feel like a conversation, not an interrogation."""
 
 
-def _debate_brief(context: dict) -> str:
+def _debate_brief(role: str, context: dict) -> str:
     topic = (context.get("topic") or "").strip()
     chosen = (
         f'The topic is: "{topic}".'
@@ -249,7 +278,7 @@ The "one question" hard rule does not apply to this round; the one-speaker-per-m
 rule replaces it. Every other hard rule still applies, especially plain speakable text."""
 
 
-def _dsa_brief(context: dict) -> str:
+def _dsa_brief(role: str, context: dict) -> str:
     problem = (context.get("dsa_problem") or "").strip()
     chosen = (
         f'The problem is: "{problem}". Open by stating the problem in one or two sentences '
@@ -271,8 +300,8 @@ How to interview on this:
 
 
 _BRIEFS = {
-    InterviewMode.HR: lambda _: _HR_BRIEF,
-    InterviewMode.CORE_CS: lambda _: _CORE_CS_BRIEF,
+    InterviewMode.HR: lambda _role, _ctx: _HR_BRIEF,
+    InterviewMode.CORE_CS: lambda _role, _ctx: _CORE_CS_BRIEF,
     InterviewMode.PROJECTS: _projects_brief,
     InterviewMode.TECH_STACK: _tech_stack_brief,
     InterviewMode.PANEL_DEBATE: _debate_brief,
@@ -293,7 +322,7 @@ def _preamble(role: str, mode: InterviewMode, context: dict) -> str:
         )
     # Role first, then the round's focus: the brief is *how* to interview, the
     # role block is *what about*, and the model weights earlier context heavily.
-    return f"{opening}\n\n{_role_block(role, mode)}\n\n{_BRIEFS[mode](context)}\n\n{_HARD_RULES}"
+    return f"{opening}\n\n{_role_block(role, mode)}\n\n{_BRIEFS[mode](role, context)}\n\n{_HARD_RULES}"
 
 
 def opening_prompt(role: str, mode: InterviewMode, context: dict) -> str:

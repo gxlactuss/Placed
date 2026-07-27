@@ -9,12 +9,10 @@ struct OnboardingView: View {
     @Bindable private var theme = ThemeStore.shared
 
     @State private var name = ""
-    @State private var role = ""
-
-    private let roleSuggestions = [
-        "Backend Engineer", "Frontend Engineer", "Full-Stack Engineer",
-        "iOS Engineer", "Data Analyst", "SDE",
-    ]
+    /// A picked role rather than typed text. The technical interview round and
+    /// the role-locked quizzes both key off this, and neither can do anything
+    /// useful with a free-text job title nobody else spells the same way.
+    @State private var role: CareerRole?
 
     var body: some View {
         ScrollView {
@@ -36,7 +34,9 @@ struct OnboardingView: View {
         .onAppear {
             // Prefill anything captured at sign-up.
             name = auth.currentUser?.fullName ?? ""
-            role = auth.currentUser?.targetRole ?? ""
+            // Recovers a role stored as free text by an earlier build; an
+            // unrecognised one just leaves the picker empty.
+            role = CareerRole(title: auth.currentUser?.targetRole)
         }
     }
 
@@ -65,19 +65,12 @@ struct OnboardingView: View {
 
     private var roleSection: some View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
-            PPTextField(
-                label: "What are you preparing for?",
-                placeholder: "e.g. Backend Engineer",
-                text: $role,
-                submitLabel: .done
-            )
-            FlowRow(spacing: PPSpacing.sm) {
-                ForEach(roleSuggestions, id: \.self) { suggestion in
-                    PPFilterChip(title: suggestion, isSelected: role == suggestion) {
-                        role = suggestion
-                    }
-                }
-            }
+            Text("What are you preparing for?").ppSectionLabelStyle()
+            Text("Your interviews and one extra quiz are built around this. You can change it later.")
+                .font(.ppCaption)
+                .foregroundStyle(Color.ppMuted)
+                .fixedSize(horizontal: false, vertical: true)
+            RolePicker(selection: $role)
         }
     }
 
@@ -159,14 +152,15 @@ struct OnboardingView: View {
     // MARK: - Logic
 
     private var canSubmit: Bool {
-        !name.trimmingCharacters(in: .whitespaces).isEmpty
+        !name.trimmingCharacters(in: .whitespaces).isEmpty && role != nil
     }
 
     private func submit() {
         guard canSubmit, !auth.isLoading else { return }
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
-        let trimmedRole = role.trimmingCharacters(in: .whitespaces)
-        Task { await auth.completeOnboarding(fullName: trimmedName, targetRole: trimmedRole) }
+        // The title is what gets stored, not the slug — it goes straight into
+        // interview prompts, which have to read as English.
+        Task { await auth.completeOnboarding(fullName: trimmedName, targetRole: role?.title ?? "") }
     }
 }
 

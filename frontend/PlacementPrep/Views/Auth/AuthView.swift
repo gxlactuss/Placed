@@ -14,7 +14,6 @@ struct AuthView: View {
     @State private var fullName = ""
     @State private var email = ""
     @State private var password = ""
-    @State private var targetRole = ""
 
     var body: some View {
         ScrollView {
@@ -79,19 +78,10 @@ struct AuthView: View {
                 text: $password,
                 isSecure: true,
                 textContentType: mode == .signup ? .newPassword : .password,
-                submitLabel: mode == .signup ? .next : .go,
-                onSubmit: { if mode == .login { submit() } }
+                submitLabel: .go,
+                onSubmit: submit
             )
 
-            if mode == .signup {
-                PPTextField(
-                    label: "Target role (optional)",
-                    placeholder: "e.g. Backend Engineer",
-                    text: $targetRole,
-                    submitLabel: .go,
-                    onSubmit: submit
-                )
-            }
         }
     }
 
@@ -215,7 +205,6 @@ struct AuthView: View {
     private func submit() {
         guard canSubmit, !auth.isLoading else { return }
         let trimmedName = fullName.trimmingCharacters(in: .whitespaces)
-        let trimmedRole = targetRole.trimmingCharacters(in: .whitespaces)
         Task {
             switch mode {
             case .login:
@@ -225,7 +214,10 @@ struct AuthView: View {
                     email: email,
                     password: password,
                     fullName: trimmedName.isEmpty ? nil : trimmedName,
-                    targetRole: trimmedRole.isEmpty ? nil : trimmedRole
+                    // Collected on the very next screen, from a fixed list.
+                    // A role must be one of the known ones or the technical
+                    // round and the role-locked quiz have nothing to key on.
+                    targetRole: nil
                 )
             }
         }

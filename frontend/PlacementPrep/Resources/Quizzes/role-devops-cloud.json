@@ -1,0 +1,336 @@
+{
+  "id": "role-devops-cloud",
+  "category": "role",
+  "order": 7,
+  "title": "DevOps & Cloud",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "role_group": "devops_cloud",
+  "questions": [
+    {
+      "id": "role-devops-cloud-q01",
+      "prompt": "What is the practical difference between a container and a virtual machine?",
+      "options": [
+        { "id": "A", "text": "Containers share the host kernel; VMs run their own" },
+        { "id": "B", "text": "Containers cannot run Linux workloads" },
+        { "id": "C", "text": "VMs start faster than containers" },
+        { "id": "D", "text": "Containers provide stronger isolation than VMs" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Sharing the kernel is why containers start in milliseconds and are far smaller. It is also why their isolation is weaker than a VM's hardware-level boundary.",
+      "concept": "Containers"
+    },
+    {
+      "id": "role-devops-cloud-q02",
+      "prompt": "Why does ordering Dockerfile instructions carefully matter?",
+      "options": [
+        { "id": "A", "text": "Docker requires COPY before RUN" },
+        { "id": "B", "text": "Each instruction is a cached layer, invalidated by everything after a change" },
+        { "id": "C", "text": "Instructions run in parallel otherwise" },
+        { "id": "D", "text": "The order determines the container's user" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Copying source before installing dependencies means every code edit busts the dependency layer and reinstalls everything. Copying the manifest first keeps that layer cached.",
+      "concept": "Docker"
+    },
+    {
+      "id": "role-devops-cloud-q03",
+      "prompt": "In Kubernetes, what is a Pod?",
+      "options": [
+        { "id": "A", "text": "A physical machine in the cluster" },
+        { "id": "B", "text": "A storage volume shared across nodes" },
+        { "id": "C", "text": "The smallest deployable unit, holding one or more containers" },
+        { "id": "D", "text": "A network policy applied to a namespace" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Containers in a Pod share a network namespace and can share volumes, so they are always scheduled together. Kubernetes schedules Pods, never bare containers.",
+      "concept": "Kubernetes"
+    },
+    {
+      "id": "role-devops-cloud-q04",
+      "prompt": "What does infrastructure as code give you over clicking through a console?",
+      "options": [
+        { "id": "A", "text": "Cheaper cloud pricing" },
+        { "id": "B", "text": "Automatic security patching" },
+        { "id": "C", "text": "Faster network throughput" },
+        { "id": "D", "text": "Reviewable, versioned, reproducible environments" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Declared infrastructure can be diffed, reviewed and recreated identically. Console changes leave no history, which is how environments drift until a deploy fails only in production.",
+      "concept": "Infrastructure as Code"
+    },
+    {
+      "id": "role-devops-cloud-q05",
+      "prompt": "What is the point of a blue-green deployment?",
+      "options": [
+        { "id": "A", "text": "It halves infrastructure cost during a release" },
+        { "id": "B", "text": "It switches traffic between two environments so rollback is instant" },
+        { "id": "C", "text": "It deploys to two cloud providers at once" },
+        { "id": "D", "text": "It runs tests against production data" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "The new version is deployed alongside the old and traffic is cut over once healthy. Rolling back is another traffic switch rather than a redeploy.",
+      "concept": "Deployment Strategies"
+    },
+    {
+      "id": "role-devops-cloud-q06",
+      "prompt": "Why should a container image not bake in secrets at build time?",
+      "options": [
+        { "id": "A", "text": "Secrets increase the image size significantly" },
+        { "id": "B", "text": "Docker strips environment variables on push" },
+        { "id": "C", "text": "The secret remains in the image layers for anyone who can pull it" },
+        { "id": "D", "text": "Build arguments cannot hold long strings" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Layers are immutable and inspectable, so a secret persists even if a later layer deletes it. Secrets belong in the runtime environment or a secrets manager.",
+      "concept": "Container Security"
+    },
+    {
+      "id": "role-devops-cloud-q07",
+      "prompt": "In AWS, what does a security group control?",
+      "options": [
+        { "id": "A", "text": "IAM permissions for a user" },
+        { "id": "B", "text": "Which regions a resource may be created in" },
+        { "id": "C", "text": "Encryption keys for a bucket" },
+        { "id": "D", "text": "Inbound and outbound traffic rules for a resource" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A security group is a stateful virtual firewall attached to an instance or interface. IAM governs who may call the API; a security group governs packets.",
+      "concept": "Cloud Networking"
+    },
+    {
+      "id": "role-devops-cloud-q08",
+      "prompt": "What is the difference between high availability and durability?",
+      "options": [
+        { "id": "A", "text": "Availability means the service responds; durability means the data survives" },
+        { "id": "B", "text": "They are two measures of the same property" },
+        { "id": "C", "text": "Durability applies only to compute resources" },
+        { "id": "D", "text": "Availability is measured in bytes" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A store can be highly durable yet briefly unavailable during failover. Confusing them leads to designs that protect uptime but still lose data on a node failure.",
+      "concept": "Cloud Reliability"
+    },
+    {
+      "id": "role-devops-cloud-q09",
+      "prompt": "What does a Kubernetes readiness probe do?",
+      "options": [
+        { "id": "A", "text": "Restarts the container if it fails" },
+        { "id": "B", "text": "Decides whether the Pod should receive traffic" },
+        { "id": "C", "text": "Checks that the image was pulled successfully" },
+        { "id": "D", "text": "Verifies resource limits are within quota" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Readiness gates traffic; liveness restarts a hung container. Using liveness where readiness is meant turns a slow start into a crash loop.",
+      "concept": "Kubernetes"
+    },
+    {
+      "id": "role-devops-cloud-q10",
+      "prompt": "Why is a CI pipeline run on every pull request rather than only before release?",
+      "options": [
+        { "id": "A", "text": "It reduces the number of branches" },
+        { "id": "B", "text": "It is required for merging in Git" },
+        { "id": "C", "text": "Failures surface while the change is small and fresh" },
+        { "id": "D", "text": "It compiles faster on smaller changes" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Catching a break at the commit that caused it makes the cause obvious. Batching a month of changes means bisecting a large diff under release pressure.",
+      "concept": "Continuous Integration"
+    },
+    {
+      "id": "role-devops-cloud-q11",
+      "prompt": "What is the purpose of a load balancer health check?",
+      "options": [
+        { "id": "A", "text": "To measure response latency for billing" },
+        { "id": "B", "text": "To stop routing traffic to an unhealthy instance" },
+        { "id": "C", "text": "To scale the instance vertically" },
+        { "id": "D", "text": "To rotate TLS certificates" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Instances that fail the check are removed from rotation, so users are not served errors. A check that only returns 200 without testing dependencies gives false confidence.",
+      "concept": "Load Balancing"
+    },
+    {
+      "id": "role-devops-cloud-q12",
+      "prompt": "What does autoscaling based on CPU fail to handle well?",
+      "options": [
+        { "id": "A", "text": "Steady, predictable traffic" },
+        { "id": "B", "text": "Gradual daily traffic growth" },
+        { "id": "C", "text": "A workload bounded by I/O or a downstream limit" },
+        { "id": "D", "text": "Instances of differing sizes" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "If requests queue waiting on a database, CPU stays low while latency climbs, so no scaling happens. Queue depth or latency is the better signal, and more instances may worsen it.",
+      "concept": "Autoscaling"
+    },
+    {
+      "id": "role-devops-cloud-q13",
+      "prompt": "Why should logs be shipped off the instance that produced them?",
+      "options": [
+        { "id": "A", "text": "Local disks cannot store text files" },
+        { "id": "B", "text": "The instance may be replaced, taking the logs with it" },
+        { "id": "C", "text": "Logging locally is not permitted in the cloud" },
+        { "id": "D", "text": "Shipped logs are automatically anonymised" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Ephemeral instances are terminated on scale-in or failure, exactly when the logs matter most. Centralising them also makes correlation across instances possible.",
+      "concept": "Observability"
+    },
+    {
+      "id": "role-devops-cloud-q14",
+      "prompt": "What is the main risk of an overly broad IAM policy such as Action: '*'?",
+      "options": [
+        { "id": "A", "text": "It slows down every API call" },
+        { "id": "B", "text": "It prevents the resource from being deleted" },
+        { "id": "C", "text": "A compromise of that identity grants full account access" },
+        { "id": "D", "text": "It increases the monthly bill directly" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A wildcard removes any boundary, so one leaked key becomes an account takeover. Policies should name the actions and resources the workload actually uses.",
+      "concept": "Cloud Security"
+    },
+    {
+      "id": "role-devops-cloud-q15",
+      "prompt": "What does idempotency mean for a configuration management tool?",
+      "options": [
+        { "id": "A", "text": "Applying the same configuration repeatedly leaves the same state" },
+        { "id": "B", "text": "Each run must be executed only once" },
+        { "id": "C", "text": "Configuration is applied in random order" },
+        { "id": "D", "text": "Changes are rolled back after each run" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "The tool converges toward a declared state rather than blindly running commands, so re-running is safe. That is what makes automated remediation possible.",
+      "concept": "Configuration Management"
+    },
+    {
+      "id": "role-devops-cloud-q16",
+      "prompt": "Why is a multi-stage Docker build useful?",
+      "options": [
+        { "id": "A", "text": "It allows two containers to run in one image" },
+        { "id": "B", "text": "It parallelises the build across cores" },
+        { "id": "C", "text": "It automatically scans for vulnerabilities" },
+        { "id": "D", "text": "Build tools stay out of the final image, keeping it small" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Compilers and dev dependencies live in an earlier stage, and only the built artefact is copied forward. Smaller images pull faster and expose less attack surface.",
+      "concept": "Docker"
+    },
+    {
+      "id": "role-devops-cloud-q17",
+      "prompt": "What does the term immutable infrastructure describe?",
+      "options": [
+        { "id": "A", "text": "Servers are replaced rather than modified in place" },
+        { "id": "B", "text": "Infrastructure cannot be deleted once created" },
+        { "id": "C", "text": "Configuration files are read-only" },
+        { "id": "D", "text": "The cloud provider prevents manual changes" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A new image is built and rolled out instead of patching live servers, so every instance is identical and reproducible. It removes configuration drift as a category of failure.",
+      "concept": "Infrastructure Practice"
+    },
+    {
+      "id": "role-devops-cloud-q18",
+      "prompt": "What problem does a service mesh address?",
+      "options": [
+        { "id": "A", "text": "Compiling services written in different languages" },
+        { "id": "B", "text": "Service-to-service traffic concerns like retries, mTLS and observability" },
+        { "id": "C", "text": "Storing shared configuration files" },
+        { "id": "D", "text": "Provisioning the underlying virtual machines" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A sidecar proxy handles routing, retries, encryption and telemetry uniformly, so each service does not reimplement them. The cost is real operational complexity.",
+      "concept": "Microservices Infrastructure"
+    },
+    {
+      "id": "role-devops-cloud-q19",
+      "prompt": "Why alert on symptoms such as error rate rather than on CPU usage?",
+      "options": [
+        { "id": "A", "text": "CPU metrics are expensive to collect" },
+        { "id": "B", "text": "CPU cannot be measured in containers" },
+        { "id": "C", "text": "Symptoms reflect user impact; high CPU alone may be harmless" },
+        { "id": "D", "text": "Error rates are easier to graph" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A busy CPU may be a healthy service working hard. Alerting on user-visible symptoms avoids waking someone for a condition that harms nobody, which is how alert fatigue starts.",
+      "concept": "Monitoring"
+    },
+    {
+      "id": "role-devops-cloud-q20",
+      "prompt": "What is a rolling update in Kubernetes?",
+      "options": [
+        { "id": "A", "text": "All Pods are replaced simultaneously" },
+        { "id": "B", "text": "Pods are replaced gradually while the service stays up" },
+        { "id": "C", "text": "The cluster nodes are rebooted in sequence" },
+        { "id": "D", "text": "Traffic is mirrored to a second cluster" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "New Pods come up and old ones drain within surge and unavailability limits, so capacity is maintained. It requires the two versions to be compatible during the overlap.",
+      "concept": "Kubernetes"
+    },
+    {
+      "id": "role-devops-cloud-q21",
+      "prompt": "What does a cloud provider's shared responsibility model mean?",
+      "options": [
+        { "id": "A", "text": "The provider secures everything by default" },
+        { "id": "B", "text": "Security is shared with other tenants" },
+        { "id": "C", "text": "Responsibility is split between customers and support" },
+        { "id": "D", "text": "The provider secures the infrastructure; you secure what you run on it" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The provider handles physical and hypervisor security. Access policies, patching your instances and not exposing a bucket publicly remain your responsibility.",
+      "concept": "Cloud Security"
+    },
+    {
+      "id": "role-devops-cloud-q22",
+      "prompt": "Why is a stateless application easier to scale horizontally?",
+      "options": [
+        { "id": "A", "text": "It uses less CPU per request" },
+        { "id": "B", "text": "Any instance can serve any request" },
+        { "id": "C", "text": "It does not need a database" },
+        { "id": "D", "text": "It can run without a load balancer" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "With no local state, instances are interchangeable, so adding and removing them is safe. Session affinity is a workaround that reintroduces the coupling.",
+      "concept": "Scalability"
+    },
+    {
+      "id": "role-devops-cloud-q23",
+      "prompt": "What causes a surprise cloud bill most often in a student project?",
+      "options": [
+        { "id": "A", "text": "Too many IAM users created" },
+        { "id": "B", "text": "Using more than one region" },
+        { "id": "C", "text": "Resources left running, plus egress traffic" },
+        { "id": "D", "text": "Enabling multi-factor authentication" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Idle instances, unattached volumes and load balancers bill by the hour regardless of use, and data leaving the provider is charged per gigabyte. Budget alerts catch it early.",
+      "concept": "Cloud Cost"
+    },
+    {
+      "id": "role-devops-cloud-q24",
+      "prompt": "What is the purpose of a canary release?",
+      "options": [
+        { "id": "A", "text": "Sending a small share of traffic to the new version first" },
+        { "id": "B", "text": "Deploying only during low-traffic hours" },
+        { "id": "C", "text": "Running the new version with no traffic at all" },
+        { "id": "D", "text": "Releasing to internal staff only, permanently" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A small slice of real traffic exposes problems that staging misses, while limiting the number of users affected. It requires metrics good enough to judge the canary.",
+      "concept": "Deployment Strategies"
+    },
+    {
+      "id": "role-devops-cloud-q25",
+      "prompt": "Why is a git-based workflow used to trigger deployments in GitOps?",
+      "options": [
+        { "id": "A", "text": "Git is faster than a deployment API" },
+        { "id": "B", "text": "It removes the need for a build step" },
+        { "id": "C", "text": "The repository becomes the auditable source of truth for desired state" },
+        { "id": "D", "text": "Git can store container images efficiently" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Desired state lives in version control, so every change is reviewed, attributable and revertible, and a controller reconciles the cluster toward it continuously.",
+      "concept": "GitOps"
+    }
+  ]
+}

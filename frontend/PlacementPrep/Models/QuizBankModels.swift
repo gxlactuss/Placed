@@ -28,6 +28,9 @@ enum Category: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
     case csFundamentals = "cs-fundamentals"
     case dsa
     case aptitude
+    /// One quiz per role group, and a student only ever sees the one their
+    /// chosen role unlocks. See `RoleQuizGroup`.
+    case role
 
     var id: String { rawValue }
 
@@ -36,6 +39,7 @@ enum Category: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
         case .csFundamentals: "CS Fundamentals"
         case .dsa: "DSA"
         case .aptitude: "Aptitude"
+        case .role: "Your Role"
         }
     }
 
@@ -44,6 +48,7 @@ enum Category: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
         case .csFundamentals: "OS · Networks · DBMS · System Design"
         case .dsa: "Algorithms, data structures & patterns"
         case .aptitude: "Puzzles, riddles & quantitative"
+        case .role: "The stack you picked, tested properly"
         }
     }
 
@@ -53,6 +58,8 @@ enum Category: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
         switch self {
         case .csFundamentals, .dsa: 30
         case .aptitude: 15
+        // Exactly one is ever visible: the one this student's role unlocks.
+        case .role: 1
         }
     }
 }
@@ -152,10 +159,14 @@ struct Quiz: Codable, Identifiable, Hashable, Sendable {
     /// Fraction of questions required to pass and unlock the next quiz.
     /// Defaults to 0.7 when absent from the JSON.
     let passMark: Double
+    /// Set only on `.role` quizzes. A student sees the one matching their own
+    /// role's group and no others.
+    let roleGroup: RoleQuizGroup?
 
     enum CodingKeys: String, CodingKey {
         case id, category, subject, order, title, difficulty, questions
         case passMark = "pass_mark"
+        case roleGroup = "role_group"
     }
 
     init(from decoder: Decoder) throws {
@@ -168,6 +179,7 @@ struct Quiz: Codable, Identifiable, Hashable, Sendable {
         difficulty = try container.decode(Difficulty.self, forKey: .difficulty)
         questions = try container.decode([Question].self, forKey: .questions)
         passMark = try container.decodeIfPresent(Double.self, forKey: .passMark) ?? 0.7
+        roleGroup = try container.decodeIfPresent(RoleQuizGroup.self, forKey: .roleGroup)
     }
 
     /// Minimum number of correct answers to pass.

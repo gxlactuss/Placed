@@ -14,7 +14,9 @@ struct InterviewSetupView: View {
     @Environment(InterviewSetupStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
-    @State private var role = ""
+    /// Picked, not typed — same list as onboarding, so the account's role and
+    /// the interview's role can never be two spellings of one job.
+    @State private var role: CareerRole?
     @State private var phase: Phase = .idle
     @State private var showFileImporter = false
     /// Held from the on-device parse so `finish()` can persist them — the rounds
@@ -36,7 +38,7 @@ struct InterviewSetupView: View {
     }
 
     private var canStart: Bool {
-        !role.trimmingCharacters(in: .whitespaces).isEmpty && !phase.isBusy
+        role != nil && !phase.isBusy
     }
 
     var body: some View {
@@ -55,9 +57,9 @@ struct InterviewSetupView: View {
         .ppScreenBackground()
         .onAppear {
             // Prefill from the account so the common case is one tap.
-            if role.isEmpty {
-                role = (store.setup?.targetRole ?? auth.currentUser?.targetRole)?
-                    .trimmingCharacters(in: .whitespaces) ?? ""
+            if role == nil {
+                role = CareerRole(title: store.setup?.targetRole)
+                    ?? CareerRole(title: auth.currentUser?.targetRole)
             }
             // Reopened to change something — carry the existing resume forward.
             // These are `@State`, so without this a student who came back only
@@ -97,15 +99,13 @@ struct InterviewSetupView: View {
 
     private var roleField: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
-            PPTextField(
-                label: "Role you're preparing for",
-                placeholder: "e.g. Backend Engineer",
-                text: $role,
-                submitLabel: .done
-            )
-            Text("Required — every question is framed around this.")
+            Text("Role you're preparing for").ppSectionLabelStyle()
+            Text("Required — every question is framed around this, and the technical round goes deep on it.")
                 .font(.ppMicro)
                 .foregroundStyle(Color.ppMuted)
+                .fixedSize(horizontal: false, vertical: true)
+            RolePicker(selection: $role)
+                .padding(.top, PPSpacing.xs)
         }
     }
 
@@ -249,7 +249,7 @@ struct InterviewSetupView: View {
                 skills = ResumeParser.extractSkills(from: text)
 
                 phase = .summarising
-                let trimmedRole = role.trimmingCharacters(in: .whitespaces)
+                let trimmedRole = role?.title ?? ""
                 let response: ResumeSummaryResponse = try await NetworkManager.shared.request(
                     path: "/api/interview/resume-summary",
                     method: .post,
@@ -268,8 +268,8 @@ struct InterviewSetupView: View {
     }
 
     private func finish() {
-        let trimmedRole = role.trimmingCharacters(in: .whitespaces)
-        guard !trimmedRole.isEmpty else { return }
+        guard let role else { return }
+        let trimmedRole = role.title
 
         let summary: String? = if case .done(let text) = phase { text } else { nil }
         store.save(InterviewSetup(

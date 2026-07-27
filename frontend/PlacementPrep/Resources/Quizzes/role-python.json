@@ -1,0 +1,336 @@
+{
+  "id": "role-python",
+  "category": "role",
+  "order": 4,
+  "title": "Python",
+  "difficulty": "medium",
+  "pass_mark": 0.6,
+  "role_group": "python",
+  "questions": [
+    {
+      "id": "role-python-q01",
+      "prompt": "What happens when a mutable object is used as a default argument value?",
+      "options": [
+        { "id": "A", "text": "It is created once and shared across every call" },
+        { "id": "B", "text": "It is recreated fresh on each call" },
+        { "id": "C", "text": "Python raises a SyntaxError" },
+        { "id": "D", "text": "It is silently converted to a tuple" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "Default arguments are evaluated once at function definition. A default empty list therefore accumulates across calls, which is why None is used as the sentinel instead.",
+      "concept": "Python Gotchas"
+    },
+    {
+      "id": "role-python-q02",
+      "prompt": "What does the Global Interpreter Lock actually prevent?",
+      "options": [
+        { "id": "A", "text": "Any use of threads at all" },
+        { "id": "B", "text": "Two threads executing Python bytecode simultaneously" },
+        { "id": "C", "text": "Multiple processes running in parallel" },
+        { "id": "D", "text": "Async code from running concurrently" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Only one thread runs bytecode at a time, so threads do not speed up CPU-bound work. They still help with I/O-bound work, because the lock is released while waiting.",
+      "concept": "Python Concurrency"
+    },
+    {
+      "id": "role-python-q03",
+      "prompt": "What is the main advantage of a generator over building a list?",
+      "options": [
+        { "id": "A", "text": "It can be indexed randomly" },
+        { "id": "B", "text": "It sorts its output automatically" },
+        { "id": "C", "text": "It can be iterated many times" },
+        { "id": "D", "text": "It yields items lazily instead of holding them all in memory" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "A generator produces values on demand, so a ten-million-row file streams in constant memory. The trade-off is that it is single-pass and cannot be indexed.",
+      "concept": "Python Iterators"
+    },
+    {
+      "id": "role-python-q04",
+      "prompt": "In Python, what does a decorator do?",
+      "options": [
+        { "id": "A", "text": "Wraps a function to extend or alter its behaviour" },
+        { "id": "B", "text": "Adds type annotations at runtime" },
+        { "id": "C", "text": "Marks a function for garbage collection" },
+        { "id": "D", "text": "Compiles a function to C" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "A decorator takes a function and returns a replacement, which is how logging, caching and route registration are added without editing the function body.",
+      "concept": "Python Functions"
+    },
+    {
+      "id": "role-python-q05",
+      "prompt": "Why should a virtual environment be used per project?",
+      "options": [
+        { "id": "A", "text": "It makes imports resolve faster" },
+        { "id": "B", "text": "It isolates dependency versions between projects" },
+        { "id": "C", "text": "It is required to run Python 3" },
+        { "id": "D", "text": "It encrypts installed packages" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Two projects often need different versions of the same library. Without isolation, installing one breaks the other, and system Python gets polluted besides.",
+      "concept": "Python Tooling"
+    },
+    {
+      "id": "role-python-q06",
+      "prompt": "What is the difference between a list and a tuple?",
+      "options": [
+        { "id": "A", "text": "Tuples can only hold numbers" },
+        { "id": "B", "text": "Lists cannot be nested" },
+        { "id": "C", "text": "Tuples are immutable and can be dictionary keys" },
+        { "id": "D", "text": "Lists are always faster to iterate" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "Immutability makes a tuple hashable, so it can be a dict key or set member. It also signals that the collection is a fixed record rather than a growable sequence.",
+      "concept": "Python Data Types"
+    },
+    {
+      "id": "role-python-q07",
+      "prompt": "In Django, what does an ORM queryset's laziness mean?",
+      "options": [
+        { "id": "A", "text": "Queries are cached for the whole process lifetime" },
+        { "id": "B", "text": "Queries run only when the result is actually needed" },
+        { "id": "C", "text": "Queries always run on a background thread" },
+        { "id": "D", "text": "Queries are limited to 100 rows by default" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Building a queryset issues no SQL; iterating, slicing or calling len does. This is what allows filters to be chained and composed before a single query is sent.",
+      "concept": "Django ORM"
+    },
+    {
+      "id": "role-python-q08",
+      "prompt": "What does select_related do in Django?",
+      "options": [
+        { "id": "A", "text": "Restricts which columns are returned" },
+        { "id": "B", "text": "Caches the queryset in Redis" },
+        { "id": "C", "text": "Filters rows by a related field" },
+        { "id": "D", "text": "Follows foreign keys with a SQL join in the same query" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "It joins forward relations up front, avoiding a query per row when the template touches a related object. prefetch_related handles many-to-many with a second query instead.",
+      "concept": "Django Performance"
+    },
+    {
+      "id": "role-python-q09",
+      "prompt": "What is the purpose of the if __name__ == '__main__' guard?",
+      "options": [
+        { "id": "A", "text": "It runs the block only when the file is executed directly" },
+        { "id": "B", "text": "It prevents the module from being imported" },
+        { "id": "C", "text": "It declares the entry point required by Python" },
+        { "id": "D", "text": "It makes the module thread-safe" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "On import, __name__ is the module name, so the block is skipped. Without it, importing a script runs its side effects, which also breaks multiprocessing on some platforms.",
+      "concept": "Python Modules"
+    },
+    {
+      "id": "role-python-q10",
+      "prompt": "What does a context manager, used via with, guarantee?",
+      "options": [
+        { "id": "A", "text": "The block runs in a separate scope" },
+        { "id": "B", "text": "Cleanup runs even if the block raises" },
+        { "id": "C", "text": "The block is retried on failure" },
+        { "id": "D", "text": "Variables inside are automatically typed" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "__exit__ runs on both the normal and exceptional path, which is why with open(...) reliably closes a file where a bare close call would be skipped by an exception.",
+      "concept": "Python Resource Management"
+    },
+    {
+      "id": "role-python-q11",
+      "prompt": "What is the difference between a shallow copy and a deep copy?",
+      "options": [
+        { "id": "A", "text": "A deep copy is always faster" },
+        { "id": "B", "text": "A shallow copy cannot copy lists" },
+        { "id": "C", "text": "A shallow copy shares nested objects; a deep copy duplicates them" },
+        { "id": "D", "text": "They differ only for immutable objects" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "A shallow copy duplicates the outer container only, so mutating a nested list is visible through both copies. deepcopy recurses, at the cost of time and memory.",
+      "concept": "Python Semantics"
+    },
+    {
+      "id": "role-python-q12",
+      "prompt": "When does asyncio actually improve throughput?",
+      "options": [
+        { "id": "A", "text": "For CPU-bound numeric loops" },
+        { "id": "B", "text": "For I/O-bound work with many concurrent waits" },
+        { "id": "C", "text": "For any code, since it uses all cores" },
+        { "id": "D", "text": "Only when combined with threads" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Async gives concurrency, not parallelism. It shines when most time is spent waiting on the network or disk; a tight CPU loop just blocks the event loop.",
+      "concept": "Python Concurrency"
+    },
+    {
+      "id": "role-python-q13",
+      "prompt": "What does *args allow in a function signature?",
+      "options": [
+        { "id": "A", "text": "Accepting any number of positional arguments as a tuple" },
+        { "id": "B", "text": "Accepting keyword arguments as a dict" },
+        { "id": "C", "text": "Forcing all arguments to be keyword-only" },
+        { "id": "D", "text": "Declaring the argument types" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "*args collects extra positional arguments into a tuple; **kwargs collects keyword arguments into a dict. The names are convention, the stars are what matter.",
+      "concept": "Python Functions"
+    },
+    {
+      "id": "role-python-q14",
+      "prompt": "Why is a list comprehension usually preferred over an equivalent for loop with append?",
+      "options": [
+        { "id": "A", "text": "It runs on multiple cores" },
+        { "id": "B", "text": "It uses no memory" },
+        { "id": "C", "text": "It can iterate infinite sequences" },
+        { "id": "D", "text": "It is more concise and somewhat faster" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "The comprehension avoids repeated attribute lookup and method calls, and states intent in one line. Once it needs several clauses, a loop is more readable again.",
+      "concept": "Python Idioms"
+    },
+    {
+      "id": "role-python-q15",
+      "prompt": "What is duck typing in Python?",
+      "options": [
+        { "id": "A", "text": "Compile-time type checking of annotations" },
+        { "id": "B", "text": "Suitability is determined by available methods, not declared type" },
+        { "id": "C", "text": "Automatic conversion between numeric types" },
+        { "id": "D", "text": "Restricting a function to one argument type" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "If an object supports the operations used, it works, regardless of its class. This is why a file-like object with a read method can stand in for a real file.",
+      "concept": "Python Typing"
+    },
+    {
+      "id": "role-python-q16",
+      "prompt": "What do type hints do at runtime by default?",
+      "options": [
+        { "id": "A", "text": "They raise TypeError on a mismatch" },
+        { "id": "B", "text": "They coerce values to the annotated type" },
+        { "id": "C", "text": "Nothing; they are checked by external tools" },
+        { "id": "D", "text": "They speed up attribute lookup" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "CPython stores annotations and ignores them. Enforcement comes from mypy or pyright, or from a library like Pydantic that reads them deliberately.",
+      "concept": "Python Typing"
+    },
+    {
+      "id": "role-python-q17",
+      "prompt": "In Flask or FastAPI, why is a global mutable variable a poor place for per-user state?",
+      "options": [
+        { "id": "A", "text": "Globals are read-only in Python" },
+        { "id": "B", "text": "It is shared across all requests and workers diverge" },
+        { "id": "C", "text": "Globals are cleared after every request" },
+        { "id": "D", "text": "It prevents the app from starting" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "One process serves many requests, so a global leaks one user's data into another's. With several worker processes, each also holds a different copy.",
+      "concept": "Web Framework Practice"
+    },
+    {
+      "id": "role-python-q18",
+      "prompt": "What does pip freeze produce?",
+      "options": [
+        { "id": "A", "text": "A list of installed packages with exact versions" },
+        { "id": "B", "text": "A frozen executable of the application" },
+        { "id": "C", "text": "A lock preventing further installs" },
+        { "id": "D", "text": "A cache of downloaded wheels" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "It snapshots the environment so a build elsewhere resolves to the same versions. It also captures transitive dependencies, which is why a curated requirements file is often kept separately.",
+      "concept": "Python Tooling"
+    },
+    {
+      "id": "role-python-q19",
+      "prompt": "What is the difference between is and == in Python?",
+      "options": [
+        { "id": "A", "text": "is compares values; == compares identity" },
+        { "id": "B", "text": "They are interchangeable for all types" },
+        { "id": "C", "text": "is compares object identity; == compares value" },
+        { "id": "D", "text": "== only works on numbers" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "is asks whether two names point at the same object. Small integers and short strings are interned, so is sometimes appears to work on values, which makes the bug intermittent.",
+      "concept": "Python Semantics"
+    },
+    {
+      "id": "role-python-q20",
+      "prompt": "Why does catching a bare except: hide bugs?",
+      "options": [
+        { "id": "A", "text": "It is a syntax error in Python 3" },
+        { "id": "B", "text": "It catches everything, including KeyboardInterrupt and typos" },
+        { "id": "C", "text": "It suppresses only ValueError" },
+        { "id": "D", "text": "It prevents the finally block from running" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "A bare except swallows every exception, including programming errors like a misspelled attribute, so failures become silent. Catch the specific exception you can handle.",
+      "concept": "Python Error Handling"
+    },
+    {
+      "id": "role-python-q21",
+      "prompt": "What does a dictionary comprehension's key collision do?",
+      "options": [
+        { "id": "A", "text": "Raises a KeyError" },
+        { "id": "B", "text": "Keeps the first value seen" },
+        { "id": "C", "text": "Stores both values in a list" },
+        { "id": "D", "text": "Keeps the last value seen" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Later assignments overwrite earlier ones silently. Building a dict keyed on a non-unique field therefore loses rows without any error, which is a common data bug.",
+      "concept": "Python Data Structures"
+    },
+    {
+      "id": "role-python-q22",
+      "prompt": "What is the purpose of __init__.py in a package directory?",
+      "options": [
+        { "id": "A", "text": "It marks the directory as a package and runs on import" },
+        { "id": "B", "text": "It is the entry point executed by python -m" },
+        { "id": "C", "text": "It lists the package's dependencies" },
+        { "id": "D", "text": "It is required for every Python file to import" }
+      ],
+      "correct_option_id": "A",
+      "explanation": "It makes the directory a regular package and is executed on first import, which is where a package's public names are commonly re-exported.",
+      "concept": "Python Modules"
+    },
+    {
+      "id": "role-python-q23",
+      "prompt": "Why can a Python set not contain a list?",
+      "options": [
+        { "id": "A", "text": "Sets only accept strings and numbers" },
+        { "id": "B", "text": "Lists are unhashable because they are mutable" },
+        { "id": "C", "text": "Lists are too large to store in a set" },
+        { "id": "D", "text": "Sets require ordered elements" }
+      ],
+      "correct_option_id": "B",
+      "explanation": "Set membership relies on a stable hash. A mutable object's hash could change after insertion, so lists are deliberately unhashable while tuples are not.",
+      "concept": "Python Data Structures"
+    },
+    {
+      "id": "role-python-q24",
+      "prompt": "What does the Django migration system track?",
+      "options": [
+        { "id": "A", "text": "Data changes made through the admin" },
+        { "id": "B", "text": "Which URLs have been registered" },
+        { "id": "C", "text": "Ordered schema changes derived from model edits" },
+        { "id": "D", "text": "Deployment history of the application" }
+      ],
+      "correct_option_id": "C",
+      "explanation": "makemigrations diffs models against the last migration and writes an ordered, dependency-aware change file, so every environment reaches the same schema.",
+      "concept": "Django ORM"
+    },
+    {
+      "id": "role-python-q25",
+      "prompt": "Why is string concatenation in a large loop discouraged in Python?",
+      "options": [
+        { "id": "A", "text": "Strings cannot exceed a fixed length" },
+        { "id": "B", "text": "The interpreter forbids it above 1000 iterations" },
+        { "id": "C", "text": "It converts the result to bytes" },
+        { "id": "D", "text": "Strings are immutable, so each step allocates a new object" }
+      ],
+      "correct_option_id": "D",
+      "explanation": "Every concatenation copies the accumulated string, giving quadratic behaviour. Collecting parts in a list and calling join allocates once.",
+      "concept": "Python Performance"
+    }
+  ]
+}

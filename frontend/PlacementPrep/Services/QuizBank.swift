@@ -21,10 +21,26 @@ final class QuizBank {
         self.loadFailures = failures
     }
 
+    /// The role group the signed-in student's role unlocks.
+    ///
+    /// Held here rather than passed at every call site because it filters the
+    /// bank itself: a role quiz that isn't theirs should be invisible, not shown
+    /// and locked. `nil` — no role picked, or one this build doesn't know —
+    /// means the Your Role track is simply empty.
+    private(set) var activeRoleGroup: RoleQuizGroup?
+
+    func adopt(role: CareerRole?) {
+        activeRoleGroup = role?.quizGroup
+    }
+
     /// Quizzes in a category, in play order.
+    ///
+    /// Role quizzes are filtered to the student's own group. Every other
+    /// category is untouched, so this is a no-op for the three bundled tracks.
     func quizzes(in category: Category) -> [Quiz] {
         quizzes
             .filter { $0.category == category }
+            .filter { $0.roleGroup == nil || $0.roleGroup == activeRoleGroup }
             .sorted { $0.order < $1.order }
     }
 

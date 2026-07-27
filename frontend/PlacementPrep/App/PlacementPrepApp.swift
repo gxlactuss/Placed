@@ -54,6 +54,8 @@ struct PlacementPrepApp: App {
                                 guard let id = auth.currentUser?.id else { return }
                                 savedQuestions.adopt(userId: id)
                                 interviewSetup.adopt(userId: id)
+                                // Decides which single role quiz is visible.
+                                quizBank.adopt(role: CareerRole(title: auth.currentUser?.targetRole))
                                 await quizProgress.sync(userId: id)
                                 await solvedStore.sync(userId: id)
                             }
