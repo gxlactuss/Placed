@@ -58,11 +58,22 @@ ROUND_COMPLETE_SENTINEL = "[[ROUND_COMPLETE]]"
 _HARD_RULES = """\
 Hard rules:
 - Reply with exactly ONE question. Never number it, never stack two questions together.
-- No preamble. Do not open with "Sure", "Great question", "Certainly" or similar.
 - Output only the words you would say out loud. No markdown, no bullet points, no asterisks, no stage directions — your reply is read aloud by text-to-speech.
-- Keep it under 45 words.
-- The candidate answers by speaking, and the transcript may contain speech-recognition errors. Interpret them generously and never comment on spelling, grammar or phrasing.
-- Do not evaluate or score the answer out loud. Acknowledge briefly if it helps the conversation flow, then move on."""
+- Keep it under 70 words.
+- The candidate answers by speaking, and the transcript may contain speech-recognition errors. Interpret them generously and never comment on spelling, grammar or phrasing."""
+
+
+#: Only ever attached to follow-up prompts — the opening question has no answer
+#: to react to, and including these there invites the model to acknowledge
+#: something the candidate has not said yet.
+_REACTION_RULES = """\
+Responding to the answer:
+- React to the answer before you move on. A short, genuine response to what they actually said — an acknowledgement, a correction, or a note of what was good — then your next question. One or two short sentences of reaction at most.
+- The reaction must match what the answer was worth. A thin answer gets something plain: "Okay, that's the textbook definition — I was after why it matters." A genuinely good one gets told what specifically was good. Silence on a weak answer is better than praise for it.
+- Never empty flattery. "Great question", "Excellent", "Perfect" or "Absolutely" said reflexively are worse than saying nothing: a candidate who is praised for everything learns nothing from being praised.
+- Never award a score, a mark, or an overall verdict out loud. The written debrief does that at the end, and a number said mid-interview will contradict it.
+- Vary how you open. Do not begin every reply the same way, and skip the reaction entirely when you are pressing on the same point and it would just interrupt.
+- Put a full stop between the reaction and the question. Joining them with a comma reads as one breathless sentence, and it is spoken aloud."""
 
 
 #: How the model decides to stop a round. Only ever attached to follow-up
@@ -275,7 +286,10 @@ Closing the discussion:
 - Never say that marker out loud as part of a sentence, and never use it in any other message.
 
 The "one question" hard rule does not apply to this round; the one-speaker-per-message
-rule replaces it. Every other hard rule still applies, especially plain speakable text."""
+rule replaces it. The "react then ask" rule does not apply either — an opponent
+arguing back is already responding, and the two-sentence limit here wins over the
+seventy-word one. Every other hard rule still applies, especially plain speakable
+text and never awarding a verdict."""
 
 
 def _dsa_brief(role: str, context: dict) -> str:
@@ -345,6 +359,7 @@ def follow_up_prompt(
     )
     return (
         f"{_preamble(role, mode, context)}\n\n"
+        f"{_REACTION_RULES}\n\n"
         f"{_CONDUCT_RULES}\n\n"
         f"Conversation so far:\n{history}\n\n"
         f"Their latest answer: {latest_answer}\n\n"
@@ -399,20 +414,44 @@ Transcript:
 ---
 
 Rate out of 10 against what an interviewer for '{role}' at campus-placement level
-would actually expect. Be honest and useful rather than kind — an inflated score
-teaches them nothing, and they came here to find out where they stand:
-- 1-3: would not get through this round.
-- 4-5: borderline; some real content, but too thin or too vague to convince.
+would actually expect — not against a principal engineer, and not against a
+textbook:
+- 1-3: would not get through this round. Answers that are wrong, guessed, or amount to "I don't know" and "it just gets stuck" belong here, however politely they were phrased. Most of the answers being like this is a 2, not a 4.
+- 4-5: borderline. There is real, correct content in most answers, but it is too thin or too vague to convince.
 - 6-7: a solid pass with clear gaps.
-- 8-10: strong; specific, well-reasoned answers that stand up to follow-ups.
+- 8: strong throughout, with a point or two that could have gone deeper.
+- 9: strong all the way through, with one answer noticeably lighter than the rest.
+- 10: nothing was wrong and nothing was thin. Every answer was correct, specific,
+  and held up when pushed. This is the correct mark for a flawless round — it is
+  not reserved for something beyond it, and a round with no weakness to point at
+  should get it rather than a 9.
 If they barely engaged or gave almost nothing to assess, score low and say so.
+
+Two things to be careful about, in both directions.
+
+Do not inflate a weak performance. A student who was vague throughout needs to
+hear that, and a generous mark on thin answers teaches them nothing. Being
+lenient at the top of the scale is not a reason to be lenient at the bottom of
+it: the bands below 6 mean exactly what they say.
+
+Equally, do not withhold the top of the scale out of caution. 9 and 10 are meant
+to be reachable and are the correct marks for a genuinely strong round. In
+particular, do not deduct for anything the candidate did not control: a short
+round, few questions asked, or no opportunity to show more breadth are facts
+about the interview, not faults in their answers. Judge only what they actually
+said, and if all of it was strong, mark it that way.
 
 Reply with ONLY a JSON object and nothing else — no markdown fence, no commentary
 before or after. Exactly this shape:
 {{"rating": <whole number 0-10>, "summary": "<2 to 3 sentences on how it went, addressed to them as 'you'>", "improvements": ["<specific, actionable thing to work on>", "..."], "mistakes": ["<what they got wrong, with the correction>", "..."]}}
 
-Give two to four improvements. Give as many mistakes as there genuinely were, and
-an empty list if there were none — do not invent one to fill the field.
+Give up to four improvements, and as many mistakes as there genuinely were. Both
+may be empty. If the round was flawless, one forward-looking suggestion or none at
+all is the right answer — never manufacture a weakness to fill the field.
+
+The rating must agree with those two lists. If you are reporting no mistakes and
+no real weakness, the mark is 10, not 9: a 9 means you can name the answer that
+was lighter than the rest, so if you cannot name it, do not deduct for it.
 
 Each entry in "mistakes" must be ONE sentence naming the topic and giving the
 correct answer, written so it stands on its own on a results screen — for example
