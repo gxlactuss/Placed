@@ -19,7 +19,7 @@ import httpx
 from fastapi import HTTPException
 
 from app.core.config import settings
-from app.services.interview_prompts import (
+from app.ai.interview_prompts import (
     END_INTERVIEW_SENTINEL,
     ROUND_COMPLETE_SENTINEL,
     InterviewMode,
@@ -27,7 +27,7 @@ from app.services.interview_prompts import (
     follow_up_prompt,
     opening_prompt,
 )
-from app.services.quiz_prompts import quiz_summary_prompt
+from app.ai.quiz_prompts import quiz_summary_prompt
 
 genai.configure(api_key=settings.gemini_api_key)
 

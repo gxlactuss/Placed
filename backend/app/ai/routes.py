@@ -4,11 +4,11 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlmodel import Session
 
-from app.core.auth import get_current_user_id
+from app.auth.jwt import get_current_user_id
 from app.core.config import settings
 from database.db import get_session
 from database.models.interview import InterviewSession, InterviewStatus
-from app.schemas.interview import (
+from app.ai.schemas import (
     InterviewAiResponse,
     InterviewAnswerSubmit,
     InterviewFeedbackResponse,
@@ -18,8 +18,8 @@ from app.schemas.interview import (
     ResumeSummaryResponse,
     TranscriptionResponse,
 )
-from app.services.interview_prompts import InterviewMode, decode_context
-from app.services.llm_service import (
+from app.ai.interview_prompts import InterviewMode, decode_context
+from app.ai.llm_service import (
     generate_feedback,
     generate_first_question,
     generate_follow_up,

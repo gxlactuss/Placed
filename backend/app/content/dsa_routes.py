@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, status
 from sqlmodel import Session, select
 
-from app.core.auth import get_current_user_id
-from app.schemas.dsa import SolvedProblemCreate
+from app.auth.jwt import get_current_user_id
+from app.content.dsa_schemas import SolvedProblemCreate
 from database.db import get_session
 from database.models.dsa import SolvedProblem
 

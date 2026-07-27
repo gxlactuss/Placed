@@ -11,7 +11,7 @@ request time):
 from functools import lru_cache
 from pathlib import Path
 
-from app.schemas.company import CompanyQuestionList, CompanySummary
+from app.content.company_schemas import CompanyQuestionList, CompanySummary
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "companies"
 

@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import RedirectResponse
 from sqlmodel import Session, select
 
-from app.core.auth import create_access_token, hash_password
+from app.auth.jwt import create_access_token, hash_password
 from app.core.config import settings
-from app.services import oauth_service
+from app.auth import oauth_service
 from database.db import get_session
 from database.models.user import User
 

@@ -4,14 +4,14 @@ from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 
-from app.core.auth import (
+from app.auth.jwt import (
     create_access_token,
     get_current_user_id,
     hash_password,
     verify_password,
 )
 from app.core.config import settings
-from app.schemas.user import (
+from app.auth.schemas import (
     TokenResponse,
     UserCreate,
     UserLogin,
@@ -19,7 +19,7 @@ from app.schemas.user import (
     UserUpdate,
     VerifyRequest,
 )
-from app.services.email_service import send_verification_email
+from app.auth.email_service import send_verification_email
 from database.db import get_session
 from database.models.user import User
 

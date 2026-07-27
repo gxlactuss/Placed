@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlmodel import Session, select
 
-from app.core.auth import get_current_user_id
-from app.schemas.quiz import (
+from app.auth.jwt import get_current_user_id
+from app.content.quiz_schemas import (
     QuizAttemptSubmit,
     QuizProgressItem,
     QuizQuestion,
@@ -10,7 +10,7 @@ from app.schemas.quiz import (
     QuizSummaryRequest,
     QuizSummaryResponse,
 )
-from app.services.llm_service import generate_quiz_summary
+from app.ai.llm_service import generate_quiz_summary
 from database.db import get_session
 from database.models.quiz import QuizDifficulty, QuizResult, QuizTopic
 
