@@ -43,8 +43,11 @@ struct RolePicker: View {
             withAnimation(PPMotion.snappy) { selection = role }
         } label: {
             VStack(alignment: .leading, spacing: PPSpacing.sm) {
+                // Semantic, not a fixed point size: everything else in the card
+                // scales with Dynamic Type, and a frozen icon beside growing text
+                // is what makes the row look off before it looks too small.
                 Image(systemName: role.icon)
-                    .font(.system(size: 18, weight: .regular))
+                    .font(.ppHeadline)
                     .foregroundStyle(isSelected ? Color.ppAccent : Color.ppMuted)
                 Text(role.title)
                     .font(.ppBodyMedium)
@@ -57,8 +60,22 @@ struct RolePicker: View {
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .frame(maxWidth: .infinity, minHeight: 96, alignment: .topLeading)
+            // Padding first, then the frame. The other order sizes the *content*
+            // to the full column width and then adds 12pt of padding outside it,
+            // so every card overflows its column by 24pt and the right-hand
+            // column runs off screen.
             .padding(PPSpacing.md)
+            // `maxHeight` is what keeps a row even. A grid row is as tall as its
+            // tallest cell, but a shorter card does not stretch to meet it on its
+            // own — so "Java / Spring Developer" wrapping to two lines left the
+            // card beside it visibly short. `minHeight` is only a floor for the
+            // rows where every title fits on one line.
+            .frame(
+                maxWidth: .infinity,
+                minHeight: 104,
+                maxHeight: .infinity,
+                alignment: .topLeading
+            )
             .background(Color.ppSurface, in: .rect(cornerRadius: PPRadius.lg))
             .overlay {
                 RoundedRectangle(cornerRadius: PPRadius.lg)
