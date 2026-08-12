@@ -156,14 +156,16 @@ struct MockInterviewView: View {
     /// covers an upload, a transcription and a generation, and a strip that keeps
     /// moving is the cheapest way to say the app has not stalled.
     private var voiceWave: some View {
-        // Taller than the component's default: the ribbon has a body to show,
-        // where the old bar strip only needed room for its tallest bar.
-        PPVoiceWave(level: model.level, mode: waveMode, height: 44)
-            .padding(.horizontal, PPSpacing.xl)
+        // Deliberately unpadded horizontally: the liquid hangs off the header
+        // above it and spans the full width, so insetting it would leave the
+        // thing it's supposed to be attached to visible on either side. Taller
+        // than the strip it replaced, too — at bar-meter height the warp has
+        // nowhere to fall and reads as a blur.
+        PPLiquidWave(level: model.level, mode: waveMode, height: 72)
             .padding(.bottom, PPSpacing.md)
     }
 
-    private var waveMode: PPVoiceWave.Mode {
+    private var waveMode: PPLiquidWave.Mode {
         if model.isRecording { return .listening }
         if model.isThinking { return .thinking }
         return .idle
