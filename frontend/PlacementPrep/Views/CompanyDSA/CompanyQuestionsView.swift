@@ -8,6 +8,7 @@ struct CompanyQuestionsView: View {
 
     @Environment(CompanyBank.self) private var bank
     @Environment(SolvedStore.self) private var solved
+    @Environment(StreakStore.self) private var streak
 
     @State private var problems: [DSAProblem] = []
     @State private var availableTopics: [TopicCount] = []
@@ -207,6 +208,9 @@ struct CompanyQuestionsView: View {
                             // Animate so the row slides down to the solved
                             // section (or back up) rather than jumping.
                             withAnimation(PPMotion.settle) { solved.toggle(problem.id) }
+                            // Ticking one off is practice; un-ticking a mistake
+                            // isn't, so only the solving direction counts.
+                            if !isSolved { streak.recordActivity() }
                         }
                     )
                 )
@@ -549,4 +553,5 @@ private struct ProblemScrollbar: View {
     }
     .environment(CompanyBank())
     .environment(SolvedStore.preview(solved: ["two-sum"]))
+    .environment(StreakStore.preview())
 }

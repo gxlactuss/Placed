@@ -1,14 +1,16 @@
 import SwiftUI
 
-/// Home tab. Assembled entirely from the `DesignSystem` primitives. Profile
-/// copy (name, role, streak) still comes from `SampleData`; the practice counts
-/// are read live from the bundled content so they can never drift from reality.
+/// Home tab. Assembled entirely from the `DesignSystem` primitives. Name and
+/// role come from the signed-in account, the streak from `StreakStore`, and the
+/// practice counts are read live from the bundled content — so nothing on this
+/// screen can drift from reality.
 struct HomeView: View {
 
     @Binding var selectedTab: AppTab
 
     @Environment(QuizBank.self) private var quizBank
     @Environment(CompanyBank.self) private var companyBank
+    @Environment(StreakStore.self) private var streak
     @EnvironmentObject private var auth: AuthViewModel
 
     @State private var showThemeSheet = false
@@ -223,16 +225,17 @@ struct HomeView: View {
 
                 VStack(alignment: .leading, spacing: PPSpacing.xs) {
                     (
-                        Text("\(SampleData.streakDays)")
+                        Text("\(streak.currentStreak)")
                             .font(.ppStat())
                             .foregroundStyle(Color.ppAccent)
                         + Text(" day streak")
                             .font(.ppHeadline)
                             .foregroundStyle(Color.ppText)
                     )
-                    Text("Best: \(SampleData.bestStreakDays) days · you're on fire")
+                    Text(streakSubtitle)
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Spacer(minLength: PPSpacing.md)
@@ -242,11 +245,27 @@ struct HomeView: View {
         }
     }
 
-    /// Compact week dots: filled for completed days, a ring for today, a faint
-    /// disc for days still ahead.
+    /// Nudges toward the next thing rather than restating the number above:
+    /// nothing yet → how to start, kept it today → the best to beat, and an
+    /// untouched day on a live streak → the one that matters.
+    private var streakSubtitle: String {
+        let best = streak.bestStreak
+        if streak.currentStreak == 0 {
+            return "A quiz, a solved problem or a mock round starts it."
+        }
+        if !streak.didPracticeToday {
+            return "Practise today to keep it alive"
+        }
+        return streak.currentStreak >= best
+            ? "Your best run yet · keep going"
+            : "Best: \(best) days"
+    }
+
+    /// Compact week dots: filled for practised days, a ring for today, a faint
+    /// disc for the rest of the week.
     private var streakDots: some View {
-        let progress = SampleData.weekProgress
-        let todayIndex = progress.firstIndex(of: false) ?? progress.count - 1
+        let progress = streak.weekProgress
+        let todayIndex = streak.todayIndexInWeek
         return HStack(spacing: PPSpacing.sm) {
             ForEach(progress.indices, id: \.self) { index in
                 Group {
@@ -262,7 +281,7 @@ struct HomeView: View {
             }
         }
         .accessibilityElement()
-        .accessibilityLabel("\(SampleData.weekProgress.filter { $0 }.count) of 7 days this week")
+        .accessibilityLabel("\(progress.count { $0 }) of 7 days this week")
     }
 
     // MARK: - Live counts
@@ -325,6 +344,7 @@ struct HomeView: View {
         .environment(QuizBank())
         .environment(CompanyBank())
         .environment(SolvedStore.preview())
+        .environment(StreakStore.preview(daysBack: 5))
         .environment(FocusModeStore.preview())
         .environmentObject(AuthViewModel())
 }

@@ -13,6 +13,7 @@ struct MockInterviewView: View {
     @EnvironmentObject private var auth: AuthViewModel
     @Environment(InterviewSetupStore.self) private var setupStore
     @Environment(CompanyBank.self) private var companyBank
+    @Environment(StreakStore.self) private var streak
     @State private var model = InterviewSessionModel()
     @State private var showSetup = false
     /// `nil` means no round is running, so the tab shows the picker.
@@ -79,7 +80,11 @@ struct MockInterviewView: View {
         // offered when the interviewer walked out: there's nothing to mark, and
         // a score would land as a second telling-off.
         .onChange(of: model.isFinished) { _, finished in
-            guard finished, !model.wasEndedByInterviewer else { return }
+            guard finished else { return }
+            // Counts toward the streak even when the interviewer walked out —
+            // sitting the round is the practice; the grade is a separate matter.
+            streak.recordActivity()
+            guard !model.wasEndedByInterviewer else { return }
             showResults = true
             Task { await model.loadFeedback() }
         }
@@ -336,6 +341,7 @@ struct MockInterviewView: View {
 #Preview {
     MockInterviewView()
         .environment(FocusModeStore.preview())
+        .environment(StreakStore.preview())
         .environment(InterviewSetupStore.preview(
             InterviewSetup(targetRole: "Backend Engineer", projectsSummary: nil)
         ))
