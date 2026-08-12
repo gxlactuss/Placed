@@ -10,6 +10,7 @@ struct QuizView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(QuizProgressStore.self) private var progress
     @Environment(SavedQuestionsStore.self) private var saved
+    @Environment(StreakStore.self) private var streak
     @State private var model: QuizSessionModel
 
     init(quiz: Quiz) {
@@ -42,6 +43,9 @@ struct QuizView: View {
                     total: model.questions.count,
                     for: quiz
                 )
+                // Finishing counts as practice whatever the score — the streak
+                // rewards turning up, not passing.
+                streak.recordActivity()
             }
         }
     }
@@ -92,28 +96,46 @@ struct QuizView: View {
         HStack(spacing: PPSpacing.md) {
             PPIconButton(systemName: "xmark", diameter: 36) { dismiss() }
 
+            // The badges are what gives, if the row is tight: they can shrink
+            // and then truncate, whereas a wrapped clock is what this bar used
+            // to do wrong.
             PPBadge(quiz.category.title, tone: .neutral)
             PPBadge(quiz.difficulty.title, tone: .tinted(quiz.difficulty.accent))
+                .layoutPriority(1)
 
-            Spacer()
+            Spacer(minLength: PPSpacing.xs)
 
-            HStack(spacing: PPSpacing.xs) {
-                Image(systemName: "clock")
-                Text(model.formattedQuestionTime)
-                    .monospacedDigit()
-                    .contentTransition(.numericText())
-                    .animation(PPMotion.snappy, value: model.formattedQuestionTime)
-            }
-            .font(.ppMicro)
-            .foregroundStyle(Color.ppMuted)
-            .padding(.horizontal, PPSpacing.md)
-            .frame(height: 30)
-            .background(Color.ppSurface, in: .capsule)
+            timerPill
 
             saveButton
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.vertical, PPSpacing.md)
+    }
+
+    /// Elapsed time on this question.
+    ///
+    /// `fixedSize` and the highest layout priority in the row are load-bearing:
+    /// with a long category badge alongside it, SwiftUI used to solve the tight
+    /// row by wrapping "00:07" onto a second line inside its own capsule. The
+    /// pill is never the thing that gives.
+    private var timerPill: some View {
+        HStack(spacing: PPSpacing.xs) {
+            Image(systemName: "clock")
+            Text(model.formattedQuestionTime)
+                .monospacedDigit()
+                .contentTransition(.numericText())
+                .animation(PPMotion.snappy, value: model.formattedQuestionTime)
+        }
+        .font(.ppMicro)
+        .lineLimit(1)
+        .fixedSize()
+        .foregroundStyle(Color.ppMuted)
+        .padding(.horizontal, PPSpacing.md)
+        .frame(height: 30)
+        .background(Color.ppSurface, in: .capsule)
+        .layoutPriority(2)
+        .accessibilityLabel("Time on this question")
     }
 
     /// Bookmarks the current question for review on the Saved page. Filled and
@@ -168,24 +190,39 @@ struct QuizView: View {
     }
 
     private var footer: some View {
-        HStack(spacing: PPSpacing.md) {
-            Button("Skip") {
-                withAnimation { model.advance() }
+        VStack(spacing: PPSpacing.md) {
+            if model.skippedCount > 0 {
+                skippedHint
             }
-            .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
-            .disabled(model.currentAnswer != nil)
-            .opacity(model.currentAnswer != nil ? 0.4 : 1)
 
-            Button {
-                withAnimation { model.advance() }
-            } label: {
-                Label(
-                    model.isLastQuestion ? "Finish" : "Next",
-                    systemImage: model.isLastQuestion ? "flag.checkered" : "arrow.right"
-                )
-                .labelStyle(.trailingIcon)
+            HStack(spacing: PPSpacing.md) {
+                // Back, not undo: an answered question stays answered when you
+                // return to it — this is here so a skipped one can be picked up.
+                PPIconButton(systemName: "chevron.left", diameter: 46) {
+                    withAnimation { model.goBack() }
+                }
+                .disabled(model.isFirstQuestion)
+                .opacity(model.isFirstQuestion ? 0.35 : 1)
+                .accessibilityLabel("Previous question")
+
+                Button("Skip") {
+                    withAnimation { model.advance() }
+                }
+                .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+                .disabled(model.currentAnswer != nil)
+                .opacity(model.currentAnswer != nil ? 0.4 : 1)
+
+                Button {
+                    withAnimation { model.advance() }
+                } label: {
+                    Label(
+                        model.isLastQuestion ? "Finish" : "Next",
+                        systemImage: model.isLastQuestion ? "flag.checkered" : "arrow.right"
+                    )
+                    .labelStyle(.trailingIcon)
+                }
+                .buttonStyle(.ppPrimary)
             }
-            .buttonStyle(.ppPrimary)
         }
         .padding(PPSpacing.xl)
         .background(.ultraThinMaterial)
@@ -195,6 +232,29 @@ struct QuizView: View {
         }
         .animation(PPMotion.snappy, value: model.currentAnswer)
     }
+
+    /// Jumps to the nearest question left unanswered. Without it, picking the
+    /// skipped ones back up on a ten-question set means tapping Back nine times.
+    private var skippedHint: some View {
+        Button {
+            withAnimation { model.goToNextSkipped() }
+        } label: {
+            HStack(spacing: PPSpacing.xs) {
+                Image(systemName: "arrow.uturn.backward")
+                Text(model.skippedCount == 1
+                     ? "1 question skipped · go back to it"
+                     : "\(model.skippedCount) questions skipped · go back to them")
+            }
+            .font(.ppMicro)
+            .lineLimit(1)
+            .foregroundStyle(Color.ppAccent400)
+            .padding(.horizontal, PPSpacing.md)
+            .frame(height: 30)
+            .background(Color.ppAccentSection, in: .capsule)
+        }
+        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
 }
 
 #Preview {
@@ -202,6 +262,7 @@ struct QuizView: View {
         QuizView(quiz: quiz)
             .environment(QuizProgressStore.preview())
             .environment(SavedQuestionsStore.preview())
+            .environment(StreakStore.preview())
     } else {
         Text("No quiz JSON bundled").ppScreenBackground()
     }

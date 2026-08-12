@@ -12,6 +12,10 @@ final class QuizSessionModel {
     let quiz: Quiz
 
     private(set) var index = 0
+    /// The furthest question reached this run. Stepping back with `goBack()`
+    /// must not rewind the progress bar — the ground covered is still covered —
+    /// so the bar tracks this rather than `index`.
+    private(set) var furthestReached = 0
     private(set) var answers: [Int: String] = [:]
     private(set) var secondsOnQuestion = 0
     private(set) var totalSeconds = 0
@@ -86,13 +90,25 @@ final class QuizSessionModel {
 
     var progress: Double {
         guard !questions.isEmpty else { return 0 }
-        return Double(index) / Double(questions.count)
+        return Double(furthestReached) / Double(questions.count)
     }
 
     var isLastQuestion: Bool { index == questions.count - 1 }
 
+    var isFirstQuestion: Bool { index == 0 }
+
     /// The answer committed for the current question, if any.
     var currentAnswer: String? { answers[index] }
+
+    /// Questions walked past without an answer. Going back to them is the whole
+    /// point of `goBack()`, so the footer can say how many are still waiting.
+    var skippedCount: Int {
+        questions.indices.count { $0 != index && answers[$0] == nil && $0 < furthestReached }
+    }
+
+    /// Whether every question has an answer — the cue that "Finish" is safe to
+    /// press without leaving marks on the table.
+    var isFullyAnswered: Bool { answers.count == questions.count }
 
     var correctCount: Int {
         answers.reduce(into: 0) { total, entry in
@@ -148,9 +164,36 @@ final class QuizSessionModel {
         if isLastQuestion {
             finish()
         } else {
-            index += 1
-            secondsOnQuestion = 0
+            move(to: index + 1)
         }
+    }
+
+    /// Steps back one question.
+    ///
+    /// This is not a retake: an answer already committed stays committed and
+    /// still shows its verdict (see `answer(_:)`), so revisiting a resolved
+    /// question is read-only. What it buys is the skipped ones — a question
+    /// walked past unanswered is still open, and can be answered on the way
+    /// back.
+    func goBack() {
+        guard !isFirstQuestion else { return }
+        move(to: index - 1)
+    }
+
+    /// Jumps straight to the nearest unanswered question, wrapping around the
+    /// end — the "3 skipped" shortcut in the footer.
+    func goToNextSkipped() {
+        guard questions.count > 1 else { return }
+        let order = (1..<questions.count).map { (index + $0) % questions.count }
+        guard let target = order.first(where: { answers[$0] == nil }) else { return }
+        move(to: target)
+    }
+
+    private func move(to target: Int) {
+        guard questions.indices.contains(target) else { return }
+        index = target
+        furthestReached = max(furthestReached, target)
+        secondsOnQuestion = 0
     }
 
     func startTimer() {
@@ -177,6 +220,7 @@ final class QuizSessionModel {
 
     func restart() {
         index = 0
+        furthestReached = 0
         answers = [:]
         secondsOnQuestion = 0
         totalSeconds = 0

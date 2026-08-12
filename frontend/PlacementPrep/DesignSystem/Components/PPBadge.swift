@@ -51,6 +51,11 @@ struct PPBadge: View {
     var body: some View {
         Text(text)
             .font(.ppMicro)
+            // A pill is one line by definition. In a tight row it shrinks a
+            // little, then truncates — it never grows a second line and drags
+            // the row's height with it.
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
             .foregroundStyle(foreground)
             .padding(.horizontal, PPSpacing.sm)
             .padding(.vertical, 5)
