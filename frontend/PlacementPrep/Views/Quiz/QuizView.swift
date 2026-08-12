@@ -11,6 +11,7 @@ struct QuizView: View {
     @Environment(QuizProgressStore.self) private var progress
     @Environment(SavedQuestionsStore.self) private var saved
     @Environment(StreakStore.self) private var streak
+    @Environment(XPStore.self) private var xp
     @State private var model: QuizSessionModel
 
     init(quiz: Quiz) {
@@ -46,6 +47,14 @@ struct QuizView: View {
                 // Finishing counts as practice whatever the score — the streak
                 // rewards turning up, not passing.
                 streak.recordActivity()
+                // What the results screen reports is what was actually paid —
+                // the day's +10 only if this was the first activity today, and
+                // the quiz's +5 only if this quiz hadn't already cleared 70%.
+                var earned = xp.awardStreakDay()
+                if model.scorePercentage >= XPAward.quizThreshold {
+                    earned += xp.award(.quizPassed(quizID: quiz.id))
+                }
+                model.recordXP(earned)
             }
         }
     }
@@ -75,7 +84,16 @@ struct QuizView: View {
                                     correctID: model.current.correctOptionID
                                 )
                             ) {
+                                // Only the first tap commits, so the haptic has
+                                // to be gated the same way or a resolved
+                                // question buzzes on every stray tap.
+                                guard model.currentAnswer == nil else { return }
                                 model.answer(option.id)
+                                if option.id == model.current.correctOptionID {
+                                    PPHaptics.success()
+                                } else {
+                                    PPHaptics.miss()
+                                }
                             }
                         }
                     }
@@ -263,6 +281,7 @@ struct QuizView: View {
             .environment(QuizProgressStore.preview())
             .environment(SavedQuestionsStore.preview())
             .environment(StreakStore.preview())
+            .environment(XPStore.preview())
     } else {
         Text("No quiz JSON bundled").ppScreenBackground()
     }

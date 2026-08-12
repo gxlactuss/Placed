@@ -30,7 +30,12 @@ final class StreakStore {
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
-        self.activeDays = Self.load(from: defaults, key: Self.key(for: nil))
+        // Reopen the last signed-in user's bucket: on an offline relaunch the
+        // tabs appear before `/me` resolves, and a day practised in that window
+        // must not be recorded against a bucket the account never sees.
+        let owner = defaults.object(forKey: Self.lastOwnerKey) as? Int
+        self.userId = owner
+        self.activeDays = Self.load(from: defaults, key: Self.key(for: owner))
     }
 
     // MARK: - Recording
@@ -125,6 +130,7 @@ final class StreakStore {
     func adopt(userId: Int) {
         guard self.userId != userId else { return }
         self.userId = userId
+        defaults.set(userId, forKey: Self.lastOwnerKey)
         activeDays = Self.load(from: defaults, key: Self.key(for: userId))
     }
 
@@ -133,6 +139,7 @@ final class StreakStore {
     /// `persist()`, which would write the empty set over it.
     func clear() {
         userId = nil
+        defaults.removeObject(forKey: Self.lastOwnerKey)
         activeDays = Self.load(from: defaults, key: Self.key(for: nil))
     }
 
@@ -155,6 +162,9 @@ final class StreakStore {
     private static func date(fromDayKey key: String) -> Date? {
         dayFormatter.date(from: key)
     }
+
+    /// The last account to sign in on this device — see `init`.
+    private static let lastOwnerKey = "practiceStreak.lastOwner"
 
     private static func key(for userId: Int?) -> String {
         userId.map { "practiceStreakDays.user.\($0)" } ?? "practiceStreakDays.signedOut"

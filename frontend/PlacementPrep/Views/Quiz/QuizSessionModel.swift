@@ -17,6 +17,10 @@ final class QuizSessionModel {
     /// so the bar tracks this rather than `index`.
     private(set) var furthestReached = 0
     private(set) var answers: [Int: String] = [:]
+    /// XP this run actually paid out — set by the view once the awards have run,
+    /// so the results screen can report what was earned rather than what the
+    /// score would be worth. A retake of an already-cleared quiz earns 0.
+    private(set) var xpEarned = 0
     private(set) var secondsOnQuestion = 0
     private(set) var totalSeconds = 0
     private(set) var isFinished = false
@@ -154,6 +158,8 @@ final class QuizSessionModel {
 
     // MARK: - Actions
 
+    func recordXP(_ points: Int) { xpEarned = points }
+
     func answer(_ optionID: String) {
         // One-shot commit: ignore taps once this question is resolved.
         guard answers[index] == nil else { return }
@@ -222,6 +228,7 @@ final class QuizSessionModel {
         index = 0
         furthestReached = 0
         answers = [:]
+        xpEarned = 0
         secondsOnQuestion = 0
         totalSeconds = 0
         isFinished = false

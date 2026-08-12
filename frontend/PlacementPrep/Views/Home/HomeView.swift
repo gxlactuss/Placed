@@ -11,10 +11,12 @@ struct HomeView: View {
     @Environment(QuizBank.self) private var quizBank
     @Environment(CompanyBank.self) private var companyBank
     @Environment(StreakStore.self) private var streak
+    @Environment(XPStore.self) private var xp
     @EnvironmentObject private var auth: AuthViewModel
 
     @State private var showThemeSheet = false
     @State private var showSavedSheet = false
+    @State private var showIconSheet = false
 
     var body: some View {
         ScrollView {
@@ -24,6 +26,7 @@ struct HomeView: View {
                     .padding(.bottom, PPSpacing.xs)
                 interviewHero
                 keepPracticing
+                xpCard
                 streakCard
             }
             .padding(PPSpacing.xl)
@@ -36,6 +39,7 @@ struct HomeView: View {
         .task { await companyBank.loadCatalogIfNeeded() }
         .sheet(isPresented: $showThemeSheet) { ThemePickerView() }
         .sheet(isPresented: $showSavedSheet) { SavedQuestionsView() }
+        .sheet(isPresented: $showIconSheet) { AppIconPickerView() }
     }
 
     // MARK: - Top bar
@@ -60,6 +64,11 @@ struct HomeView: View {
                     showThemeSheet = true
                 } label: {
                     Label("Themes", systemImage: "paintpalette")
+                }
+                Button {
+                    showIconSheet = true
+                } label: {
+                    Label("App icon", systemImage: "app.badge")
                 }
                 Divider()
                 Button(role: .destructive) {
@@ -216,6 +225,58 @@ struct HomeView: View {
         .buttonStyle(.ppPressable)
     }
 
+    // MARK: - XP
+
+    /// The balance, the tier it sits in, and how far it is to the next one.
+    /// Tapping opens the icon gallery — the tiers are only meaningful because of
+    /// what they unlock, so the card is the way in.
+    private var xpCard: some View {
+        Button {
+            showIconSheet = true
+        } label: {
+            PPCard {
+                VStack(alignment: .leading, spacing: PPSpacing.md) {
+                    HStack(alignment: .firstTextBaseline) {
+                        (
+                            Text("\(xp.total)")
+                                .font(.ppStat())
+                                .foregroundStyle(Color.ppAccent)
+                            + Text(" XP")
+                                .font(.ppHeadline)
+                                .foregroundStyle(Color.ppText)
+                        )
+                        .contentTransition(.numericText())
+
+                        Spacer(minLength: PPSpacing.md)
+
+                        PPBadge(xp.level.title, tone: .accent)
+                    }
+
+                    PPProgressBar(progress: xp.progressInLevel)
+
+                    HStack(spacing: PPSpacing.sm) {
+                        Text(xpFootnote)
+                            .font(.ppCaption)
+                            .foregroundStyle(Color.ppMuted)
+                        Spacer(minLength: PPSpacing.sm)
+                        Label("Icons", systemImage: "app.badge")
+                            .font(.ppMicro)
+                            .foregroundStyle(Color.ppAccent400)
+                    }
+                }
+            }
+        }
+        .buttonStyle(.ppPressable)
+        .animation(PPMotion.settle, value: xp.total)
+    }
+
+    private var xpFootnote: String {
+        guard let next = xp.nextLevel, let remaining = xp.xpToNextLevel else {
+            return "Top tier — every icon unlocked"
+        }
+        return "\(remaining) XP to \(next.title)"
+    }
+
     // MARK: - Streak
 
     private var streakCard: some View {
@@ -345,6 +406,7 @@ struct HomeView: View {
         .environment(CompanyBank())
         .environment(SolvedStore.preview())
         .environment(StreakStore.preview(daysBack: 5))
+        .environment(XPStore.preview(total: 120))
         .environment(FocusModeStore.preview())
         .environmentObject(AuthViewModel())
 }

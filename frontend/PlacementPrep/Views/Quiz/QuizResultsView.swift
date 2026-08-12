@@ -103,7 +103,14 @@ struct QuizResultsView: View {
                 label: "Correct",
                 valueColor: .ppEasy
             )
-            PPStatTile(value: "+\(model.correctCount * 10)", label: "XP")
+            // The real payout, not what the score is nominally worth: a retake
+            // of a quiz already cleared at 70% earns nothing, and claiming
+            // otherwise would make the number on Home look broken.
+            PPStatTile(
+                value: model.xpEarned > 0 ? "+\(model.xpEarned)" : "—",
+                label: "XP",
+                valueColor: model.xpEarned > 0 ? .ppAccent : .ppMuted
+            )
         }
     }
 

@@ -14,6 +14,7 @@ struct MockInterviewView: View {
     @Environment(InterviewSetupStore.self) private var setupStore
     @Environment(CompanyBank.self) private var companyBank
     @Environment(StreakStore.self) private var streak
+    @Environment(XPStore.self) private var xp
     @State private var model = InterviewSessionModel()
     @State private var showSetup = false
     /// `nil` means no round is running, so the tab shows the picker.
@@ -84,9 +85,21 @@ struct MockInterviewView: View {
             // Counts toward the streak even when the interviewer walked out —
             // sitting the round is the practice; the grade is a separate matter.
             streak.recordActivity()
+            xp.awardStreakDay()
             guard !model.wasEndedByInterviewer else { return }
             showResults = true
             Task { await model.loadFeedback() }
+        }
+        // The round's XP is settled by the mark, so it waits for the debrief —
+        // and hangs off the debrief arriving rather than the request that asked
+        // for it, so a retry after a failed first attempt still pays.
+        .onChange(of: model.feedback) { _, feedback in
+            guard
+                let rating = feedback?.rating,
+                let sessionID = model.sessionId,
+                rating >= XPAward.interviewThreshold(for: model.mode)
+            else { return }
+            xp.award(.interviewCleared(sessionID: sessionID))
         }
         .sheet(isPresented: $showResults) {
             InterviewResultsView(
@@ -143,7 +156,9 @@ struct MockInterviewView: View {
     /// covers an upload, a transcription and a generation, and a strip that keeps
     /// moving is the cheapest way to say the app has not stalled.
     private var voiceWave: some View {
-        PPVoiceWave(level: model.level, mode: waveMode)
+        // Taller than the component's default: the ribbon has a body to show,
+        // where the old bar strip only needed room for its tallest bar.
+        PPVoiceWave(level: model.level, mode: waveMode, height: 44)
             .padding(.horizontal, PPSpacing.xl)
             .padding(.bottom, PPSpacing.md)
     }
@@ -342,6 +357,7 @@ struct MockInterviewView: View {
     MockInterviewView()
         .environment(FocusModeStore.preview())
         .environment(StreakStore.preview())
+        .environment(XPStore.preview())
         .environment(InterviewSetupStore.preview(
             InterviewSetup(targetRole: "Backend Engineer", projectsSummary: nil)
         ))

@@ -9,6 +9,7 @@ struct CompanyQuestionsView: View {
     @Environment(CompanyBank.self) private var bank
     @Environment(SolvedStore.self) private var solved
     @Environment(StreakStore.self) private var streak
+    @Environment(XPStore.self) private var xp
 
     @State private var problems: [DSAProblem] = []
     @State private var availableTopics: [TopicCount] = []
@@ -199,7 +200,11 @@ struct CompanyQuestionsView: View {
     private func row(_ problem: DSAProblem) -> some View {
         let isSolved = solved.isSolved(problem.id)
 
-        return PPCard {
+        // The difficulty tints the whole row, not just its badge — scanning a
+        // long list for "the easy ones" shouldn't mean reading every pill. A
+        // solved row drops most of the wash, so the list still reads as done
+        // versus not done first, difficulty second.
+        return PPCard(wash: problem.difficulty.accent.opacity(isSolved ? 0.25 : 1)) {
             HStack(spacing: PPSpacing.md) {
                 PPCheckbox(
                     isOn: Binding(
@@ -210,7 +215,19 @@ struct CompanyQuestionsView: View {
                             withAnimation(PPMotion.settle) { solved.toggle(problem.id) }
                             // Ticking one off is practice; un-ticking a mistake
                             // isn't, so only the solving direction counts.
-                            if !isSolved { streak.recordActivity() }
+                            if isSolved {
+                                PPHaptics.light()
+                            } else {
+                                PPHaptics.success()
+                                streak.recordActivity()
+                                xp.awardStreakDay()
+                                // Paid once per problem ever: un-ticking doesn't
+                                // refund, so re-ticking can't be farmed.
+                                xp.award(.problemSolved(
+                                    slug: problem.id,
+                                    difficulty: problem.difficulty
+                                ))
+                            }
                         }
                     )
                 )
@@ -554,4 +571,5 @@ private struct ProblemScrollbar: View {
     .environment(CompanyBank())
     .environment(SolvedStore.preview(solved: ["two-sum"]))
     .environment(StreakStore.preview())
+    .environment(XPStore.preview())
 }

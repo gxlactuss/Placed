@@ -84,8 +84,10 @@ final class InterviewSessionModel {
 
     let totalRounds = 5
 
-    private var sessionId: Int?
-    private var mode: InterviewMode = .coreCs
+    /// Readable so the view can key the round's XP award to this session — the
+    /// ledger needs a stable id, and a mark alone doesn't identify a round.
+    private(set) var sessionId: Int?
+    private(set) var mode: InterviewMode = .coreCs
     private var context = InterviewContextPayload()
     /// Guards `startIfNeeded` against re-entry: `.task` re-runs each time the
     /// Interview tab reappears, and the opener request may still be in flight

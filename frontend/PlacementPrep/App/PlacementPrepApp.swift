@@ -11,6 +11,8 @@ struct PlacementPrepApp: App {
     @State private var savedQuestions = SavedQuestionsStore()
     /// The daily practice streak, fed by every activity that counts as practice.
     @State private var streak = StreakStore()
+    /// XP and the tier it puts the student in — what unlocks the app icons.
+    @State private var xp = XPStore()
     /// Device-wide, not per-account: it's a property of how you're practising
     /// right now, so it deliberately isn't reset on sign-out.
     @State private var focusMode = FocusModeStore()
@@ -49,6 +51,7 @@ struct PlacementPrepApp: App {
                             .environment(quizProgress)
                             .environment(savedQuestions)
                             .environment(streak)
+                            .environment(xp)
                             .environment(focusMode)
                             .environment(interviewSetup)
                             // Reconcile per-user progress with the server whenever
@@ -57,6 +60,7 @@ struct PlacementPrepApp: App {
                                 guard let id = auth.currentUser?.id else { return }
                                 savedQuestions.adopt(userId: id)
                                 streak.adopt(userId: id)
+                                xp.adopt(userId: id)
                                 interviewSetup.adopt(userId: id)
                                 // Decides which single role quiz is visible.
                                 quizBank.adopt(role: CareerRole(title: auth.currentUser?.targetRole))
@@ -78,6 +82,7 @@ struct PlacementPrepApp: App {
                     solvedStore.clear()
                     savedQuestions.clear()
                     streak.clear()
+                    xp.clear()
                     interviewSetup.clear()
                 }
             }

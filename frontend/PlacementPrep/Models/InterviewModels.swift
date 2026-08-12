@@ -85,7 +85,10 @@ struct InterviewAiResponse: Codable {
 
 /// The debrief for a finished round, from `POST /api/interview/{id}/feedback`.
 /// The backend caches it on the session, so asking twice is free.
-struct InterviewFeedback: Codable {
+/// `Equatable` so a view can react to the debrief arriving — that's the moment
+/// the round's XP is settled, and it has to fire whether the mark came from the
+/// first request or a retry after a failure.
+struct InterviewFeedback: Codable, Equatable {
     /// Out of 10, against campus-placement expectations for the target role.
     let rating: Int
     let summary: String

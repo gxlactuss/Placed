@@ -25,6 +25,15 @@ struct PPCard<Content: View>: View {
     var tone: Tone = .surface
     var padding: CGFloat = PPSpacing.lg
     var cornerRadius: CGFloat = PPRadius.lg
+    /// A colour bled across the card from its leading edge — used to carry a
+    /// problem's difficulty across its whole row rather than leaving it to a
+    /// badge the eye has to find.
+    ///
+    /// **The one sanctioned gradient in the design system.** It's kept honest by
+    /// being a wash of a single hue over the normal fill (never a second colour,
+    /// never a shift in lightness for its own sake), so the flat-surfaces rule
+    /// still holds everywhere else. Pass `nil` — the default — for a plain card.
+    var wash: Color? = nil
     @ViewBuilder var content: Content
 
     var body: some View {
@@ -34,6 +43,22 @@ struct PPCard<Content: View>: View {
             .background {
                 RoundedRectangle(cornerRadius: cornerRadius)
                     .fill(fill)
+                    .overlay {
+                        if let wash {
+                            RoundedRectangle(cornerRadius: cornerRadius)
+                                .fill(
+                                    LinearGradient(
+                                        stops: [
+                                            .init(color: wash.opacity(0.22), location: 0),
+                                            .init(color: wash.opacity(0.08), location: 0.45),
+                                            .init(color: wash.opacity(0.02), location: 1),
+                                        ],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                        }
+                    }
             }
             .overlay {
                 if tone != .accent {
