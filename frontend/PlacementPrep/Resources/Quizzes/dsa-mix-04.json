@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Abstraction"
-        },
-        {
-          "id": "B",
           "text": "Encapsulation"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Polymorphism"
+        },
+        {
+          "id": "C",
+          "text": "Abstraction"
         },
         {
           "id": "D",
           "text": "Inheritance"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Encapsulation bundles data with the methods that operate on it and restricts direct access, so the object can protect its own invariants. Abstraction, by contrast, hides complexity behind a simpler model.",
       "concept": "OOP Principles"
     },
@@ -42,18 +42,18 @@
         },
         {
           "id": "B",
-          "text": "Calling a method before it is declared"
-        },
-        {
-          "id": "C",
           "text": "A subclass providing its own implementation of a method inherited from a superclass"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Making a method static"
+        },
+        {
+          "id": "D",
+          "text": "Calling a method before it is declared"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Overriding replaces inherited behaviour and is resolved at run time by the object's actual type, enabling polymorphism. Overloading, by contrast, varies the parameter list and is usually resolved at compile time.",
       "concept": "Polymorphism"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Private members are always inherited"
+          "text": "Interfaces cannot contain methods"
         },
         {
           "id": "B",
@@ -71,14 +71,14 @@
         },
         {
           "id": "C",
-          "text": "Interfaces cannot contain methods"
+          "text": "Objects of a subclass should be usable anywhere the superclass is expected, without breaking correctness"
         },
         {
           "id": "D",
-          "text": "Objects of a subclass should be usable anywhere the superclass is expected, without breaking correctness"
+          "text": "Private members are always inherited"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "A subtype must honour the contract of its base type so substituting it does not surprise callers. Violations, like a Square subclass of Rectangle that breaks width/height independence, are a classic warning sign.",
       "concept": "SOLID"
     },
@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "Composition builds behaviour by holding other objects (has-a); inheritance derives from a base type (is-a)"
+          "text": "Composition is always slower"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "Composition is always slower"
+          "text": "Composition builds behaviour by holding other objects (has-a); inheritance derives from a base type (is-a)"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Composition assembles functionality from contained objects, giving looser coupling and more flexibility, which is why 'favour composition over inheritance' is common advice. Inheritance couples a subclass tightly to its parent's implementation.",
       "concept": "Design"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Can be instantiated directly"
+          "text": "Cannot declare any methods"
         },
         {
           "id": "B",
-          "text": "Cannot declare any methods"
+          "text": "Can be instantiated directly"
         },
         {
           "id": "C",
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Factory"
-        },
-        {
-          "id": "B",
-          "text": "Strategy"
-        },
-        {
-          "id": "C",
           "text": "Observer"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Singleton"
+        },
+        {
+          "id": "C",
+          "text": "Factory"
+        },
+        {
+          "id": "D",
+          "text": "Strategy"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The Singleton restricts construction so exactly one instance exists, used for shared resources like a configuration or logger. It is often criticised for introducing hidden global state.",
       "concept": "Design Patterns"
     },
@@ -163,11 +163,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Notify observers of state changes"
+          "text": "Guarantee only one instance exists"
         },
         {
           "id": "B",
-          "text": "Create objects without exposing the concrete class to the caller"
+          "text": "Notify observers of state changes"
         },
         {
           "id": "C",
@@ -175,10 +175,10 @@
         },
         {
           "id": "D",
-          "text": "Guarantee only one instance exists"
+          "text": "Create objects without exposing the concrete class to the caller"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A factory centralises object creation behind an interface, so callers depend on the abstraction rather than a specific implementation. This makes swapping concrete types easy.",
       "concept": "Design Patterns"
     },
@@ -188,11 +188,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Contain only one method"
+          "text": "Have exactly one field"
         },
         {
           "id": "B",
-          "text": "Have exactly one field"
+          "text": "Inherit from only one class"
         },
         {
           "id": "C",
@@ -200,7 +200,7 @@
         },
         {
           "id": "D",
-          "text": "Inherit from only one class"
+          "text": "Contain only one method"
         }
       ],
       "correct_option_id": "C",
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A mutual exclusion lock"
+          "text": "A one-to-many notification, where subscribers are informed of a subject's changes"
         },
         {
           "id": "B",
-          "text": "A strict inheritance hierarchy"
+          "text": "A mutual exclusion lock"
         },
         {
           "id": "C",
-          "text": "A one-to-one ownership"
+          "text": "A strict inheritance hierarchy"
         },
         {
           "id": "D",
-          "text": "A one-to-many notification, where subscribers are informed of a subject's changes"
+          "text": "A one-to-one ownership"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "One subject maintains a list of observers and pushes updates to all of them when its state changes, decoupling the source from the consumers. UI event systems are built on this pattern.",
       "concept": "Design Patterns"
     },
@@ -238,11 +238,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Whether the method is static"
+          "text": "Dynamic dispatch that selects the method implementation from the object's actual type"
         },
         {
           "id": "B",
-          "text": "Dynamic dispatch that selects the method implementation from the object's actual type"
+          "text": "Whether the method is static"
         },
         {
           "id": "C",
@@ -253,7 +253,7 @@
           "text": "The order in which classes are declared"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "A virtual method call is resolved at run time using the object's real type, often via a vtable, so a base-type reference invokes the subclass override. Static methods are bound at compile time and are not polymorphic.",
       "concept": "Polymorphism"
     }

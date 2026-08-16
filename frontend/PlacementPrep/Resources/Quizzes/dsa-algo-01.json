@@ -38,11 +38,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Stored in a linked list"
+          "text": "A power of two in length"
         },
         {
           "id": "B",
-          "text": "Free of duplicates"
+          "text": "Stored in a linked list"
         },
         {
           "id": "C",
@@ -50,7 +50,7 @@
         },
         {
           "id": "D",
-          "text": "A power of two in length"
+          "text": "Free of duplicates"
         }
       ],
       "correct_option_id": "C",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "To make the search faster"
-        },
-        {
-          "id": "B",
           "text": "To handle unsorted arrays"
         },
         {
+          "id": "B",
+          "text": "To make the search faster"
+        },
+        {
           "id": "C",
-          "text": "To skip duplicate elements"
+          "text": "To avoid integer overflow when low and high are large"
         },
         {
           "id": "D",
-          "text": "To avoid integer overflow when low and high are large"
+          "text": "To skip duplicate elements"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "For large indices, low + high can exceed the integer range and wrap around to a negative value. The subtraction form computes the same midpoint without ever forming the oversized sum.",
       "concept": "Binary Search"
     },
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
+          "text": "O(log n)"
         },
         {
           "id": "B",
@@ -96,14 +96,14 @@
         },
         {
           "id": "C",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "One pointer starts at each end and they move inward based on whether the current sum is too big or too small. Each pointer traverses the array at most once, giving linear time.",
       "concept": "Two Pointers"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Binary search for each element"
+          "text": "A second array"
         },
         {
           "id": "B",
@@ -125,7 +125,7 @@
         },
         {
           "id": "D",
-          "text": "A second array"
+          "text": "Binary search for each element"
         }
       ],
       "correct_option_id": "B",
@@ -142,7 +142,7 @@
         },
         {
           "id": "B",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "C",
@@ -150,7 +150,7 @@
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         }
       ],
       "correct_option_id": "A",
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Linear probing"
-        },
-        {
-          "id": "B",
           "text": "Two-pass scanning"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Binary search on the answer"
+        },
+        {
+          "id": "C",
+          "text": "Linear probing"
         },
         {
           "id": "D",
           "text": "Bucket search"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "When a condition is false then true across a range, binary search locates the boundary in O(log range). This turns many optimisation problems into a search over candidate answers.",
       "concept": "Binary Search"
     },
@@ -188,15 +188,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Build a hash table"
+          "text": "Sort the array"
         },
         {
           "id": "B",
-          "text": "Compute prefix sums"
+          "text": "Build a hash table"
         },
         {
           "id": "C",
-          "text": "Sort the array"
+          "text": "Compute prefix sums"
         },
         {
           "id": "D",
@@ -217,18 +217,18 @@
         },
         {
           "id": "B",
-          "text": "About 10"
-        },
-        {
-          "id": "C",
           "text": "About 100"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "About 500"
+        },
+        {
+          "id": "D",
+          "text": "About 10"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "The worst case is ceil(log2 1000), which is 10. Linear search on the same array would average about 500 comparisons.",
       "concept": "Binary Search"
     },
@@ -238,11 +238,11 @@
       "options": [
         {
           "id": "A",
-          "text": "When the array is very large and sorted"
+          "text": "When many searches will be run on static data"
         },
         {
           "id": "B",
-          "text": "When many searches will be run on static data"
+          "text": "When the array is very large and sorted"
         },
         {
           "id": "C",

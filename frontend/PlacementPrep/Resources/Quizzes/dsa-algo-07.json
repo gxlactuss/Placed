@@ -13,11 +13,11 @@
       "options": [
         {
           "id": "A",
-          "text": "It only works on trees"
+          "text": "It finalises a vertex assuming no shorter path exists, which a later negative edge can violate"
         },
         {
           "id": "B",
-          "text": "It finalises a vertex assuming no shorter path exists, which a later negative edge can violate"
+          "text": "It runs out of memory"
         },
         {
           "id": "C",
@@ -25,10 +25,10 @@
         },
         {
           "id": "D",
-          "text": "It runs out of memory"
+          "text": "It only works on trees"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Dijkstra greedily locks in the closest vertex, but a negative edge encountered later could have produced a cheaper path, breaking that assumption. Bellman-Ford handles negative weights instead.",
       "concept": "Shortest Paths"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O((V + E) log V)"
+          "text": "O(V + E)"
         },
         {
           "id": "B",
-          "text": "O(V^2)"
+          "text": "O((V + E) log V)"
         },
         {
           "id": "C",
-          "text": "O(V + E)"
+          "text": "O(V^2)"
         },
         {
           "id": "D",
           "text": "O(E^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Each vertex extraction and each edge relaxation costs O(log V) with a binary heap, giving O((V + E) log V). A Fibonacci heap improves this to O(E + V log V).",
       "concept": "Dijkstra"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Find the longest path in any graph"
-        },
-        {
-          "id": "B",
           "text": "Sort the vertices topologically"
         },
         {
+          "id": "B",
+          "text": "Find the longest path in any graph"
+        },
+        {
           "id": "C",
-          "text": "Detect the presence of a negative-weight cycle"
+          "text": "Build a minimum spanning tree"
         },
         {
           "id": "D",
-          "text": "Build a minimum spanning tree"
+          "text": "Detect the presence of a negative-weight cycle"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "After V-1 relaxation passes distances should be final; if a V-th pass still relaxes an edge, a negative cycle is reachable. This detection is something Dijkstra cannot do.",
       "concept": "Bellman-Ford"
     },
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "O(V x E)"
+          "text": "O(V^3)"
         },
         {
           "id": "B",
@@ -96,14 +96,14 @@
         },
         {
           "id": "C",
-          "text": "O(V + E)"
+          "text": "O(V x E)"
         },
         {
           "id": "D",
-          "text": "O(V^3)"
+          "text": "O(V + E)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "It relaxes all E edges across V-1 passes, giving O(V x E). This is slower than Dijkstra but is the price of handling negative weights.",
       "concept": "Bellman-Ford"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A topological ordering"
+          "text": "Shortest paths between all pairs of vertices"
         },
         {
           "id": "B",
-          "text": "A minimum spanning tree"
-        },
-        {
-          "id": "C",
           "text": "A single-source shortest path only"
         },
         {
+          "id": "C",
+          "text": "A minimum spanning tree"
+        },
+        {
           "id": "D",
-          "text": "Shortest paths between all pairs of vertices"
+          "text": "A topological ordering"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "It uses dynamic programming over intermediate vertices to fill an all-pairs distance matrix in O(V^3). It is convenient for dense graphs and tolerates negative edges without negative cycles.",
       "concept": "Floyd-Warshall"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Random order"
+          "text": "Decreasing weight, always adding the heaviest edge"
         },
         {
           "id": "B",
-          "text": "Increasing weight, adding an edge if it does not form a cycle"
-        },
-        {
-          "id": "C",
           "text": "The order they appear in the input"
         },
         {
+          "id": "C",
+          "text": "Random order"
+        },
+        {
           "id": "D",
-          "text": "Decreasing weight, always adding the heaviest edge"
+          "text": "Increasing weight, adding an edge if it does not form a cycle"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Sorting edges ascending and adding each unless it connects two already-joined components builds a minimum spanning tree. A union-find structure performs the cycle test efficiently.",
       "concept": "Kruskal"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Removing the heaviest edges from the graph"
-        },
-        {
-          "id": "B",
           "text": "Adding all edges of the lightest vertex"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Repeatedly adding the cheapest edge that connects a new vertex to the tree"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Sorting all edges once and adding them in order"
+        },
+        {
+          "id": "D",
+          "text": "Removing the heaviest edges from the graph"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Prim's expands a single tree, each step pulling in the minimum-weight edge crossing to a new vertex, using a priority queue. Kruskal's, by contrast, may grow several fragments at once.",
       "concept": "Prim"
     },
@@ -188,15 +188,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Never unique"
-        },
-        {
-          "id": "B",
           "text": "Unique only if the graph is a tree"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Dependent on the starting vertex"
+        },
+        {
+          "id": "C",
+          "text": "Never unique"
         },
         {
           "id": "D",
@@ -221,11 +221,11 @@
         },
         {
           "id": "C",
-          "text": "Running Bellman-Ford V times"
+          "text": "Sorting the edges by weight"
         },
         {
           "id": "D",
-          "text": "Sorting the edges by weight"
+          "text": "Running Bellman-Ford V times"
         }
       ],
       "correct_option_id": "B",
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Irrelevant to the MST"
+          "text": "Only in the MST if it is the global minimum edge"
         },
         {
           "id": "B",
@@ -250,7 +250,7 @@
         },
         {
           "id": "D",
-          "text": "Only in the MST if it is the global minimum edge"
+          "text": "Irrelevant to the MST"
         }
       ],
       "correct_option_id": "C",

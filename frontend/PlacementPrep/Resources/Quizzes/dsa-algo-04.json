@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "Sort, search, merge"
+          "text": "Divide the problem, conquer the subproblems recursively, combine the results"
         },
         {
           "id": "C",
-          "text": "Divide the problem, conquer the subproblems recursively, combine the results"
+          "text": "Sort, search, merge"
         },
         {
           "id": "D",
           "text": "Guess, check, repeat"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "The problem is split into smaller instances, each solved recursively, then their solutions are merged into the overall answer. Merge sort and quicksort are canonical examples.",
       "concept": "Divide and Conquer"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n log n)"
-        },
-        {
-          "id": "B",
           "text": "O(n^2)"
         },
         {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(log n)"
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "A balanced partition splits the array in roughly half at each level, giving log n levels of O(n) work. Poor pivots can degrade this to O(n^2), which randomised pivoting avoids in practice.",
       "concept": "Quicksort"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "When all elements are distinct"
-        },
-        {
-          "id": "B",
-          "text": "When the array is a power of two in length"
-        },
-        {
-          "id": "C",
           "text": "When the array fits in cache"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "When all elements are distinct"
+        },
+        {
+          "id": "C",
           "text": "When the pivot is consistently the smallest or largest element"
+        },
+        {
+          "id": "D",
+          "text": "When the array is a power of two in length"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "A pivot at one extreme leaves one empty side and one of size n-1, producing n levels of recursion. Choosing the pivot randomly or by median-of-three makes this case vanishingly unlikely.",
       "concept": "Quicksort"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         },
         {
           "id": "B",
-          "text": "O(n)"
+          "text": "O(n log n)"
         },
         {
           "id": "C",
-          "text": "O(n^2)"
+          "text": "O(n)"
         },
         {
           "id": "D",
-          "text": "O(log n)"
+          "text": "O(n^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Here a = 2, b = 2 so n^(log_b a) = n, which matches the O(n) combine cost, putting it in the balanced case that adds a log factor. This is exactly the merge sort recurrence.",
       "concept": "Recurrences"
     },
@@ -117,15 +117,15 @@
         },
         {
           "id": "B",
-          "text": "O(n log n)"
-        },
-        {
-          "id": "C",
           "text": "O(log n)"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
         }
       ],
       "correct_option_id": "A",
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n log n)"
+          "text": "O(n^2)"
         },
         {
           "id": "B",
@@ -146,14 +146,14 @@
         },
         {
           "id": "C",
-          "text": "O(n^2)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Merge sort splits the array in half repeatedly (log n levels) and merges each level in O(n), giving O(n log n) in all cases. Its consistency is a key advantage over quicksort.",
       "concept": "Merge Sort"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Counting sort"
-        },
-        {
-          "id": "B",
-          "text": "Merge sort, counting cross-inversions during the merge step"
-        },
-        {
-          "id": "C",
           "text": "Binary search"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Bubble sort"
+        },
+        {
+          "id": "C",
+          "text": "Counting sort"
+        },
+        {
+          "id": "D",
+          "text": "Merge sort, counting cross-inversions during the merge step"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "During each merge, whenever an element from the right half is taken before elements remaining in the left half, all those remaining form inversions. Summing these gives the total in O(n log n).",
       "concept": "Divide and Conquer"
     },
@@ -196,11 +196,11 @@
         },
         {
           "id": "C",
-          "text": "It solves both halves and merges them"
+          "text": "It has no base case"
         },
         {
           "id": "D",
-          "text": "It has no base case"
+          "text": "It solves both halves and merges them"
         }
       ],
       "correct_option_id": "A",
@@ -217,11 +217,11 @@
         },
         {
           "id": "B",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         },
         {
           "id": "C",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "D",
@@ -242,7 +242,7 @@
         },
         {
           "id": "B",
-          "text": "It requires the list to be sorted first"
+          "text": "It cannot be applied to arrays"
         },
         {
           "id": "C",
@@ -250,7 +250,7 @@
         },
         {
           "id": "D",
-          "text": "It cannot be applied to arrays"
+          "text": "It requires the list to be sorted first"
         }
       ],
       "correct_option_id": "C",

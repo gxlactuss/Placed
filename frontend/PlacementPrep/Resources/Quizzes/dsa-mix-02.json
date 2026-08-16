@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Reverses all the bits"
-        },
-        {
-          "id": "B",
           "text": "Negates the number"
         },
         {
+          "id": "B",
+          "text": "Sets the lowest bit of n"
+        },
+        {
           "id": "C",
-          "text": "Clears the lowest set bit of n"
+          "text": "Reverses all the bits"
         },
         {
           "id": "D",
-          "text": "Sets the lowest bit of n"
+          "text": "Clears the lowest set bit of n"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Subtracting 1 flips the lowest set bit and all zeros below it, so ANDing removes that lowest set bit. Repeatedly applying this counts set bits (Brian Kernighan's algorithm).",
       "concept": "Bit Tricks"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "n % 2 == 0"
-        },
-        {
-          "id": "B",
           "text": "n & 1 == 1"
         },
         {
+          "id": "B",
+          "text": "n > 0 and (n & (n - 1)) == 0"
+        },
+        {
           "id": "C",
-          "text": "n | (n - 1) == 0"
+          "text": "n % 2 == 0"
         },
         {
           "id": "D",
-          "text": "n > 0 and (n & (n - 1)) == 0"
+          "text": "n | (n - 1) == 0"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A power of two has exactly one set bit, so clearing that bit with n & (n - 1) yields zero. The n > 0 guard rules out zero, which also satisfies the AND test.",
       "concept": "Bit Tricks"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Reverses its bits"
+          "text": "Adds 1"
         },
         {
           "id": "B",
-          "text": "Multiplies it by 2"
+          "text": "Reverses its bits"
         },
         {
           "id": "C",
-          "text": "Adds 1"
+          "text": "Multiplies it by 2"
         },
         {
           "id": "D",
           "text": "Divides it by 2"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Shifting bits one position toward the high end doubles the value, just as a decimal shift multiplies by ten. A right shift by one divides by two (for non-negative integers).",
       "concept": "Bit Shifts"
     },
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Sum all elements"
+          "text": "XOR all the elements together"
         },
         {
           "id": "B",
@@ -96,14 +96,14 @@
         },
         {
           "id": "C",
-          "text": "XOR all the elements together"
+          "text": "Sort and scan"
         },
         {
           "id": "D",
-          "text": "Sort and scan"
+          "text": "Sum all elements"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "XOR is its own inverse, so paired elements cancel to zero and only the unique value remains. This uses no extra memory and a single pass.",
       "concept": "XOR"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "n & k"
+          "text": "(n >> k) & 1"
         },
         {
           "id": "B",
@@ -121,14 +121,14 @@
         },
         {
           "id": "C",
-          "text": "n % k"
+          "text": "n & k"
         },
         {
           "id": "D",
-          "text": "(n >> k) & 1"
+          "text": "n % k"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Shifting n right by k brings the target bit to position 0, and ANDing with 1 isolates it. Alternatively, n & (1 << k) is non-zero exactly when the bit is set.",
       "concept": "Bit Testing"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "0"
+          "text": "-x"
         },
         {
           "id": "C",
-          "text": "-x"
+          "text": "0"
         },
         {
           "id": "D",
           "text": "1"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Every bit XORed with itself is 0, so the whole value is 0. This self-cancelling property underlies the find-the-unique-number trick and in-place swaps.",
       "concept": "XOR"
     },
@@ -163,11 +163,11 @@
       "options": [
         {
           "id": "A",
-          "text": "n >> k"
+          "text": "n & (1 << k)"
         },
         {
           "id": "B",
-          "text": "n ^ (1 << k)"
+          "text": "n >> k"
         },
         {
           "id": "C",
@@ -175,7 +175,7 @@
         },
         {
           "id": "D",
-          "text": "n & (1 << k)"
+          "text": "n ^ (1 << k)"
         }
       ],
       "correct_option_id": "C",
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Whether n is negative"
-        },
-        {
-          "id": "B",
           "text": "The number of set bits"
         },
         {
+          "id": "B",
+          "text": "Whether n is odd"
+        },
+        {
           "id": "C",
-          "text": "Whether n is a power of two"
+          "text": "Whether n is negative"
         },
         {
           "id": "D",
-          "text": "Whether n is odd"
+          "text": "Whether n is a power of two"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The lowest bit is 1 exactly for odd numbers, so n & 1 is the parity test. It is faster than n % 2 and avoids sign issues with modulo on negatives.",
       "concept": "Bit Tricks"
     },
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "A hash of a string"
+          "text": "A floating-point number"
         },
         {
           "id": "B",
@@ -225,7 +225,7 @@
         },
         {
           "id": "D",
-          "text": "A floating-point number"
+          "text": "A hash of a string"
         }
       ],
       "correct_option_id": "B",
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Dividing n by 2 until it reaches 1"
-        },
-        {
-          "id": "B",
           "text": "XORing n with itself"
         },
         {
+          "id": "B",
+          "text": "Shifting n left until it overflows"
+        },
+        {
           "id": "C",
-          "text": "Repeatedly applying n = n & (n - 1) until n is zero"
+          "text": "Dividing n by 2 until it reaches 1"
         },
         {
           "id": "D",
-          "text": "Shifting n left until it overflows"
+          "text": "Repeatedly applying n = n & (n - 1) until n is zero"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Each n & (n - 1) clears one set bit, so the number of iterations equals the number of set bits. This runs in time proportional to the count of ones, not the total bit width.",
       "concept": "Population Count"
     }

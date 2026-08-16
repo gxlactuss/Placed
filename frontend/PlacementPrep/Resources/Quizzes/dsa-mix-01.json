@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The exact running time in seconds"
+          "text": "An asymptotic upper bound on the growth of a function"
         },
         {
           "id": "B",
@@ -21,14 +21,14 @@
         },
         {
           "id": "C",
-          "text": "An asymptotic upper bound on the growth of a function"
+          "text": "The memory address of the data"
         },
         {
           "id": "D",
-          "text": "The memory address of the data"
+          "text": "The exact running time in seconds"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Big-O bounds how fast a cost grows as input size increases, ignoring constants and lower-order terms. It abstracts away hardware speed to compare algorithms by scalability.",
       "concept": "Asymptotic Notation"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(2^n)"
-        },
-        {
-          "id": "B",
-          "text": "O(n^2)"
-        },
-        {
-          "id": "C",
           "text": "O(n log n)"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "O(2^n)"
+        },
+        {
+          "id": "C",
           "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Exponential growth eventually dwarfs any polynomial, so O(2^n) is the worst here. The ordering from best to worst is log n, n log n, n^2, then 2^n.",
       "concept": "Growth Rates"
     },
@@ -67,11 +67,11 @@
         },
         {
           "id": "B",
-          "text": "O(3n^2)"
+          "text": "O(n^2 + n)"
         },
         {
           "id": "C",
-          "text": "O(n^2 + n)"
+          "text": "O(3n^2)"
         },
         {
           "id": "D",
@@ -92,18 +92,18 @@
         },
         {
           "id": "B",
-          "text": "An asymptotic upper bound on growth"
-        },
-        {
-          "id": "C",
           "text": "The exact space used"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "An asymptotic lower bound on growth"
+        },
+        {
+          "id": "D",
+          "text": "An asymptotic upper bound on growth"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Omega gives a lower bound — the cost grows at least this fast. When the upper and lower bounds match, Theta expresses the tight bound.",
       "concept": "Asymptotic Notation"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "About n^2"
+          "text": "About n"
         },
         {
           "id": "B",
-          "text": "About log2(n)"
+          "text": "About n^2"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "About n"
+          "text": "About log2(n)"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "The counter reaches n after about log2(n) doublings, so the loop is logarithmic. Halving each step gives the same count, which is why binary search is O(log n).",
       "concept": "Loop Analysis"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n^2)"
+          "text": "O(n log n)"
         },
         {
           "id": "B",
-          "text": "O(n)"
+          "text": "O(n^2)"
         },
         {
           "id": "C",
-          "text": "O(2n)"
+          "text": "O(n)"
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(2n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "The inner loop runs n times for each of the n outer iterations, giving n x n = n^2 total steps. Nesting multiplies the counts.",
       "concept": "Loop Analysis"
     },
@@ -163,7 +163,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The physical size of the source code"
+          "text": "The number of CPU registers"
         },
         {
           "id": "B",
@@ -171,14 +171,14 @@
         },
         {
           "id": "C",
-          "text": "The extra memory an algorithm uses as a function of input size"
+          "text": "The physical size of the source code"
         },
         {
           "id": "D",
-          "text": "The number of CPU registers"
+          "text": "The extra memory an algorithm uses as a function of input size"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "It counts the auxiliary memory beyond the input that scales with input size, such as recursion stacks and temporary arrays. An in-place algorithm uses O(1) auxiliary space.",
       "concept": "Space Complexity"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "B",
-          "text": "O(1)"
-        },
-        {
-          "id": "C",
           "text": "O(n)"
         },
         {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(1)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "The stack depth equals the tree height, which is O(log n) when balanced. A skewed tree would push this to O(n).",
       "concept": "Space Complexity"
     },
@@ -217,11 +217,11 @@
         },
         {
           "id": "B",
-          "text": "It reflects the fastest possible run"
+          "text": "It is always easier to compute"
         },
         {
           "id": "C",
-          "text": "It is always easier to compute"
+          "text": "It reflects the fastest possible run"
         },
         {
           "id": "D",
@@ -238,11 +238,11 @@
       "options": [
         {
           "id": "A",
-          "text": "The exact time in seconds"
+          "text": "The average cost per operation across a sequence, even if individual operations are occasionally expensive"
         },
         {
           "id": "B",
-          "text": "The average cost per operation across a sequence, even if individual operations are occasionally expensive"
+          "text": "The best-case single operation"
         },
         {
           "id": "C",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "The best-case single operation"
+          "text": "The exact time in seconds"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Amortised analysis spreads the rare expensive operation, like a dynamic-array resize, across the many cheap ones. It shows appending is O(1) amortised despite an occasional O(n) resize.",
       "concept": "Amortised Analysis"
     }

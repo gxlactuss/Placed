@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Is undirected"
-        },
-        {
-          "id": "B",
-          "text": "Is acyclic"
-        },
-        {
-          "id": "C",
           "text": "Has no isolated vertices"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Is undirected"
+        },
+        {
+          "id": "C",
           "text": "Is connected"
+        },
+        {
+          "id": "D",
+          "text": "Is acyclic"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A cycle would require a vertex to precede itself, which no linear order allows, so a topological sort exists exactly for a DAG. Producing one also proves the graph is acyclic.",
       "concept": "Topological Sort"
     },
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Removes the vertex with the highest degree"
+          "text": "Removes a vertex with in-degree zero and decrements its neighbours' in-degrees"
         },
         {
           "id": "B",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "Removes a vertex with in-degree zero and decrements its neighbours' in-degrees"
+          "text": "Picks a random vertex"
         },
         {
           "id": "D",
-          "text": "Picks a random vertex"
+          "text": "Removes the vertex with the highest degree"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "A vertex with no incoming edges has no unmet prerequisites, so it can go next; removing it may expose new zero-in-degree vertices. If vertices remain but none has in-degree zero, a cycle exists.",
       "concept": "Topological Sort"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The vertices form a cycle of length exactly two"
+          "text": "They share a common neighbour"
         },
         {
           "id": "B",
@@ -71,14 +71,14 @@
         },
         {
           "id": "C",
-          "text": "They share a common neighbour"
+          "text": "Every vertex is reachable from every other vertex in the set"
         },
         {
           "id": "D",
-          "text": "Every vertex is reachable from every other vertex in the set"
+          "text": "The vertices form a cycle of length exactly two"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Mutual reachability in both directions defines an SCC. Algorithms like Tarjan's and Kosaraju's find all SCCs in O(V + E).",
       "concept": "Strongly Connected Components"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A single breadth-first search"
+          "text": "Dijkstra's algorithm"
         },
         {
           "id": "B",
-          "text": "Two depth-first passes, the second on the transposed graph in decreasing finish-time order"
+          "text": "A single breadth-first search"
         },
         {
           "id": "C",
-          "text": "Dijkstra's algorithm"
+          "text": "Two depth-first passes, the second on the transposed graph in decreasing finish-time order"
         },
         {
           "id": "D",
           "text": "A minimum spanning tree"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "The first DFS records finish times; the second explores the reversed graph in that order, and each tree it produces is one SCC. Both passes together are O(V + E).",
       "concept": "Strongly Connected Components"
     },
@@ -117,18 +117,18 @@
         },
         {
           "id": "B",
-          "text": "A cross edge"
-        },
-        {
-          "id": "C",
           "text": "A back edge to an ancestor still on the recursion stack"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "A tree edge"
+        },
+        {
+          "id": "D",
+          "text": "A cross edge"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "A back edge connects to a grey (in-progress) ancestor, closing a cycle. Forward and cross edges point to already-finished vertices and do not create cycles.",
       "concept": "Cycle Detection"
     },
@@ -138,15 +138,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Has no effect on connectivity"
+          "text": "Always disconnects exactly two vertices"
         },
         {
           "id": "B",
-          "text": "Removes all cycles"
+          "text": "Has no effect on connectivity"
         },
         {
           "id": "C",
-          "text": "Always disconnects exactly two vertices"
+          "text": "Removes all cycles"
         },
         {
           "id": "D",
@@ -163,7 +163,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Changes an edge weight"
+          "text": "Creates a cycle"
         },
         {
           "id": "B",
@@ -175,7 +175,7 @@
         },
         {
           "id": "D",
-          "text": "Creates a cycle"
+          "text": "Changes an edge weight"
         }
       ],
       "correct_option_id": "B",
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "No cycle at all"
-        },
-        {
-          "id": "B",
           "text": "A Hamiltonian path"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "No odd-length cycle"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "An even number of vertices"
+        },
+        {
+          "id": "D",
+          "text": "No cycle at all"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "A two-colouring succeeds exactly when every cycle has even length, since an odd cycle forces two adjacent vertices to share a colour. BFS or DFS two-colouring detects this in O(V + E).",
       "concept": "Bipartite Graphs"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It is a tree"
+          "text": "Every vertex has even degree"
         },
         {
           "id": "B",
-          "text": "It has exactly one cycle"
-        },
-        {
-          "id": "C",
           "text": "Every vertex has odd degree"
         },
         {
+          "id": "C",
+          "text": "It is a tree"
+        },
+        {
           "id": "D",
-          "text": "Every vertex has even degree"
+          "text": "It has exactly one cycle"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Entering and leaving each vertex the same number of times requires even degrees everywhere. Exactly two odd-degree vertices instead permit an Eulerian path but not a circuit.",
       "concept": "Eulerian Paths"
     },
@@ -242,18 +242,18 @@
         },
         {
           "id": "B",
-          "text": "Reporting a cycle when an edge joins two vertices already in the same set"
-        },
-        {
-          "id": "C",
           "text": "Sorting the vertices by degree"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Running Dijkstra from every vertex"
+        },
+        {
+          "id": "D",
+          "text": "Reporting a cycle when an edge joins two vertices already in the same set"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "If both endpoints of an edge already share a component, that edge closes a cycle. This is the same connectivity test Kruskal's algorithm uses to reject cycle-forming edges.",
       "concept": "Cycle Detection"
     }

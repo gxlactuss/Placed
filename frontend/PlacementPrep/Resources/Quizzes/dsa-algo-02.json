@@ -21,11 +21,11 @@
         },
         {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(log n)"
+          "text": "O(n)"
         }
       ],
       "correct_option_id": "A",
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It cannot crash on any input"
-        },
-        {
-          "id": "B",
           "text": "It never uses extra memory"
         },
         {
+          "id": "B",
+          "text": "It cannot crash on any input"
+        },
+        {
           "id": "C",
-          "text": "Its running time never varies"
+          "text": "Equal elements keep their original relative order"
         },
         {
           "id": "D",
-          "text": "Equal elements keep their original relative order"
+          "text": "Its running time never varies"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Stability preserves the input order of records that compare equal, which matters when sorting by one key after another. Merge sort is stable; heapsort and typical quicksort are not.",
       "concept": "Sorting"
     },
@@ -71,11 +71,11 @@
         },
         {
           "id": "C",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         }
       ],
       "correct_option_id": "A",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n log n)"
-        },
-        {
-          "id": "B",
           "text": "O(n^2)"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "O(n)"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The array is split log n times and each level does O(n) merging, giving O(n log n) in the best, average and worst cases. Its drawback is the O(n) auxiliary array it requires.",
       "concept": "Merge Sort"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Insertion sort"
-        },
-        {
-          "id": "B",
           "text": "Selection sort"
         },
         {
+          "id": "B",
+          "text": "Insertion sort"
+        },
+        {
           "id": "C",
-          "text": "Bubble sort with an early-exit flag"
+          "text": "Quicksort"
         },
         {
           "id": "D",
-          "text": "Quicksort"
+          "text": "Bubble sort with an early-exit flag"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Selection sort scans the entire unsorted portion to find the minimum on every pass, so its comparison count is fixed at about n^2/2 no matter the arrangement. Its number of swaps, however, is only O(n).",
       "concept": "Selection Sort"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
-        },
-        {
-          "id": "B",
-          "text": "O(1)"
-        },
-        {
-          "id": "C",
           "text": "O(log n)"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(1)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Merging requires an auxiliary buffer the size of the input, so it uses O(n) extra space. This is the main reason an in-place algorithm like heapsort is sometimes preferred.",
       "concept": "Merge Sort"
     },
@@ -171,14 +171,14 @@
         },
         {
           "id": "C",
-          "text": "Insertion sort"
+          "text": "Merge sort"
         },
         {
           "id": "D",
-          "text": "Merge sort"
+          "text": "Insertion sort"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Insertion sort has low overhead and approaches O(n) on nearly-sorted input, which is why real library sorts switch to it for small subarrays. This is the idea behind hybrid sorts like Timsort.",
       "concept": "Insertion Sort"
     },
@@ -188,11 +188,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Omega(n log n)"
+          "text": "Omega(n)"
         },
         {
           "id": "B",
-          "text": "Omega(n)"
+          "text": "Omega(n log n)"
         },
         {
           "id": "C",
@@ -203,7 +203,7 @@
           "text": "Omega(n^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "There are n! possible orderings and each comparison distinguishes at most two branches, so at least log2(n!) = Omega(n log n) comparisons are needed. Non-comparison sorts like counting sort can beat this.",
       "concept": "Sorting Lower Bound"
     },
@@ -217,18 +217,18 @@
         },
         {
           "id": "B",
-          "text": "It is unstable"
+          "text": "It needs O(k) space and is only practical when k is not much larger than n"
         },
         {
           "id": "C",
-          "text": "It cannot sort integers"
+          "text": "It is unstable"
         },
         {
           "id": "D",
-          "text": "It needs O(k) space and is only practical when k is not much larger than n"
+          "text": "It cannot sort integers"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The count array has one slot per possible value, so a huge value range makes it wasteful or infeasible. When k is comparable to n, it beats the O(n log n) comparison bound.",
       "concept": "Counting Sort"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
-        },
-        {
-          "id": "B",
-          "text": "O(n^2)"
-        },
-        {
-          "id": "C",
           "text": "O(log n)"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "O(n log n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Each of the n passes performs at most one swap to place the minimum, so there are at most n-1 swaps. This makes it attractive when writes are far more expensive than reads.",
       "concept": "Selection Sort"
     }

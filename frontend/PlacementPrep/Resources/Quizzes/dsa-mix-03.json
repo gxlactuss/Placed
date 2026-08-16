@@ -17,15 +17,15 @@
         },
         {
           "id": "B",
-          "text": "O(n^2)"
+          "text": "O(sqrt n)"
         },
         {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(n^2)"
         },
         {
           "id": "D",
-          "text": "O(sqrt n)"
+          "text": "O(n)"
         }
       ],
       "correct_option_id": "A",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "log n"
+          "text": "sqrt(n)"
         },
         {
           "id": "D",
-          "text": "sqrt(n)"
+          "text": "log n"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "If n has a factor larger than its square root, it must also have a matching factor smaller than the square root. So checking up to sqrt(n) is sufficient.",
       "concept": "Primality"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Listing all divisors of each"
-        },
-        {
-          "id": "B",
           "text": "Repeatedly replacing the larger with the larger modulo the smaller"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Adding the numbers repeatedly"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Multiplying the two numbers"
+        },
+        {
+          "id": "D",
+          "text": "Listing all divisors of each"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "gcd(a, b) equals gcd(b, a mod b), and the remainders shrink quickly until one becomes zero. It runs in O(log(min(a, b))) — logarithmic, not linear.",
       "concept": "GCD"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "lcm(a, b) = gcd(a, b)^2"
+          "text": "gcd and lcm are always equal"
         },
         {
           "id": "B",
-          "text": "gcd(a, b) + lcm(a, b) = a + b"
+          "text": "lcm(a, b) = gcd(a, b)^2"
         },
         {
           "id": "C",
-          "text": "gcd(a, b) x lcm(a, b) = a x b"
+          "text": "gcd(a, b) + lcm(a, b) = a + b"
         },
         {
           "id": "D",
-          "text": "gcd and lcm are always equal"
+          "text": "gcd(a, b) x lcm(a, b) = a x b"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Their product equals the product of the numbers, so lcm can be computed as a / gcd(a, b) x b. Dividing first avoids overflow from the full product.",
       "concept": "GCD and LCM"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log b)"
+          "text": "O(sqrt b)"
         },
         {
           "id": "B",
@@ -121,14 +121,14 @@
         },
         {
           "id": "C",
-          "text": "O(b^2)"
+          "text": "O(log b)"
         },
         {
           "id": "D",
-          "text": "O(sqrt b)"
+          "text": "O(b^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Squaring the base and halving the exponent needs only log b multiplications, each taken modulo m to keep numbers small. Naive repeated multiplication would be O(b).",
       "concept": "Modular Arithmetic"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It is required for the result to be positive"
-        },
-        {
-          "id": "B",
-          "text": "It makes the answer approximate"
-        },
-        {
-          "id": "C",
           "text": "It speeds up addition only"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "It is required for the result to be positive"
+        },
+        {
+          "id": "C",
           "text": "It keeps intermediate values small and prevents overflow"
+        },
+        {
+          "id": "D",
+          "text": "It makes the answer approximate"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Because (a x b) mod m = ((a mod m) x (b mod m)) mod m, reducing along the way gives the same answer while bounding the numbers. This is essential for large exponents and products.",
       "concept": "Modular Arithmetic"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "2 only"
-        },
-        {
-          "id": "B",
-          "text": "5, since factors of 2 are always more plentiful"
-        },
-        {
-          "id": "C",
           "text": "n itself"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "2 only"
+        },
+        {
+          "id": "C",
           "text": "10 directly"
+        },
+        {
+          "id": "D",
+          "text": "5, since factors of 2 are always more plentiful"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A trailing zero comes from a factor of 10 = 2 x 5, and factors of 2 are far more common, so the count of 5s is the bottleneck. Summing floor(n/5) + floor(n/25) + ... gives the answer.",
       "concept": "Factorials"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "n^2"
+          "text": "2^n - 1"
         },
         {
           "id": "B",
-          "text": "n(n - 1)"
-        },
-        {
-          "id": "C",
           "text": "n(n + 1) / 2"
         },
         {
+          "id": "C",
+          "text": "n^2"
+        },
+        {
           "id": "D",
-          "text": "2^n - 1"
+          "text": "n(n - 1)"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Pairing terms from the ends gives n/2 pairs each summing to n + 1, so the total is n(n + 1)/2. This closed form replaces an O(n) loop with an O(1) computation.",
       "concept": "Series"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A stack"
-        },
-        {
-          "id": "B",
-          "text": "A linked list"
-        },
-        {
-          "id": "C",
           "text": "A hash table"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "A sparse table, since GCD is idempotent and associative"
+        },
+        {
+          "id": "C",
+          "text": "A stack"
+        },
+        {
+          "id": "D",
+          "text": "A linked list"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "GCD, like min and max, is idempotent, so overlapping ranges can be combined, letting a sparse table answer each query in O(1) after O(n log n) preprocessing. A segment tree also works but is slower per query.",
       "concept": "Range Queries"
     }

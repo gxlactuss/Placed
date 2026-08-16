@@ -17,15 +17,15 @@
         },
         {
           "id": "B",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(n)"
         }
       ],
       "correct_option_id": "A",
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The number of buckets divided by the number of keys"
+          "text": "The fraction of keys that collide"
         },
         {
           "id": "B",
@@ -46,7 +46,7 @@
         },
         {
           "id": "C",
-          "text": "The fraction of keys that collide"
+          "text": "The number of buckets divided by the number of keys"
         },
         {
           "id": "D",
@@ -67,7 +67,7 @@
         },
         {
           "id": "B",
-          "text": "It rejects the colliding key"
+          "text": "It probes the next free bucket in the array"
         },
         {
           "id": "C",
@@ -75,7 +75,7 @@
         },
         {
           "id": "D",
-          "text": "It probes the next free bucket in the array"
+          "text": "It rejects the colliding key"
         }
       ],
       "correct_option_id": "C",
@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "It cannot detect duplicate keys"
+          "text": "Primary clustering — occupied runs grow and lengthen probe sequences"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "Primary clustering — occupied runs grow and lengthen probe sequences"
+          "text": "It cannot detect duplicate keys"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Because probes step one slot at a time, contiguous occupied runs form and any key hashing into them extends the run. Quadratic probing and double hashing scatter probes to reduce this.",
       "concept": "Open Addressing"
     },
@@ -142,7 +142,7 @@
         },
         {
           "id": "B",
-          "text": "When the table is exactly half full"
+          "text": "When the table has more buckets than keys"
         },
         {
           "id": "C",
@@ -150,7 +150,7 @@
         },
         {
           "id": "D",
-          "text": "When the table has more buckets than keys"
+          "text": "When the table is exactly half full"
         }
       ],
       "correct_option_id": "C",
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A sorted array"
-        },
-        {
-          "id": "B",
           "text": "A stack"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "A linked list"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "A hash set"
+        },
+        {
+          "id": "D",
+          "text": "A sorted array"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "A hash set answers 'is x present' in O(1) average time. A sorted array gives O(log n) via binary search but is costly to update; a list is O(n).",
       "concept": "Hash Set"
     },
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Allocate a larger table and rehash every key into it"
+          "text": "Delete the oldest keys"
         },
         {
           "id": "B",
@@ -200,10 +200,10 @@
         },
         {
           "id": "D",
-          "text": "Delete the oldest keys"
+          "text": "Allocate a larger table and rehash every key into it"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Rehashing into a bigger array restores a low load factor and short chains. It costs O(n) but happens rarely, so it is O(1) amortised per insertion — the same argument as dynamic array doubling.",
       "concept": "Rehashing"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The array cannot store empty slots"
-        },
-        {
-          "id": "B",
-          "text": "An empty slot would prematurely stop a probe sequence searching for a later key"
-        },
-        {
-          "id": "C",
           "text": "It keeps the table sorted"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "The array cannot store empty slots"
+        },
+        {
+          "id": "C",
           "text": "Tombstones make deletion faster"
+        },
+        {
+          "id": "D",
+          "text": "An empty slot would prematurely stop a probe sequence searching for a later key"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A search stops at a truly empty slot. If deletion left a hole in the middle of a probe run, keys past it would become unreachable, so the slot is marked deleted-but-not-empty instead.",
       "concept": "Open Addressing"
     },
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "It forces the table to rehash on every read"
+          "text": "Mutating it changes its hash, so it can no longer be found in its bucket"
         },
         {
           "id": "B",
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "Mutating it changes its hash, so it can no longer be found in its bucket"
+          "text": "The table cannot compute their hash at all"
         },
         {
           "id": "D",
-          "text": "The table cannot compute their hash at all"
+          "text": "It forces the table to rehash on every read"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "The key was placed in the bucket determined by its hash at insertion. If its fields change, its hash changes, and lookups now probe the wrong bucket, leaving the entry effectively lost.",
       "concept": "Hashing"
     }

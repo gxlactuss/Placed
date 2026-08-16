@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A hash table"
+          "text": "A stack"
         },
         {
           "id": "B",
-          "text": "A queue"
-        },
-        {
-          "id": "C",
           "text": "A min-heap"
         },
         {
+          "id": "C",
+          "text": "A hash table"
+        },
+        {
           "id": "D",
-          "text": "A stack"
+          "text": "A queue"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "BFS dequeues a vertex and enqueues its unvisited neighbours, so nodes are visited in order of increasing distance from the source. The FIFO queue is what produces the level-by-level order.",
       "concept": "BFS"
     },
@@ -38,11 +38,11 @@
       "options": [
         {
           "id": "A",
-          "text": "A topological ordering"
+          "text": "The longest path to every vertex"
         },
         {
           "id": "B",
-          "text": "The longest path to every vertex"
+          "text": "A topological ordering"
         },
         {
           "id": "C",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A hash set only"
+          "text": "Recursion or an explicit stack"
         },
         {
           "id": "B",
-          "text": "A queue"
+          "text": "A hash set only"
         },
         {
           "id": "C",
-          "text": "A priority queue"
+          "text": "A queue"
         },
         {
           "id": "D",
-          "text": "Recursion or an explicit stack"
+          "text": "A priority queue"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "DFS goes as deep as possible before backtracking, which the call stack (or an explicit stack) captures directly. Swapping the stack for a queue turns DFS into BFS.",
       "concept": "DFS"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(V + E)"
-        },
-        {
-          "id": "B",
           "text": "O(V^2)"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "O(E log V)"
+        },
+        {
+          "id": "C",
+          "text": "O(V + E)"
         },
         {
           "id": "D",
           "text": "O(V x E)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Each vertex is processed once and each edge examined once across all adjacency lists, giving O(V + E). On an adjacency matrix the traversal is O(V^2).",
       "concept": "Graph Traversal"
     },
@@ -117,7 +117,7 @@
         },
         {
           "id": "B",
-          "text": "By finding a back edge to a vertex currently on the recursion stack"
+          "text": "By counting the number of edges"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "By counting the number of edges"
+          "text": "By finding a back edge to a vertex currently on the recursion stack"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A vertex still in the active recursion (grey) that is reached again indicates a back edge, which closes a cycle. Tracking three colours (white, grey, black) distinguishes back edges from forward and cross edges.",
       "concept": "Cycle Detection"
     },
@@ -163,11 +163,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Either gives the shortest path"
+          "text": "BFS, because it explores in order of distance"
         },
         {
           "id": "B",
-          "text": "DFS, because it goes deep first"
+          "text": "Either gives the shortest path"
         },
         {
           "id": "C",
@@ -175,10 +175,10 @@
         },
         {
           "id": "D",
-          "text": "BFS, because it explores in order of distance"
+          "text": "DFS, because it goes deep first"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "BFS reaches every cell by a fewest-moves path, so the first time it hits the target is optimal. DFS may reach the target by a long, winding route first.",
       "concept": "BFS"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A shortest-path tree"
-        },
-        {
-          "id": "B",
-          "text": "A valid topological ordering"
-        },
-        {
-          "id": "C",
           "text": "A minimum spanning tree"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "A shortest-path tree"
+        },
+        {
+          "id": "C",
           "text": "The vertices sorted by degree"
+        },
+        {
+          "id": "D",
+          "text": "A valid topological ordering"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A vertex finishes only after all vertices reachable from it, so ordering by decreasing finish time places every vertex before its descendants. This is the DFS-based topological sort.",
       "concept": "Topological Sort"
     },
@@ -217,18 +217,18 @@
         },
         {
           "id": "B",
-          "text": "O(log V)"
+          "text": "O(V), for the queue and visited set"
         },
         {
           "id": "C",
-          "text": "O(V), for the queue and visited set"
+          "text": "O(log V)"
         },
         {
           "id": "D",
           "text": "O(1)"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "In the worst case the queue holds a whole level of vertices, which can be O(V), and the visited set is also O(V). DFS uses O(V) for its stack in the worst case too.",
       "concept": "BFS"
     },
@@ -238,11 +238,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Sort vertices by degree"
+          "text": "Check whether it has a cycle of any length"
         },
         {
           "id": "B",
-          "text": "Check whether it has a cycle of any length"
+          "text": "Two-colour vertices level by level; a conflict between adjacent same-colour vertices means it is not bipartite"
         },
         {
           "id": "C",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "Two-colour vertices level by level; a conflict between adjacent same-colour vertices means it is not bipartite"
+          "text": "Sort vertices by degree"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Assigning alternating colours across BFS levels works exactly when the graph has no odd cycle. Finding an edge joining two vertices of the same colour reveals such an odd cycle.",
       "concept": "Bipartite Check"
     }

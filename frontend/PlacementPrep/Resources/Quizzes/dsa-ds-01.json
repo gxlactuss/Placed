@@ -13,11 +13,11 @@
       "options": [
         {
           "id": "A",
-          "text": "O(1)"
+          "text": "O(log n)"
         },
         {
           "id": "B",
-          "text": "O(log n)"
+          "text": "O(1)"
         },
         {
           "id": "C",
@@ -28,7 +28,7 @@
           "text": "O(n log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Elements sit in contiguous memory, so the address of index i is base + i x elementSize — a single arithmetic step. This random access is the array's defining advantage over a linked list.",
       "concept": "Arrays"
     },
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(n^2)"
         },
         {
           "id": "D",
-          "text": "O(n^2)"
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Every existing element must shift one position to the right to make room, which is n moves. Inserting at the end of a dynamic array, by contrast, is O(1) amortised.",
       "concept": "Arrays"
     },
@@ -67,7 +67,7 @@
         },
         {
           "id": "B",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "C",
@@ -75,7 +75,7 @@
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         }
       ],
       "correct_option_id": "A",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "B + (j x m + i) x s"
+          "text": "B + (i + j) x s"
         },
         {
           "id": "B",
-          "text": "B + (i x n + j) x s"
+          "text": "B + (j x m + i) x s"
         },
         {
           "id": "C",
-          "text": "B + (i + j) x s"
+          "text": "B + (i x n + j) x s"
         },
         {
           "id": "D",
           "text": "B + (i x m + j) x s"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Row-major stores row 0, then row 1, and so on. Skipping i full rows of n elements and then j into the current row gives the offset i x n + j.",
       "concept": "Multidimensional Arrays"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Sorting the array first"
+          "text": "Binary search for each element's complement"
         },
         {
           "id": "B",
-          "text": "Two pointers, one from each end, moving inward"
+          "text": "Sorting the array first"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "Binary search for each element's complement"
+          "text": "Two pointers, one from each end, moving inward"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "If the current sum is too large move the right pointer left, if too small move the left pointer right. Each pointer crosses the array once, giving O(n) with no extra memory.",
       "concept": "Two Pointers"
     },
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "They are two names for the same thing"
+          "text": "A subsequence is contiguous; a subarray is not"
         },
         {
           "id": "B",
@@ -146,11 +146,11 @@
         },
         {
           "id": "C",
-          "text": "A subsequence is contiguous; a subarray is not"
+          "text": "A subarray may reorder elements; a subsequence may not"
         },
         {
           "id": "D",
-          "text": "A subarray may reorder elements; a subsequence may not"
+          "text": "They are two names for the same thing"
         }
       ],
       "correct_option_id": "B",
@@ -163,11 +163,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Each concatenation copies the whole string so far, giving O(n^2) total work"
+          "text": "It fails to compile"
         },
         {
           "id": "B",
-          "text": "It mutates the original string in place"
+          "text": "Each concatenation copies the whole string so far, giving O(n^2) total work"
         },
         {
           "id": "C",
@@ -175,10 +175,10 @@
         },
         {
           "id": "D",
-          "text": "It fails to compile"
+          "text": "It mutates the original string in place"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Immutability means each += allocates a new string and copies the existing characters, so building length n costs 1 + 2 + ... + n = O(n^2). A mutable string builder avoids this.",
       "concept": "Strings"
     },
@@ -188,11 +188,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Sort the array in descending order"
+          "text": "Swap the elements at symmetric positions, walking two pointers toward the middle"
         },
         {
           "id": "B",
-          "text": "Swap the elements at symmetric positions, walking two pointers toward the middle"
+          "text": "Sort the array in descending order"
         },
         {
           "id": "C",
@@ -203,7 +203,7 @@
           "text": "Copy elements into a new array in reverse order"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Swapping A[i] with A[n-1-i] for i up to the midpoint reverses in place. Copying to a new array or using a stack both cost O(n) extra space; sorting changes the values' arrangement, not just their order.",
       "concept": "Arrays"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Without order, every element may have to be examined before concluding"
-        },
-        {
-          "id": "B",
-          "text": "Binary search applies but is slow"
-        },
-        {
-          "id": "C",
           "text": "Arrays cannot be searched at all"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Array access is itself O(n)"
+        },
+        {
+          "id": "C",
+          "text": "Binary search applies but is slow"
+        },
+        {
+          "id": "D",
+          "text": "Without order, every element may have to be examined before concluding"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "A linear scan must check each element, and the target may be last or absent. Binary search would be O(log n) but requires the array to be sorted first, which itself costs O(n log n).",
       "concept": "Searching"
     }

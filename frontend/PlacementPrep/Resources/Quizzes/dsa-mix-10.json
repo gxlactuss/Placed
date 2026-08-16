@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "The average cost per operation over a worst-case sequence of operations"
+          "text": "The best-case cost of one operation"
         },
         {
           "id": "C",
-          "text": "The best-case cost of one operation"
+          "text": "The average cost per operation over a worst-case sequence of operations"
         },
         {
           "id": "D",
           "text": "The memory used across all operations"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Amortized analysis averages cost over a sequence so occasional expensive operations are paid for by many cheap ones. It is a worst-case guarantee on the sequence, not a probabilistic average.",
       "concept": "Amortized Analysis"
     },
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The array is always full"
+          "text": "Doubling capacity makes resizes geometrically rare, so their cost spreads to O(1) per append"
         },
         {
           "id": "B",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "Doubling capacity makes resizes geometrically rare, so their cost spreads to O(1) per append"
+          "text": "The array is always full"
         },
         {
           "id": "D",
           "text": "Appends are done in parallel"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Because capacity doubles, the total copying work over n appends is at most 2n, so each append averages O(1). Growing by a constant instead would make appends O(n) amortized.",
       "concept": "Amortized Analysis"
     },
@@ -67,11 +67,11 @@
         },
         {
           "id": "B",
-          "text": "Assuming all operations cost the same"
+          "text": "Measuring the exact time of each operation"
         },
         {
           "id": "C",
-          "text": "Measuring the exact time of each operation"
+          "text": "Assuming all operations cost the same"
         },
         {
           "id": "D",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Guarantee a perfectly balanced split every time"
-        },
-        {
-          "id": "B",
-          "text": "Make consistently unbalanced partitions extremely unlikely regardless of input order"
-        },
-        {
-          "id": "C",
           "text": "Sort the array before partitioning"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Eliminate all comparisons"
+        },
+        {
+          "id": "C",
+          "text": "Guarantee a perfectly balanced split every time"
+        },
+        {
+          "id": "D",
+          "text": "Make consistently unbalanced partitions extremely unlikely regardless of input order"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Choosing the pivot at random decouples performance from the input arrangement, so no particular input triggers the O(n^2) worst case. The expectation over random choices is O(n log n).",
       "concept": "Randomized Algorithms"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "May return a wrong answer with small probability"
+          "text": "Always runs in the same time"
         },
         {
           "id": "B",
-          "text": "Always runs in the same time"
+          "text": "May return a wrong answer with small probability"
         },
         {
           "id": "C",
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Uses no random choices"
-        },
-        {
-          "id": "B",
-          "text": "Is always correct but may run slowly"
-        },
-        {
-          "id": "C",
           "text": "Never terminates"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Runs in bounded time but may be wrong with small probability"
+        },
+        {
+          "id": "C",
+          "text": "Is always correct but may run slowly"
+        },
+        {
+          "id": "D",
+          "text": "Uses no random choices"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Monte Carlo methods fix the running time and accept a small chance of error, which repeated runs can drive down. The Miller-Rabin primality test is a well-known example.",
       "concept": "Randomized Algorithms"
     },
@@ -163,7 +163,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Balancing via rotations like an AVL tree"
+          "text": "Hashing each element"
         },
         {
           "id": "B",
@@ -175,7 +175,7 @@
         },
         {
           "id": "D",
-          "text": "Hashing each element"
+          "text": "Balancing via rotations like an AVL tree"
         }
       ],
       "correct_option_id": "B",
@@ -188,11 +188,11 @@
       "options": [
         {
           "id": "A",
-          "text": "The maximum over all operations"
+          "text": "Always equal to its actual cost"
         },
         {
           "id": "B",
-          "text": "Always equal to its actual cost"
+          "text": "The maximum over all operations"
         },
         {
           "id": "C",
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "False negatives but no false positives"
+          "text": "No false negatives but a tunable rate of false positives, using little space"
         },
         {
           "id": "B",
-          "text": "No errors at all"
-        },
-        {
-          "id": "C",
           "text": "Exact membership like a hash set"
         },
         {
+          "id": "C",
+          "text": "No errors at all"
+        },
+        {
           "id": "D",
-          "text": "No false negatives but a tunable rate of false positives, using little space"
+          "text": "False negatives but no false positives"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Multiple hash functions set bits in a compact array; a query is definitely-absent or probably-present, so it never misses a real member but can falsely include one. This trades a small error rate for large space savings.",
       "concept": "Bloom Filter"
     },
@@ -242,7 +242,7 @@
         },
         {
           "id": "B",
-          "text": "Expensive operations occur rarely and their cost is spread over many cheap ones in the sequence"
+          "text": "The worst case never actually happens"
         },
         {
           "id": "C",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "The worst case never actually happens"
+          "text": "Expensive operations occur rarely and their cost is spread over many cheap ones in the sequence"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Amortized analysis accounts for the whole sequence, so a costly resize or rebuild that happens once every n operations contributes only O(1) per operation on average. It still counts every operation, unlike average-case analysis over random inputs.",
       "concept": "Amortized Analysis"
     }

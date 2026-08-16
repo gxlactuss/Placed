@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "a is the number of subproblems and b is the factor by which the size shrinks"
-        },
-        {
-          "id": "B",
           "text": "a is the input size and b is the recursion depth"
         },
         {
+          "id": "B",
+          "text": "a is the number of subproblems and b is the factor by which the size shrinks"
+        },
+        {
           "id": "C",
-          "text": "a is the running time and b is the space"
+          "text": "a and b are both constants with no meaning"
         },
         {
           "id": "D",
-          "text": "a and b are both constants with no meaning"
+          "text": "a is the running time and b is the space"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Each level splits a problem into a subproblems each of size n/b, and f(n) is the work to divide and combine. The theorem compares f(n) against n^(log_b a).",
       "concept": "Master Theorem"
     },
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n log n)"
+          "text": "O(n^2)"
         },
         {
           "id": "B",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "O(n^2)"
+          "text": "O(n log n)"
         },
         {
           "id": "D",
           "text": "O(log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Here n^(log_2 2) = n matches f(n) = n, the balanced case, which adds a logarithmic factor. This is the merge sort recurrence.",
       "concept": "Master Theorem"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log n)"
+          "text": "O(1)"
         },
         {
           "id": "B",
-          "text": "O(n)"
-        },
-        {
-          "id": "C",
           "text": "O(n log n)"
         },
         {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
           "id": "D",
-          "text": "O(1)"
+          "text": "O(log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "One subproblem of half the size with constant work per level gives log n levels of O(1), so O(log n). This is the binary search recurrence.",
       "concept": "Master Theorem"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
+          "text": "O(log n)"
         },
         {
           "id": "B",
-          "text": "O(n log n)"
+          "text": "O(n)"
         },
         {
           "id": "C",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "D",
           "text": "O(n^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "n^(log_2 2) = n dominates the constant combine work, so the leaf work rules and the answer is O(n). This is the cost of traversing a balanced binary tree.",
       "concept": "Master Theorem"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n^2)"
-        },
-        {
-          "id": "B",
           "text": "O(n log n)"
         },
         {
+          "id": "B",
+          "text": "O(n^2 log n)"
+        },
+        {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(n^2)"
         },
         {
           "id": "D",
-          "text": "O(n^2 log n)"
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "n^(log_2 4) = n^2 grows faster than f(n) = n, so the leaves dominate and the answer is O(n^2). This is naive schoolbook matrix multiplication's block recurrence.",
       "concept": "Master Theorem"
     },
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Theta(f(n))"
+          "text": "Theta(log n)"
         },
         {
           "id": "B",
@@ -150,10 +150,10 @@
         },
         {
           "id": "D",
-          "text": "Theta(log n)"
+          "text": "Theta(f(n))"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "When the divide-and-combine work dominates the recursion, the top-level cost f(n) sets the total. This is case 3 of the theorem.",
       "concept": "Master Theorem"
     },
@@ -167,15 +167,15 @@
         },
         {
           "id": "B",
-          "text": "O(n^3)"
-        },
-        {
-          "id": "C",
           "text": "O(n^2)"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "O(n^2 log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^3)"
         }
       ],
       "correct_option_id": "A",
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "T(n) = T(n/2) + O(1)"
-        },
-        {
-          "id": "B",
-          "text": "T(n) = 3T(n/2) + O(n)"
-        },
-        {
-          "id": "C",
           "text": "T(n) = T(n - 1) + O(n), a subtract-and-conquer form"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "T(n) = T(n/2) + O(1)"
+        },
+        {
+          "id": "C",
           "text": "T(n) = 2T(n/2) + O(n)"
+        },
+        {
+          "id": "D",
+          "text": "T(n) = 3T(n/2) + O(n)"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "The Master Theorem covers divide-by-a-factor recurrences of the form aT(n/b). A recurrence that subtracts a constant needs a different method, such as unrolling; T(n) = T(n-1) + O(n) unrolls to O(n^2).",
       "concept": "Recurrences"
     },
@@ -213,15 +213,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Exponential recursion, solving to O(2^n)"
+          "text": "Balanced recursion, solving to O(n log n)"
         },
         {
           "id": "B",
-          "text": "Divide and conquer, solving to O(log n)"
+          "text": "Exponential recursion, solving to O(2^n)"
         },
         {
           "id": "C",
-          "text": "Balanced recursion, solving to O(n log n)"
+          "text": "Divide and conquer, solving to O(log n)"
         },
         {
           "id": "D",
@@ -242,18 +242,18 @@
         },
         {
           "id": "B",
-          "text": "The recursion tree method"
+          "text": "Dynamic programming"
         },
         {
           "id": "C",
-          "text": "Dynamic programming"
+          "text": "The recursion tree method"
         },
         {
           "id": "D",
           "text": "Binary search"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "A recursion tree lays out the cost of every level so the total is the sum across levels, giving intuition the Master Theorem then formalises. It is especially useful when the theorem does not directly apply.",
       "concept": "Recurrences"
     }

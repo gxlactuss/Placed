@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log n)"
-        },
-        {
-          "id": "B",
           "text": "O(1)"
         },
         {
+          "id": "B",
+          "text": "O(n log n)"
+        },
+        {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "A balanced tree keeps its height at O(log n), and each comparison discards one subtree. An unbalanced tree can degrade this to O(n).",
       "concept": "Binary Search Trees"
     },
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "Reverse sorted order"
+          "text": "Sorted ascending order"
         },
         {
           "id": "D",
-          "text": "Sorted ascending order"
+          "text": "Reverse sorted order"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Visiting left subtree, then node, then right subtree yields keys in increasing order because of the BST ordering property. This is a common way to test whether a tree is a valid BST.",
       "concept": "Tree Traversal"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "log n"
+          "text": "sqrt(n)"
         },
         {
           "id": "B",
-          "text": "n - 1"
-        },
-        {
-          "id": "C",
           "text": "n / 2"
         },
         {
+          "id": "C",
+          "text": "log n"
+        },
+        {
           "id": "D",
-          "text": "sqrt(n)"
+          "text": "n - 1"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Inserting already-sorted keys makes each node have a single child, so the tree becomes a linked list of height n - 1. All operations then cost O(n), which is what self-balancing trees prevent.",
       "concept": "Binary Search Trees"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "In-order traversal"
+          "text": "Level-order (breadth-first) traversal"
         },
         {
           "id": "B",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "Level-order (breadth-first) traversal"
+          "text": "In-order traversal"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Level-order dequeues a node and enqueues its children, processing the tree level by level. The depth-first traversals use a stack, explicitly or via recursion.",
       "concept": "Tree Traversal"
     },
@@ -138,11 +138,11 @@
       "options": [
         {
           "id": "A",
-          "text": "The leftmost node of its right subtree"
+          "text": "The root of the tree"
         },
         {
           "id": "B",
-          "text": "The root of the tree"
+          "text": "The leftmost node of its right subtree"
         },
         {
           "id": "C",
@@ -153,7 +153,7 @@
           "text": "The rightmost node of its left subtree"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "The successor is the smallest key larger than the node, which is the minimum of its right subtree — reached by going right once, then left as far as possible.",
       "concept": "Binary Search Trees"
     },
@@ -167,7 +167,7 @@
         },
         {
           "id": "B",
-          "text": "2^(h+1) - 1"
+          "text": "2^h"
         },
         {
           "id": "C",
@@ -175,10 +175,10 @@
         },
         {
           "id": "D",
-          "text": "2^h"
+          "text": "2^(h+1) - 1"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Level i holds at most 2^i nodes, so a tree of height h holds at most 2^0 + 2^1 + ... + 2^h = 2^(h+1) - 1. This maximum is achieved by a perfect binary tree.",
       "concept": "Binary Trees"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
-        },
-        {
-          "id": "B",
           "text": "O(1)"
         },
         {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
           "id": "C",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Insertion walks down to a leaf position, and in a skewed tree that path has length n. Balanced trees bound this at O(log n) by restructuring after insertion.",
       "concept": "Binary Search Trees"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Multiple trees are always possible"
+          "text": "The tree is uniquely determined"
         },
         {
           "id": "B",
-          "text": "Only its height is determined"
+          "text": "Multiple trees are always possible"
         },
         {
           "id": "C",
-          "text": "The tree is uniquely determined"
+          "text": "Only its height is determined"
         },
         {
           "id": "D",
           "text": "Nothing can be reconstructed"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Pre-order identifies the root, and in-order splits the remaining keys into left and right subtrees, applied recursively. Pre-order plus post-order, by contrast, is not always sufficient.",
       "concept": "Tree Traversal"
     },
@@ -242,7 +242,7 @@
         },
         {
           "id": "B",
-          "text": "Traversal visits each node many times"
+          "text": "The recursion depth equals the tree height, which is O(n) when skewed"
         },
         {
           "id": "C",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "The recursion depth equals the tree height, which is O(n) when skewed"
+          "text": "Traversal visits each node many times"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A recursive traversal nests one call per level, so a height-n skewed tree needs n stack frames. A balanced tree needs only O(log n), which is why balance protects against overflow.",
       "concept": "Tree Traversal"
     }

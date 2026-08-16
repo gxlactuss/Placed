@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Use binary search for each element"
+          "text": "Compare every pair of elements"
         },
         {
           "id": "B",
@@ -21,14 +21,14 @@
         },
         {
           "id": "C",
-          "text": "Insert elements into a hash set and report a duplicate on the first collision"
+          "text": "Use binary search for each element"
         },
         {
           "id": "D",
-          "text": "Compare every pair of elements"
+          "text": "Insert elements into a hash set and report a duplicate on the first collision"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "A hash set gives O(1) average membership tests, so one pass detects a repeat. Sorting first works but costs O(n log n); pairwise comparison is O(n^2).",
       "concept": "Hash Set"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A nested loop over all pairs"
-        },
-        {
-          "id": "B",
-          "text": "A min-heap"
-        },
-        {
-          "id": "C",
           "text": "Sorting then binary search"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "A hash map storing each value's index, checking for the complement"
+        },
+        {
+          "id": "C",
+          "text": "A min-heap"
+        },
+        {
+          "id": "D",
+          "text": "A nested loop over all pairs"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "For each element, look up target minus that element in the map; a hit gives the pair. The single pass with O(1) lookups makes it linear.",
       "concept": "Hash Map"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Sort the array first"
-        },
-        {
-          "id": "B",
           "text": "Put all values in a hash set and expand each run only from its smallest element"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Use a segment tree"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Binary search for each value"
+        },
+        {
+          "id": "D",
+          "text": "Sort the array first"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Starting a count only when value - 1 is absent ensures each run is walked once, giving O(n) overall. Sorting would achieve the same result but in O(n log n).",
       "concept": "Hash Set"
     },
@@ -92,18 +92,18 @@
         },
         {
           "id": "B",
-          "text": "A random hash"
+          "text": "The first letter of each word"
         },
         {
           "id": "C",
-          "text": "The sorted characters of each word"
+          "text": "A random hash"
         },
         {
           "id": "D",
-          "text": "The first letter of each word"
+          "text": "The sorted characters of each word"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Anagrams share the same multiset of letters, so their sorted form is identical and makes a canonical key. A character-count signature works equally well and avoids the sort.",
       "concept": "Hash Map"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Balancing a binary tree"
-        },
-        {
-          "id": "B",
-          "text": "Detecting a cycle in a graph"
-        },
-        {
-          "id": "C",
           "text": "Reversing a linked list"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Finding the most frequent element or the top-k frequent elements"
+        },
+        {
+          "id": "C",
+          "text": "Balancing a binary tree"
+        },
+        {
+          "id": "D",
+          "text": "Detecting a cycle in a graph"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Counting into a hash map in O(n), then selecting by count, answers frequency questions directly. Top-k then pairs the map with a heap or bucket sort.",
       "concept": "Frequency Counting"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Putting one array in a hash set and testing membership of the other's elements"
-        },
-        {
-          "id": "B",
           "text": "Comparing every pair across the two arrays"
         },
         {
+          "id": "B",
+          "text": "Building a binary search tree of both"
+        },
+        {
           "id": "C",
-          "text": "Sorting both and using a heap"
+          "text": "Putting one array in a hash set and testing membership of the other's elements"
         },
         {
           "id": "D",
-          "text": "Building a binary search tree of both"
+          "text": "Sorting both and using a heap"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Membership tests against a hash set give O(m + n) total time. Nested comparison is O(mn); sorting both and merging is O(m log m + n log n).",
       "concept": "Hash Set"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "To reverse the array"
-        },
-        {
-          "id": "B",
           "text": "So the number of earlier prefixes equal to current sum minus k is available in O(1)"
         },
         {
+          "id": "B",
+          "text": "To sort the prefixes"
+        },
+        {
           "id": "C",
-          "text": "To detect duplicates in the array"
+          "text": "To reverse the array"
         },
         {
           "id": "D",
-          "text": "To sort the prefixes"
+          "text": "To detect duplicates in the array"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "A subarray sums to k exactly when an earlier prefix equals the current prefix minus k, and the map counts such prefixes instantly. This turns an O(n^2) scan into O(n).",
       "concept": "Prefix Sums"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "You need to iterate elements in sorted order"
+          "text": "You need range queries"
         },
         {
           "id": "B",
-          "text": "Memory is extremely constrained"
-        },
-        {
-          "id": "C",
           "text": "Order is irrelevant and average O(1) lookups matter most"
         },
         {
+          "id": "C",
+          "text": "You need to iterate elements in sorted order"
+        },
+        {
           "id": "D",
-          "text": "You need range queries"
+          "text": "Memory is extremely constrained"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Hashing gives constant-time average membership but no ordering. When ordered iteration or range queries are needed, a balanced tree or sorted array is the right choice despite its O(log n) operations.",
       "concept": "Hash Set"
     },
@@ -217,11 +217,11 @@
         },
         {
           "id": "B",
-          "text": "Sort both and compare, which is optimal"
+          "text": "Compare their lengths only"
         },
         {
           "id": "C",
-          "text": "Compare their lengths only"
+          "text": "Sort both and compare, which is optimal"
         },
         {
           "id": "D",
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "Lookups are always O(log n)"
+          "text": "Adversarial or unlucky keys can cause many collisions, degrading to O(n)"
         },
         {
           "id": "D",
-          "text": "Adversarial or unlucky keys can cause many collisions, degrading to O(n)"
+          "text": "Lookups are always O(log n)"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "If many keys collide, chains or probe sequences grow long and operations slow to linear. Randomised hashing defends against adversaries who try to force this worst case.",
       "concept": "Hashing"
     }

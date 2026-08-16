@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "Number of nodes on the left minus on the right, kept in {-1, 0, +1}"
+          "text": "Height of left subtree minus height of right subtree, kept in {-1, 0, +1}"
         },
         {
           "id": "C",
-          "text": "Depth of the node, kept below log n"
+          "text": "Number of nodes on the left minus on the right, kept in {-1, 0, +1}"
         },
         {
           "id": "D",
-          "text": "Height of left subtree minus height of right subtree, kept in {-1, 0, +1}"
+          "text": "Depth of the node, kept below log n"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "AVL balance is defined by subtree heights, and any node whose factor leaves {-1, 0, +1} triggers a rotation. This keeps the height within about 1.44 log n.",
       "concept": "AVL Trees"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n) rotations"
+          "text": "O(log n) rotations"
         },
         {
           "id": "B",
-          "text": "One rotation (single or double)"
-        },
-        {
-          "id": "C",
           "text": "No rotations are ever needed"
         },
         {
+          "id": "C",
+          "text": "O(n) rotations"
+        },
+        {
           "id": "D",
-          "text": "O(log n) rotations"
+          "text": "One rotation (single or double)"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "One insertion unbalances at most one node critically, and a single or double rotation there restores the whole tree. Deletion, by contrast, may require rotations up the whole path.",
       "concept": "AVL Trees"
     },
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "They use less memory per key"
+          "text": "They keep keys unsorted for faster insertion"
         },
         {
           "id": "B",
@@ -96,7 +96,7 @@
         },
         {
           "id": "C",
-          "text": "They keep keys unsorted for faster insertion"
+          "text": "They use less memory per key"
         },
         {
           "id": "D",
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It is always a binary tree"
-        },
-        {
-          "id": "B",
           "text": "All data pointers live in the leaves, which are linked for range scans"
         },
         {
+          "id": "B",
+          "text": "It cannot be used on disk"
+        },
+        {
           "id": "C",
-          "text": "It stores at most two keys per node"
+          "text": "It is always a binary tree"
         },
         {
           "id": "D",
-          "text": "It cannot be used on disk"
+          "text": "It stores at most two keys per node"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "In a B+ tree the internal nodes hold only separator keys for routing, and every record pointer sits in a leaf. The linked leaves make ordered range queries a simple leaf traversal.",
       "concept": "B+ Trees"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "AVL trees cannot support deletion"
-        },
-        {
-          "id": "B",
           "text": "Red-black trees do not support ordered traversal"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "AVL is more rigidly balanced, so faster lookups but more rotations on updates"
+        },
+        {
+          "id": "C",
+          "text": "AVL trees cannot support deletion"
         },
         {
           "id": "D",
           "text": "Red-black trees are always shorter than AVL trees"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "AVL's tighter height limit favours read-heavy workloads, while red-black trees do less restructuring per update and suit write-heavy use, which is why many library maps use them.",
       "concept": "Balanced Trees"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "m - 1"
+          "text": "m"
         },
         {
           "id": "B",
-          "text": "log m"
+          "text": "m - 1"
         },
         {
           "id": "C",
-          "text": "2m"
+          "text": "log m"
         },
         {
           "id": "D",
-          "text": "m"
+          "text": "2m"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Order m means up to m children and therefore up to m - 1 keys per node. A non-root node must be at least half full to keep the tree balanced.",
       "concept": "B-Trees"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A single right rotation"
-        },
-        {
-          "id": "B",
           "text": "A left-then-right double rotation"
         },
         {
+          "id": "B",
+          "text": "A single left rotation"
+        },
+        {
           "id": "C",
-          "text": "Recolouring only"
+          "text": "A single right rotation"
         },
         {
           "id": "D",
-          "text": "A single left rotation"
+          "text": "Recolouring only"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "A left-left case is resolved by one right rotation about the unbalanced node. The zig-zag cases (LR and RL) need a double rotation; recolouring belongs to red-black trees.",
       "concept": "AVL Trees"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log n)"
-        },
-        {
-          "id": "B",
           "text": "O(sqrt n)"
         },
         {
+          "id": "B",
+          "text": "O(log n)"
+        },
+        {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(n log n)"
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "The minimum node count for height h follows a Fibonacci recurrence, which grows exponentially, so height is logarithmic in n. This guarantees O(log n) search, insert and delete.",
       "concept": "AVL Trees"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It contains the same number of red nodes"
-        },
-        {
-          "id": "B",
           "text": "It contains the same number of black nodes"
         },
         {
+          "id": "B",
+          "text": "It alternates strictly red and black"
+        },
+        {
           "id": "C",
-          "text": "It has exactly log n nodes"
+          "text": "It contains the same number of red nodes"
         },
         {
           "id": "D",
-          "text": "It alternates strictly red and black"
+          "text": "It has exactly log n nodes"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Equal black-height on every path, combined with the rule that a red node cannot have a red child, is what bounds the longest path at twice the shortest and keeps the tree balanced.",
       "concept": "Red-Black Trees"
     }

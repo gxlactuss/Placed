@@ -13,11 +13,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Building a hash table"
+          "text": "Recomputing an aggregate over every contiguous subarray from scratch"
         },
         {
           "id": "B",
-          "text": "Recomputing an aggregate over every contiguous subarray from scratch"
+          "text": "Sorting the array repeatedly"
         },
         {
           "id": "C",
@@ -25,10 +25,10 @@
         },
         {
           "id": "D",
-          "text": "Sorting the array repeatedly"
+          "text": "Building a hash table"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Instead of an O(n^2) or worse pass over all subarrays, the window updates its aggregate incrementally as it slides, adding the entering element and removing the leaving one in O(1).",
       "concept": "Sliding Window"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A sorted array"
-        },
-        {
-          "id": "B",
           "text": "A min-heap of characters"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "A hash set or last-seen index map for characters in the window"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "A stack of substrings"
+        },
+        {
+          "id": "D",
+          "text": "A sorted array"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Tracking which characters are currently in the window lets the left edge jump past a repeat in O(1). Each character enters and leaves the window at most once, so the scan is O(n).",
       "concept": "Sliding Window"
     },
@@ -63,15 +63,15 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n log n) per query"
+          "text": "O(log n) per query"
         },
         {
           "id": "B",
-          "text": "O(n) per query"
+          "text": "O(n log n) per query"
         },
         {
           "id": "C",
-          "text": "O(log n) per query"
+          "text": "O(n) per query"
         },
         {
           "id": "D",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Sorting the array"
-        },
-        {
-          "id": "B",
           "text": "A hash map of prefix-sum frequencies seen so far"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "A second sliding window"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "A binary search tree of the elements"
+        },
+        {
+          "id": "D",
+          "text": "Sorting the array"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "At each index the number of earlier prefix sums equal to current - k gives the subarrays ending here. A hash map of prefix-sum counts makes the whole scan O(n).",
       "concept": "Prefix Sums"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A max-heap rebuilt each window"
-        },
-        {
-          "id": "B",
           "text": "A prefix-maximum array"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "A monotonic deque holding candidate indices in decreasing value order"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Sorting each window"
+        },
+        {
+          "id": "D",
+          "text": "A max-heap rebuilt each window"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "The deque keeps indices whose values are useful future maxima, discarding smaller trailing ones. Its front is always the current window's maximum, and each index is pushed and popped once.",
       "concept": "Monotonic Deque"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The window size must be even"
-        },
-        {
-          "id": "B",
-          "text": "Negatives cannot be stored in an array"
-        },
-        {
-          "id": "C",
           "text": "Prefix sums do not exist for negatives"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "The window size must be even"
+        },
+        {
+          "id": "C",
           "text": "Shrinking the window must monotonically decrease the sum, which fails with negatives"
+        },
+        {
+          "id": "D",
+          "text": "Negatives cannot be stored in an array"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "The window slides forward assuming that removing left elements lowers the sum. Negative numbers break that monotonicity, so those problems need prefix sums with a hash map or a deque instead.",
       "concept": "Sliding Window"
     },
@@ -167,18 +167,18 @@
         },
         {
           "id": "B",
-          "text": "O(1) after O(mn) preprocessing"
+          "text": "O(log(mn)) per query"
         },
         {
           "id": "C",
-          "text": "O(mn) per query"
+          "text": "O(1) after O(mn) preprocessing"
         },
         {
           "id": "D",
-          "text": "O(log(mn)) per query"
+          "text": "O(mn) per query"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Precomputing cumulative sums over the grid lets a rectangle sum be found by inclusion-exclusion of four corner values in constant time. It is widely used in image processing.",
       "concept": "2D Prefix Sums"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Finding the maximum element"
-        },
-        {
-          "id": "B",
-          "text": "Searching for a value"
-        },
-        {
-          "id": "C",
           "text": "Adding a constant to every element of a range, deferring the final values to one pass"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Sorting a range"
+        },
+        {
+          "id": "C",
+          "text": "Searching for a value"
+        },
+        {
+          "id": "D",
+          "text": "Finding the maximum element"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Recording +v at the start of a range and -v just past its end lets many range updates be applied in O(1) each, then a single prefix-sum pass reconstructs the array. It is the inverse of a prefix sum.",
       "concept": "Difference Array"
     },
@@ -217,7 +217,7 @@
         },
         {
           "id": "B",
-          "text": "O(n log k)"
+          "text": "O(n) — each element enters and leaves at most once"
         },
         {
           "id": "C",
@@ -225,10 +225,10 @@
         },
         {
           "id": "D",
-          "text": "O(n) — each element enters and leaves at most once"
+          "text": "O(n log k)"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "As the window advances one step, exactly one element enters and one leaves, so across the whole scan there are O(n) updates. This amortised bound is what makes the technique linear.",
       "concept": "Sliding Window"
     },
@@ -242,7 +242,7 @@
         },
         {
           "id": "B",
-          "text": "Finding the longest increasing subsequence (non-contiguous)"
+          "text": "Maximum sum of any k consecutive elements"
         },
         {
           "id": "C",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "Maximum sum of any k consecutive elements"
+          "text": "Finding the longest increasing subsequence (non-contiguous)"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A subsequence need not be contiguous, so a window over a contiguous range cannot capture it — that problem needs DP or patience sorting. The others all concern contiguous subarrays or substrings.",
       "concept": "Sliding Window"
     }

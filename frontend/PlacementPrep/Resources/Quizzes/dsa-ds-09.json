@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log n)"
-        },
-        {
-          "id": "B",
-          "text": "O(1)"
-        },
-        {
-          "id": "C",
           "text": "O(n)"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "O(sqrt n)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(1)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Any range decomposes into O(log n) canonical segments covered by tree nodes. Both queries and point updates therefore run in logarithmic time, unlike a static prefix-sum array that cannot update cheaply.",
       "concept": "Segment Trees"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Insertion and deletion of arbitrary keys"
+          "text": "Prefix sum query and point update"
         },
         {
           "id": "B",
-          "text": "Range minimum query and range assignment"
+          "text": "Insertion and deletion of arbitrary keys"
         },
         {
           "id": "C",
-          "text": "Prefix sum query and point update"
+          "text": "Range minimum query and range assignment"
         },
         {
           "id": "D",
           "text": "Sorting and searching"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "A BIT maintains prefix sums using the low-bit trick to walk O(log n) responsible nodes per operation. It is more compact and simpler than a segment tree but supports fewer query types.",
       "concept": "Fenwick Tree"
     },
@@ -67,7 +67,7 @@
         },
         {
           "id": "B",
-          "text": "It merges two sets by comparing their sizes"
+          "text": "It re-points nodes on a find path directly to the root, flattening the tree"
         },
         {
           "id": "C",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "It re-points nodes on a find path directly to the root, flattening the tree"
+          "text": "It merges two sets by comparing their sizes"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "During find, each visited node is attached straight to the root, so later finds on those nodes are nearly constant time. Combined with union by rank it gives near-constant amortised cost.",
       "concept": "Union-Find"
     },
@@ -92,18 +92,18 @@
         },
         {
           "id": "B",
-          "text": "Shorter tree under the taller tree's root"
+          "text": "Two roots into a linked list"
         },
         {
           "id": "C",
-          "text": "Two roots into a linked list"
+          "text": "Shorter tree under the taller tree's root"
         },
         {
           "id": "D",
           "text": "Taller tree under the shorter tree's root"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Hanging the smaller tree under the larger root keeps the combined tree from growing taller than necessary, bounding height and keeping find fast.",
       "concept": "Union-Find"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log n)"
-        },
-        {
-          "id": "B",
           "text": "O(sqrt n)"
         },
         {
+          "id": "B",
+          "text": "O(n)"
+        },
+        {
           "id": "C",
-          "text": "Nearly constant — the inverse Ackermann function of n"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(n)"
+          "text": "Nearly constant — the inverse Ackermann function of n"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "The combined optimisations yield O(alpha(n)) amortised, where the inverse Ackermann function is at most 4 for any conceivable input. This is effectively constant in practice.",
       "concept": "Union-Find"
     },
@@ -138,11 +138,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Compressing the tree to save memory"
+          "text": "Sorting the underlying array before building the tree"
         },
         {
           "id": "B",
-          "text": "Sorting the underlying array before building the tree"
+          "text": "Deferring range updates to children until they are actually needed, keeping range updates O(log n)"
         },
         {
           "id": "C",
@@ -150,10 +150,10 @@
         },
         {
           "id": "D",
-          "text": "Deferring range updates to children until they are actually needed, keeping range updates O(log n)"
+          "text": "Compressing the tree to save memory"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Without lazy propagation a range update could touch O(n) leaves. Storing a pending update at a covering node and pushing it down only when that subtree is later visited keeps range updates logarithmic.",
       "concept": "Segment Trees"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
+          "text": "O(n log n)"
         },
         {
           "id": "B",
-          "text": "O(log n)"
-        },
-        {
-          "id": "C",
           "text": "O(n^2)"
         },
         {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "A segment tree has n leaves and about n internal nodes, so roughly 2n to 4n nodes in an array implementation — linear space. Its build time is likewise O(n).",
       "concept": "Segment Trees"
     },
@@ -192,7 +192,7 @@
         },
         {
           "id": "B",
-          "text": "Kruskal's minimum spanning tree algorithm"
+          "text": "Dijkstra's shortest path algorithm"
         },
         {
           "id": "C",
@@ -200,10 +200,10 @@
         },
         {
           "id": "D",
-          "text": "Dijkstra's shortest path algorithm"
+          "text": "Kruskal's minimum spanning tree algorithm"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Kruskal's adds edges in increasing weight, using find to test whether an edge's endpoints are already connected and union to merge components. This cycle check is exactly what disjoint-set supports.",
       "concept": "Union-Find"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Double the index, i x 2"
-        },
-        {
-          "id": "B",
-          "text": "Add one, i + 1"
-        },
-        {
-          "id": "C",
           "text": "Add the lowest set bit of i, computed as i + (i & -i)"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Double the index, i x 2"
+        },
+        {
+          "id": "C",
           "text": "Halve the index, i / 2"
+        },
+        {
+          "id": "D",
+          "text": "Add one, i + 1"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Updates climb by adding the low bit i & -i, while prefix queries descend by subtracting it. This bit manipulation is what gives the BIT its O(log n) cost and tiny constant factor.",
       "concept": "Fenwick Tree"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The data must be kept sorted"
-        },
-        {
-          "id": "B",
-          "text": "Range assignment with lazy propagation is required"
-        },
-        {
-          "id": "C",
           "text": "Range minimum queries are required"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "The data must be kept sorted"
+        },
+        {
+          "id": "C",
           "text": "Only prefix or range sums with point updates are needed"
+        },
+        {
+          "id": "D",
+          "text": "Range assignment with lazy propagation is required"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "For invertible aggregates like sums, the BIT is smaller, simpler and faster by a constant factor. Non-invertible queries such as range minimum need the greater generality of a segment tree.",
       "concept": "Fenwick Tree"
     }

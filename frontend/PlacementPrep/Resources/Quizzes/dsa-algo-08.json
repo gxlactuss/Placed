@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "A balanced tree and no cycles"
-        },
-        {
-          "id": "C",
           "text": "Randomised pivots and distinct keys"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Overlapping subproblems and optimal substructure"
+        },
+        {
+          "id": "D",
+          "text": "A balanced tree and no cycles"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "The same subproblems must recur (so caching pays off) and an optimal solution must be built from optimal solutions of subproblems. Without overlap, plain divide-and-conquer suffices.",
       "concept": "Dynamic Programming"
     },
@@ -38,11 +38,11 @@
       "options": [
         {
           "id": "A",
-          "text": "They give different answers"
+          "text": "Memoisation is top-down and lazy; tabulation is bottom-up and iterative"
         },
         {
           "id": "B",
-          "text": "Memoisation is top-down and lazy; tabulation is bottom-up and iterative"
+          "text": "Tabulation uses recursion; memoisation uses loops"
         },
         {
           "id": "C",
@@ -50,10 +50,10 @@
         },
         {
           "id": "D",
-          "text": "Tabulation uses recursion; memoisation uses loops"
+          "text": "They give different answers"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Memoisation recurses and caches results as they are first needed, so it computes only reachable states. Tabulation fills a table iteratively from the base cases upward, avoiding recursion overhead.",
       "concept": "Dynamic Programming"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(nW)"
-        },
-        {
-          "id": "B",
-          "text": "O(n log W)"
-        },
-        {
-          "id": "C",
           "text": "O(2^n)"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "O(n + W)"
+        },
+        {
+          "id": "C",
+          "text": "O(nW)"
+        },
+        {
+          "id": "D",
+          "text": "O(n log W)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "The table has n rows and W columns, each filled in constant time. This is pseudo-polynomial: W is a value, not an input length, so it is exponential in the number of bits of W.",
       "concept": "Knapsack"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
+          "text": "O(n log n)"
         },
         {
           "id": "B",
-          "text": "O(log n)"
+          "text": "O(n)"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "There are only n distinct subproblems, each computed once and reused thereafter. The exponential blow-up came entirely from recomputing the same values.",
       "concept": "Memoisation"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A single linear scan"
-        },
-        {
-          "id": "B",
-          "text": "A greedy scan without any auxiliary structure"
-        },
-        {
-          "id": "C",
           "text": "Patience sorting with binary search over the tails array"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "A single linear scan"
+        },
+        {
+          "id": "C",
           "text": "Depth-first search"
+        },
+        {
+          "id": "D",
+          "text": "A greedy scan without any auxiliary structure"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Maintaining an array of smallest possible tail values and binary-searching each element's insertion point gives O(n log n). The straightforward DP is O(n^2).",
       "concept": "Longest Increasing Subsequence"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(amount x number of coin types)"
+          "text": "O(number of coin types)"
         },
         {
           "id": "B",
-          "text": "O(amount^2)"
-        },
-        {
-          "id": "C",
           "text": "O(2^amount)"
         },
         {
+          "id": "C",
+          "text": "O(amount^2)"
+        },
+        {
           "id": "D",
-          "text": "O(number of coin types)"
+          "text": "O(amount x number of coin types)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "For each amount from 1 to the target, the DP tries every coin denomination, giving amount x coins work. It is again pseudo-polynomial in the amount.",
       "concept": "Coin Change"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Never — DP is always better"
-        },
-        {
-          "id": "B",
-          "text": "Only for graph problems"
-        },
-        {
-          "id": "C",
           "text": "Only when the input is unsorted"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "When the greedy-choice property holds, since greedy is typically faster and simpler"
+        },
+        {
+          "id": "C",
+          "text": "Never — DP is always better"
+        },
+        {
+          "id": "D",
+          "text": "Only for graph problems"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "If a locally optimal choice is provably part of a global optimum, greedy avoids building a table and runs faster. DP is the safe fallback when that property cannot be established.",
       "concept": "Dynamic Programming"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The recursion has no base case"
-        },
-        {
-          "id": "B",
-          "text": "Each state depends only on a constant number of previous states"
-        },
-        {
-          "id": "C",
           "text": "The array is always sorted"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "The problem has no overlapping subproblems"
+        },
+        {
+          "id": "C",
+          "text": "The recursion has no base case"
+        },
+        {
+          "id": "D",
+          "text": "Each state depends only on a constant number of previous states"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "When dp[i] uses only dp[i-1] and dp[i-2], keeping those two values in variables suffices and the full table is unnecessary. This rolling-variable trick is a common optimisation.",
       "concept": "Space Optimisation"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n + T)"
-        },
-        {
-          "id": "B",
           "text": "O(n log T)"
         },
         {
+          "id": "B",
+          "text": "O(n + T)"
+        },
+        {
           "id": "C",
-          "text": "O(nT)"
+          "text": "O(2^n) with no better option"
         },
         {
           "id": "D",
-          "text": "O(2^n) with no better option"
+          "text": "O(nT)"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "A boolean table over items and achievable sums up to T is filled in O(nT). Like knapsack it is pseudo-polynomial, and the decision version is the basis for the NP-complete partition problem.",
       "concept": "Subset Sum"
     },
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "It sometimes gives approximate answers"
+          "text": "Its running time is polynomial in the numeric value W, which is exponential in W's bit length"
         },
         {
           "id": "B",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "Its running time is polynomial in the numeric value W, which is exponential in W's bit length"
+          "text": "It sometimes gives approximate answers"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "The input size of W is its number of bits, roughly log W, so O(nW) is exponential in that size. A truly polynomial algorithm would be polynomial in the bit length of the input.",
       "concept": "Complexity"
     }

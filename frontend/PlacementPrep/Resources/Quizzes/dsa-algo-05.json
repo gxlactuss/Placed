@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It tries every possible solution"
-        },
-        {
-          "id": "B",
-          "text": "It caches subproblem results"
-        },
-        {
-          "id": "C",
           "text": "It always splits the problem in half"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It makes the locally optimal choice at each step, hoping to reach a global optimum"
+        },
+        {
+          "id": "C",
+          "text": "It tries every possible solution"
+        },
+        {
+          "id": "D",
+          "text": "It caches subproblem results"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A greedy algorithm commits to the best immediate option and never reconsiders. It is correct only when the problem has the greedy-choice property and optimal substructure.",
       "concept": "Greedy"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Has the shortest duration"
-        },
-        {
-          "id": "B",
           "text": "Finishes earliest among the remaining compatible ones"
         },
         {
+          "id": "B",
+          "text": "Starts latest"
+        },
+        {
           "id": "C",
-          "text": "Starts earliest"
+          "text": "Has the shortest duration"
         },
         {
           "id": "D",
-          "text": "Starts latest"
+          "text": "Starts earliest"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Choosing the earliest-finishing activity leaves the most room for the rest, and this can be proven optimal by an exchange argument. Shortest-duration or earliest-start strategies both fail on counterexamples.",
       "concept": "Activity Selection"
     },
@@ -63,11 +63,11 @@
       "options": [
         {
           "id": "A",
-          "text": "It cannot handle a coin of value 1"
+          "text": "It never terminates"
         },
         {
           "id": "B",
-          "text": "It never terminates"
+          "text": "It requires the coins to be sorted descending"
         },
         {
           "id": "C",
@@ -75,7 +75,7 @@
         },
         {
           "id": "D",
-          "text": "It requires the coins to be sorted descending"
+          "text": "It cannot handle a coin of value 1"
         }
       ],
       "correct_option_id": "C",
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Merging the two highest-frequency nodes"
+          "text": "Merging the two lowest-frequency nodes repeatedly"
         },
         {
           "id": "B",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "Merging the two lowest-frequency nodes repeatedly"
+          "text": "Merging the two highest-frequency nodes"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Combining the two rarest symbols first pushes them deepest in the tree, giving them the longest codes. This local choice provably yields the minimum total encoded length.",
       "concept": "Huffman Coding"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A sorted input and no duplicates"
+          "text": "A balanced tree structure"
         },
         {
           "id": "B",
-          "text": "The greedy-choice property and optimal substructure"
+          "text": "A sorted input and no duplicates"
         },
         {
           "id": "C",
-          "text": "A balanced tree structure"
+          "text": "The greedy-choice property and optimal substructure"
         },
         {
           "id": "D",
           "text": "Overlapping subproblems and memoisation"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "The greedy-choice property means a locally optimal choice is part of some global optimum, and optimal substructure means the rest of the problem is solved the same way. Without both, greedy can be wrong.",
       "concept": "Greedy"
     },
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Lowest weight"
+          "text": "Order of arrival"
         },
         {
           "id": "B",
@@ -146,14 +146,14 @@
         },
         {
           "id": "C",
-          "text": "Highest value-to-weight ratio"
+          "text": "Lowest weight"
         },
         {
           "id": "D",
-          "text": "Order of arrival"
+          "text": "Highest value-to-weight ratio"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Because items can be split, filling the knapsack with the densest value first is optimal. The 0/1 version, where items cannot be split, is not solvable this way and needs dynamic programming.",
       "concept": "Knapsack"
     },
@@ -163,7 +163,7 @@
       "options": [
         {
           "id": "A",
-          "text": "By measuring its runtime"
+          "text": "By running it on all inputs"
         },
         {
           "id": "B",
@@ -171,7 +171,7 @@
         },
         {
           "id": "C",
-          "text": "By running it on all inputs"
+          "text": "By measuring its runtime"
         },
         {
           "id": "D",
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Picks a random unvisited vertex"
+          "text": "Reconsiders finalised vertices"
         },
         {
           "id": "B",
@@ -196,11 +196,11 @@
         },
         {
           "id": "C",
-          "text": "Chooses the vertex with the most edges"
+          "text": "Picks a random unvisited vertex"
         },
         {
           "id": "D",
-          "text": "Reconsiders finalised vertices"
+          "text": "Chooses the vertex with the most edges"
         }
       ],
       "correct_option_id": "B",
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Schedule the highest-penalty jobs last"
-        },
-        {
-          "id": "B",
           "text": "Schedule jobs in arrival order"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Schedule jobs by earliest deadline first"
+        },
+        {
+          "id": "C",
+          "text": "Schedule the highest-penalty jobs last"
         },
         {
           "id": "D",
           "text": "Schedule the longest jobs first"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Earliest-deadline-first minimises maximum lateness for single-machine scheduling. Interval and scheduling problems frequently reduce to sorting by an endpoint and greedily selecting.",
       "concept": "Scheduling"
     },
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "Items cannot be compared by ratio"
+          "text": "Committing to the densest item may block a better combination that a whole-item constraint requires"
         },
         {
           "id": "D",
-          "text": "Committing to the densest item may block a better combination that a whole-item constraint requires"
+          "text": "Items cannot be compared by ratio"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Without the ability to take a fraction, the locally best ratio can leave capacity that a different, less dense set would have filled more valuably. The problem lacks the greedy-choice property, so DP is needed.",
       "concept": "Knapsack"
     }

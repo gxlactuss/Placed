@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Sort the intervals by their length"
-        },
-        {
-          "id": "B",
           "text": "Sort the intervals by their start point"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Put them in a hash set"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Reverse the list"
+        },
+        {
+          "id": "D",
+          "text": "Sort the intervals by their length"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Once sorted by start, a single pass can extend or close the current merged interval, since any overlap must involve an adjacent interval. This makes the whole process O(n log n).",
       "concept": "Intervals"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "b == d"
-        },
-        {
-          "id": "B",
           "text": "b < c"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "a <= d and c <= b"
+        },
+        {
+          "id": "C",
+          "text": "b == d"
         },
         {
           "id": "D",
           "text": "a == c"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "They overlap unless one ends before the other begins, which the condition a <= d and c <= b captures. It is often easier to test the non-overlap case and negate it.",
       "concept": "Intervals"
     },
@@ -63,11 +63,11 @@
       "options": [
         {
           "id": "A",
-          "text": "A single linear scan without sorting"
+          "text": "A hash map of room numbers"
         },
         {
           "id": "B",
-          "text": "A hash map of room numbers"
+          "text": "A min-heap of end times, or a sweep line over sorted start and end events"
         },
         {
           "id": "C",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "A min-heap of end times, or a sweep line over sorted start and end events"
+          "text": "A single linear scan without sorting"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Processing starts and ends in time order, the peak number of simultaneously active meetings is the answer. A min-heap of end times reuses a room whenever the earliest meeting has finished.",
       "concept": "Intervals"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Start time, taking the latest start"
-        },
-        {
-          "id": "B",
-          "text": "End time, then repeatedly take the earliest-finishing compatible interval"
-        },
-        {
-          "id": "C",
           "text": "Length, taking the shortest"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Start time, taking the earliest start"
+        },
+        {
+          "id": "C",
+          "text": "End time, then repeatedly take the earliest-finishing compatible interval"
+        },
+        {
+          "id": "D",
+          "text": "Start time, taking the latest start"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Finishing earliest leaves the most room for later intervals, which an exchange argument proves optimal. This is the activity-selection problem.",
       "concept": "Greedy Intervals"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Building a hash table of coordinates"
+          "text": "Randomly sampling points"
         },
         {
           "id": "B",
-          "text": "Randomly sampling points"
+          "text": "Building a hash table of coordinates"
         },
         {
           "id": "C",
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Reversing the list"
+          "text": "Providing a comparator or key function to a standard O(n log n) sort"
         },
         {
           "id": "B",
@@ -146,14 +146,14 @@
         },
         {
           "id": "C",
-          "text": "Hashing the objects"
+          "text": "Reversing the list"
         },
         {
           "id": "D",
-          "text": "Providing a comparator or key function to a standard O(n log n) sort"
+          "text": "Hashing the objects"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Library sorts accept a comparator or key selector, so any ordering is expressed without reimplementing the algorithm. The underlying sort remains O(n log n).",
       "concept": "Sorting"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "When memory is unlimited"
+          "text": "When all keys are distinct"
         },
         {
           "id": "B",
-          "text": "When sorting by a secondary key must preserve the order established by a previous sort on a primary key"
-        },
-        {
-          "id": "C",
           "text": "When the array is already sorted"
         },
         {
+          "id": "C",
+          "text": "When memory is unlimited"
+        },
+        {
           "id": "D",
-          "text": "When all keys are distinct"
+          "text": "When sorting by a secondary key must preserve the order established by a previous sort on a primary key"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Stability keeps equal keys in their prior relative order, which lets multi-key sorting be done one key at a time. With distinct keys, stability makes no observable difference.",
       "concept": "Stable Sort"
     },
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Compare every pair of intervals"
+          "text": "Build a binary search tree keyed on length"
         },
         {
           "id": "B",
@@ -196,14 +196,14 @@
         },
         {
           "id": "C",
-          "text": "Sort by start and check each interval against the previous one"
+          "text": "Compare every pair of intervals"
         },
         {
           "id": "D",
-          "text": "Build a binary search tree keyed on length"
+          "text": "Sort by start and check each interval against the previous one"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "After sorting by start, an overlap can only occur between consecutive intervals, so a single linear scan suffices. This is O(n log n) versus the O(n^2) of checking all pairs.",
       "concept": "Intervals"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
-        },
-        {
-          "id": "B",
           "text": "O(n log n)"
         },
         {
+          "id": "B",
+          "text": "O(n^2)"
+        },
+        {
           "id": "C",
-          "text": "O(log n)"
+          "text": "O(n)"
         },
         {
           "id": "D",
-          "text": "O(n^2)"
+          "text": "O(log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Since the list is already sorted, one linear pass places the new interval and merges any it overlaps. No re-sorting is needed, so it is linear rather than O(n log n).",
       "concept": "Intervals"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Converts intervals into a hash table"
+          "text": "Brings related intervals adjacent, so a linear scan can decide overlaps locally"
         },
         {
           "id": "B",
-          "text": "Removes all duplicates"
-        },
-        {
-          "id": "C",
           "text": "Guarantees O(1) total time"
         },
         {
+          "id": "C",
+          "text": "Removes all duplicates"
+        },
+        {
           "id": "D",
-          "text": "Brings related intervals adjacent, so a linear scan can decide overlaps locally"
+          "text": "Converts intervals into a hash table"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Ordering by an endpoint means any interaction happens between neighbours, replacing global pairwise checks with a local sweep. This is why sorting is the first move in most interval algorithms.",
       "concept": "Intervals"
     }

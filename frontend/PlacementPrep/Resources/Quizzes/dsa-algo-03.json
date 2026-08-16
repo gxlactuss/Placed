@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Two recursive calls"
+          "text": "A loop and a counter"
         },
         {
           "id": "B",
@@ -21,7 +21,7 @@
         },
         {
           "id": "C",
-          "text": "A loop and a counter"
+          "text": "Two recursive calls"
         },
         {
           "id": "D",
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The clock speed"
+          "text": "The number of CPU cores"
         },
         {
           "id": "B",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "The size of the call stack"
+          "text": "The clock speed"
         },
         {
           "id": "D",
-          "text": "The number of CPU cores"
+          "text": "The size of the call stack"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Each call pushes a frame onto the call stack, which has a fixed limit. Exceeding it raises a stack overflow, which is why very deep recursion is sometimes rewritten iteratively.",
       "concept": "Recursion"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Try every complete solution and keep the best"
-        },
-        {
-          "id": "B",
           "text": "Build a solution incrementally and abandon a partial choice as soon as it cannot lead to a valid answer"
         },
         {
+          "id": "B",
+          "text": "Sort the input before solving"
+        },
+        {
           "id": "C",
-          "text": "Cache all subproblem results"
+          "text": "Try every complete solution and keep the best"
         },
         {
           "id": "D",
-          "text": "Sort the input before solving"
+          "text": "Cache all subproblem results"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Backtracking explores a decision tree, pruning any branch that violates the constraints before going deeper. This pruning is what makes it far better than blindly enumerating all candidates.",
       "concept": "Backtracking"
     },
@@ -142,7 +142,7 @@
         },
         {
           "id": "B",
-          "text": "O(n^2)"
+          "text": "Exponential, about O(2^n)"
         },
         {
           "id": "C",
@@ -150,10 +150,10 @@
         },
         {
           "id": "D",
-          "text": "Exponential, about O(2^n)"
+          "text": "O(n^2)"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Each call spawns two more and the same values are recomputed repeatedly, producing an exponential call tree. Memoisation collapses this to O(n) by caching each result once.",
       "concept": "Recursion"
     },
@@ -167,18 +167,18 @@
         },
         {
           "id": "B",
-          "text": "An explicit stack"
-        },
-        {
-          "id": "C",
           "text": "A binary search tree"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "A priority queue"
+        },
+        {
+          "id": "D",
+          "text": "An explicit stack"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Recursion is implemented by the call stack, so simulating it with an explicit stack reproduces the same behaviour without the depth limit of the language runtime.",
       "concept": "Recursion"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "n squared"
+          "text": "n factorial"
         },
         {
           "id": "B",
-          "text": "2 raised to the power n"
+          "text": "n squared"
         },
         {
           "id": "C",
-          "text": "n factorial"
+          "text": "2 raised to the power n"
         },
         {
           "id": "D",
           "text": "n log n"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "There are n choices for the first position, n-1 for the second and so on, giving n! total. This factorial growth is why permutation search is only feasible for small n.",
       "concept": "Backtracking"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It guarantees a solution exists"
-        },
-        {
-          "id": "B",
-          "text": "It caches computed results"
-        },
-        {
-          "id": "C",
           "text": "It sorts the remaining choices"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It cuts off branches that cannot yield a valid solution, reducing the search"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees a solution exists"
+        },
+        {
+          "id": "D",
+          "text": "It caches computed results"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "By rejecting a partial assignment the moment it violates a constraint, pruning avoids exploring an entire subtree of doomed candidates. Stronger pruning is what separates a fast solver from a slow one.",
       "concept": "Backtracking"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "2n"
+          "text": "n factorial"
         },
         {
           "id": "B",
-          "text": "2 raised to the power n"
+          "text": "2n"
         },
         {
           "id": "C",
-          "text": "n squared"
+          "text": "2 raised to the power n"
         },
         {
           "id": "D",
-          "text": "n factorial"
+          "text": "n squared"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Each element is independently either in or out of a subset, giving 2^n combinations. The recursion branches on include-or-exclude at each element.",
       "concept": "Backtracking"
     }

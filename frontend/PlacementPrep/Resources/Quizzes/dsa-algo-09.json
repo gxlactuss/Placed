@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(mn)"
-        },
-        {
-          "id": "B",
           "text": "O(m + n)"
         },
         {
+          "id": "B",
+          "text": "O(mn)"
+        },
+        {
           "id": "C",
-          "text": "O(2^(m+n))"
+          "text": "O(mn log n)"
         },
         {
           "id": "D",
-          "text": "O(mn log n)"
+          "text": "O(2^(m+n))"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "The DP fills an (m+1) by (n+1) table, each cell in constant time from its neighbours. Space can be reduced to O(min(m, n)) since each row depends only on the previous one.",
       "concept": "Longest Common Subsequence"
     },
@@ -42,15 +42,15 @@
         },
         {
           "id": "B",
-          "text": "O(m + n)"
-        },
-        {
-          "id": "C",
           "text": "O(max(m, n))"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "O(mn^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(m + n)"
         }
       ],
       "correct_option_id": "A",
@@ -67,15 +67,15 @@
         },
         {
           "id": "B",
-          "text": "O(m + n)"
-        },
-        {
-          "id": "C",
           "text": "O(2^(m+n))"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "O(mn log mn)"
+        },
+        {
+          "id": "D",
+          "text": "O(m + n)"
         }
       ],
       "correct_option_id": "A",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n^3)"
-        },
-        {
-          "id": "B",
-          "text": "O(n^2)"
-        },
-        {
-          "id": "C",
           "text": "O(n log n)"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "O(2^n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n^2)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^3)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The interval DP considers every subchain and every split point within it, giving O(n^3). It decides the multiplication order, not the products themselves.",
       "concept": "Matrix Chain Multiplication"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n^2)"
-        },
-        {
-          "id": "B",
-          "text": "O(n)"
-        },
-        {
-          "id": "C",
           "text": "O(n log n)"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "O(2^n)"
+        },
+        {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n^2)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The interval DP over start and end indices fills an n by n table. It is equivalent to the longest common subsequence of the string and its reverse.",
       "concept": "Interval DP"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A hash of the input"
+          "text": "A single index"
         },
         {
           "id": "B",
-          "text": "A pair of endpoints defining a subrange"
-        },
-        {
-          "id": "C",
           "text": "A vertex of a graph"
         },
         {
+          "id": "C",
+          "text": "A pair of endpoints defining a subrange"
+        },
+        {
           "id": "D",
-          "text": "A single index"
+          "text": "A hash of the input"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Problems like matrix chain and palindrome DP define dp[i][j] over the subrange from i to j, combining results across a split point k inside it. This two-endpoint indexing is the hallmark of interval DP.",
       "concept": "Interval DP"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(nk)"
+          "text": "O(2^k)"
         },
         {
           "id": "B",
-          "text": "O(n)"
-        },
-        {
-          "id": "C",
           "text": "O(n^2 k)"
         },
         {
+          "id": "C",
+          "text": "O(n)"
+        },
+        {
           "id": "D",
-          "text": "O(2^k)"
+          "text": "O(nk)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The state tracks the day and the number of transactions used, giving n x k states each updated in constant time. When k is unbounded the problem collapses to a simple greedy scan.",
       "concept": "State-Machine DP"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The answer is always the shorter string"
-        },
-        {
-          "id": "B",
           "text": "The strings are always equal length"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Each row of the table depends only on the immediately preceding row"
+        },
+        {
+          "id": "C",
+          "text": "The answer is always the shorter string"
         },
         {
           "id": "D",
           "text": "The table is symmetric"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Since dp[i][j] uses only row i-1, two rows (or one, updated carefully) suffice, so only the shorter dimension need be kept. Reconstructing the actual subsequence, however, needs the full table or a divide-and-conquer trick.",
       "concept": "Space Optimisation"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Per edge weight"
-        },
-        {
-          "id": "B",
           "text": "Over all root-to-leaf paths independently"
         },
         {
+          "id": "B",
+          "text": "Per edge weight"
+        },
+        {
           "id": "C",
-          "text": "By sorting the nodes first"
+          "text": "Per subtree, combining children's results at each node"
         },
         {
           "id": "D",
-          "text": "Per subtree, combining children's results at each node"
+          "text": "By sorting the nodes first"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Tree DP computes an answer for each node from the answers of its children in a post-order traversal, so each subtree is solved once. Problems like maximum independent set on a tree use exactly this structure.",
       "concept": "Tree DP"
     }

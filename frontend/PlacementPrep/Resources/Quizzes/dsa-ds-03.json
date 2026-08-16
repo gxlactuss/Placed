@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "First In First Out"
+          "text": "Random access"
         },
         {
           "id": "C",
-          "text": "Last In First Out"
+          "text": "First In First Out"
         },
         {
           "id": "D",
-          "text": "Random access"
+          "text": "Last In First Out"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "The most recently pushed element is the first one popped. Push and pop both act on the same end, the top, and both run in O(1).",
       "concept": "Stacks"
     },
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Queue"
+          "text": "Stack"
         },
         {
           "id": "B",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "Hash table"
+          "text": "Queue"
         },
         {
           "id": "D",
-          "text": "Stack"
+          "text": "Hash table"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Push each opening bracket and pop on each closing one, checking the pair matches. The last opened bracket must be the first closed — exactly LIFO order.",
       "concept": "Stacks"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Last In First Served"
+          "text": "Last In First Out"
         },
         {
           "id": "B",
-          "text": "First In First Out"
-        },
-        {
-          "id": "C",
           "text": "Sorted order"
         },
         {
+          "id": "C",
+          "text": "Last In First Served"
+        },
+        {
           "id": "D",
-          "text": "Last In First Out"
+          "text": "First In First Out"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Elements are removed in the order they were added: enqueue at the rear, dequeue from the front. This models real-world waiting lines and breadth-first processing.",
       "concept": "Queues"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It allows random access to any element"
+          "text": "It removes the need for a rear index"
         },
         {
           "id": "B",
-          "text": "It keeps elements sorted"
-        },
-        {
-          "id": "C",
           "text": "It reuses vacated front slots instead of wasting them"
         },
         {
+          "id": "C",
+          "text": "It keeps elements sorted"
+        },
+        {
           "id": "D",
-          "text": "It removes the need for a rear index"
+          "text": "It allows random access to any element"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "In a linear array, dequeued front slots become unusable and the queue drifts toward the end. Wrapping the rear index around with modulo arithmetic reclaims that space.",
       "concept": "Queues"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Priority queue"
+          "text": "Stack"
         },
         {
           "id": "B",
-          "text": "Binary search tree"
-        },
-        {
-          "id": "C",
           "text": "Queue"
         },
         {
+          "id": "C",
+          "text": "Priority queue"
+        },
+        {
           "id": "D",
-          "text": "Stack"
+          "text": "Binary search tree"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Push operands, and on each operator pop the top two, apply it, and push the result. The final value left on the stack is the answer.",
       "concept": "Stacks"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The function call stack that supports recursion"
-        },
-        {
-          "id": "B",
           "text": "The file system directory tree"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "The page table"
+        },
+        {
+          "id": "C",
+          "text": "The function call stack that supports recursion"
         },
         {
           "id": "D",
           "text": "The CPU scheduler's ready queue"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Each call pushes an activation record and returning pops it, so the most recent call finishes first. Deep recursion can overflow this stack.",
       "concept": "Stacks"
     },
@@ -171,11 +171,11 @@
         },
         {
           "id": "C",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         }
       ],
       "correct_option_id": "B",
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Insertion and removal are allowed at both ends"
+          "text": "It has a fixed capacity of two"
         },
         {
           "id": "B",
@@ -200,10 +200,10 @@
         },
         {
           "id": "D",
-          "text": "It has a fixed capacity of two"
+          "text": "Insertion and removal are allowed at both ends"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "A double-ended queue supports push and pop at both front and rear, so it can behave as a stack, a queue, or both. It is the structure behind the sliding-window maximum pattern.",
       "concept": "Deque"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It never allows duplicates"
+          "text": "It can only hold integers"
         },
         {
           "id": "B",
-          "text": "It dequeues the most recently added element"
-        },
-        {
-          "id": "C",
           "text": "It dequeues the highest-priority element rather than the oldest"
         },
         {
+          "id": "C",
+          "text": "It dequeues the most recently added element"
+        },
+        {
           "id": "D",
-          "text": "It can only hold integers"
+          "text": "It never allows duplicates"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Order of removal depends on a priority key, not arrival time. It is usually backed by a heap, giving O(log n) insert and extract rather than the O(1) of a plain queue.",
       "concept": "Priority Queue"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Allocating a large array on the heap"
-        },
-        {
-          "id": "B",
           "text": "Dequeuing from an empty queue"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "A hash collision"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Unbounded recursion with no reachable base case"
+        },
+        {
+          "id": "D",
+          "text": "Allocating a large array on the heap"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Each recursive call consumes a stack frame; without a base case the frames accumulate until the call stack's fixed space is exhausted. Large heap allocations fail differently, as out-of-memory.",
       "concept": "Stacks"
     }

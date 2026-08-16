@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "At the rightmost leaf"
-        },
-        {
-          "id": "B",
           "text": "At the root"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "At the middle of the array"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "At any leaf"
+        },
+        {
+          "id": "D",
+          "text": "At the rightmost leaf"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "The heap property makes every parent no greater than its children, so the global minimum sits at the root. The maximum, however, could be any leaf.",
       "concept": "Heaps"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n)"
-        },
-        {
-          "id": "B",
-          "text": "O(log n)"
-        },
-        {
-          "id": "C",
           "text": "O(n log n)"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "O(n^2)"
+        },
+        {
+          "id": "C",
+          "text": "O(log n)"
+        },
+        {
+          "id": "D",
+          "text": "O(n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Although each sift-down is O(log n), most nodes are near the bottom and sift a short distance. Summing the true costs gives O(n), tighter than the naive n insertions at O(n log n).",
       "concept": "Heap Construction"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         },
         {
           "id": "B",
-          "text": "O(1)"
-        },
-        {
-          "id": "C",
           "text": "O(n)"
         },
         {
+          "id": "C",
+          "text": "O(1)"
+        },
+        {
           "id": "D",
-          "text": "O(n log n)"
+          "text": "O(log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Removing the root and moving the last element there breaks the heap property, so it must sift down along one root-to-leaf path of length O(log n). Reading the minimum without removing it is O(1).",
       "concept": "Heaps"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "i/2 and i/2 + 1"
+          "text": "2i and 2i + 1"
         },
         {
           "id": "B",
-          "text": "i + 1 and i + 2"
-        },
-        {
-          "id": "C",
           "text": "2i + 1 and 2i + 2"
         },
         {
+          "id": "C",
+          "text": "i/2 and i/2 + 1"
+        },
+        {
           "id": "D",
-          "text": "2i and 2i + 1"
+          "text": "i + 1 and i + 2"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "For a 0-indexed array the left child is 2i + 1 and the right is 2i + 2, and the parent of i is (i - 1) / 2. This implicit structure needs no pointers.",
       "concept": "Heap Representation"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Maintaining elements in fully sorted order at all times"
+          "text": "Searching for an arbitrary element by value"
         },
         {
           "id": "B",
-          "text": "Searching for an arbitrary element by value"
+          "text": "Repeatedly retrieving and removing the current minimum or maximum"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "Repeatedly retrieving and removing the current minimum or maximum"
+          "text": "Maintaining elements in fully sorted order at all times"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A heap gives O(1) access to the extreme and O(log n) removal, which suits scheduling and streaming top-k problems. Searching for an arbitrary value, though, is O(n) since the heap is only partially ordered.",
       "concept": "Priority Queue"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "Maintain a min-heap of the k largest seen so far"
+          "text": "Maintain a max-heap of all n numbers"
         },
         {
           "id": "C",
-          "text": "Store the numbers in a hash set"
+          "text": "Maintain a min-heap of the k largest seen so far"
         },
         {
           "id": "D",
-          "text": "Maintain a max-heap of all n numbers"
+          "text": "Store the numbers in a hash set"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "A size-k min-heap keeps the k largest in O(k) space; each new number is compared with the root and replaces it if larger. Its root is exactly the k-th largest, and total time is O(n log k).",
       "concept": "Heaps"
     },
@@ -167,11 +167,11 @@
         },
         {
           "id": "B",
-          "text": "O(1)"
+          "text": "O(n)"
         },
         {
           "id": "C",
-          "text": "O(n)"
+          "text": "O(1)"
         },
         {
           "id": "D",
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "A hash table keyed by value"
+          "text": "A max-heap for the lower half and a min-heap for the upper half"
         },
         {
           "id": "B",
@@ -196,14 +196,14 @@
         },
         {
           "id": "C",
-          "text": "A max-heap for the lower half and a min-heap for the upper half"
+          "text": "One min-heap of all elements"
         },
         {
           "id": "D",
-          "text": "One min-heap of all elements"
+          "text": "A hash table keyed by value"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Balancing two heaps keeps the two middle values at the heap roots, so the median is available in O(1) with O(log n) insertion. A re-sorted array would be O(n log n) per insert.",
       "concept": "Two Heaps"
     },
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Yes — but only for min-heaps"
+          "text": "Yes — the array is always fully sorted"
         },
         {
           "id": "B",
@@ -221,14 +221,14 @@
         },
         {
           "id": "C",
-          "text": "Yes — the array is always fully sorted"
+          "text": "No — it is only partially ordered along root-to-leaf paths"
         },
         {
           "id": "D",
-          "text": "No — it is only partially ordered along root-to-leaf paths"
+          "text": "Yes — but only for min-heaps"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "The heap property orders each parent relative to its children but says nothing about siblings or across subtrees, so the array is not sorted. Repeatedly extracting the root does produce sorted output — that is heapsort.",
       "concept": "Heaps"
     },
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "O(n log n)"
+          "text": "O(n^2)"
         },
         {
           "id": "B",
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "O(n^2)"
+          "text": "O(log n)"
         },
         {
           "id": "D",
-          "text": "O(log n)"
+          "text": "O(n log n)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Building the heap is O(n), then n extractions each cost O(log n), giving O(n log n) worst case. Unlike quicksort it has no O(n^2) case, and unlike merge sort it needs no extra array.",
       "concept": "Heapsort"
     }
