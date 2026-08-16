@@ -44,6 +44,38 @@ final class QuizBank {
             .sorted { $0.order < $1.order }
     }
 
+    /// The topics a category is split into, in play order.
+    ///
+    /// Derived from the bundled files rather than declared on `Category`, so
+    /// authoring a first `cs-compilers-01.json` makes the folder appear with no
+    /// enum to remember to update. Order comes from `quizzes(in:)`, which is
+    /// already sorted, so a topic sits where its first quiz sits — and the
+    /// `order` blocks are authored contiguously per topic, so that reads as the
+    /// intended sequence rather than an interleaving.
+    func subjects(in category: Category) -> [Subject] {
+        var seen: Set<Subject> = []
+        return quizzes(in: category).compactMap { quiz in
+            guard let subject = quiz.subject, seen.insert(subject).inserted else { return nil }
+            return subject
+        }
+    }
+
+    /// The tracks a category offers: one per topic, or the category itself when
+    /// it has none. This is what the folder list renders.
+    func tracks(in category: Category) -> [QuizTrack] {
+        let subjects = subjects(in: category)
+        guard !subjects.isEmpty else { return [QuizTrack(category: category, subject: nil)] }
+        return subjects.map { QuizTrack(category: category, subject: $0) }
+    }
+
+    /// The quizzes in one track, in play order — the array the unlock chain is
+    /// walked over.
+    func quizzes(in track: QuizTrack) -> [Quiz] {
+        let all = quizzes(in: track.category)
+        guard let subject = track.subject else { return all }
+        return all.filter { $0.subject == subject }
+    }
+
     func quiz(id: String) -> Quiz? {
         quizzes.first { $0.id == id }
     }
