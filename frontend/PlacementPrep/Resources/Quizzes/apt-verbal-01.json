@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Plentiful"
-        },
-        {
-          "id": "B",
           "text": "Scarce"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Empty"
+        },
+        {
+          "id": "C",
+          "text": "Plentiful"
         },
         {
           "id": "D",
           "text": "Tiny"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "'Abundant' means existing in large quantities, which is the same as 'plentiful'.",
       "concept": "Synonyms"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Fearful"
-        },
-        {
-          "id": "B",
-          "text": "Courageous"
-        },
-        {
-          "id": "C",
           "text": "Weak"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Fearful"
+        },
+        {
+          "id": "C",
           "text": "Timid"
+        },
+        {
+          "id": "D",
+          "text": "Courageous"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "'Brave' and 'courageous' both describe someone who faces danger without fear.",
       "concept": "Synonyms"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Grow"
+          "text": "Stretch"
         },
         {
           "id": "B",
-          "text": "Enlarge"
-        },
-        {
-          "id": "C",
           "text": "Contract"
         },
         {
+          "id": "C",
+          "text": "Enlarge"
+        },
+        {
           "id": "D",
-          "text": "Stretch"
+          "text": "Grow"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "'Expand' means to grow larger, so its opposite is 'contract', meaning to become smaller.",
       "concept": "Antonyms"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Slow"
-        },
-        {
-          "id": "B",
           "text": "Steady"
         },
         {
+          "id": "B",
+          "text": "Slow"
+        },
+        {
           "id": "C",
-          "text": "Late"
+          "text": "Quick"
         },
         {
           "id": "D",
-          "text": "Quick"
+          "text": "Late"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "'Rapid' means happening fast, which is the same as 'quick'.",
       "concept": "Synonyms"
     }

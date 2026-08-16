@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Father"
+          "text": "Grandfather"
         },
         {
           "id": "B",
-          "text": "Uncle"
-        },
-        {
-          "id": "C",
           "text": "Brother"
         },
         {
+          "id": "C",
+          "text": "Father"
+        },
+        {
           "id": "D",
-          "text": "Grandfather"
+          "text": "Uncle"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "A is the father of C's father, which makes A the grandfather of C.",
       "concept": "Blood Relations"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "East"
-        },
-        {
-          "id": "B",
           "text": "West"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "South"
+        },
+        {
+          "id": "C",
+          "text": "East"
         },
         {
           "id": "D",
           "text": "North"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Turning right (clockwise) from north takes you to east.",
       "concept": "Directions"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "North-West"
+          "text": "East"
         },
         {
           "id": "B",
-          "text": "North-East"
-        },
-        {
-          "id": "C",
           "text": "South-East"
         },
         {
+          "id": "C",
+          "text": "North-West"
+        },
+        {
           "id": "D",
-          "text": "East"
+          "text": "North-East"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Moving equally north and then east places the endpoint diagonally up and to the right of the start, which is north-east.",
       "concept": "Directions"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Sister"
+          "text": "Grandmother"
         },
         {
           "id": "B",
-          "text": "Mother"
-        },
-        {
-          "id": "C",
           "text": "Aunt"
         },
         {
+          "id": "C",
+          "text": "Mother"
+        },
+        {
           "id": "D",
-          "text": "Grandmother"
+          "text": "Sister"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "The only daughter of the woman's mother is the woman herself, so 'his mother' is the woman. Therefore she is the man's mother.",
       "concept": "Blood Relations"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Paternal uncle"
-        },
-        {
-          "id": "B",
-          "text": "Cousin"
-        },
-        {
-          "id": "C",
           "text": "Nephew"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Maternal uncle"
+        },
+        {
+          "id": "C",
+          "text": "Paternal uncle"
+        },
+        {
+          "id": "D",
+          "text": "Cousin"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A brother on the mother's side is the maternal uncle.",
       "concept": "Blood Relations"
     }

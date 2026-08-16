@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "120 km"
-        },
-        {
-          "id": "B",
-          "text": "150 km"
-        },
-        {
-          "id": "C",
           "text": "180 km"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "125 km"
+        },
+        {
+          "id": "C",
+          "text": "150 km"
+        },
+        {
+          "id": "D",
+          "text": "120 km"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Distance = speed x time = 60 x 2.5 = 150 km.",
       "concept": "Speed"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "6"
+          "text": "12"
         },
         {
           "id": "B",
-          "text": "10"
+          "text": "6"
         },
         {
           "id": "C",
-          "text": "12"
+          "text": "10"
         },
         {
           "id": "D",
           "text": "8"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "72 km/h is 72 x 1000 / 3600 = 20 m/s. To pass a pole the train covers its own length, so 120 / 20 = 6 seconds.",
       "concept": "Trains"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "20 km/h"
-        },
-        {
-          "id": "B",
-          "text": "50 km/h"
-        },
-        {
-          "id": "C",
           "text": "100 km/h"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "2400 km/h"
+        },
+        {
+          "id": "C",
+          "text": "50 km/h"
+        },
+        {
+          "id": "D",
+          "text": "20 km/h"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "For objects moving toward each other, relative speed is the sum: 60 + 40 = 100 km/h. Moving in the same direction, it would be the difference.",
       "concept": "Relative Speed"
     },
@@ -96,11 +96,11 @@
         },
         {
           "id": "C",
-          "text": "20"
+          "text": "30"
         },
         {
           "id": "D",
-          "text": "30"
+          "text": "20"
         }
       ],
       "correct_option_id": "B",
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "50 km/h"
+          "text": "65 km/h"
         },
         {
           "id": "B",
@@ -121,7 +121,7 @@
         },
         {
           "id": "C",
-          "text": "65 km/h"
+          "text": "50 km/h"
         },
         {
           "id": "D",

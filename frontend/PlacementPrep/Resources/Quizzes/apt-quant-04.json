@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "12.5 days"
+          "text": "25 days"
         },
         {
           "id": "B",
@@ -21,11 +21,11 @@
         },
         {
           "id": "C",
-          "text": "5 days"
+          "text": "12.5 days"
         },
         {
           "id": "D",
-          "text": "25 days"
+          "text": "5 days"
         }
       ],
       "correct_option_id": "B",
@@ -46,11 +46,11 @@
         },
         {
           "id": "C",
-          "text": "6 days"
+          "text": "12 days"
         },
         {
           "id": "D",
-          "text": "12 days"
+          "text": "6 days"
         }
       ],
       "correct_option_id": "A",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "24 days"
+          "text": "8 days"
         },
         {
           "id": "B",
-          "text": "36 days"
+          "text": "24 days"
         },
         {
           "id": "C",
-          "text": "18 days"
+          "text": "36 days"
         },
         {
           "id": "D",
-          "text": "8 days"
+          "text": "18 days"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "If B's rate is r, A's is 2r, so together 3r = 1/12, giving r = 1/36. A's rate is 2/36 = 1/18, so A alone takes 18 days.",
       "concept": "Time and Work"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "10 days"
-        },
-        {
-          "id": "B",
-          "text": "20 days"
-        },
-        {
-          "id": "C",
           "text": "8 days"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "10 days"
+        },
+        {
+          "id": "C",
           "text": "15 days"
+        },
+        {
+          "id": "D",
+          "text": "20 days"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "One third takes 5 days, so the full job takes 3 x 5 = 15 days.",
       "concept": "Time and Work"
     }

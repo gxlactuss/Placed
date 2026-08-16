@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "25"
+          "text": "40"
         },
         {
           "id": "B",
@@ -25,7 +25,7 @@
         },
         {
           "id": "D",
-          "text": "40"
+          "text": "25"
         }
       ],
       "correct_option_id": "C",
@@ -38,15 +38,15 @@
       "options": [
         {
           "id": "A",
-          "text": "12"
+          "text": "20"
         },
         {
           "id": "B",
-          "text": "15"
+          "text": "12"
         },
         {
           "id": "C",
-          "text": "20"
+          "text": "15"
         },
         {
           "id": "D",
@@ -71,11 +71,11 @@
         },
         {
           "id": "C",
-          "text": "A 4% increase"
+          "text": "A 20% decrease"
         },
         {
           "id": "D",
-          "text": "A 20% decrease"
+          "text": "A 4% increase"
         }
       ],
       "correct_option_id": "B",
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "15%"
+          "text": "25%"
         },
         {
           "id": "B",
-          "text": "25%"
+          "text": "20%"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "20%"
+          "text": "15%"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "15 / 60 = 0.25, which is 25%.",
       "concept": "Percentages"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "25"
-        },
-        {
-          "id": "B",
           "text": "16"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "24"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "30"
+        },
+        {
+          "id": "D",
+          "text": "25"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The first quantity 20 is 4 parts, so one part is 5. The second is 5 parts, giving 5 x 5 = 25.",
       "concept": "Ratios"
     }

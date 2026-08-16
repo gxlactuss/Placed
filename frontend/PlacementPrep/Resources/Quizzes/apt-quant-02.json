@@ -13,11 +13,11 @@
       "options": [
         {
           "id": "A",
-          "text": "25"
+          "text": "30"
         },
         {
           "id": "B",
-          "text": "30"
+          "text": "25"
         },
         {
           "id": "C",
@@ -28,7 +28,7 @@
           "text": "40"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Their sum is 150, and dividing by the count 5 gives 30.",
       "concept": "Averages"
     },
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "25"
+          "text": "30"
         },
         {
           "id": "B",
@@ -50,7 +50,7 @@
         },
         {
           "id": "D",
-          "text": "30"
+          "text": "25"
         }
       ],
       "correct_option_id": "B",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "15"
-        },
-        {
-          "id": "B",
           "text": "25"
         },
         {
+          "id": "B",
+          "text": "10"
+        },
+        {
           "id": "C",
-          "text": "20"
+          "text": "15"
         },
         {
           "id": "D",
-          "text": "10"
+          "text": "20"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "After x years, 40 + x = 2(10 + x), so 40 + x = 20 + 2x, giving x = 20.",
       "concept": "Ages"
     },
@@ -92,18 +92,18 @@
         },
         {
           "id": "B",
-          "text": "15"
+          "text": "12"
         },
         {
           "id": "C",
-          "text": "20"
+          "text": "15"
         },
         {
           "id": "D",
-          "text": "12"
+          "text": "20"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "If B is x, then x + (x + 5) = 25, so 2x = 20 and x = 10. A is 10 + 5 = 15.",
       "concept": "Ages"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "2.5"
+          "text": "3"
         },
         {
           "id": "B",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "3"
+          "text": "2.5"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Their sum is 15, and dividing by 5 gives 3. For consecutive numbers the average is simply the middle value.",
       "concept": "Averages"
     }

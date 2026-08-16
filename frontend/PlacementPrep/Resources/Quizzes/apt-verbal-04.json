@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "To eat very quickly"
+          "text": "To win easily"
         },
         {
           "id": "B",
@@ -25,7 +25,7 @@
         },
         {
           "id": "D",
-          "text": "To win easily"
+          "text": "To eat very quickly"
         }
       ],
       "correct_option_id": "C",
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Every night"
-        },
-        {
-          "id": "B",
           "text": "Suddenly"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Very rarely"
+        },
+        {
+          "id": "C",
+          "text": "Every night"
         },
         {
           "id": "D",
           "text": "Very often"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "'Once in a blue moon' refers to something that happens very rarely.",
       "concept": "Idioms"
     },
@@ -67,7 +67,7 @@
         },
         {
           "id": "B",
-          "text": "Rahul definitely studied hard"
+          "text": "No student who passed studied hard"
         },
         {
           "id": "C",
@@ -75,7 +75,7 @@
         },
         {
           "id": "D",
-          "text": "No student who passed studied hard"
+          "text": "Rahul definitely studied hard"
         }
       ],
       "correct_option_id": "A",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It assumes correlation implies causation"
-        },
-        {
-          "id": "B",
-          "text": "It uses a circular argument"
-        },
-        {
-          "id": "C",
           "text": "It attacks the person, not the claim"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "It assumes correlation implies causation"
+        },
+        {
+          "id": "C",
           "text": "It appeals to popularity"
+        },
+        {
+          "id": "D",
+          "text": "It uses a circular argument"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Sales rising after the logo change does not prove the logo caused it; other factors could be responsible. Assuming one thing caused another merely because it came first is the correlation-causation fallacy.",
       "concept": "Critical Reasoning"
     },
@@ -121,14 +121,14 @@
         },
         {
           "id": "C",
-          "text": "An obvious problem that everyone avoids discussing"
+          "text": "A crowded place"
         },
         {
           "id": "D",
-          "text": "A crowded place"
+          "text": "An obvious problem that everyone avoids discussing"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "'The elephant in the room' is an obvious, important issue that people ignore or avoid talking about.",
       "concept": "Idioms"
     }

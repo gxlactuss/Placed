@@ -13,15 +13,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Piano"
+          "text": "Audience"
         },
         {
           "id": "B",
-          "text": "Stage"
+          "text": "Piano"
         },
         {
           "id": "C",
-          "text": "Audience"
+          "text": "Stage"
         },
         {
           "id": "D",
@@ -42,7 +42,7 @@
         },
         {
           "id": "B",
-          "text": "Novice"
+          "text": "Polyglot"
         },
         {
           "id": "C",
@@ -50,10 +50,10 @@
         },
         {
           "id": "D",
-          "text": "Polyglot"
+          "text": "Novice"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A 'polyglot' is someone who knows and can use several languages.",
       "concept": "Vocabulary"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Careless"
-        },
-        {
-          "id": "B",
           "text": "Careful"
         },
         {
+          "id": "B",
+          "text": "Careless"
+        },
+        {
           "id": "C",
-          "text": "Lazy"
+          "text": "Hasty"
         },
         {
           "id": "D",
-          "text": "Hasty"
+          "text": "Lazy"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "'Meticulous' means showing great attention to detail, which is best captured by 'careful'.",
       "concept": "Vocabulary"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Eternal"
+          "text": "Perpetual"
         },
         {
           "id": "B",
@@ -125,7 +125,7 @@
         },
         {
           "id": "D",
-          "text": "Perpetual"
+          "text": "Eternal"
         }
       ],
       "correct_option_id": "C",

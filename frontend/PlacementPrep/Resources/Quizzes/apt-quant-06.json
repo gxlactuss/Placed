@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "25"
-        },
-        {
-          "id": "B",
           "text": "120"
         },
         {
+          "id": "B",
+          "text": "20"
+        },
+        {
           "id": "C",
-          "text": "60"
+          "text": "25"
         },
         {
           "id": "D",
-          "text": "20"
+          "text": "60"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "The number of arrangements of 5 distinct items is 5 factorial = 5 x 4 x 3 x 2 x 1 = 120.",
       "concept": "Permutations"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "10"
+          "text": "25"
         },
         {
           "id": "B",
-          "text": "20"
+          "text": "10"
         },
         {
           "id": "C",
-          "text": "25"
+          "text": "20"
         },
         {
           "id": "D",
           "text": "5"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Order does not matter, so this is a combination: 5 choose 2 = (5 x 4) / (2 x 1) = 10.",
       "concept": "Combinations"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "1/12"
-        },
-        {
-          "id": "B",
           "text": "1/9"
         },
         {
+          "id": "B",
+          "text": "1/6"
+        },
+        {
           "id": "C",
-          "text": "7/36"
+          "text": "1/12"
         },
         {
           "id": "D",
-          "text": "1/6"
+          "text": "7/36"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "There are 6 favourable pairs summing to 7 out of 36 equally likely outcomes, so 6/36 = 1/6. Seven is the most likely dice sum.",
       "concept": "Probability"
     },
@@ -92,18 +92,18 @@
         },
         {
           "id": "B",
-          "text": "3/5"
+          "text": "1/2"
         },
         {
           "id": "C",
-          "text": "1/2"
+          "text": "3/5"
         },
         {
           "id": "D",
           "text": "3/2"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "There are 3 red out of 5 balls total, so the probability is 3/5.",
       "concept": "Probability"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "6"
+          "text": "27"
         },
         {
           "id": "B",
-          "text": "3"
-        },
-        {
-          "id": "C",
           "text": "9"
         },
         {
+          "id": "C",
+          "text": "3"
+        },
+        {
           "id": "D",
-          "text": "27"
+          "text": "6"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Three distinct letters can be arranged in 3 factorial = 6 ways.",
       "concept": "Permutations"
     }

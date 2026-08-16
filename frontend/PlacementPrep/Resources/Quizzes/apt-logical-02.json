@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Leg"
-        },
-        {
-          "id": "B",
           "text": "Toe"
         },
         {
+          "id": "B",
+          "text": "Leg"
+        },
+        {
           "id": "C",
-          "text": "Shoe"
+          "text": "Hat"
         },
         {
           "id": "D",
-          "text": "Hat"
+          "text": "Shoe"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "A glove is worn on the hand, just as a shoe is worn on the foot. The relationship is a covering worn on that body part.",
       "concept": "Analogies"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Book"
+          "text": "School"
         },
         {
           "id": "B",
-          "text": "Student"
+          "text": "Book"
         },
         {
           "id": "C",
-          "text": "Lesson"
+          "text": "Student"
         },
         {
           "id": "D",
-          "text": "School"
+          "text": "Lesson"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "A doctor works in a hospital, just as a teacher works in a school. The relationship is a professional and their workplace.",
       "concept": "Analogies"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Mouse"
+          "text": "Cub"
         },
         {
           "id": "B",
-          "text": "Cub"
+          "text": "Mouse"
         },
         {
           "id": "C",
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "3"
+          "text": "11"
         },
         {
           "id": "B",
-          "text": "9"
-        },
-        {
-          "id": "C",
           "text": "5"
         },
         {
+          "id": "C",
+          "text": "9"
+        },
+        {
           "id": "D",
-          "text": "11"
+          "text": "3"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "2, 3, 5 and 11 are prime numbers, but 9 = 3 x 3 is composite, so it is the odd one out.",
       "concept": "Classification"
     }

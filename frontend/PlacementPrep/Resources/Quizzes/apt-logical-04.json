@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "B"
+          "text": "A"
         },
         {
           "id": "B",
-          "text": "C"
-        },
-        {
-          "id": "C",
           "text": "D"
         },
         {
+          "id": "C",
+          "text": "C"
+        },
+        {
           "id": "D",
-          "text": "A"
+          "text": "B"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "In a row of five, the third position is the middle, which is occupied by C.",
       "concept": "Seating"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Seat 3"
-        },
-        {
-          "id": "B",
           "text": "Seat 5"
         },
         {
+          "id": "B",
+          "text": "Seat 3"
+        },
+        {
           "id": "C",
-          "text": "Seat 6"
+          "text": "Seat 4"
         },
         {
           "id": "D",
-          "text": "Seat 4"
+          "text": "Seat 6"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "With six evenly spaced seats, the opposite seat is three positions away, so 1 + 3 = seat 4.",
       "concept": "Circular Seating"
     },
@@ -63,11 +63,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Fourth"
+          "text": "Third"
         },
         {
           "id": "B",
-          "text": "Third"
+          "text": "Fifth"
         },
         {
           "id": "C",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "Fifth"
+          "text": "Fourth"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Position from the right = total + 1 - position from the left = 5 + 1 - 2 = 4.",
       "concept": "Positions"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "B"
+          "text": "A"
         },
         {
           "id": "B",
-          "text": "C"
+          "text": "B"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "A"
+          "text": "C"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Since A is taller than B and B is taller than C, A is taller than both, so A is the tallest.",
       "concept": "Ranking"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A"
-        },
-        {
-          "id": "B",
           "text": "B"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "C"
+        },
+        {
+          "id": "C",
+          "text": "A"
         },
         {
           "id": "D",
           "text": "Cannot be determined"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "The order left to right is A, B, C, so C is the rightmost.",
       "concept": "Seating"
     }

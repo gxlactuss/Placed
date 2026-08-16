@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "20%"
+          "text": "125%"
         },
         {
           "id": "B",
-          "text": "12.5%"
-        },
-        {
-          "id": "C",
           "text": "25%"
         },
         {
+          "id": "C",
+          "text": "12.5%"
+        },
+        {
           "id": "D",
-          "text": "125%"
+          "text": "20%"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Profit is 125 - 100 = 25, and profit percentage is profit over cost, so 25 / 100 = 25%.",
       "concept": "Profit and Loss"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "1000"
-        },
-        {
-          "id": "B",
-          "text": "990"
-        },
-        {
-          "id": "C",
           "text": "810"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "1000"
+        },
+        {
+          "id": "C",
           "text": "1100"
+        },
+        {
+          "id": "D",
+          "text": "990"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "A 10% loss means the selling price is 90% of cost, so cost = 900 / 0.9 = 1000.",
       "concept": "Profit and Loss"
     },
@@ -63,11 +63,11 @@
       "options": [
         {
           "id": "A",
-          "text": "50"
+          "text": "110"
         },
         {
           "id": "B",
-          "text": "110"
+          "text": "50"
         },
         {
           "id": "C",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "200"
+          "text": "210"
         },
         {
           "id": "B",
-          "text": "100"
+          "text": "200"
         },
         {
           "id": "C",
-          "text": "220"
+          "text": "100"
         },
         {
           "id": "D",
-          "text": "210"
+          "text": "220"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "The amount is 1000 x 1.1 x 1.1 = 1210, so the interest is 1210 - 1000 = 210. The extra 10 over simple interest is interest earned on the first year's interest.",
       "concept": "Compound Interest"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "No profit or loss"
+          "text": "A 10% loss"
         },
         {
           "id": "B",
@@ -121,14 +121,14 @@
         },
         {
           "id": "C",
-          "text": "A 1% loss"
+          "text": "No profit or loss"
         },
         {
           "id": "D",
-          "text": "A 10% loss"
+          "text": "A 1% loss"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "When the selling prices are equal, equal percentage profit and loss always give a net loss of (10 x 10)/100 = 1%. The loss-making item had a higher cost, which tips the balance.",
       "concept": "Profit and Loss"
     }

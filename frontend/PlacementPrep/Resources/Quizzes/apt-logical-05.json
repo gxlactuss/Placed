@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "All living things are cats"
+          "text": "No cat is a living thing"
         },
         {
           "id": "B",
-          "text": "Some animals are not living things"
-        },
-        {
-          "id": "C",
           "text": "All cats are living things"
         },
         {
+          "id": "C",
+          "text": "Some animals are not living things"
+        },
+        {
           "id": "D",
-          "text": "No cat is a living thing"
+          "text": "All living things are cats"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Chaining the two universal statements, every cat is an animal and every animal is a living thing, so every cat is a living thing. The reverse claim about living things does not follow.",
       "concept": "Syllogisms"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "All pens are papers"
-        },
-        {
-          "id": "B",
-          "text": "No pen is a paper"
-        },
-        {
-          "id": "C",
           "text": "Some pens are papers"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "All papers are pens"
+        },
+        {
+          "id": "C",
+          "text": "No pen is a paper"
+        },
+        {
+          "id": "D",
+          "text": "All pens are papers"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "The pens that are books must be papers, since all books are papers, so at least some pens are papers. Nothing forces all pens to be papers.",
       "concept": "Syllogisms"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Yes, it definitely follows"
+          "text": "No, no rose fades quickly"
         },
         {
           "id": "B",
@@ -71,7 +71,7 @@
         },
         {
           "id": "C",
-          "text": "No, no rose fades quickly"
+          "text": "Yes, it definitely follows"
         },
         {
           "id": "D",
@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "All pets are cats"
+          "text": "All dogs are pets"
         },
         {
           "id": "C",
@@ -100,7 +100,7 @@
         },
         {
           "id": "D",
-          "text": "All dogs are pets"
+          "text": "All pets are cats"
         }
       ],
       "correct_option_id": "C",
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "It did not rain"
+          "text": "It might have rained"
         },
         {
           "id": "B",
@@ -121,14 +121,14 @@
         },
         {
           "id": "C",
-          "text": "It might have rained"
+          "text": "It did not rain"
         },
         {
           "id": "D",
           "text": "Nothing can be concluded"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "If rain always makes the ground wet, then a dry ground proves it did not rain. This valid form is called modus tollens — denying the consequent denies the antecedent.",
       "concept": "Logical Deduction"
     }

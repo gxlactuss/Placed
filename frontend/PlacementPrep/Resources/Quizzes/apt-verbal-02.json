@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "She has been working here for 2020."
-        },
-        {
-          "id": "B",
-          "text": "She has been working here since 2020."
-        },
-        {
-          "id": "C",
           "text": "She is working here since 2020."
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "She working here since 2020."
+        },
+        {
+          "id": "C",
+          "text": "She has been working here since 2020."
+        },
+        {
+          "id": "D",
+          "text": "She has been working here for 2020."
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Present perfect continuous with 'since' plus a point in time (2020) is correct. 'For' is used with durations, and the other options misuse the tense.",
       "concept": "Tenses"
     },
@@ -42,11 +42,11 @@
         },
         {
           "id": "B",
-          "text": "have"
+          "text": "were"
         },
         {
           "id": "C",
-          "text": "were"
+          "text": "have"
         },
         {
           "id": "D",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Neither the manager nor the employees were informed."
-        },
-        {
-          "id": "B",
-          "text": "Neither the manager nor the employees was informed."
-        },
-        {
-          "id": "C",
           "text": "Neither the manager or the employees were informed."
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Neither the manager nor the employees is informed."
+        },
+        {
+          "id": "C",
+          "text": "Neither the manager nor the employees was informed."
+        },
+        {
+          "id": "D",
+          "text": "Neither the manager nor the employees were informed."
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "With 'neither...nor', the verb agrees with the nearer subject. 'Employees' is plural, so 'were' is correct, and 'nor' is the right correlative.",
       "concept": "Subject-Verb Agreement"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "was"
+          "text": "am"
         },
         {
           "id": "B",
-          "text": "am"
+          "text": "was"
         },
         {
           "id": "C",
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "in"
-        },
-        {
-          "id": "B",
-          "text": "on"
-        },
-        {
-          "id": "C",
           "text": "with"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "at"
+        },
+        {
+          "id": "C",
+          "text": "on"
+        },
+        {
+          "id": "D",
+          "text": "in"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The idiomatic phrase is 'good at' when describing skill in a subject or activity.",
       "concept": "Prepositions"
     }

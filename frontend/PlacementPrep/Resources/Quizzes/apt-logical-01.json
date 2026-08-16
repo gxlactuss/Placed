@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "9"
-        },
-        {
-          "id": "B",
-          "text": "12"
-        },
-        {
-          "id": "C",
           "text": "16"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "10"
+        },
+        {
+          "id": "C",
+          "text": "9"
+        },
+        {
+          "id": "D",
+          "text": "12"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Each term increases by 2, so after 8 comes 10.",
       "concept": "Number Series"
     },
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "20"
+          "text": "25"
         },
         {
           "id": "B",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "25"
+          "text": "36"
         },
         {
           "id": "D",
-          "text": "36"
+          "text": "20"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "These are perfect squares: 1, 4, 9, 16 are 1^2, 2^2, 3^2, 4^2, so the next is 5^2 = 25.",
       "concept": "Number Series"
     },
@@ -63,11 +63,11 @@
       "options": [
         {
           "id": "A",
-          "text": "H"
+          "text": "F"
         },
         {
           "id": "B",
-          "text": "I"
+          "text": "H"
         },
         {
           "id": "C",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "F"
+          "text": "I"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "The letters skip one each time (every alternate letter), so after G comes I.",
       "concept": "Letter Series"
     },
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "48"
+          "text": "72"
         },
         {
           "id": "B",
@@ -96,14 +96,14 @@
         },
         {
           "id": "C",
-          "text": "30"
+          "text": "48"
         },
         {
           "id": "D",
-          "text": "72"
+          "text": "30"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Each term is double the previous one, so after 24 comes 48.",
       "concept": "Number Series"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "8"
+          "text": "6"
         },
         {
           "id": "B",
-          "text": "7"
-        },
-        {
-          "id": "C",
           "text": "10"
         },
         {
+          "id": "C",
+          "text": "7"
+        },
+        {
           "id": "D",
-          "text": "6"
+          "text": "8"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Each term is the sum of the two before it, so 3 + 5 = 8.",
       "concept": "Number Series"
     }
