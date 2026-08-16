@@ -16,6 +16,9 @@ RUN pip install -r requirements.txt
 # /app, so `app` and `database` are both importable (see backend/app/__init__.py).
 COPY database ./database
 COPY backend/app ./app
+# Operator scripts (currently just the database wipe) — they import `app`, so
+# they need the same layout, and they are only useful over `fly ssh console`.
+COPY backend/scripts ./scripts
 
 # Fly routes to this internal port (see fly.toml http_service.internal_port).
 EXPOSE 8080

@@ -58,6 +58,42 @@ curl -s -X POST $BASE/api/auth/signup -H 'Content-Type: application/json' \
   -d '{"email":"you@example.com","password":"testpass123","full_name":"You","target_role":"Backend Engineer"}'
 ```
 
+## Wiping the database
+
+Empties every table — accounts, interview transcripts, solved problems, quiz
+results. **Unrecoverable**, so the script needs `--yes` and prints the row counts
+it is about to delete when run without it.
+
+```bash
+fly ssh console -a placementprep-api -C "python3 /app/scripts/wipe_database.py"        # dry run: counts only
+fly ssh console -a placementprep-api -C "python3 /app/scripts/wipe_database.py --yes"  # wipe
+```
+
+`backend/scripts/` is copied into the image by the `Dockerfile`, so a machine
+built before that line was added needs a `fly deploy` first. Without one, the
+same job runs inline:
+
+```bash
+fly ssh console -a placementprep-api -C 'python3 -c "
+import sqlite3
+c = sqlite3.connect(\"/data/placement_prep.db\")
+for (t,) in c.execute(\"SELECT name FROM sqlite_master WHERE type=%s AND name NOT LIKE %s\" % (repr(\"table\"), repr(\"sqlite_%\"))).fetchall():
+    c.execute(\"DELETE FROM \\\"%s\\\"\" % t)
+c.commit(); c.execute(\"VACUUM\")
+"'
+```
+
+Rows, not the file: the schema — including the columns `init_db()` bolts on by
+`ALTER TABLE` — survives, so the API keeps serving without a restart. Deleting
+`/data/placement_prep.db` outright also works but needs a machine restart before
+the next request finds a database.
+
+Locally the same script reads `backend/.env`, so no path is needed:
+
+```bash
+cd backend && python3 scripts/wipe_database.py --yes
+```
+
 ## Notes
 
 - **DB migrations**: there are none. `init_db()` runs `create_all` on startup, so
