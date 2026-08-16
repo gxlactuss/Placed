@@ -11,10 +11,22 @@
       "id": "role-java-spring-q01",
       "prompt": "In Java, what is the contract between equals and hashCode?",
       "options": [
-        { "id": "A", "text": "Equal objects must return the same hashCode" },
-        { "id": "B", "text": "Different objects must return different hashCodes" },
-        { "id": "C", "text": "hashCode must always return a positive number" },
-        { "id": "D", "text": "Overriding equals makes hashCode unnecessary" }
+        {
+          "id": "A",
+          "text": "Equal objects must return the same hashCode"
+        },
+        {
+          "id": "B",
+          "text": "hashCode must always return a positive number"
+        },
+        {
+          "id": "C",
+          "text": "Overriding equals makes hashCode unnecessary"
+        },
+        {
+          "id": "D",
+          "text": "Different objects must return different hashCodes"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "Breaking this means an object cannot be found in a HashMap it was just put into, because the lookup goes to a different bucket. Unequal objects may share a hash; that is just a collision.",
@@ -24,12 +36,24 @@
       "id": "role-java-spring-q02",
       "prompt": "What does Spring's @Transactional do when placed on a public service method?",
       "options": [
-        { "id": "A", "text": "It retries the method on any exception" },
-        { "id": "B", "text": "It wraps the call in a database transaction via a proxy" },
-        { "id": "C", "text": "It runs the method on a background thread" },
-        { "id": "D", "text": "It caches the method's return value" }
+        {
+          "id": "A",
+          "text": "It runs the method on a background thread"
+        },
+        {
+          "id": "B",
+          "text": "It retries the method on any exception"
+        },
+        {
+          "id": "C",
+          "text": "It caches the method's return value"
+        },
+        {
+          "id": "D",
+          "text": "It wraps the call in a database transaction via a proxy"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Spring creates a proxy that opens a transaction before the call and commits or rolls back after. This is why calling the method from inside the same class bypasses it entirely.",
       "concept": "Spring Transactions"
     },
@@ -37,12 +61,24 @@
       "id": "role-java-spring-q03",
       "prompt": "What is the default bean scope in Spring?",
       "options": [
-        { "id": "A", "text": "prototype" },
-        { "id": "B", "text": "request" },
-        { "id": "C", "text": "session" },
-        { "id": "D", "text": "singleton" }
+        {
+          "id": "A",
+          "text": "request"
+        },
+        {
+          "id": "B",
+          "text": "session"
+        },
+        {
+          "id": "C",
+          "text": "singleton"
+        },
+        {
+          "id": "D",
+          "text": "prototype"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "One instance per container is created and shared. That is why mutable instance fields on a bean are a concurrency bug: every request touches the same object.",
       "concept": "Spring Beans"
     },
@@ -50,12 +86,24 @@
       "id": "role-java-spring-q04",
       "prompt": "What is the difference between a checked and an unchecked exception?",
       "options": [
-        { "id": "A", "text": "Checked exceptions must be declared or handled at compile time" },
-        { "id": "B", "text": "Unchecked exceptions cannot be caught" },
-        { "id": "C", "text": "Checked exceptions are thrown only by the JVM" },
-        { "id": "D", "text": "Unchecked exceptions always terminate the program" }
+        {
+          "id": "A",
+          "text": "Unchecked exceptions always terminate the program"
+        },
+        {
+          "id": "B",
+          "text": "Unchecked exceptions cannot be caught"
+        },
+        {
+          "id": "C",
+          "text": "Checked exceptions are thrown only by the JVM"
+        },
+        {
+          "id": "D",
+          "text": "Checked exceptions must be declared or handled at compile time"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Checked exceptions extend Exception and the compiler enforces handling. Unchecked ones extend RuntimeException and represent programming errors that usually should not be caught locally.",
       "concept": "Java Exceptions"
     },
@@ -63,10 +111,22 @@
       "id": "role-java-spring-q05",
       "prompt": "Why does JPA lazy loading often cause an N+1 query problem?",
       "options": [
-        { "id": "A", "text": "Lazy collections are always fetched twice" },
-        { "id": "B", "text": "Each entity's collection is fetched on first access, one query at a time" },
-        { "id": "C", "text": "JPA disables the query cache when lazy is used" },
-        { "id": "D", "text": "Lazy loading opens a new connection per entity" }
+        {
+          "id": "A",
+          "text": "JPA disables the query cache when lazy is used"
+        },
+        {
+          "id": "B",
+          "text": "Each entity's collection is fetched on first access, one query at a time"
+        },
+        {
+          "id": "C",
+          "text": "Lazy collections are always fetched twice"
+        },
+        {
+          "id": "D",
+          "text": "Lazy loading opens a new connection per entity"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "Loading a list of parents is one query; touching each parent's lazy collection in a loop issues one more per parent. A join fetch or an entity graph collapses it back to one.",
@@ -76,10 +136,22 @@
       "id": "role-java-spring-q06",
       "prompt": "What does dependency injection give you over constructing collaborators directly?",
       "options": [
-        { "id": "A", "text": "Faster object creation at runtime" },
-        { "id": "B", "text": "Automatic database transactions" },
-        { "id": "C", "text": "Guaranteed thread safety" },
-        { "id": "D", "text": "Dependencies can be swapped, notably for tests" }
+        {
+          "id": "A",
+          "text": "Guaranteed thread safety"
+        },
+        {
+          "id": "B",
+          "text": "Automatic database transactions"
+        },
+        {
+          "id": "C",
+          "text": "Faster object creation at runtime"
+        },
+        {
+          "id": "D",
+          "text": "Dependencies can be swapped, notably for tests"
+        }
       ],
       "correct_option_id": "D",
       "explanation": "A class that receives its collaborators does not decide their concrete type, so a test can pass a fake. A class calling new on its dependencies hardcodes them.",
@@ -89,12 +161,24 @@
       "id": "role-java-spring-q07",
       "prompt": "In Java, what does the final keyword mean on a field?",
       "options": [
-        { "id": "A", "text": "The field cannot be reassigned after initialisation" },
-        { "id": "B", "text": "The object it points to becomes immutable" },
-        { "id": "C", "text": "The field is thread-local" },
-        { "id": "D", "text": "The field cannot be null" }
+        {
+          "id": "A",
+          "text": "The field cannot be null"
+        },
+        {
+          "id": "B",
+          "text": "The field is thread-local"
+        },
+        {
+          "id": "C",
+          "text": "The field cannot be reassigned after initialisation"
+        },
+        {
+          "id": "D",
+          "text": "The object it points to becomes immutable"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "final fixes the reference, not the object. A final List can still have elements added; only rebinding the variable is prevented.",
       "concept": "Java Fundamentals"
     },
@@ -102,12 +186,24 @@
       "id": "role-java-spring-q08",
       "prompt": "What is the difference between ArrayList and LinkedList for random access?",
       "options": [
-        { "id": "A", "text": "LinkedList is faster because it uses pointers" },
-        { "id": "B", "text": "ArrayList is O(1); LinkedList is O(n)" },
-        { "id": "C", "text": "Both are O(1)" },
-        { "id": "D", "text": "ArrayList does not support index access" }
+        {
+          "id": "A",
+          "text": "ArrayList is O(1); LinkedList is O(n)"
+        },
+        {
+          "id": "B",
+          "text": "Both are O(1)"
+        },
+        {
+          "id": "C",
+          "text": "LinkedList is faster because it uses pointers"
+        },
+        {
+          "id": "D",
+          "text": "ArrayList does not support index access"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "ArrayList is backed by an array so index access is direct. LinkedList must walk the chain from an end, which is why it loses despite better mid-list insertion.",
       "concept": "Java Collections"
     },
@@ -115,10 +211,22 @@
       "id": "role-java-spring-q09",
       "prompt": "What does Spring Boot's auto-configuration actually do?",
       "options": [
-        { "id": "A", "text": "It generates your entity classes from the database" },
-        { "id": "B", "text": "It compiles the application ahead of time" },
-        { "id": "C", "text": "It configures beans based on what is on the classpath" },
-        { "id": "D", "text": "It deploys the app to a server automatically" }
+        {
+          "id": "A",
+          "text": "It generates your entity classes from the database"
+        },
+        {
+          "id": "B",
+          "text": "It deploys the app to a server automatically"
+        },
+        {
+          "id": "C",
+          "text": "It configures beans based on what is on the classpath"
+        },
+        {
+          "id": "D",
+          "text": "It compiles the application ahead of time"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "Conditional configuration classes activate when a library is present and no conflicting bean is defined. Adding a JDBC driver is what silently gives you a configured DataSource.",
@@ -128,12 +236,24 @@
       "id": "role-java-spring-q10",
       "prompt": "Why is String immutable in Java?",
       "options": [
-        { "id": "A", "text": "It makes string concatenation faster" },
-        { "id": "B", "text": "It allows safe sharing, caching and use as a hash key" },
-        { "id": "C", "text": "It reduces the size of each String object" },
-        { "id": "D", "text": "It is required for Unicode support" }
+        {
+          "id": "A",
+          "text": "It reduces the size of each String object"
+        },
+        {
+          "id": "B",
+          "text": "It makes string concatenation faster"
+        },
+        {
+          "id": "C",
+          "text": "It is required for Unicode support"
+        },
+        {
+          "id": "D",
+          "text": "It allows safe sharing, caching and use as a hash key"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Immutability makes strings safe to share across threads, allows the string pool, and guarantees a hash key cannot change after insertion. Concatenation in a loop is actually slower for it.",
       "concept": "Java Fundamentals"
     },
@@ -141,12 +261,24 @@
       "id": "role-java-spring-q11",
       "prompt": "What is the role of the @RestController annotation?",
       "options": [
-        { "id": "A", "text": "It marks a class as a controller whose returns are serialised as the response body" },
-        { "id": "B", "text": "It restricts the controller to REST clients only" },
-        { "id": "C", "text": "It enables database access in the controller" },
-        { "id": "D", "text": "It makes every method transactional" }
+        {
+          "id": "A",
+          "text": "It enables database access in the controller"
+        },
+        {
+          "id": "B",
+          "text": "It makes every method transactional"
+        },
+        {
+          "id": "C",
+          "text": "It marks a class as a controller whose returns are serialised as the response body"
+        },
+        {
+          "id": "D",
+          "text": "It restricts the controller to REST clients only"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "It combines @Controller and @ResponseBody, so returned objects are serialised to JSON rather than resolved as a view name.",
       "concept": "Spring MVC"
     },
@@ -154,10 +286,22 @@
       "id": "role-java-spring-q12",
       "prompt": "What happens during Java garbage collection of a young generation?",
       "options": [
-        { "id": "A", "text": "All objects in the heap are scanned and compacted" },
-        { "id": "B", "text": "Only objects with finalizers are collected" },
-        { "id": "C", "text": "The JVM restarts the application thread pool" },
-        { "id": "D", "text": "Short-lived objects are collected and survivors are promoted" }
+        {
+          "id": "A",
+          "text": "All objects in the heap are scanned and compacted"
+        },
+        {
+          "id": "B",
+          "text": "The JVM restarts the application thread pool"
+        },
+        {
+          "id": "C",
+          "text": "Only objects with finalizers are collected"
+        },
+        {
+          "id": "D",
+          "text": "Short-lived objects are collected and survivors are promoted"
+        }
       ],
       "correct_option_id": "D",
       "explanation": "Most objects die young, so a minor collection sweeps the young generation cheaply and promotes anything that survives repeatedly to the old generation.",
@@ -167,12 +311,24 @@
       "id": "role-java-spring-q13",
       "prompt": "Why can calling a @Transactional method from another method in the same class skip the transaction?",
       "options": [
-        { "id": "A", "text": "Spring disallows nested transactions" },
-        { "id": "B", "text": "The internal call bypasses the proxy that applies the behaviour" },
-        { "id": "C", "text": "The annotation only works on interfaces" },
-        { "id": "D", "text": "Transactions require an explicit commit call" }
+        {
+          "id": "A",
+          "text": "The annotation only works on interfaces"
+        },
+        {
+          "id": "B",
+          "text": "Transactions require an explicit commit call"
+        },
+        {
+          "id": "C",
+          "text": "The internal call bypasses the proxy that applies the behaviour"
+        },
+        {
+          "id": "D",
+          "text": "Spring disallows nested transactions"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Spring's default AOP wraps the bean in a proxy. An internal this call never goes through it, so none of the proxy's advice, including transactions, runs.",
       "concept": "Spring AOP"
     },
@@ -180,12 +336,24 @@
       "id": "role-java-spring-q14",
       "prompt": "What does the Java Stream API's map operation do?",
       "options": [
-        { "id": "A", "text": "Filters elements by a predicate" },
-        { "id": "B", "text": "Groups elements into a Map" },
-        { "id": "C", "text": "Transforms each element into another value" },
-        { "id": "D", "text": "Sorts the stream in place" }
+        {
+          "id": "A",
+          "text": "Filters elements by a predicate"
+        },
+        {
+          "id": "B",
+          "text": "Transforms each element into another value"
+        },
+        {
+          "id": "C",
+          "text": "Groups elements into a Map"
+        },
+        {
+          "id": "D",
+          "text": "Sorts the stream in place"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "map applies a function elementwise and returns a new stream. Streams are lazy, so nothing runs until a terminal operation such as collect is invoked.",
       "concept": "Java Streams"
     },
@@ -193,12 +361,24 @@
       "id": "role-java-spring-q15",
       "prompt": "What is the practical difference between an interface and an abstract class in modern Java?",
       "options": [
-        { "id": "A", "text": "Interfaces cannot declare methods" },
-        { "id": "B", "text": "A class may implement many interfaces but extend only one abstract class" },
-        { "id": "C", "text": "Abstract classes cannot have constructors" },
-        { "id": "D", "text": "Interfaces cannot be used as types" }
+        {
+          "id": "A",
+          "text": "A class may implement many interfaces but extend only one abstract class"
+        },
+        {
+          "id": "B",
+          "text": "Interfaces cannot declare methods"
+        },
+        {
+          "id": "C",
+          "text": "Interfaces cannot be used as types"
+        },
+        {
+          "id": "D",
+          "text": "Abstract classes cannot have constructors"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Since default methods, interfaces can carry behaviour too. The durable difference is single inheritance of state and constructors versus multiple interface implementation.",
       "concept": "Java OOP"
     },
@@ -206,12 +386,24 @@
       "id": "role-java-spring-q16",
       "prompt": "Which Spring annotation injects a value from application.properties?",
       "options": [
-        { "id": "A", "text": "@Autowired" },
-        { "id": "B", "text": "@Bean" },
-        { "id": "C", "text": "@Component" },
-        { "id": "D", "text": "@Value" }
+        {
+          "id": "A",
+          "text": "@Bean"
+        },
+        {
+          "id": "B",
+          "text": "@Value"
+        },
+        {
+          "id": "C",
+          "text": "@Autowired"
+        },
+        {
+          "id": "D",
+          "text": "@Component"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "@Value binds a property or expression into a field or parameter. @ConfigurationProperties is the better choice once several related settings are involved.",
       "concept": "Spring Configuration"
     },
@@ -219,12 +411,24 @@
       "id": "role-java-spring-q17",
       "prompt": "What does the volatile keyword guarantee in Java?",
       "options": [
-        { "id": "A", "text": "Writes are visible to other threads, and reads are not cached locally" },
-        { "id": "B", "text": "The operation is atomic for compound updates" },
-        { "id": "C", "text": "The field is excluded from garbage collection" },
-        { "id": "D", "text": "The field is written to disk immediately" }
+        {
+          "id": "A",
+          "text": "The field is excluded from garbage collection"
+        },
+        {
+          "id": "B",
+          "text": "The operation is atomic for compound updates"
+        },
+        {
+          "id": "C",
+          "text": "The field is written to disk immediately"
+        },
+        {
+          "id": "D",
+          "text": "Writes are visible to other threads, and reads are not cached locally"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "volatile fixes visibility and ordering, not atomicity. count++ on a volatile int is still a race, because read-modify-write is three operations.",
       "concept": "Java Concurrency"
     },
@@ -232,12 +436,24 @@
       "id": "role-java-spring-q18",
       "prompt": "Why is HashMap unsafe for concurrent writes?",
       "options": [
-        { "id": "A", "text": "It throws an exception on any second write" },
-        { "id": "B", "text": "It silently drops all but the first entry" },
-        { "id": "C", "text": "Concurrent resizing can corrupt its internal structure" },
-        { "id": "D", "text": "It cannot store more than one thread's data" }
+        {
+          "id": "A",
+          "text": "It throws an exception on any second write"
+        },
+        {
+          "id": "B",
+          "text": "Concurrent resizing can corrupt its internal structure"
+        },
+        {
+          "id": "C",
+          "text": "It cannot store more than one thread's data"
+        },
+        {
+          "id": "D",
+          "text": "It silently drops all but the first entry"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Simultaneous resize can leave the internal table inconsistent, historically producing infinite loops. ConcurrentHashMap exists for this, with lock striping rather than one global lock.",
       "concept": "Java Concurrency"
     },
@@ -245,10 +461,22 @@
       "id": "role-java-spring-q19",
       "prompt": "What is constructor injection preferred over field injection for?",
       "options": [
-        { "id": "A", "text": "It makes dependencies explicit and allows final fields" },
-        { "id": "B", "text": "It is the only way Spring can inject beans" },
-        { "id": "C", "text": "It avoids the need for component scanning" },
-        { "id": "D", "text": "It speeds up application startup" }
+        {
+          "id": "A",
+          "text": "It makes dependencies explicit and allows final fields"
+        },
+        {
+          "id": "B",
+          "text": "It speeds up application startup"
+        },
+        {
+          "id": "C",
+          "text": "It avoids the need for component scanning"
+        },
+        {
+          "id": "D",
+          "text": "It is the only way Spring can inject beans"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "A constructor states its requirements, cannot be half-built, and permits final fields. Field injection hides dependencies and needs reflection to test without a container.",
@@ -258,12 +486,24 @@
       "id": "role-java-spring-q20",
       "prompt": "What does Optional in Java aim to prevent?",
       "options": [
-        { "id": "A", "text": "Class cast exceptions" },
-        { "id": "B", "text": "Unhandled null return values" },
-        { "id": "C", "text": "Memory leaks in long-running services" },
-        { "id": "D", "text": "Concurrent modification during iteration" }
+        {
+          "id": "A",
+          "text": "Unhandled null return values"
+        },
+        {
+          "id": "B",
+          "text": "Concurrent modification during iteration"
+        },
+        {
+          "id": "C",
+          "text": "Memory leaks in long-running services"
+        },
+        {
+          "id": "D",
+          "text": "Class cast exceptions"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Optional makes absence part of the signature so the caller must confront it. Calling get without checking simply reintroduces the same failure with a different exception.",
       "concept": "Java Fundamentals"
     },
@@ -271,12 +511,24 @@
       "id": "role-java-spring-q21",
       "prompt": "In Spring Data JPA, what does extending JpaRepository provide?",
       "options": [
-        { "id": "A", "text": "Automatic REST endpoints for the entity" },
-        { "id": "B", "text": "Compile-time SQL validation" },
-        { "id": "C", "text": "CRUD and paging methods without an implementation" },
-        { "id": "D", "text": "A second-level cache by default" }
+        {
+          "id": "A",
+          "text": "Automatic REST endpoints for the entity"
+        },
+        {
+          "id": "B",
+          "text": "CRUD and paging methods without an implementation"
+        },
+        {
+          "id": "C",
+          "text": "Compile-time SQL validation"
+        },
+        {
+          "id": "D",
+          "text": "A second-level cache by default"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Spring generates a proxy implementing the standard operations, and derives queries from method names such as findByEmailAndActiveTrue.",
       "concept": "Spring Data"
     },
@@ -284,10 +536,22 @@
       "id": "role-java-spring-q22",
       "prompt": "What is the difference between == and equals for Java objects?",
       "options": [
-        { "id": "A", "text": "== compares references; equals compares content if overridden" },
-        { "id": "B", "text": "They behave identically for all objects" },
-        { "id": "C", "text": "equals compares references; == compares content" },
-        { "id": "D", "text": "== cannot be used on objects at all" }
+        {
+          "id": "A",
+          "text": "== compares references; equals compares content if overridden"
+        },
+        {
+          "id": "B",
+          "text": "== cannot be used on objects at all"
+        },
+        {
+          "id": "C",
+          "text": "equals compares references; == compares content"
+        },
+        {
+          "id": "D",
+          "text": "They behave identically for all objects"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "== asks whether two variables point at the same object. equals asks whether they are meaningfully equal, but only if the class overrides it; Object's default is reference equality.",
@@ -297,12 +561,24 @@
       "id": "role-java-spring-q23",
       "prompt": "What is a memory leak in a long-running Java service most often caused by?",
       "options": [
-        { "id": "A", "text": "Failing to call System.gc regularly" },
-        { "id": "B", "text": "Creating too many short-lived objects" },
-        { "id": "C", "text": "Using primitives instead of wrapper types" },
-        { "id": "D", "text": "Objects still referenced from a long-lived collection or cache" }
+        {
+          "id": "A",
+          "text": "Using primitives instead of wrapper types"
+        },
+        {
+          "id": "B",
+          "text": "Objects still referenced from a long-lived collection or cache"
+        },
+        {
+          "id": "C",
+          "text": "Failing to call System.gc regularly"
+        },
+        {
+          "id": "D",
+          "text": "Creating too many short-lived objects"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Java cannot collect anything still reachable. An unbounded static map or a listener never unregistered keeps objects alive indefinitely, which is a leak in every practical sense.",
       "concept": "JVM Memory"
     },
@@ -310,12 +586,24 @@
       "id": "role-java-spring-q24",
       "prompt": "Why should an entity's equals not be based on its generated database id alone?",
       "options": [
-        { "id": "A", "text": "Database ids are not unique" },
-        { "id": "B", "text": "The id is null before the entity is persisted" },
-        { "id": "C", "text": "JPA forbids overriding equals on entities" },
-        { "id": "D", "text": "Ids change every time the row is updated" }
+        {
+          "id": "A",
+          "text": "Ids change every time the row is updated"
+        },
+        {
+          "id": "B",
+          "text": "Database ids are not unique"
+        },
+        {
+          "id": "C",
+          "text": "The id is null before the entity is persisted"
+        },
+        {
+          "id": "D",
+          "text": "JPA forbids overriding equals on entities"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "A new entity has a null id, so two unsaved entities compare equal and behave badly in a Set. A business key, or careful null handling, is required.",
       "concept": "JPA Entities"
     },
@@ -323,12 +611,24 @@
       "id": "role-java-spring-q25",
       "prompt": "What does Spring Security's filter chain do with an incoming request?",
       "options": [
-        { "id": "A", "text": "It passes the request through ordered filters that authenticate and authorise it" },
-        { "id": "B", "text": "It encrypts the request body before the controller sees it" },
-        { "id": "C", "text": "It rewrites the URL to a canonical form" },
-        { "id": "D", "text": "It validates the JSON schema of the payload" }
+        {
+          "id": "A",
+          "text": "It validates the JSON schema of the payload"
+        },
+        {
+          "id": "B",
+          "text": "It passes the request through ordered filters that authenticate and authorise it"
+        },
+        {
+          "id": "C",
+          "text": "It rewrites the URL to a canonical form"
+        },
+        {
+          "id": "D",
+          "text": "It encrypts the request body before the controller sees it"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "A servlet filter chain runs before the controller, establishing the security context or rejecting the request. Understanding filter order is what makes custom authentication work.",
       "concept": "Spring Security"
     }

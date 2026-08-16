@@ -11,10 +11,22 @@
       "id": "role-cyber-security-q01",
       "prompt": "What is the correct defence against SQL injection?",
       "options": [
-        { "id": "A", "text": "Escaping single quotes in the input" },
-        { "id": "B", "text": "Parameterised queries that separate code from data" },
-        { "id": "C", "text": "Blocking requests containing the word SELECT" },
-        { "id": "D", "text": "Running the database on a non-standard port" }
+        {
+          "id": "A",
+          "text": "Escaping single quotes in the input"
+        },
+        {
+          "id": "B",
+          "text": "Parameterised queries that separate code from data"
+        },
+        {
+          "id": "C",
+          "text": "Blocking requests containing the word SELECT"
+        },
+        {
+          "id": "D",
+          "text": "Running the database on a non-standard port"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "Parameterisation sends the statement and the values separately, so input can never be parsed as SQL. Escaping and blacklisting are both routinely bypassed by encoding tricks.",
@@ -24,12 +36,24 @@
       "id": "role-cyber-security-q02",
       "prompt": "What distinguishes stored XSS from reflected XSS?",
       "options": [
-        { "id": "A", "text": "Stored XSS is persisted server-side and served to other users" },
-        { "id": "B", "text": "Reflected XSS only works on HTTPS sites" },
-        { "id": "C", "text": "Stored XSS requires physical access" },
-        { "id": "D", "text": "Reflected XSS affects the database" }
+        {
+          "id": "A",
+          "text": "Stored XSS requires physical access"
+        },
+        {
+          "id": "B",
+          "text": "Stored XSS is persisted server-side and served to other users"
+        },
+        {
+          "id": "C",
+          "text": "Reflected XSS only works on HTTPS sites"
+        },
+        {
+          "id": "D",
+          "text": "Reflected XSS affects the database"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Stored XSS is saved, for example in a comment, and fires for everyone who views it. Reflected XSS is echoed from the request and needs the victim to follow a crafted link.",
       "concept": "Cross-Site Scripting"
     },
@@ -37,12 +61,24 @@
       "id": "role-cyber-security-q03",
       "prompt": "Why is hashing with a per-user salt important for stored passwords?",
       "options": [
-        { "id": "A", "text": "It makes the hash reversible for support staff" },
-        { "id": "B", "text": "It compresses the stored value" },
-        { "id": "C", "text": "It defeats precomputed rainbow tables and hides identical passwords" },
-        { "id": "D", "text": "It allows longer passwords to be stored" }
+        {
+          "id": "A",
+          "text": "It compresses the stored value"
+        },
+        {
+          "id": "B",
+          "text": "It allows longer passwords to be stored"
+        },
+        {
+          "id": "C",
+          "text": "It makes the hash reversible for support staff"
+        },
+        {
+          "id": "D",
+          "text": "It defeats precomputed rainbow tables and hides identical passwords"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "A unique salt means an attacker cannot reuse one precomputed table across accounts, and two users with the same password no longer share a hash.",
       "concept": "Password Security"
     },
@@ -50,12 +86,24 @@
       "id": "role-cyber-security-q04",
       "prompt": "What does a CSRF attack exploit?",
       "options": [
-        { "id": "A", "text": "Weak password hashing on the server" },
-        { "id": "B", "text": "The browser automatically attaching credentials to cross-site requests" },
-        { "id": "C", "text": "Unpatched operating system libraries" },
-        { "id": "D", "text": "Predictable database primary keys" }
+        {
+          "id": "A",
+          "text": "Unpatched operating system libraries"
+        },
+        {
+          "id": "B",
+          "text": "Weak password hashing on the server"
+        },
+        {
+          "id": "C",
+          "text": "The browser automatically attaching credentials to cross-site requests"
+        },
+        {
+          "id": "D",
+          "text": "Predictable database primary keys"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "A malicious page triggers a request to a site where the victim is logged in, and the browser attaches the cookie automatically. Anti-CSRF tokens and SameSite cookies break it.",
       "concept": "CSRF"
     },
@@ -63,10 +111,22 @@
       "id": "role-cyber-security-q05",
       "prompt": "In TLS, what does a certificate actually assert?",
       "options": [
-        { "id": "A", "text": "That the site's content has been reviewed" },
-        { "id": "B", "text": "That the server is free of malware" },
-        { "id": "C", "text": "That the connection cannot be intercepted at all" },
-        { "id": "D", "text": "That a trusted authority vouches the public key belongs to that domain" }
+        {
+          "id": "A",
+          "text": "That the connection cannot be intercepted at all"
+        },
+        {
+          "id": "B",
+          "text": "That the server is free of malware"
+        },
+        {
+          "id": "C",
+          "text": "That the site's content has been reviewed"
+        },
+        {
+          "id": "D",
+          "text": "That a trusted authority vouches the public key belongs to that domain"
+        }
       ],
       "correct_option_id": "D",
       "explanation": "A certificate binds a public key to a name, signed by a CA the client trusts. It says nothing about whether the site itself is honest or safe.",
@@ -76,10 +136,22 @@
       "id": "role-cyber-security-q06",
       "prompt": "What is the principle of least privilege?",
       "options": [
-        { "id": "A", "text": "Granting only the access needed to perform a task" },
-        { "id": "B", "text": "Giving administrators access to everything for speed" },
-        { "id": "C", "text": "Removing all access until a request is filed" },
-        { "id": "D", "text": "Rotating credentials every hour" }
+        {
+          "id": "A",
+          "text": "Granting only the access needed to perform a task"
+        },
+        {
+          "id": "B",
+          "text": "Rotating credentials every hour"
+        },
+        {
+          "id": "C",
+          "text": "Giving administrators access to everything for speed"
+        },
+        {
+          "id": "D",
+          "text": "Removing all access until a request is filed"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "Limiting each account and service to its minimum permissions caps the blast radius when one is compromised. It is why a web server should never hold database admin credentials.",
@@ -89,12 +161,24 @@
       "id": "role-cyber-security-q07",
       "prompt": "What is the difference between symmetric and asymmetric encryption?",
       "options": [
-        { "id": "A", "text": "Asymmetric encryption is always faster" },
-        { "id": "B", "text": "Symmetric uses one shared key; asymmetric uses a key pair" },
-        { "id": "C", "text": "Symmetric encryption cannot be broken" },
-        { "id": "D", "text": "Asymmetric encryption does not use keys" }
+        {
+          "id": "A",
+          "text": "Asymmetric encryption is always faster"
+        },
+        {
+          "id": "B",
+          "text": "Asymmetric encryption does not use keys"
+        },
+        {
+          "id": "C",
+          "text": "Symmetric uses one shared key; asymmetric uses a key pair"
+        },
+        {
+          "id": "D",
+          "text": "Symmetric encryption cannot be broken"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Symmetric is fast but requires sharing the key safely. Asymmetric solves key exchange but is slow, which is why TLS uses it to agree a symmetric session key.",
       "concept": "Cryptography"
     },
@@ -102,12 +186,24 @@
       "id": "role-cyber-security-q08",
       "prompt": "What is a man-in-the-middle attack?",
       "options": [
-        { "id": "A", "text": "Overloading a server with traffic" },
-        { "id": "B", "text": "Guessing passwords from a wordlist" },
-        { "id": "C", "text": "Intercepting and possibly altering traffic between two parties" },
-        { "id": "D", "text": "Injecting code into a database query" }
+        {
+          "id": "A",
+          "text": "Injecting code into a database query"
+        },
+        {
+          "id": "B",
+          "text": "Overloading a server with traffic"
+        },
+        {
+          "id": "C",
+          "text": "Guessing passwords from a wordlist"
+        },
+        {
+          "id": "D",
+          "text": "Intercepting and possibly altering traffic between two parties"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "The attacker sits on the path and relays traffic while reading or modifying it. Certificate validation is what makes this detectable over TLS, which is why ignoring warnings is dangerous.",
       "concept": "Network Attacks"
     },
@@ -115,12 +211,24 @@
       "id": "role-cyber-security-q09",
       "prompt": "What does a firewall's default-deny policy mean?",
       "options": [
-        { "id": "A", "text": "Everything is blocked unless explicitly allowed" },
-        { "id": "B", "text": "Everything is allowed unless explicitly blocked" },
-        { "id": "C", "text": "Only outbound traffic is inspected" },
-        { "id": "D", "text": "Rules are evaluated in random order" }
+        {
+          "id": "A",
+          "text": "Rules are evaluated in random order"
+        },
+        {
+          "id": "B",
+          "text": "Only outbound traffic is inspected"
+        },
+        {
+          "id": "C",
+          "text": "Everything is allowed unless explicitly blocked"
+        },
+        {
+          "id": "D",
+          "text": "Everything is blocked unless explicitly allowed"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Starting closed means a forgotten service is unreachable rather than exposed. Default-allow fails open, so every new port is an accidental hole.",
       "concept": "Network Security"
     },
@@ -128,12 +236,24 @@
       "id": "role-cyber-security-q10",
       "prompt": "Why are prepared statements ineffective against second-order SQL injection if output is not also handled?",
       "options": [
-        { "id": "A", "text": "Prepared statements only work on SELECT queries" },
-        { "id": "B", "text": "Stored malicious input can be concatenated into a later query" },
-        { "id": "C", "text": "They disable database logging" },
-        { "id": "D", "text": "They cannot store special characters" }
+        {
+          "id": "A",
+          "text": "Stored malicious input can be concatenated into a later query"
+        },
+        {
+          "id": "B",
+          "text": "Prepared statements only work on SELECT queries"
+        },
+        {
+          "id": "C",
+          "text": "They disable database logging"
+        },
+        {
+          "id": "D",
+          "text": "They cannot store special characters"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Input safely stored can still be dangerous when a later routine builds a query by concatenating that stored value. Every query needs parameterising, not just the one taking user input.",
       "concept": "Injection Attacks"
     },
@@ -141,10 +261,22 @@
       "id": "role-cyber-security-q11",
       "prompt": "What is the purpose of multi-factor authentication?",
       "options": [
-        { "id": "A", "text": "It encrypts the password in transit" },
-        { "id": "B", "text": "It replaces the need for passwords entirely" },
-        { "id": "C", "text": "It requires evidence from more than one category, so a stolen password is not enough" },
-        { "id": "D", "text": "It logs the user out after inactivity" }
+        {
+          "id": "A",
+          "text": "It replaces the need for passwords entirely"
+        },
+        {
+          "id": "B",
+          "text": "It logs the user out after inactivity"
+        },
+        {
+          "id": "C",
+          "text": "It requires evidence from more than one category, so a stolen password is not enough"
+        },
+        {
+          "id": "D",
+          "text": "It encrypts the password in transit"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "Combining something known with something held means credential theft alone does not grant access. SMS is the weakest second factor because of SIM swapping.",
@@ -154,10 +286,22 @@
       "id": "role-cyber-security-q12",
       "prompt": "What does a DDoS attack aim to do?",
       "options": [
-        { "id": "A", "text": "Steal credentials from a database" },
-        { "id": "B", "text": "Exhaust a service's capacity from many sources" },
-        { "id": "C", "text": "Escalate a user account to administrator" },
-        { "id": "D", "text": "Modify data silently in transit" }
+        {
+          "id": "A",
+          "text": "Modify data silently in transit"
+        },
+        {
+          "id": "B",
+          "text": "Exhaust a service's capacity from many sources"
+        },
+        {
+          "id": "C",
+          "text": "Escalate a user account to administrator"
+        },
+        {
+          "id": "D",
+          "text": "Steal credentials from a database"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "It targets availability rather than confidentiality. Because traffic comes from many hosts, blocking a single address is useless and mitigation happens upstream.",
@@ -167,12 +311,24 @@
       "id": "role-cyber-security-q13",
       "prompt": "What is privilege escalation?",
       "options": [
-        { "id": "A", "text": "Gaining higher access than originally granted" },
-        { "id": "B", "text": "Requesting a permission through a workflow" },
-        { "id": "C", "text": "Increasing a process's CPU priority" },
-        { "id": "D", "text": "Extending a session's expiry time" }
+        {
+          "id": "A",
+          "text": "Increasing a process's CPU priority"
+        },
+        {
+          "id": "B",
+          "text": "Requesting a permission through a workflow"
+        },
+        {
+          "id": "C",
+          "text": "Gaining higher access than originally granted"
+        },
+        {
+          "id": "D",
+          "text": "Extending a session's expiry time"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Vertical escalation reaches a higher role such as admin; horizontal escalation reaches another user's data at the same level, often by changing an id in a request.",
       "concept": "Access Control"
     },
@@ -180,12 +336,24 @@
       "id": "role-cyber-security-q14",
       "prompt": "Why is security through obscurity not a control on its own?",
       "options": [
-        { "id": "A", "text": "It slows the application down significantly" },
-        { "id": "B", "text": "It is prohibited by most compliance standards" },
-        { "id": "C", "text": "It only works on internal networks" },
-        { "id": "D", "text": "The system fails completely once the secret design is discovered" }
+        {
+          "id": "A",
+          "text": "It is prohibited by most compliance standards"
+        },
+        {
+          "id": "B",
+          "text": "The system fails completely once the secret design is discovered"
+        },
+        {
+          "id": "C",
+          "text": "It slows the application down significantly"
+        },
+        {
+          "id": "D",
+          "text": "It only works on internal networks"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Hiding a design adds friction but no guarantee. A system should stay secure even when its design is public, with only the keys secret — Kerckhoffs's principle.",
       "concept": "Security Principles"
     },
@@ -193,10 +361,22 @@
       "id": "role-cyber-security-q15",
       "prompt": "What does hashing a file achieve for integrity checking?",
       "options": [
-        { "id": "A", "text": "It encrypts the file for storage" },
-        { "id": "B", "text": "It compresses the file for transfer" },
-        { "id": "C", "text": "Any modification produces a different digest" },
-        { "id": "D", "text": "It proves who created the file" }
+        {
+          "id": "A",
+          "text": "It proves who created the file"
+        },
+        {
+          "id": "B",
+          "text": "It compresses the file for transfer"
+        },
+        {
+          "id": "C",
+          "text": "Any modification produces a different digest"
+        },
+        {
+          "id": "D",
+          "text": "It encrypts the file for storage"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "A cryptographic hash changes drastically on any edit, so a mismatch reveals tampering or corruption. Authorship needs a signature, which hashing alone does not provide.",
@@ -206,12 +386,24 @@
       "id": "role-cyber-security-q16",
       "prompt": "What is the risk of an insecure direct object reference?",
       "options": [
-        { "id": "A", "text": "The server runs out of memory" },
-        { "id": "B", "text": "Changing an id in a request exposes another user's data" },
-        { "id": "C", "text": "Objects are garbage collected too early" },
-        { "id": "D", "text": "The database index becomes fragmented" }
+        {
+          "id": "A",
+          "text": "Changing an id in a request exposes another user's data"
+        },
+        {
+          "id": "B",
+          "text": "The server runs out of memory"
+        },
+        {
+          "id": "C",
+          "text": "The database index becomes fragmented"
+        },
+        {
+          "id": "D",
+          "text": "Objects are garbage collected too early"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Authenticating the request but not checking ownership of the requested record lets any logged-in user enumerate others' data by editing a parameter.",
       "concept": "Access Control"
     },
@@ -219,12 +411,24 @@
       "id": "role-cyber-security-q17",
       "prompt": "What does the SameSite cookie attribute mitigate?",
       "options": [
-        { "id": "A", "text": "Cross-site request forgery" },
-        { "id": "B", "text": "SQL injection" },
-        { "id": "C", "text": "Denial of service" },
-        { "id": "D", "text": "Weak password reuse" }
+        {
+          "id": "A",
+          "text": "Weak password reuse"
+        },
+        {
+          "id": "B",
+          "text": "Denial of service"
+        },
+        {
+          "id": "C",
+          "text": "Cross-site request forgery"
+        },
+        {
+          "id": "D",
+          "text": "SQL injection"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "SameSite tells the browser not to attach the cookie to cross-site requests, removing the automatic credential that CSRF depends on.",
       "concept": "CSRF"
     },
@@ -232,12 +436,24 @@
       "id": "role-cyber-security-q18",
       "prompt": "What is a zero-day vulnerability?",
       "options": [
-        { "id": "A", "text": "A flaw that takes zero days to exploit" },
-        { "id": "B", "text": "A flaw only present on the day of release" },
-        { "id": "C", "text": "A flaw with no security impact" },
-        { "id": "D", "text": "A flaw with no vendor patch available yet" }
+        {
+          "id": "A",
+          "text": "A flaw with no vendor patch available yet"
+        },
+        {
+          "id": "B",
+          "text": "A flaw only present on the day of release"
+        },
+        {
+          "id": "C",
+          "text": "A flaw with no security impact"
+        },
+        {
+          "id": "D",
+          "text": "A flaw that takes zero days to exploit"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "The vendor has had zero days to fix it, so no patch exists. Defence relies on mitigations such as network controls and detection until one ships.",
       "concept": "Vulnerability Management"
     },
@@ -245,12 +461,24 @@
       "id": "role-cyber-security-q19",
       "prompt": "Why should error messages avoid saying whether a username exists?",
       "options": [
-        { "id": "A", "text": "It slows down the login endpoint" },
-        { "id": "B", "text": "It lets an attacker enumerate valid accounts" },
-        { "id": "C", "text": "It breaks password managers" },
-        { "id": "D", "text": "It prevents proper logging" }
+        {
+          "id": "A",
+          "text": "It breaks password managers"
+        },
+        {
+          "id": "B",
+          "text": "It prevents proper logging"
+        },
+        {
+          "id": "C",
+          "text": "It lets an attacker enumerate valid accounts"
+        },
+        {
+          "id": "D",
+          "text": "It slows down the login endpoint"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Distinguishing 'no such user' from 'wrong password' hands an attacker a list of valid targets for credential stuffing. A single generic message avoids that.",
       "concept": "Authentication"
     },
@@ -258,12 +486,24 @@
       "id": "role-cyber-security-q20",
       "prompt": "What is the difference between a vulnerability scan and a penetration test?",
       "options": [
-        { "id": "A", "text": "A scan is manual; a pen test is automated" },
-        { "id": "B", "text": "They are the same activity under two names" },
-        { "id": "C", "text": "A scan finds known issues automatically; a pen test actively exploits them" },
-        { "id": "D", "text": "A pen test only reviews source code" }
+        {
+          "id": "A",
+          "text": "They are the same activity under two names"
+        },
+        {
+          "id": "B",
+          "text": "A pen test only reviews source code"
+        },
+        {
+          "id": "C",
+          "text": "A scan is manual; a pen test is automated"
+        },
+        {
+          "id": "D",
+          "text": "A scan finds known issues automatically; a pen test actively exploits them"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Scanning enumerates known weaknesses cheaply and often reports false positives. A pen test chains findings to prove real impact, which requires human judgement.",
       "concept": "Security Testing"
     },
@@ -271,10 +511,22 @@
       "id": "role-cyber-security-q21",
       "prompt": "What does defence in depth mean?",
       "options": [
-        { "id": "A", "text": "Layering independent controls so one failure is not fatal" },
-        { "id": "B", "text": "Encrypting data multiple times over" },
-        { "id": "C", "text": "Placing all security at the network perimeter" },
-        { "id": "D", "text": "Running two firewalls from the same vendor" }
+        {
+          "id": "A",
+          "text": "Layering independent controls so one failure is not fatal"
+        },
+        {
+          "id": "B",
+          "text": "Encrypting data multiple times over"
+        },
+        {
+          "id": "C",
+          "text": "Running two firewalls from the same vendor"
+        },
+        {
+          "id": "D",
+          "text": "Placing all security at the network perimeter"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "No single control holds forever, so independent layers mean an attacker must defeat several. Input validation, least privilege and monitoring each cover the others' failures.",
@@ -284,12 +536,24 @@
       "id": "role-cyber-security-q22",
       "prompt": "Why is storing an API key in a public client application unsafe?",
       "options": [
-        { "id": "A", "text": "Client applications cannot make HTTPS requests" },
-        { "id": "B", "text": "Keys expire faster on clients" },
-        { "id": "C", "text": "The key is extractable from the shipped binary or bundle" },
-        { "id": "D", "text": "Clients cannot store strings securely at all" }
+        {
+          "id": "A",
+          "text": "Clients cannot store strings securely at all"
+        },
+        {
+          "id": "B",
+          "text": "The key is extractable from the shipped binary or bundle"
+        },
+        {
+          "id": "C",
+          "text": "Client applications cannot make HTTPS requests"
+        },
+        {
+          "id": "D",
+          "text": "Keys expire faster on clients"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Anything shipped to a user can be decompiled or inspected. Secrets belong on a server that brokers the call, which is the reasoning behind server-side OAuth flows.",
       "concept": "Application Security"
     },
@@ -297,12 +561,24 @@
       "id": "role-cyber-security-q23",
       "prompt": "What is the purpose of network segmentation?",
       "options": [
-        { "id": "A", "text": "It increases available bandwidth" },
-        { "id": "B", "text": "It limits lateral movement after a compromise" },
-        { "id": "C", "text": "It removes the need for authentication" },
-        { "id": "D", "text": "It encrypts all internal traffic" }
+        {
+          "id": "A",
+          "text": "It increases available bandwidth"
+        },
+        {
+          "id": "B",
+          "text": "It encrypts all internal traffic"
+        },
+        {
+          "id": "C",
+          "text": "It removes the need for authentication"
+        },
+        {
+          "id": "D",
+          "text": "It limits lateral movement after a compromise"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Separating networks means a compromised web server cannot reach the finance database directly. Without it, one foothold gives access to everything reachable.",
       "concept": "Network Security"
     },
@@ -310,12 +586,24 @@
       "id": "role-cyber-security-q24",
       "prompt": "What does a security header like X-Content-Type-Options: nosniff prevent?",
       "options": [
-        { "id": "A", "text": "The browser guessing a response's type and executing it" },
-        { "id": "B", "text": "Requests from unknown IP addresses" },
-        { "id": "C", "text": "Cookies being sent over HTTP" },
-        { "id": "D", "text": "Large file uploads" }
+        {
+          "id": "A",
+          "text": "Requests from unknown IP addresses"
+        },
+        {
+          "id": "B",
+          "text": "The browser guessing a response's type and executing it"
+        },
+        {
+          "id": "C",
+          "text": "Large file uploads"
+        },
+        {
+          "id": "D",
+          "text": "Cookies being sent over HTTP"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Without it a browser may sniff content and treat an uploaded text file as JavaScript. nosniff forces it to honour the declared Content-Type.",
       "concept": "Web Security Headers"
     },
@@ -323,12 +611,24 @@
       "id": "role-cyber-security-q25",
       "prompt": "In incident response, why is preserving logs an early priority?",
       "options": [
-        { "id": "A", "text": "Logs are required to restart the service" },
-        { "id": "B", "text": "Logs automatically block the attacker" },
-        { "id": "C", "text": "Logs reduce the cost of the incident" },
-        { "id": "D", "text": "They are the evidence of scope, and attackers or rotation destroy them" }
+        {
+          "id": "A",
+          "text": "They are the evidence of scope, and attackers or rotation destroy them"
+        },
+        {
+          "id": "B",
+          "text": "Logs are required to restart the service"
+        },
+        {
+          "id": "C",
+          "text": "Logs automatically block the attacker"
+        },
+        {
+          "id": "D",
+          "text": "Logs reduce the cost of the incident"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Logs establish what was reached and when. They rotate on a timer and are a common target for deletion, so capturing them early preserves the only record of the intrusion.",
       "concept": "Incident Response"
     }

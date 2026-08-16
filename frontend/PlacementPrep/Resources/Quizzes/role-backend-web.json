@@ -11,12 +11,24 @@
       "id": "role-backend-web-q01",
       "prompt": "What is an N+1 query problem?",
       "options": [
-        { "id": "A", "text": "A query that returns one row too many" },
-        { "id": "B", "text": "Fetching a list, then issuing one more query per row" },
-        { "id": "C", "text": "A query that fails on every attempt but one" },
-        { "id": "D", "text": "Running the same query on N database replicas" }
+        {
+          "id": "A",
+          "text": "A query that returns one row too many"
+        },
+        {
+          "id": "B",
+          "text": "Running the same query on N database replicas"
+        },
+        {
+          "id": "C",
+          "text": "Fetching a list, then issuing one more query per row"
+        },
+        {
+          "id": "D",
+          "text": "A query that fails on every attempt but one"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "One query loads N parents and then a related field triggers a query per parent. It usually appears with a lazy-loading ORM and is fixed with a join or an eager-load hint.",
       "concept": "Database Access"
     },
@@ -24,12 +36,24 @@
       "id": "role-backend-web-q02",
       "prompt": "Which HTTP status code should a successful POST that creates a resource return?",
       "options": [
-        { "id": "A", "text": "200 OK always" },
-        { "id": "B", "text": "204 No Content" },
-        { "id": "C", "text": "302 Found" },
-        { "id": "D", "text": "201 Created" }
+        {
+          "id": "A",
+          "text": "200 OK always"
+        },
+        {
+          "id": "B",
+          "text": "302 Found"
+        },
+        {
+          "id": "C",
+          "text": "201 Created"
+        },
+        {
+          "id": "D",
+          "text": "204 No Content"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "201 signals a new resource exists, conventionally with a Location header pointing at it. 200 is not wrong but says less, and 204 explicitly promises no body.",
       "concept": "REST Design"
     },
@@ -37,10 +61,22 @@
       "id": "role-backend-web-q03",
       "prompt": "What does it mean for an API endpoint to be idempotent?",
       "options": [
-        { "id": "A", "text": "Repeating the same request leaves the same end state" },
-        { "id": "B", "text": "It can only be called once per user" },
-        { "id": "C", "text": "It never writes to the database" },
-        { "id": "D", "text": "It always returns the same response body" }
+        {
+          "id": "A",
+          "text": "Repeating the same request leaves the same end state"
+        },
+        {
+          "id": "B",
+          "text": "It can only be called once per user"
+        },
+        {
+          "id": "C",
+          "text": "It never writes to the database"
+        },
+        {
+          "id": "D",
+          "text": "It always returns the same response body"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "Idempotency means a retry is safe: PUT and DELETE qualify, POST usually does not. It is what lets a client retry after a timeout without double-charging a card.",
@@ -50,10 +86,22 @@
       "id": "role-backend-web-q04",
       "prompt": "Why does adding a database index speed up reads but slow down writes?",
       "options": [
-        { "id": "A", "text": "Indexes lock the table during reads" },
-        { "id": "B", "text": "The index must also be updated on every insert and update" },
-        { "id": "C", "text": "Indexes are stored on slower disks" },
-        { "id": "D", "text": "Writes bypass the cache when an index exists" }
+        {
+          "id": "A",
+          "text": "Writes bypass the cache when an index exists"
+        },
+        {
+          "id": "B",
+          "text": "The index must also be updated on every insert and update"
+        },
+        {
+          "id": "C",
+          "text": "Indexes lock the table during reads"
+        },
+        {
+          "id": "D",
+          "text": "Indexes are stored on slower disks"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "An index is a second structure the database maintains. Lookups get much cheaper, but every write must keep the index consistent, and each extra index adds to that cost.",
@@ -63,12 +111,24 @@
       "id": "role-backend-web-q05",
       "prompt": "What problem do database transactions solve?",
       "options": [
-        { "id": "A", "text": "They compress data before storage" },
-        { "id": "B", "text": "They encrypt data at rest" },
-        { "id": "C", "text": "They group operations so all apply or none do" },
-        { "id": "D", "text": "They replicate writes to other regions" }
+        {
+          "id": "A",
+          "text": "They replicate writes to other regions"
+        },
+        {
+          "id": "B",
+          "text": "They group operations so all apply or none do"
+        },
+        {
+          "id": "C",
+          "text": "They compress data before storage"
+        },
+        {
+          "id": "D",
+          "text": "They encrypt data at rest"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "A transaction gives atomicity: transferring money debits and credits together, or not at all. Without it a crash between the two statements leaves the data inconsistent.",
       "concept": "Transactions"
     },
@@ -76,12 +136,24 @@
       "id": "role-backend-web-q06",
       "prompt": "In a REST API, when is PATCH more appropriate than PUT?",
       "options": [
-        { "id": "A", "text": "When creating a brand new resource" },
-        { "id": "B", "text": "When deleting a resource" },
-        { "id": "C", "text": "When the response must be cached" },
-        { "id": "D", "text": "When updating only some fields of a resource" }
+        {
+          "id": "A",
+          "text": "When updating only some fields of a resource"
+        },
+        {
+          "id": "B",
+          "text": "When deleting a resource"
+        },
+        {
+          "id": "C",
+          "text": "When creating a brand new resource"
+        },
+        {
+          "id": "D",
+          "text": "When the response must be cached"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "PUT conventionally replaces the whole resource, so omitted fields are cleared. PATCH applies a partial change, which is what you want when a client only edits one field.",
       "concept": "REST Design"
     },
@@ -89,12 +161,24 @@
       "id": "role-backend-web-q07",
       "prompt": "What is the main reason to put a job on a queue instead of doing it in the request?",
       "options": [
-        { "id": "A", "text": "Queues make the work run faster" },
-        { "id": "B", "text": "The user gets a fast response and the work retries independently" },
-        { "id": "C", "text": "Queued work does not need error handling" },
-        { "id": "D", "text": "It removes the need for a database" }
+        {
+          "id": "A",
+          "text": "Queues make the work run faster"
+        },
+        {
+          "id": "B",
+          "text": "It removes the need for a database"
+        },
+        {
+          "id": "C",
+          "text": "Queued work does not need error handling"
+        },
+        {
+          "id": "D",
+          "text": "The user gets a fast response and the work retries independently"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Sending an email or generating a report should not hold the HTTP response open. A queue decouples the two, survives a worker crash and can retry with backoff.",
       "concept": "Async Processing"
     },
@@ -102,10 +186,22 @@
       "id": "role-backend-web-q08",
       "prompt": "Why should passwords be hashed with bcrypt or Argon2 rather than SHA-256?",
       "options": [
-        { "id": "A", "text": "SHA-256 output is too short to be secure" },
-        { "id": "B", "text": "SHA-256 is reversible with the right key" },
-        { "id": "C", "text": "SHA-256 is fast, which helps an attacker brute-force" },
-        { "id": "D", "text": "SHA-256 cannot handle Unicode passwords" }
+        {
+          "id": "A",
+          "text": "SHA-256 cannot handle Unicode passwords"
+        },
+        {
+          "id": "B",
+          "text": "SHA-256 output is too short to be secure"
+        },
+        {
+          "id": "C",
+          "text": "SHA-256 is fast, which helps an attacker brute-force"
+        },
+        {
+          "id": "D",
+          "text": "SHA-256 is reversible with the right key"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "A general hash is designed to be fast, so a leaked table can be attacked at billions of guesses per second. bcrypt and Argon2 are deliberately slow and salted per password.",
@@ -115,12 +211,24 @@
       "id": "role-backend-web-q09",
       "prompt": "What does a database connection pool do?",
       "options": [
-        { "id": "A", "text": "Reuses a limited set of open connections across requests" },
-        { "id": "B", "text": "Splits one query across multiple servers" },
-        { "id": "C", "text": "Caches query results in memory" },
-        { "id": "D", "text": "Backs up the database periodically" }
+        {
+          "id": "A",
+          "text": "Backs up the database periodically"
+        },
+        {
+          "id": "B",
+          "text": "Caches query results in memory"
+        },
+        {
+          "id": "C",
+          "text": "Splits one query across multiple servers"
+        },
+        {
+          "id": "D",
+          "text": "Reuses a limited set of open connections across requests"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Opening a connection is expensive and databases cap concurrent connections. A pool keeps a bounded set open and hands them out, which also acts as a backpressure limit.",
       "concept": "Database Performance"
     },
@@ -128,12 +236,24 @@
       "id": "role-backend-web-q10",
       "prompt": "What is the difference between authentication and authorisation?",
       "options": [
-        { "id": "A", "text": "They are two words for the same check" },
-        { "id": "B", "text": "Authentication proves who you are; authorisation decides what you may do" },
-        { "id": "C", "text": "Authentication happens only on the client" },
-        { "id": "D", "text": "Authorisation always precedes authentication" }
+        {
+          "id": "A",
+          "text": "They are two words for the same check"
+        },
+        {
+          "id": "B",
+          "text": "Authorisation always precedes authentication"
+        },
+        {
+          "id": "C",
+          "text": "Authentication happens only on the client"
+        },
+        {
+          "id": "D",
+          "text": "Authentication proves who you are; authorisation decides what you may do"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A valid token proves identity but says nothing about permission. Checking only authentication is how a user ends up able to read another user's records by changing an id.",
       "concept": "Security Fundamentals"
     },
@@ -141,12 +261,24 @@
       "id": "role-backend-web-q11",
       "prompt": "Why are parameterised queries the correct defence against SQL injection?",
       "options": [
-        { "id": "A", "text": "They encrypt the query before sending it" },
-        { "id": "B", "text": "They limit each query to one statement" },
-        { "id": "C", "text": "They strip dangerous words from input" },
-        { "id": "D", "text": "Input is sent separately from the statement, so it is never parsed as SQL" }
+        {
+          "id": "A",
+          "text": "They limit each query to one statement"
+        },
+        {
+          "id": "B",
+          "text": "Input is sent separately from the statement, so it is never parsed as SQL"
+        },
+        {
+          "id": "C",
+          "text": "They encrypt the query before sending it"
+        },
+        {
+          "id": "D",
+          "text": "They strip dangerous words from input"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The database receives the query structure and the values separately, so a value can never become executable SQL. Blacklisting keywords is guesswork and is routinely bypassed.",
       "concept": "Web Security"
     },
@@ -154,12 +286,24 @@
       "id": "role-backend-web-q12",
       "prompt": "What is cache invalidation and why is it hard?",
       "options": [
-        { "id": "A", "text": "Clearing the cache on every request, which is slow" },
-        { "id": "B", "text": "Knowing when cached data has become wrong" },
-        { "id": "C", "text": "Encrypting cached values" },
-        { "id": "D", "text": "Choosing between memory and disk caching" }
+        {
+          "id": "A",
+          "text": "Clearing the cache on every request, which is slow"
+        },
+        {
+          "id": "B",
+          "text": "Choosing between memory and disk caching"
+        },
+        {
+          "id": "C",
+          "text": "Knowing when cached data has become wrong"
+        },
+        {
+          "id": "D",
+          "text": "Encrypting cached values"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Caching is easy; deciding when a cached value no longer reflects the source of truth is the hard part, because the write that invalidated it can happen anywhere in the system.",
       "concept": "Caching"
     },
@@ -167,10 +311,22 @@
       "id": "role-backend-web-q13",
       "prompt": "In a relational schema, what does a foreign key constraint guarantee?",
       "options": [
-        { "id": "A", "text": "The referenced row exists" },
-        { "id": "B", "text": "The column values are unique" },
-        { "id": "C", "text": "The column is indexed automatically in every database" },
-        { "id": "D", "text": "Rows are deleted in insertion order" }
+        {
+          "id": "A",
+          "text": "The referenced row exists"
+        },
+        {
+          "id": "B",
+          "text": "Rows are deleted in insertion order"
+        },
+        {
+          "id": "C",
+          "text": "The column values are unique"
+        },
+        {
+          "id": "D",
+          "text": "The column is indexed automatically in every database"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "A foreign key enforces referential integrity, so you cannot insert an order pointing at a customer that does not exist, nor delete that customer leaving orphans behind.",
@@ -180,12 +336,24 @@
       "id": "role-backend-web-q14",
       "prompt": "What is the practical difference between horizontal and vertical scaling?",
       "options": [
-        { "id": "A", "text": "Horizontal scaling only applies to databases" },
-        { "id": "B", "text": "Vertical scaling requires a load balancer" },
-        { "id": "C", "text": "Horizontal adds more machines; vertical makes one machine bigger" },
-        { "id": "D", "text": "They are the same once containers are used" }
+        {
+          "id": "A",
+          "text": "Horizontal scaling only applies to databases"
+        },
+        {
+          "id": "B",
+          "text": "Horizontal adds more machines; vertical makes one machine bigger"
+        },
+        {
+          "id": "C",
+          "text": "They are the same once containers are used"
+        },
+        {
+          "id": "D",
+          "text": "Vertical scaling requires a load balancer"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Vertical scaling is simpler but has a ceiling and a single point of failure. Horizontal scaling has no hard ceiling but requires the application to be stateless.",
       "concept": "Scalability"
     },
@@ -193,12 +361,24 @@
       "id": "role-backend-web-q15",
       "prompt": "Why must a horizontally scaled web application avoid storing session state in memory?",
       "options": [
-        { "id": "A", "text": "Memory is slower than disk for sessions" },
-        { "id": "B", "text": "A later request may land on a different instance that lacks the state" },
-        { "id": "C", "text": "In-memory state cannot be encrypted" },
-        { "id": "D", "text": "It would exceed the container memory limit" }
+        {
+          "id": "A",
+          "text": "Memory is slower than disk for sessions"
+        },
+        {
+          "id": "B",
+          "text": "It would exceed the container memory limit"
+        },
+        {
+          "id": "C",
+          "text": "In-memory state cannot be encrypted"
+        },
+        {
+          "id": "D",
+          "text": "A later request may land on a different instance that lacks the state"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "With several instances behind a load balancer, consecutive requests can hit different machines. Session state must move to a shared store, or the user is randomly logged out.",
       "concept": "Scalability"
     },
@@ -206,12 +386,24 @@
       "id": "role-backend-web-q16",
       "prompt": "What does rate limiting protect an API against?",
       "options": [
-        { "id": "A", "text": "SQL injection attempts" },
-        { "id": "B", "text": "Expired TLS certificates" },
-        { "id": "C", "text": "Malformed JSON payloads" },
-        { "id": "D", "text": "Abuse and accidental overload from a single client" }
+        {
+          "id": "A",
+          "text": "SQL injection attempts"
+        },
+        {
+          "id": "B",
+          "text": "Abuse and accidental overload from a single client"
+        },
+        {
+          "id": "C",
+          "text": "Malformed JSON payloads"
+        },
+        {
+          "id": "D",
+          "text": "Expired TLS certificates"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Rate limiting caps how often one caller may hit an endpoint, which blunts credential stuffing and stops a runaway client from starving everyone else.",
       "concept": "API Security"
     },
@@ -219,12 +411,24 @@
       "id": "role-backend-web-q17",
       "prompt": "When would you choose a document database over a relational one?",
       "options": [
-        { "id": "A", "text": "When the schema varies per record and joins are rare" },
-        { "id": "B", "text": "When you need multi-table transactions above all" },
-        { "id": "C", "text": "When the data is highly relational" },
-        { "id": "D", "text": "When strong foreign key constraints are required" }
+        {
+          "id": "A",
+          "text": "When you need multi-table transactions above all"
+        },
+        {
+          "id": "B",
+          "text": "When strong foreign key constraints are required"
+        },
+        {
+          "id": "C",
+          "text": "When the data is highly relational"
+        },
+        {
+          "id": "D",
+          "text": "When the schema varies per record and joins are rare"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Document stores suit varying shapes and access patterns that read one aggregate at a time. Highly relational data with strict integrity needs is where relational databases still win.",
       "concept": "Database Selection"
     },
@@ -232,12 +436,24 @@
       "id": "role-backend-web-q18",
       "prompt": "What is the purpose of a database migration file?",
       "options": [
-        { "id": "A", "text": "It moves data between servers" },
-        { "id": "B", "text": "It versions a schema change so every environment applies it identically" },
-        { "id": "C", "text": "It backs up the database before deploys" },
-        { "id": "D", "text": "It converts SQL to an ORM model" }
+        {
+          "id": "A",
+          "text": "It moves data between servers"
+        },
+        {
+          "id": "B",
+          "text": "It converts SQL to an ORM model"
+        },
+        {
+          "id": "C",
+          "text": "It backs up the database before deploys"
+        },
+        {
+          "id": "D",
+          "text": "It versions a schema change so every environment applies it identically"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Migrations make schema changes reviewable, ordered and repeatable. Editing production schema by hand is how environments drift apart until a deploy fails mysteriously.",
       "concept": "Database Operations"
     },
@@ -245,12 +461,24 @@
       "id": "role-backend-web-q19",
       "prompt": "Why is logging a full request body at info level often a bad idea?",
       "options": [
-        { "id": "A", "text": "Logs cannot store JSON" },
-        { "id": "B", "text": "It makes responses slower than the timeout" },
-        { "id": "C", "text": "It can write passwords and personal data into logs" },
-        { "id": "D", "text": "Info level is not written to disk" }
+        {
+          "id": "A",
+          "text": "It can write passwords and personal data into logs"
+        },
+        {
+          "id": "B",
+          "text": "It makes responses slower than the timeout"
+        },
+        {
+          "id": "C",
+          "text": "Info level is not written to disk"
+        },
+        {
+          "id": "D",
+          "text": "Logs cannot store JSON"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Bodies routinely contain credentials, tokens and personal data, and logs are widely readable and long-lived. Sensitive fields need redacting before anything is written.",
       "concept": "Observability"
     },
@@ -258,12 +486,24 @@
       "id": "role-backend-web-q20",
       "prompt": "What does a 502 Bad Gateway usually indicate?",
       "options": [
-        { "id": "A", "text": "The client sent malformed JSON" },
-        { "id": "B", "text": "The user lacks permission" },
-        { "id": "C", "text": "The requested route does not exist" },
-        { "id": "D", "text": "An upstream server returned an invalid response to the proxy" }
+        {
+          "id": "A",
+          "text": "The requested route does not exist"
+        },
+        {
+          "id": "B",
+          "text": "The client sent malformed JSON"
+        },
+        {
+          "id": "C",
+          "text": "An upstream server returned an invalid response to the proxy"
+        },
+        {
+          "id": "D",
+          "text": "The user lacks permission"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "502 comes from a proxy or load balancer that could not get a valid response from the application behind it, typically because it crashed or was not listening.",
       "concept": "HTTP Diagnostics"
     },
@@ -271,10 +511,22 @@
       "id": "role-backend-web-q21",
       "prompt": "What is the main advantage of stateless authentication with JWTs?",
       "options": [
-        { "id": "A", "text": "Any server can verify the token without a shared session store" },
-        { "id": "B", "text": "Tokens can be revoked instantly" },
-        { "id": "C", "text": "The token contents are hidden from the client" },
-        { "id": "D", "text": "Tokens never expire" }
+        {
+          "id": "A",
+          "text": "Any server can verify the token without a shared session store"
+        },
+        {
+          "id": "B",
+          "text": "Tokens can be revoked instantly"
+        },
+        {
+          "id": "C",
+          "text": "The token contents are hidden from the client"
+        },
+        {
+          "id": "D",
+          "text": "Tokens never expire"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "Verification needs only the signing key, so any instance can authenticate a request. The trade-off is real: a signed token cannot be revoked before expiry without adding state back.",
@@ -284,12 +536,24 @@
       "id": "role-backend-web-q22",
       "prompt": "Why is SELECT * discouraged in production application code?",
       "options": [
-        { "id": "A", "text": "It is not valid SQL in most databases" },
-        { "id": "B", "text": "It always performs a full table scan" },
-        { "id": "C", "text": "It transfers unneeded columns and breaks when the schema changes" },
-        { "id": "D", "text": "It cannot be used with a WHERE clause" }
+        {
+          "id": "A",
+          "text": "It is not valid SQL in most databases"
+        },
+        {
+          "id": "B",
+          "text": "It transfers unneeded columns and breaks when the schema changes"
+        },
+        {
+          "id": "C",
+          "text": "It cannot be used with a WHERE clause"
+        },
+        {
+          "id": "D",
+          "text": "It always performs a full table scan"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Naming columns keeps payloads small, allows covering indexes, and means adding a column does not silently change what your code receives.",
       "concept": "SQL Practice"
     },
@@ -297,12 +561,24 @@
       "id": "role-backend-web-q23",
       "prompt": "In full-stack work, why should validation exist on both client and server?",
       "options": [
-        { "id": "A", "text": "Server validation alone is too slow" },
-        { "id": "B", "text": "The client gives fast feedback; only the server can be trusted" },
-        { "id": "C", "text": "Browsers require it for form submission" },
-        { "id": "D", "text": "It halves the amount of code needed" }
+        {
+          "id": "A",
+          "text": "Browsers require it for form submission"
+        },
+        {
+          "id": "B",
+          "text": "Server validation alone is too slow"
+        },
+        {
+          "id": "C",
+          "text": "It halves the amount of code needed"
+        },
+        {
+          "id": "D",
+          "text": "The client gives fast feedback; only the server can be trusted"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Client validation is a usability feature and can be bypassed with any HTTP client. Server validation is the actual guarantee, so neither replaces the other.",
       "concept": "Full-Stack Practice"
     },
@@ -310,10 +586,22 @@
       "id": "role-backend-web-q24",
       "prompt": "What is the purpose of an API versioning scheme such as /v1/?",
       "options": [
-        { "id": "A", "text": "It improves response compression" },
-        { "id": "B", "text": "It is required by the HTTP specification" },
-        { "id": "C", "text": "It lets breaking changes ship without breaking existing clients" },
-        { "id": "D", "text": "It routes requests to the nearest region" }
+        {
+          "id": "A",
+          "text": "It is required by the HTTP specification"
+        },
+        {
+          "id": "B",
+          "text": "It routes requests to the nearest region"
+        },
+        {
+          "id": "C",
+          "text": "It lets breaking changes ship without breaking existing clients"
+        },
+        {
+          "id": "D",
+          "text": "It improves response compression"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "Mobile clients in particular cannot be forced to upgrade. Versioning lets a new shape ship alongside the old one until the old one can be retired.",
@@ -323,10 +611,22 @@
       "id": "role-backend-web-q25",
       "prompt": "What does a health check endpoint let infrastructure do?",
       "options": [
-        { "id": "A", "text": "Restart or stop routing to an unhealthy instance" },
-        { "id": "B", "text": "Measure database size over time" },
-        { "id": "C", "text": "Authenticate incoming requests" },
-        { "id": "D", "text": "Roll back the last deployment automatically" }
+        {
+          "id": "A",
+          "text": "Restart or stop routing to an unhealthy instance"
+        },
+        {
+          "id": "B",
+          "text": "Measure database size over time"
+        },
+        {
+          "id": "C",
+          "text": "Authenticate incoming requests"
+        },
+        {
+          "id": "D",
+          "text": "Roll back the last deployment automatically"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "Load balancers and orchestrators poll it to decide whether an instance should receive traffic. A useful check verifies dependencies rather than always returning 200.",

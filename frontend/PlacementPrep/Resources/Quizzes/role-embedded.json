@@ -11,12 +11,24 @@
       "id": "role-embedded-q01",
       "prompt": "Why is the volatile keyword needed in embedded C?",
       "options": [
-        { "id": "A", "text": "It places the variable in flash memory" },
-        { "id": "B", "text": "It makes access to the variable atomic" },
-        { "id": "C", "text": "It stops the compiler caching a value that hardware can change" },
-        { "id": "D", "text": "It marks the variable as constant" }
+        {
+          "id": "A",
+          "text": "It stops the compiler caching a value that hardware can change"
+        },
+        {
+          "id": "B",
+          "text": "It makes access to the variable atomic"
+        },
+        {
+          "id": "C",
+          "text": "It marks the variable as constant"
+        },
+        {
+          "id": "D",
+          "text": "It places the variable in flash memory"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Without volatile the compiler may keep a register copy and never re-read the address, so a hardware register or ISR-updated flag appears never to change.",
       "concept": "Embedded C"
     },
@@ -24,10 +36,22 @@
       "id": "role-embedded-q02",
       "prompt": "What should be avoided inside an interrupt service routine?",
       "options": [
-        { "id": "A", "text": "Setting a flag variable" },
-        { "id": "B", "text": "Clearing the interrupt source" },
-        { "id": "C", "text": "Reading a hardware register" },
-        { "id": "D", "text": "Blocking calls and long processing" }
+        {
+          "id": "A",
+          "text": "Clearing the interrupt source"
+        },
+        {
+          "id": "B",
+          "text": "Setting a flag variable"
+        },
+        {
+          "id": "C",
+          "text": "Reading a hardware register"
+        },
+        {
+          "id": "D",
+          "text": "Blocking calls and long processing"
+        }
       ],
       "correct_option_id": "D",
       "explanation": "An ISR runs with interrupts disabled or at high priority, so anything slow delays everything else. The pattern is to set a flag or queue data and return immediately.",
@@ -37,12 +61,24 @@
       "id": "role-embedded-q03",
       "prompt": "Why is dynamic memory allocation often avoided in embedded systems?",
       "options": [
-        { "id": "A", "text": "malloc is not available in C" },
-        { "id": "B", "text": "Fragmentation and non-deterministic timing can cause late failures" },
-        { "id": "C", "text": "The heap is always slower than flash" },
-        { "id": "D", "text": "Allocation requires an operating system" }
+        {
+          "id": "A",
+          "text": "Allocation requires an operating system"
+        },
+        {
+          "id": "B",
+          "text": "malloc is not available in C"
+        },
+        {
+          "id": "C",
+          "text": "The heap is always slower than flash"
+        },
+        {
+          "id": "D",
+          "text": "Fragmentation and non-deterministic timing can cause late failures"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "On a device with kilobytes of RAM, fragmentation can make an allocation fail after days of uptime, and allocation time is not bounded. Static or pool allocation is predictable.",
       "concept": "Memory Management"
     },
@@ -50,12 +86,24 @@
       "id": "role-embedded-q04",
       "prompt": "What is switch bounce and how is it usually handled?",
       "options": [
-        { "id": "A", "text": "Electrical noise on power rails, fixed with a capacitor only" },
-        { "id": "B", "text": "A switch failing permanently, fixed by replacement" },
-        { "id": "C", "text": "Rapid make-break transitions, fixed by debouncing in software or hardware" },
-        { "id": "D", "text": "A signal reflecting off an unterminated line" }
+        {
+          "id": "A",
+          "text": "Rapid make-break transitions, fixed by debouncing in software or hardware"
+        },
+        {
+          "id": "B",
+          "text": "A signal reflecting off an unterminated line"
+        },
+        {
+          "id": "C",
+          "text": "Electrical noise on power rails, fixed with a capacitor only"
+        },
+        {
+          "id": "D",
+          "text": "A switch failing permanently, fixed by replacement"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Mechanical contacts chatter for milliseconds, so one press reads as many. Debouncing ignores transitions within a short window, in code or with an RC filter.",
       "concept": "Digital IO"
     },
@@ -63,10 +111,22 @@
       "id": "role-embedded-q05",
       "prompt": "Which protocol uses a single data line plus a clock and supports multiple devices by address?",
       "options": [
-        { "id": "A", "text": "I2C" },
-        { "id": "B", "text": "SPI" },
-        { "id": "C", "text": "UART" },
-        { "id": "D", "text": "CAN" }
+        {
+          "id": "A",
+          "text": "I2C"
+        },
+        {
+          "id": "B",
+          "text": "UART"
+        },
+        {
+          "id": "C",
+          "text": "SPI"
+        },
+        {
+          "id": "D",
+          "text": "CAN"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "I2C uses SDA and SCL with 7-bit addressing, so many devices share two wires. SPI is faster but needs a chip-select line per device.",
@@ -76,12 +136,24 @@
       "id": "role-embedded-q06",
       "prompt": "What does a watchdog timer do?",
       "options": [
-        { "id": "A", "text": "Measures how long each task runs" },
-        { "id": "B", "text": "Wakes the device from sleep on a schedule" },
-        { "id": "C", "text": "Logs errors to external storage" },
-        { "id": "D", "text": "Resets the system if the software stops servicing it" }
+        {
+          "id": "A",
+          "text": "Wakes the device from sleep on a schedule"
+        },
+        {
+          "id": "B",
+          "text": "Measures how long each task runs"
+        },
+        {
+          "id": "C",
+          "text": "Resets the system if the software stops servicing it"
+        },
+        {
+          "id": "D",
+          "text": "Logs errors to external storage"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Firmware must periodically kick the watchdog. If it hangs, the timer expires and forces a reset, which is how unattended devices recover from a lockup.",
       "concept": "Reliability"
     },
@@ -89,12 +161,24 @@
       "id": "role-embedded-q07",
       "prompt": "In an RTOS, what does priority inversion mean?",
       "options": [
-        { "id": "A", "text": "Task priorities are assigned in reverse order by mistake" },
-        { "id": "B", "text": "A high-priority task waits on a resource held by a lower-priority one" },
-        { "id": "C", "text": "The scheduler ignores priorities entirely" },
-        { "id": "D", "text": "Interrupts preempt all tasks regardless of priority" }
+        {
+          "id": "A",
+          "text": "The scheduler ignores priorities entirely"
+        },
+        {
+          "id": "B",
+          "text": "Task priorities are assigned in reverse order by mistake"
+        },
+        {
+          "id": "C",
+          "text": "Interrupts preempt all tasks regardless of priority"
+        },
+        {
+          "id": "D",
+          "text": "A high-priority task waits on a resource held by a lower-priority one"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "The high-priority task is blocked, and a medium-priority task can preempt the holder so it never releases. Priority inheritance raises the holder's priority to break it.",
       "concept": "RTOS"
     },
@@ -102,12 +186,24 @@
       "id": "role-embedded-q08",
       "prompt": "What is the difference between a hard and a soft real-time system?",
       "options": [
-        { "id": "A", "text": "Hard real-time runs on bare metal; soft uses an RTOS" },
-        { "id": "B", "text": "Hard real-time is faster in absolute terms" },
-        { "id": "C", "text": "Missing a deadline is a failure in hard real-time; degraded quality in soft" },
-        { "id": "D", "text": "Soft real-time has no deadlines at all" }
+        {
+          "id": "A",
+          "text": "Hard real-time is faster in absolute terms"
+        },
+        {
+          "id": "B",
+          "text": "Missing a deadline is a failure in hard real-time; degraded quality in soft"
+        },
+        {
+          "id": "C",
+          "text": "Soft real-time has no deadlines at all"
+        },
+        {
+          "id": "D",
+          "text": "Hard real-time runs on bare metal; soft uses an RTOS"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "An airbag controller missing its deadline is a failure regardless of average speed. A media player dropping a frame is merely worse. Determinism matters more than raw speed.",
       "concept": "Real-Time Systems"
     },
@@ -115,12 +211,24 @@
       "id": "role-embedded-q09",
       "prompt": "Why is a circular buffer commonly used for UART receive data?",
       "options": [
-        { "id": "A", "text": "It compresses the incoming data" },
-        { "id": "B", "text": "It guarantees no data is ever lost" },
-        { "id": "C", "text": "It automatically parses protocol frames" },
-        { "id": "D", "text": "It decouples the ISR producer from the slower consumer without allocation" }
+        {
+          "id": "A",
+          "text": "It compresses the incoming data"
+        },
+        {
+          "id": "B",
+          "text": "It guarantees no data is ever lost"
+        },
+        {
+          "id": "C",
+          "text": "It decouples the ISR producer from the slower consumer without allocation"
+        },
+        {
+          "id": "D",
+          "text": "It automatically parses protocol frames"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "The ISR writes at the head and the main loop reads from the tail, in fixed memory with no shifting. It still overruns if the consumer falls too far behind.",
       "concept": "Data Structures"
     },
@@ -128,12 +236,24 @@
       "id": "role-embedded-q10",
       "prompt": "What does a pull-up resistor on a GPIO input do?",
       "options": [
-        { "id": "A", "text": "Defines a known high level when nothing is driving the pin" },
-        { "id": "B", "text": "Increases the output current the pin can supply" },
-        { "id": "C", "text": "Protects the pin from over-voltage" },
-        { "id": "D", "text": "Converts the pin to an analogue input" }
+        {
+          "id": "A",
+          "text": "Increases the output current the pin can supply"
+        },
+        {
+          "id": "B",
+          "text": "Converts the pin to an analogue input"
+        },
+        {
+          "id": "C",
+          "text": "Protects the pin from over-voltage"
+        },
+        {
+          "id": "D",
+          "text": "Defines a known high level when nothing is driving the pin"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "A floating input picks up noise and reads randomly. A pull-up holds it high until a switch pulls it to ground, which is the standard button arrangement.",
       "concept": "Digital IO"
     },
@@ -141,12 +261,24 @@
       "id": "role-embedded-q11",
       "prompt": "What is the main advantage of using DMA for a data transfer?",
       "options": [
-        { "id": "A", "text": "It increases the bus clock frequency" },
-        { "id": "B", "text": "It moves data without the CPU copying each byte" },
-        { "id": "C", "text": "It guarantees no transmission errors" },
-        { "id": "D", "text": "It reduces the amount of RAM required" }
+        {
+          "id": "A",
+          "text": "It guarantees no transmission errors"
+        },
+        {
+          "id": "B",
+          "text": "It increases the bus clock frequency"
+        },
+        {
+          "id": "C",
+          "text": "It reduces the amount of RAM required"
+        },
+        {
+          "id": "D",
+          "text": "It moves data without the CPU copying each byte"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "The DMA controller moves data between peripheral and memory independently, freeing the CPU for other work or sleep. Buffers must not be touched mid-transfer.",
       "concept": "Peripherals"
     },
@@ -154,12 +286,24 @@
       "id": "role-embedded-q12",
       "prompt": "How does PWM control the brightness of an LED?",
       "options": [
-        { "id": "A", "text": "By varying the supply voltage smoothly" },
-        { "id": "B", "text": "By changing the LED's forward current continuously" },
-        { "id": "C", "text": "By switching fast and varying the proportion of on time" },
-        { "id": "D", "text": "By changing the frequency of the signal only" }
+        {
+          "id": "A",
+          "text": "By changing the LED's forward current continuously"
+        },
+        {
+          "id": "B",
+          "text": "By switching fast and varying the proportion of on time"
+        },
+        {
+          "id": "C",
+          "text": "By varying the supply voltage smoothly"
+        },
+        {
+          "id": "D",
+          "text": "By changing the frequency of the signal only"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "The LED is switched fully on and off faster than the eye resolves, so average power tracks the duty cycle. Frequency only needs to be high enough to avoid visible flicker.",
       "concept": "Timers and PWM"
     },
@@ -167,10 +311,22 @@
       "id": "role-embedded-q13",
       "prompt": "What does sizeof(int) depend on in embedded C?",
       "options": [
-        { "id": "A", "text": "It is always 4 bytes by the C standard" },
-        { "id": "B", "text": "It is always 2 bytes on microcontrollers" },
-        { "id": "C", "text": "The compiler and target architecture" },
-        { "id": "D", "text": "The amount of RAM available" }
+        {
+          "id": "A",
+          "text": "It is always 4 bytes by the C standard"
+        },
+        {
+          "id": "B",
+          "text": "The amount of RAM available"
+        },
+        {
+          "id": "C",
+          "text": "The compiler and target architecture"
+        },
+        {
+          "id": "D",
+          "text": "It is always 2 bytes on microcontrollers"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "The standard only sets a minimum range, so int is 16 bits on some MCUs and 32 on others. Fixed-width types like uint32_t are used precisely to remove the ambiguity.",
@@ -180,10 +336,22 @@
       "id": "role-embedded-q14",
       "prompt": "Why is a struct sometimes larger than the sum of its members?",
       "options": [
-        { "id": "A", "text": "The compiler stores type information alongside it" },
-        { "id": "B", "text": "Padding is inserted to satisfy alignment requirements" },
-        { "id": "C", "text": "Structs always reserve a fixed minimum size" },
-        { "id": "D", "text": "Each member gets a hidden length prefix" }
+        {
+          "id": "A",
+          "text": "The compiler stores type information alongside it"
+        },
+        {
+          "id": "B",
+          "text": "Padding is inserted to satisfy alignment requirements"
+        },
+        {
+          "id": "C",
+          "text": "Each member gets a hidden length prefix"
+        },
+        {
+          "id": "D",
+          "text": "Structs always reserve a fixed minimum size"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "Members are aligned to natural boundaries, so a char before an int leaves a gap. Ordering members largest-first reduces padding, which matters when memory is tiny.",
@@ -193,12 +361,24 @@
       "id": "role-embedded-q15",
       "prompt": "What is the primary technique for reducing power in a battery-powered device?",
       "options": [
-        { "id": "A", "text": "Running the CPU at maximum clock to finish sooner only" },
-        { "id": "B", "text": "Disabling all interrupts" },
-        { "id": "C", "text": "Sleeping between events and waking on interrupt" },
-        { "id": "D", "text": "Using a larger flash memory" }
+        {
+          "id": "A",
+          "text": "Sleeping between events and waking on interrupt"
+        },
+        {
+          "id": "B",
+          "text": "Running the CPU at maximum clock to finish sooner only"
+        },
+        {
+          "id": "C",
+          "text": "Disabling all interrupts"
+        },
+        {
+          "id": "D",
+          "text": "Using a larger flash memory"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Most devices are idle most of the time, and sleep current is orders of magnitude below active. Polling in a busy loop is what destroys battery life.",
       "concept": "Low Power Design"
     },
@@ -206,12 +386,24 @@
       "id": "role-embedded-q16",
       "prompt": "What is the risk of sharing a variable between an ISR and main code without protection?",
       "options": [
-        { "id": "A", "text": "The variable is placed in the wrong memory section" },
-        { "id": "B", "text": "The interrupt is silently disabled" },
-        { "id": "C", "text": "The compiler refuses to build" },
-        { "id": "D", "text": "A multi-byte value can be read while half-updated" }
+        {
+          "id": "A",
+          "text": "The interrupt is silently disabled"
+        },
+        {
+          "id": "B",
+          "text": "The variable is placed in the wrong memory section"
+        },
+        {
+          "id": "C",
+          "text": "A multi-byte value can be read while half-updated"
+        },
+        {
+          "id": "D",
+          "text": "The compiler refuses to build"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "On an 8-bit MCU a 32-bit counter is updated in several instructions, so an interrupt mid-update yields a torn value. A critical section or an atomic type is required.",
       "concept": "Concurrency"
     },
@@ -219,12 +411,24 @@
       "id": "role-embedded-q17",
       "prompt": "What does MQTT's publish-subscribe model give an IoT deployment?",
       "options": [
-        { "id": "A", "text": "Guaranteed sub-millisecond latency" },
-        { "id": "B", "text": "Decoupling of producers and consumers via a broker" },
-        { "id": "C", "text": "Built-in encryption without TLS" },
-        { "id": "D", "text": "Direct device-to-device connections without a server" }
+        {
+          "id": "A",
+          "text": "Decoupling of producers and consumers via a broker"
+        },
+        {
+          "id": "B",
+          "text": "Guaranteed sub-millisecond latency"
+        },
+        {
+          "id": "C",
+          "text": "Direct device-to-device connections without a server"
+        },
+        {
+          "id": "D",
+          "text": "Built-in encryption without TLS"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Devices publish to topics without knowing subscribers, so consumers can be added without touching firmware. The broker becomes a dependency and a bottleneck to plan for.",
       "concept": "IoT Protocols"
     },
@@ -232,10 +436,22 @@
       "id": "role-embedded-q18",
       "prompt": "Why is a firmware update mechanism usually designed with a fallback image?",
       "options": [
-        { "id": "A", "text": "To allow two features to run at once" },
-        { "id": "B", "text": "To store user data during the update" },
-        { "id": "C", "text": "To let the device recover if the new image fails to boot" },
-        { "id": "D", "text": "To reduce the size of each update" }
+        {
+          "id": "A",
+          "text": "To allow two features to run at once"
+        },
+        {
+          "id": "B",
+          "text": "To reduce the size of each update"
+        },
+        {
+          "id": "C",
+          "text": "To let the device recover if the new image fails to boot"
+        },
+        {
+          "id": "D",
+          "text": "To store user data during the update"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "A power loss or a bad image mid-update would otherwise brick a device that may be physically unreachable. A/B partitions let the bootloader revert.",
@@ -245,12 +461,24 @@
       "id": "role-embedded-q19",
       "prompt": "What does an ADC's resolution of 12 bits mean?",
       "options": [
-        { "id": "A", "text": "It samples 12 times per second" },
-        { "id": "B", "text": "It has 12 input channels" },
-        { "id": "C", "text": "Its reference voltage is 12 volts" },
-        { "id": "D", "text": "It maps the input range onto 4096 discrete levels" }
+        {
+          "id": "A",
+          "text": "It maps the input range onto 4096 discrete levels"
+        },
+        {
+          "id": "B",
+          "text": "Its reference voltage is 12 volts"
+        },
+        {
+          "id": "C",
+          "text": "It samples 12 times per second"
+        },
+        {
+          "id": "D",
+          "text": "It has 12 input channels"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Twelve bits give 2^12 steps across the reference range, so a 3.3 V reference resolves about 0.8 mV. Resolution is separate from accuracy and sampling rate.",
       "concept": "Analogue Interfacing"
     },
@@ -258,12 +486,24 @@
       "id": "role-embedded-q20",
       "prompt": "How do you typically debug firmware on a device with no console?",
       "options": [
-        { "id": "A", "text": "Adding print statements to the source and hoping" },
-        { "id": "B", "text": "Recompiling with optimisation disabled only" },
-        { "id": "C", "text": "A hardware debugger with breakpoints, plus toggling a GPIO to time code" },
-        { "id": "D", "text": "Waiting for the watchdog to report the fault" }
+        {
+          "id": "A",
+          "text": "Waiting for the watchdog to report the fault"
+        },
+        {
+          "id": "B",
+          "text": "Recompiling with optimisation disabled only"
+        },
+        {
+          "id": "C",
+          "text": "Adding print statements to the source and hoping"
+        },
+        {
+          "id": "D",
+          "text": "A hardware debugger with breakpoints, plus toggling a GPIO to time code"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "JTAG or SWD gives real breakpoints and memory inspection, and toggling a pin lets an oscilloscope measure timing without disturbing it the way logging would.",
       "concept": "Debugging"
     },
@@ -271,12 +511,24 @@
       "id": "role-embedded-q21",
       "prompt": "What is the difference between flash and RAM on a microcontroller?",
       "options": [
-        { "id": "A", "text": "Flash holds code and persists without power; RAM is volatile working memory" },
-        { "id": "B", "text": "RAM stores the program; flash holds variables" },
-        { "id": "C", "text": "Flash is faster to write than RAM" },
-        { "id": "D", "text": "They are the same memory with different addresses" }
+        {
+          "id": "A",
+          "text": "RAM stores the program; flash holds variables"
+        },
+        {
+          "id": "B",
+          "text": "Flash holds code and persists without power; RAM is volatile working memory"
+        },
+        {
+          "id": "C",
+          "text": "Flash is faster to write than RAM"
+        },
+        {
+          "id": "D",
+          "text": "They are the same memory with different addresses"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Flash is non-volatile, larger and slow to write with limited erase cycles. RAM is fast and volatile, and is usually the scarcer of the two.",
       "concept": "Memory Architecture"
     },
@@ -284,10 +536,22 @@
       "id": "role-embedded-q22",
       "prompt": "Why is a stack overflow particularly dangerous on a microcontroller?",
       "options": [
-        { "id": "A", "text": "It triggers an automatic firmware update" },
-        { "id": "B", "text": "It silently corrupts adjacent memory with no MMU to catch it" },
-        { "id": "C", "text": "It always halts the CPU immediately" },
-        { "id": "D", "text": "It erases the flash contents" }
+        {
+          "id": "A",
+          "text": "It always halts the CPU immediately"
+        },
+        {
+          "id": "B",
+          "text": "It silently corrupts adjacent memory with no MMU to catch it"
+        },
+        {
+          "id": "C",
+          "text": "It erases the flash contents"
+        },
+        {
+          "id": "D",
+          "text": "It triggers an automatic firmware update"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "Without memory protection the stack grows into globals or the heap and corrupts them, so the crash appears somewhere unrelated much later.",
@@ -297,12 +561,24 @@
       "id": "role-embedded-q23",
       "prompt": "What does a bootloader do?",
       "options": [
-        { "id": "A", "text": "Compiles the firmware on the device" },
-        { "id": "B", "text": "Supplies power to peripherals at startup" },
-        { "id": "C", "text": "Manages task scheduling at runtime" },
-        { "id": "D", "text": "Runs first and starts or updates the application image" }
+        {
+          "id": "A",
+          "text": "Supplies power to peripherals at startup"
+        },
+        {
+          "id": "B",
+          "text": "Manages task scheduling at runtime"
+        },
+        {
+          "id": "C",
+          "text": "Runs first and starts or updates the application image"
+        },
+        {
+          "id": "D",
+          "text": "Compiles the firmware on the device"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "It initialises the minimum hardware, decides whether to enter update mode, and jumps to the application. It is what makes field updates possible without a programmer.",
       "concept": "Firmware Architecture"
     },
@@ -310,10 +586,22 @@
       "id": "role-embedded-q24",
       "prompt": "Why should an IoT device authenticate the server it connects to?",
       "options": [
-        { "id": "A", "text": "To reduce bandwidth usage" },
-        { "id": "B", "text": "To prevent a spoofed server issuing commands or malicious firmware" },
-        { "id": "C", "text": "Because the protocol requires it for compression" },
-        { "id": "D", "text": "To synchronise its clock accurately" }
+        {
+          "id": "A",
+          "text": "Because the protocol requires it for compression"
+        },
+        {
+          "id": "B",
+          "text": "To prevent a spoofed server issuing commands or malicious firmware"
+        },
+        {
+          "id": "C",
+          "text": "To reduce bandwidth usage"
+        },
+        {
+          "id": "D",
+          "text": "To synchronise its clock accurately"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "One-way authentication leaves the device trusting whatever answers, which is how a fleet gets hijacked. Certificate validation on the device is the defence.",
@@ -323,10 +611,22 @@
       "id": "role-embedded-q25",
       "prompt": "What does the const keyword on a pointer parameter such as const char *p indicate?",
       "options": [
-        { "id": "A", "text": "The pointer itself cannot be reassigned" },
-        { "id": "B", "text": "The pointer is stored in flash" },
-        { "id": "C", "text": "The data pointed to must not be modified" },
-        { "id": "D", "text": "The parameter is passed by value" }
+        {
+          "id": "A",
+          "text": "The pointer itself cannot be reassigned"
+        },
+        {
+          "id": "B",
+          "text": "The parameter is passed by value"
+        },
+        {
+          "id": "C",
+          "text": "The data pointed to must not be modified"
+        },
+        {
+          "id": "D",
+          "text": "The pointer is stored in flash"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "const char *p protects the pointed-to data; char *const p would fix the pointer instead. Reading the declaration right to left resolves the ambiguity.",

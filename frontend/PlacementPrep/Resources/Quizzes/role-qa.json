@@ -11,10 +11,22 @@
       "id": "role-qa-q01",
       "prompt": "What does boundary value analysis test?",
       "options": [
-        { "id": "A", "text": "Values at and around the edges of a valid range" },
-        { "id": "B", "text": "Only the middle of a valid range" },
-        { "id": "C", "text": "The maximum load a system can take" },
-        { "id": "D", "text": "The boundaries between microservices" }
+        {
+          "id": "A",
+          "text": "Values at and around the edges of a valid range"
+        },
+        {
+          "id": "B",
+          "text": "Only the middle of a valid range"
+        },
+        {
+          "id": "C",
+          "text": "The maximum load a system can take"
+        },
+        {
+          "id": "D",
+          "text": "The boundaries between microservices"
+        }
       ],
       "correct_option_id": "A",
       "explanation": "Off-by-one errors cluster at edges, so for a 1-100 field you test 0, 1, 100 and 101. Testing 50 exercises the same code path as any other middle value.",
@@ -24,10 +36,22 @@
       "id": "role-qa-q02",
       "prompt": "What is equivalence partitioning?",
       "options": [
-        { "id": "A", "text": "Splitting the test suite across machines" },
-        { "id": "B", "text": "Grouping inputs that should behave identically and testing one per group" },
-        { "id": "C", "text": "Dividing testers evenly across features" },
-        { "id": "D", "text": "Balancing unit and integration tests equally" }
+        {
+          "id": "A",
+          "text": "Balancing unit and integration tests equally"
+        },
+        {
+          "id": "B",
+          "text": "Grouping inputs that should behave identically and testing one per group"
+        },
+        {
+          "id": "C",
+          "text": "Dividing testers evenly across features"
+        },
+        {
+          "id": "D",
+          "text": "Splitting the test suite across machines"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "If every value from 1 to 100 follows the same path, one representative covers the partition. It is how you cut a combinatorial space to a practical number of cases.",
@@ -37,10 +61,22 @@
       "id": "role-qa-q03",
       "prompt": "Why is a fixed sleep the wrong fix for a flaky UI test?",
       "options": [
-        { "id": "A", "text": "Sleeps are not supported in most frameworks" },
-        { "id": "B", "text": "It makes the test fail on fast machines" },
-        { "id": "C", "text": "It guesses at timing and still breaks on a slow run" },
-        { "id": "D", "text": "It prevents screenshots from being captured" }
+        {
+          "id": "A",
+          "text": "It makes the test fail on fast machines"
+        },
+        {
+          "id": "B",
+          "text": "Sleeps are not supported in most frameworks"
+        },
+        {
+          "id": "C",
+          "text": "It guesses at timing and still breaks on a slow run"
+        },
+        {
+          "id": "D",
+          "text": "It prevents screenshots from being captured"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "A sleep hides the race rather than removing it, and slows every run. Waiting for the actual condition, such as an element becoming clickable, is both faster and reliable.",
@@ -50,12 +86,24 @@
       "id": "role-qa-q04",
       "prompt": "What does the test pyramid recommend?",
       "options": [
-        { "id": "A", "text": "Mostly end-to-end tests, with few unit tests" },
-        { "id": "B", "text": "An equal number of tests at every level" },
-        { "id": "C", "text": "Manual testing at the base of the suite" },
-        { "id": "D", "text": "Many fast unit tests, fewer integration, fewest end-to-end" }
+        {
+          "id": "A",
+          "text": "Manual testing at the base of the suite"
+        },
+        {
+          "id": "B",
+          "text": "An equal number of tests at every level"
+        },
+        {
+          "id": "C",
+          "text": "Many fast unit tests, fewer integration, fewest end-to-end"
+        },
+        {
+          "id": "D",
+          "text": "Mostly end-to-end tests, with few unit tests"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Unit tests are fast and pinpoint failures; end-to-end tests are slow and flaky but prove the system works. An inverted pyramid gives slow suites nobody trusts.",
       "concept": "Test Strategy"
     },
@@ -63,10 +111,22 @@
       "id": "role-qa-q05",
       "prompt": "What does 100% code coverage guarantee?",
       "options": [
-        { "id": "A", "text": "The code is free of bugs" },
-        { "id": "B", "text": "Every line ran during the tests" },
-        { "id": "C", "text": "Every input combination was tested" },
-        { "id": "D", "text": "All requirements are covered" }
+        {
+          "id": "A",
+          "text": "All requirements are covered"
+        },
+        {
+          "id": "B",
+          "text": "Every line ran during the tests"
+        },
+        {
+          "id": "C",
+          "text": "The code is free of bugs"
+        },
+        {
+          "id": "D",
+          "text": "Every input combination was tested"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "Coverage shows execution, not correctness. A test that runs every line and asserts nothing scores 100%, and coverage says nothing about missing requirements.",
@@ -76,12 +136,24 @@
       "id": "role-qa-q06",
       "prompt": "What is regression testing for?",
       "options": [
-        { "id": "A", "text": "Testing statistical regression models" },
-        { "id": "B", "text": "Measuring performance decline over releases" },
-        { "id": "C", "text": "Confirming a change has not broken existing behaviour" },
-        { "id": "D", "text": "Reverting a release to a previous version" }
+        {
+          "id": "A",
+          "text": "Confirming a change has not broken existing behaviour"
+        },
+        {
+          "id": "B",
+          "text": "Measuring performance decline over releases"
+        },
+        {
+          "id": "C",
+          "text": "Reverting a release to a previous version"
+        },
+        {
+          "id": "D",
+          "text": "Testing statistical regression models"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "New work frequently breaks something that used to work. A regression suite is the safety net that makes changing existing code affordable.",
       "concept": "Test Types"
     },
@@ -89,12 +161,24 @@
       "id": "role-qa-q07",
       "prompt": "What is the difference between a stub and a mock?",
       "options": [
-        { "id": "A", "text": "A stub returns canned data; a mock also asserts how it was called" },
-        { "id": "B", "text": "A mock is always slower" },
-        { "id": "C", "text": "A stub can only be used in unit tests" },
-        { "id": "D", "text": "They are identical in every framework" }
+        {
+          "id": "A",
+          "text": "A stub can only be used in unit tests"
+        },
+        {
+          "id": "B",
+          "text": "They are identical in every framework"
+        },
+        {
+          "id": "C",
+          "text": "A mock is always slower"
+        },
+        {
+          "id": "D",
+          "text": "A stub returns canned data; a mock also asserts how it was called"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "A stub supplies state so the code under test can run. A mock additionally verifies interactions, which couples the test to implementation and makes it more brittle.",
       "concept": "Test Doubles"
     },
@@ -102,12 +186,24 @@
       "id": "role-qa-q08",
       "prompt": "Why is a test that depends on another test's leftover data a problem?",
       "options": [
-        { "id": "A", "text": "It uses more disk space" },
-        { "id": "B", "text": "It fails when run alone or in a different order" },
-        { "id": "C", "text": "It cannot be written in most frameworks" },
-        { "id": "D", "text": "It always runs slower" }
+        {
+          "id": "A",
+          "text": "It always runs slower"
+        },
+        {
+          "id": "B",
+          "text": "It cannot be written in most frameworks"
+        },
+        {
+          "id": "C",
+          "text": "It uses more disk space"
+        },
+        {
+          "id": "D",
+          "text": "It fails when run alone or in a different order"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Order dependence breaks parallel execution and makes failures irreproducible in isolation. Each test should set up and tear down its own state.",
       "concept": "Test Isolation"
     },
@@ -115,10 +211,22 @@
       "id": "role-qa-q09",
       "prompt": "In Selenium, why is an XPath like /html/body/div[3]/div[2]/span a poor locator?",
       "options": [
-        { "id": "A", "text": "XPath is not supported by modern browsers" },
-        { "id": "B", "text": "It is slower than any other locator" },
-        { "id": "C", "text": "It breaks on any change to page structure" },
-        { "id": "D", "text": "It cannot locate nested elements" }
+        {
+          "id": "A",
+          "text": "It cannot locate nested elements"
+        },
+        {
+          "id": "B",
+          "text": "It is slower than any other locator"
+        },
+        {
+          "id": "C",
+          "text": "It breaks on any change to page structure"
+        },
+        {
+          "id": "D",
+          "text": "XPath is not supported by modern browsers"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "An absolute path encodes the whole layout, so inserting one wrapper div breaks it. A stable test id or an accessible role survives visual restructuring.",
@@ -128,12 +236,24 @@
       "id": "role-qa-q10",
       "prompt": "What is smoke testing?",
       "options": [
-        { "id": "A", "text": "Testing under maximum load" },
-        { "id": "B", "text": "Exhaustively testing one feature" },
-        { "id": "C", "text": "Testing without any documentation" },
-        { "id": "D", "text": "A quick check that core paths work before deeper testing" }
+        {
+          "id": "A",
+          "text": "A quick check that core paths work before deeper testing"
+        },
+        {
+          "id": "B",
+          "text": "Testing under maximum load"
+        },
+        {
+          "id": "C",
+          "text": "Testing without any documentation"
+        },
+        {
+          "id": "D",
+          "text": "Exhaustively testing one feature"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "It answers whether the build is worth testing at all. If login fails, running a four-hour regression suite wastes the time of everyone waiting on it.",
       "concept": "Test Types"
     },
@@ -141,12 +261,24 @@
       "id": "role-qa-q11",
       "prompt": "What is the purpose of the Page Object Model in UI automation?",
       "options": [
-        { "id": "A", "text": "It runs tests against multiple browsers at once" },
-        { "id": "B", "text": "It generates test data automatically" },
-        { "id": "C", "text": "It centralises locators and page actions so a UI change touches one file" },
-        { "id": "D", "text": "It records user sessions for replay" }
+        {
+          "id": "A",
+          "text": "It records user sessions for replay"
+        },
+        {
+          "id": "B",
+          "text": "It generates test data automatically"
+        },
+        {
+          "id": "C",
+          "text": "It runs tests against multiple browsers at once"
+        },
+        {
+          "id": "D",
+          "text": "It centralises locators and page actions so a UI change touches one file"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Without it, a renamed button breaks fifty tests. With it, the page class changes once and every test that uses it keeps working.",
       "concept": "Test Architecture"
     },
@@ -154,12 +286,24 @@
       "id": "role-qa-q12",
       "prompt": "What does a severity rating on a bug describe, as opposed to priority?",
       "options": [
-        { "id": "A", "text": "How technically difficult the fix is" },
-        { "id": "B", "text": "How badly it affects the system when it occurs" },
-        { "id": "C", "text": "How soon it must be fixed" },
-        { "id": "D", "text": "How many users reported it" }
+        {
+          "id": "A",
+          "text": "How badly it affects the system when it occurs"
+        },
+        {
+          "id": "B",
+          "text": "How soon it must be fixed"
+        },
+        {
+          "id": "C",
+          "text": "How many users reported it"
+        },
+        {
+          "id": "D",
+          "text": "How technically difficult the fix is"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Severity is impact, priority is urgency, and they diverge: a crash in a rarely used admin screen is high severity but low priority, while a typo on the homepage is the reverse.",
       "concept": "Defect Management"
     },
@@ -167,12 +311,24 @@
       "id": "role-qa-q13",
       "prompt": "Why should automated tests run in CI rather than only on a developer's machine?",
       "options": [
-        { "id": "A", "text": "CI machines are always faster" },
-        { "id": "B", "text": "It is the only way to run tests in parallel" },
-        { "id": "C", "text": "Local runs cannot produce reports" },
-        { "id": "D", "text": "Every change is checked in a clean, consistent environment" }
+        {
+          "id": "A",
+          "text": "Every change is checked in a clean, consistent environment"
+        },
+        {
+          "id": "B",
+          "text": "It is the only way to run tests in parallel"
+        },
+        {
+          "id": "C",
+          "text": "CI machines are always faster"
+        },
+        {
+          "id": "D",
+          "text": "Local runs cannot produce reports"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "A clean environment catches missing dependencies and machine-specific assumptions, and running on every change means nobody can forget.",
       "concept": "Continuous Integration"
     },
@@ -180,12 +336,24 @@
       "id": "role-qa-q14",
       "prompt": "What is exploratory testing?",
       "options": [
-        { "id": "A", "text": "Simultaneously learning the system, designing and running tests" },
-        { "id": "B", "text": "Running tests without any goal" },
-        { "id": "C", "text": "Testing only new features" },
-        { "id": "D", "text": "Automated random input generation" }
+        {
+          "id": "A",
+          "text": "Running tests without any goal"
+        },
+        {
+          "id": "B",
+          "text": "Simultaneously learning the system, designing and running tests"
+        },
+        {
+          "id": "C",
+          "text": "Automated random input generation"
+        },
+        {
+          "id": "D",
+          "text": "Testing only new features"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "It is structured investigation guided by what the tester keeps finding, which is how bugs outside the written cases surface. It complements scripted testing rather than replacing it.",
       "concept": "Test Approaches"
     },
@@ -193,10 +361,22 @@
       "id": "role-qa-q15",
       "prompt": "What makes a good bug report actionable?",
       "options": [
-        { "id": "A", "text": "A description of who is at fault" },
-        { "id": "B", "text": "A proposed code fix" },
-        { "id": "C", "text": "Steps to reproduce, expected and actual behaviour, and environment" },
-        { "id": "D", "text": "A screenshot only" }
+        {
+          "id": "A",
+          "text": "A description of who is at fault"
+        },
+        {
+          "id": "B",
+          "text": "A screenshot only"
+        },
+        {
+          "id": "C",
+          "text": "Steps to reproduce, expected and actual behaviour, and environment"
+        },
+        {
+          "id": "D",
+          "text": "A proposed code fix"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "A developer must be able to reproduce it and know what should have happened. 'Login is broken' costs a round trip that a clear report would have avoided.",
@@ -206,10 +386,22 @@
       "id": "role-qa-q16",
       "prompt": "What is the risk of asserting on an exact timestamp in a test?",
       "options": [
-        { "id": "A", "text": "Timestamps cannot be compared in most languages" },
-        { "id": "B", "text": "It makes the test non-deterministic and time-zone dependent" },
-        { "id": "C", "text": "It slows the test down measurably" },
-        { "id": "D", "text": "It requires a database connection" }
+        {
+          "id": "A",
+          "text": "It slows the test down measurably"
+        },
+        {
+          "id": "B",
+          "text": "It makes the test non-deterministic and time-zone dependent"
+        },
+        {
+          "id": "C",
+          "text": "It requires a database connection"
+        },
+        {
+          "id": "D",
+          "text": "Timestamps cannot be compared in most languages"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "The value changes every run and shifts with the machine's zone, so the test fails for reasons unrelated to the code. Inject a clock or assert on a range.",
@@ -219,10 +411,22 @@
       "id": "role-qa-q17",
       "prompt": "What is load testing intended to reveal?",
       "options": [
-        { "id": "A", "text": "Whether the UI layout adapts to screen size" },
-        { "id": "B", "text": "Whether the code follows style guidelines" },
-        { "id": "C", "text": "How the system behaves under expected concurrent use" },
-        { "id": "D", "text": "Whether all links on a page work" }
+        {
+          "id": "A",
+          "text": "Whether the code follows style guidelines"
+        },
+        {
+          "id": "B",
+          "text": "Whether all links on a page work"
+        },
+        {
+          "id": "C",
+          "text": "How the system behaves under expected concurrent use"
+        },
+        {
+          "id": "D",
+          "text": "Whether the UI layout adapts to screen size"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "Load testing measures behaviour at realistic concurrency. Stress testing goes further to find the breaking point and check that the system fails gracefully.",
@@ -232,12 +436,24 @@
       "id": "role-qa-q18",
       "prompt": "Why is testing in production sometimes necessary despite good pre-release testing?",
       "options": [
-        { "id": "A", "text": "Staging environments are always broken" },
-        { "id": "B", "text": "It is cheaper than maintaining a test environment" },
-        { "id": "C", "text": "Production has no monitoring requirements" },
-        { "id": "D", "text": "Real traffic, data and scale cannot be fully reproduced elsewhere" }
+        {
+          "id": "A",
+          "text": "Production has no monitoring requirements"
+        },
+        {
+          "id": "B",
+          "text": "Real traffic, data and scale cannot be fully reproduced elsewhere"
+        },
+        {
+          "id": "C",
+          "text": "Staging environments are always broken"
+        },
+        {
+          "id": "D",
+          "text": "It is cheaper than maintaining a test environment"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Data volume, third-party behaviour and real usage patterns rarely exist in staging. Canaries and feature flags make it safe by limiting exposure.",
       "concept": "Test Strategy"
     },
@@ -245,12 +461,24 @@
       "id": "role-qa-q19",
       "prompt": "What is a test fixture?",
       "options": [
-        { "id": "A", "text": "The known state a test starts from" },
-        { "id": "B", "text": "A report of the last test run" },
-        { "id": "C", "text": "The assertion library being used" },
-        { "id": "D", "text": "A permanently deployed test server" }
+        {
+          "id": "A",
+          "text": "A permanently deployed test server"
+        },
+        {
+          "id": "B",
+          "text": "The assertion library being used"
+        },
+        {
+          "id": "C",
+          "text": "The known state a test starts from"
+        },
+        {
+          "id": "D",
+          "text": "A report of the last test run"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "A fixture sets up the data and dependencies a test needs so it starts from a known state and can be repeated with the same result.",
       "concept": "Test Fundamentals"
     },
@@ -258,12 +486,24 @@
       "id": "role-qa-q20",
       "prompt": "Why should a flaky test be quarantined or fixed rather than retried automatically?",
       "options": [
-        { "id": "A", "text": "Retrying uses too much CI time" },
-        { "id": "B", "text": "Retries hide real intermittent bugs and erode trust in the suite" },
-        { "id": "C", "text": "Most CI tools cannot retry tests" },
-        { "id": "D", "text": "Retried tests always fail eventually" }
+        {
+          "id": "A",
+          "text": "Retried tests always fail eventually"
+        },
+        {
+          "id": "B",
+          "text": "Retrying uses too much CI time"
+        },
+        {
+          "id": "C",
+          "text": "Most CI tools cannot retry tests"
+        },
+        {
+          "id": "D",
+          "text": "Retries hide real intermittent bugs and erode trust in the suite"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A flake is often a genuine race that will hit users. Blanket retries make the suite green while teaching everyone to ignore failures.",
       "concept": "Test Reliability"
     },
@@ -271,12 +511,24 @@
       "id": "role-qa-q21",
       "prompt": "What does API testing cover that UI testing does not do well?",
       "options": [
-        { "id": "A", "text": "Visual layout correctness" },
-        { "id": "B", "text": "Browser compatibility" },
-        { "id": "C", "text": "Edge cases and error codes, quickly and reliably" },
-        { "id": "D", "text": "Accessibility of controls" }
+        {
+          "id": "A",
+          "text": "Accessibility of controls"
+        },
+        {
+          "id": "B",
+          "text": "Edge cases and error codes, quickly and reliably"
+        },
+        {
+          "id": "C",
+          "text": "Browser compatibility"
+        },
+        {
+          "id": "D",
+          "text": "Visual layout correctness"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "The API layer lets you drive malformed input and error paths directly, far faster and less flakily than clicking through a UI that may not even expose them.",
       "concept": "Test Strategy"
     },
@@ -284,12 +536,24 @@
       "id": "role-qa-q22",
       "prompt": "What is the purpose of a traceability matrix?",
       "options": [
-        { "id": "A", "text": "Tracking which developer wrote each test" },
-        { "id": "B", "text": "Recording how long each test takes" },
-        { "id": "C", "text": "Mapping code coverage to files" },
-        { "id": "D", "text": "Mapping requirements to the tests that verify them" }
+        {
+          "id": "A",
+          "text": "Mapping requirements to the tests that verify them"
+        },
+        {
+          "id": "B",
+          "text": "Tracking which developer wrote each test"
+        },
+        {
+          "id": "C",
+          "text": "Recording how long each test takes"
+        },
+        {
+          "id": "D",
+          "text": "Mapping code coverage to files"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "It makes gaps visible: a requirement with no linked test is untested, which a coverage percentage would never reveal.",
       "concept": "Test Management"
     },
@@ -297,12 +561,24 @@
       "id": "role-qa-q23",
       "prompt": "In BDD, what is the Given-When-Then structure for?",
       "options": [
-        { "id": "A", "text": "Ordering test execution in the suite" },
-        { "id": "B", "text": "Describing context, action and expected outcome in shared language" },
-        { "id": "C", "text": "Defining the three environments a build passes through" },
-        { "id": "D", "text": "Grouping tests by severity" }
+        {
+          "id": "A",
+          "text": "Ordering test execution in the suite"
+        },
+        {
+          "id": "B",
+          "text": "Defining the three environments a build passes through"
+        },
+        {
+          "id": "C",
+          "text": "Grouping tests by severity"
+        },
+        {
+          "id": "D",
+          "text": "Describing context, action and expected outcome in shared language"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "It gives testers, developers and business stakeholders one readable format, which is where its value lies. Automating it is secondary to agreeing on the behaviour.",
       "concept": "BDD"
     },
@@ -310,12 +586,24 @@
       "id": "role-qa-q24",
       "prompt": "Why is testing with production-like data volumes important?",
       "options": [
-        { "id": "A", "text": "Small datasets cannot be loaded into test databases" },
-        { "id": "B", "text": "It is required for GDPR compliance" },
-        { "id": "C", "text": "Queries that are fast on 100 rows can be unusable on a million" },
-        { "id": "D", "text": "Large data makes tests more readable" }
+        {
+          "id": "A",
+          "text": "Queries that are fast on 100 rows can be unusable on a million"
+        },
+        {
+          "id": "B",
+          "text": "Small datasets cannot be loaded into test databases"
+        },
+        {
+          "id": "C",
+          "text": "Large data makes tests more readable"
+        },
+        {
+          "id": "D",
+          "text": "It is required for GDPR compliance"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Missing indexes and N+1 queries are invisible at small scale. Realistic volume, with sensitive fields masked, is what exposes them before users do.",
       "concept": "Performance Testing"
     },
@@ -323,12 +611,24 @@
       "id": "role-qa-q25",
       "prompt": "What should happen to a test after the bug it caught is fixed?",
       "options": [
-        { "id": "A", "text": "It should be deleted, since the bug is gone" },
-        { "id": "B", "text": "It should be kept so the bug cannot return unnoticed" },
-        { "id": "C", "text": "It should be marked as skipped" },
-        { "id": "D", "text": "It should be moved to manual testing" }
+        {
+          "id": "A",
+          "text": "It should be deleted, since the bug is gone"
+        },
+        {
+          "id": "B",
+          "text": "It should be moved to manual testing"
+        },
+        {
+          "id": "C",
+          "text": "It should be marked as skipped"
+        },
+        {
+          "id": "D",
+          "text": "It should be kept so the bug cannot return unnoticed"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A regression test for a real bug is among the most valuable in the suite, because that code path has already proven it can break.",
       "concept": "Test Strategy"
     }

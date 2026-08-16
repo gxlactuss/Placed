@@ -11,10 +11,22 @@
       "id": "role-data-ml-q01",
       "prompt": "A model scores 99% accuracy on a dataset where 99% of rows are the negative class. What does that tell you?",
       "options": [
-        { "id": "A", "text": "The model is excellent" },
-        { "id": "B", "text": "The model may be no better than always predicting the majority class" },
-        { "id": "C", "text": "The data must be corrupted" },
-        { "id": "D", "text": "The model has overfitted the test set" }
+        {
+          "id": "A",
+          "text": "The model is excellent"
+        },
+        {
+          "id": "B",
+          "text": "The model may be no better than always predicting the majority class"
+        },
+        {
+          "id": "C",
+          "text": "The model has overfitted the test set"
+        },
+        {
+          "id": "D",
+          "text": "The data must be corrupted"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "With that imbalance a constant predictor also scores 99%. Precision, recall or AUC are needed to tell whether the model learned anything about the rare class.",
@@ -24,12 +36,24 @@
       "id": "role-data-ml-q02",
       "prompt": "What is data leakage in a machine learning pipeline?",
       "options": [
-        { "id": "A", "text": "Losing rows during a database export" },
-        { "id": "B", "text": "Exposing personal data in a report" },
-        { "id": "C", "text": "Information from outside the training window influencing the model" },
-        { "id": "D", "text": "Memory growing during training" }
+        {
+          "id": "A",
+          "text": "Information from outside the training window influencing the model"
+        },
+        {
+          "id": "B",
+          "text": "Exposing personal data in a report"
+        },
+        {
+          "id": "C",
+          "text": "Losing rows during a database export"
+        },
+        {
+          "id": "D",
+          "text": "Memory growing during training"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Fitting a scaler on the whole dataset before splitting, or using a feature computed after the target event, gives excellent validation scores and a model that fails in production.",
       "concept": "ML Pipelines"
     },
@@ -37,12 +61,24 @@
       "id": "role-data-ml-q03",
       "prompt": "What does the bias-variance tradeoff describe?",
       "options": [
-        { "id": "A", "text": "The balance between training time and accuracy" },
-        { "id": "B", "text": "The tension between underfitting and overfitting" },
-        { "id": "C", "text": "The ratio of features to rows" },
-        { "id": "D", "text": "The imbalance between classes" }
+        {
+          "id": "A",
+          "text": "The tension between underfitting and overfitting"
+        },
+        {
+          "id": "B",
+          "text": "The balance between training time and accuracy"
+        },
+        {
+          "id": "C",
+          "text": "The ratio of features to rows"
+        },
+        {
+          "id": "D",
+          "text": "The imbalance between classes"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "High bias means the model is too simple to capture the signal; high variance means it fits noise in the training data. Reducing one usually increases the other.",
       "concept": "ML Fundamentals"
     },
@@ -50,10 +86,22 @@
       "id": "role-data-ml-q04",
       "prompt": "Why is a validation set kept separate from the test set?",
       "options": [
-        { "id": "A", "text": "Validation data is always larger" },
-        { "id": "B", "text": "The test set trains the final model" },
-        { "id": "C", "text": "Validation data does not need labels" },
-        { "id": "D", "text": "Tuning against the test set makes its score optimistic" }
+        {
+          "id": "A",
+          "text": "Validation data is always larger"
+        },
+        {
+          "id": "B",
+          "text": "Validation data does not need labels"
+        },
+        {
+          "id": "C",
+          "text": "The test set trains the final model"
+        },
+        {
+          "id": "D",
+          "text": "Tuning against the test set makes its score optimistic"
+        }
       ],
       "correct_option_id": "D",
       "explanation": "Choosing hyperparameters using a set means you have fitted to it. The test set stays untouched so it remains an honest estimate of unseen performance.",
@@ -63,12 +111,24 @@
       "id": "role-data-ml-q05",
       "prompt": "In SQL, what does a LEFT JOIN return that an INNER JOIN does not?",
       "options": [
-        { "id": "A", "text": "Rows from the left table with no match on the right" },
-        { "id": "B", "text": "Only rows present in both tables" },
-        { "id": "C", "text": "Duplicate rows removed automatically" },
-        { "id": "D", "text": "Rows sorted by the join key" }
+        {
+          "id": "A",
+          "text": "Duplicate rows removed automatically"
+        },
+        {
+          "id": "B",
+          "text": "Rows sorted by the join key"
+        },
+        {
+          "id": "C",
+          "text": "Only rows present in both tables"
+        },
+        {
+          "id": "D",
+          "text": "Rows from the left table with no match on the right"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Unmatched left rows are kept with NULLs for right columns. Filtering those NULL columns in WHERE silently turns the query back into an inner join.",
       "concept": "SQL"
     },
@@ -76,12 +136,24 @@
       "id": "role-data-ml-q06",
       "prompt": "What does a p-value of 0.03 mean in a hypothesis test at the 5% level?",
       "options": [
-        { "id": "A", "text": "There is a 3% chance the null hypothesis is true" },
-        { "id": "B", "text": "The effect size is 3%" },
-        { "id": "C", "text": "Data this extreme would occur 3% of the time if the null were true" },
-        { "id": "D", "text": "The result will replicate 97% of the time" }
+        {
+          "id": "A",
+          "text": "Data this extreme would occur 3% of the time if the null were true"
+        },
+        {
+          "id": "B",
+          "text": "The effect size is 3%"
+        },
+        {
+          "id": "C",
+          "text": "There is a 3% chance the null hypothesis is true"
+        },
+        {
+          "id": "D",
+          "text": "The result will replicate 97% of the time"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "The p-value is the probability of the data given the null, not the probability of the null given the data. It also says nothing about how large or important the effect is.",
       "concept": "Statistics"
     },
@@ -89,10 +161,22 @@
       "id": "role-data-ml-q07",
       "prompt": "Why is cross-validation preferred over a single train-test split on a small dataset?",
       "options": [
-        { "id": "A", "text": "It trains the model faster" },
-        { "id": "B", "text": "It removes the need for a test set" },
-        { "id": "C", "text": "It guarantees higher accuracy" },
-        { "id": "D", "text": "Every row is used for validation once, giving a more stable estimate" }
+        {
+          "id": "A",
+          "text": "It guarantees higher accuracy"
+        },
+        {
+          "id": "B",
+          "text": "It removes the need for a test set"
+        },
+        {
+          "id": "C",
+          "text": "It trains the model faster"
+        },
+        {
+          "id": "D",
+          "text": "Every row is used for validation once, giving a more stable estimate"
+        }
       ],
       "correct_option_id": "D",
       "explanation": "A single small split gives an estimate that swings with which rows landed where. K-fold averages across folds, at k times the training cost.",
@@ -102,12 +186,24 @@
       "id": "role-data-ml-q08",
       "prompt": "What does regularisation such as L2 do to a model?",
       "options": [
-        { "id": "A", "text": "Penalises large coefficients to reduce overfitting" },
-        { "id": "B", "text": "Normalises features to zero mean" },
-        { "id": "C", "text": "Removes duplicate rows before training" },
-        { "id": "D", "text": "Balances the class distribution" }
+        {
+          "id": "A",
+          "text": "Normalises features to zero mean"
+        },
+        {
+          "id": "B",
+          "text": "Balances the class distribution"
+        },
+        {
+          "id": "C",
+          "text": "Removes duplicate rows before training"
+        },
+        {
+          "id": "D",
+          "text": "Penalises large coefficients to reduce overfitting"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Adding a penalty on coefficient magnitude discourages the model from fitting noise. L1 can drive coefficients to exactly zero, which also performs feature selection.",
       "concept": "ML Fundamentals"
     },
@@ -115,12 +211,24 @@
       "id": "role-data-ml-q09",
       "prompt": "When is recall more important than precision?",
       "options": [
-        { "id": "A", "text": "When false alarms are very costly" },
-        { "id": "B", "text": "When missing a positive case is very costly" },
-        { "id": "C", "text": "When the classes are perfectly balanced" },
-        { "id": "D", "text": "When the model is a regression" }
+        {
+          "id": "A",
+          "text": "When false alarms are very costly"
+        },
+        {
+          "id": "B",
+          "text": "When the model is a regression"
+        },
+        {
+          "id": "C",
+          "text": "When missing a positive case is very costly"
+        },
+        {
+          "id": "D",
+          "text": "When the classes are perfectly balanced"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Recall measures how many real positives were caught, so disease screening favours it. Precision matters more when acting on a false positive is expensive.",
       "concept": "Model Evaluation"
     },
@@ -128,12 +236,24 @@
       "id": "role-data-ml-q10",
       "prompt": "What is the purpose of a confusion matrix?",
       "options": [
-        { "id": "A", "text": "It shows correlation between features" },
-        { "id": "B", "text": "It measures training time per epoch" },
-        { "id": "C", "text": "It breaks predictions into true and false positives and negatives" },
-        { "id": "D", "text": "It ranks features by importance" }
+        {
+          "id": "A",
+          "text": "It breaks predictions into true and false positives and negatives"
+        },
+        {
+          "id": "B",
+          "text": "It ranks features by importance"
+        },
+        {
+          "id": "C",
+          "text": "It measures training time per epoch"
+        },
+        {
+          "id": "D",
+          "text": "It shows correlation between features"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "It shows which errors the model makes, not just how many. Precision, recall and specificity are all read off it, which a single accuracy figure hides.",
       "concept": "Model Evaluation"
     },
@@ -141,10 +261,22 @@
       "id": "role-data-ml-q11",
       "prompt": "In pandas, what does groupby followed by agg do?",
       "options": [
-        { "id": "A", "text": "Sorts rows by the grouping column" },
-        { "id": "B", "text": "Removes rows with missing values" },
-        { "id": "C", "text": "Joins two DataFrames on a key" },
-        { "id": "D", "text": "Splits rows into groups and computes a summary per group" }
+        {
+          "id": "A",
+          "text": "Removes rows with missing values"
+        },
+        {
+          "id": "B",
+          "text": "Joins two DataFrames on a key"
+        },
+        {
+          "id": "C",
+          "text": "Sorts rows by the grouping column"
+        },
+        {
+          "id": "D",
+          "text": "Splits rows into groups and computes a summary per group"
+        }
       ],
       "correct_option_id": "D",
       "explanation": "It follows split-apply-combine: partition by key, apply an aggregation, then assemble the results. It is the tabular equivalent of SQL's GROUP BY.",
@@ -154,12 +286,24 @@
       "id": "role-data-ml-q12",
       "prompt": "Why should a time series be split chronologically rather than randomly?",
       "options": [
-        { "id": "A", "text": "Random splits are computationally slower" },
-        { "id": "B", "text": "A random split lets the model train on the future" },
-        { "id": "C", "text": "Chronological splits produce larger training sets" },
-        { "id": "D", "text": "Time series cannot be shuffled in pandas" }
+        {
+          "id": "A",
+          "text": "Time series cannot be shuffled in pandas"
+        },
+        {
+          "id": "B",
+          "text": "Random splits are computationally slower"
+        },
+        {
+          "id": "C",
+          "text": "Chronological splits produce larger training sets"
+        },
+        {
+          "id": "D",
+          "text": "A random split lets the model train on the future"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Shuffling puts later observations into training, so the model sees the future it is meant to predict. Scores look excellent and collapse in deployment.",
       "concept": "Time Series"
     },
@@ -167,12 +311,24 @@
       "id": "role-data-ml-q13",
       "prompt": "What does correlation not imply?",
       "options": [
-        { "id": "A", "text": "That two variables move together" },
-        { "id": "B", "text": "That a linear relationship may exist" },
-        { "id": "C", "text": "That one variable causes the other" },
-        { "id": "D", "text": "That the relationship is measurable" }
+        {
+          "id": "A",
+          "text": "That a linear relationship may exist"
+        },
+        {
+          "id": "B",
+          "text": "That one variable causes the other"
+        },
+        {
+          "id": "C",
+          "text": "That the relationship is measurable"
+        },
+        {
+          "id": "D",
+          "text": "That two variables move together"
+        }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "A confounder can drive both variables, and the direction may be reversed. Establishing causation needs an experiment or a careful causal design.",
       "concept": "Statistics"
     },
@@ -180,12 +336,24 @@
       "id": "role-data-ml-q14",
       "prompt": "What is one-hot encoding used for?",
       "options": [
-        { "id": "A", "text": "Compressing numeric columns" },
-        { "id": "B", "text": "Representing a categorical variable without implying an order" },
-        { "id": "C", "text": "Scaling features to unit variance" },
-        { "id": "D", "text": "Filling in missing values" }
+        {
+          "id": "A",
+          "text": "Filling in missing values"
+        },
+        {
+          "id": "B",
+          "text": "Compressing numeric columns"
+        },
+        {
+          "id": "C",
+          "text": "Representing a categorical variable without implying an order"
+        },
+        {
+          "id": "D",
+          "text": "Scaling features to unit variance"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Encoding categories as 1, 2, 3 tells the model that 3 is greater than 1, which is false for colours or cities. One-hot avoids the fake ordering at the cost of extra columns.",
       "concept": "Feature Engineering"
     },
@@ -193,12 +361,24 @@
       "id": "role-data-ml-q15",
       "prompt": "What is model drift?",
       "options": [
-        { "id": "A", "text": "The model file becoming corrupted over time" },
-        { "id": "B", "text": "Gradual loss of numeric precision during training" },
-        { "id": "C", "text": "Different results on repeated training runs" },
-        { "id": "D", "text": "Real-world data changing so a deployed model degrades" }
+        {
+          "id": "A",
+          "text": "Real-world data changing so a deployed model degrades"
+        },
+        {
+          "id": "B",
+          "text": "The model file becoming corrupted over time"
+        },
+        {
+          "id": "C",
+          "text": "Different results on repeated training runs"
+        },
+        {
+          "id": "D",
+          "text": "Gradual loss of numeric precision during training"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "The world moves and the training distribution stops matching live data, so performance decays quietly. Monitoring inputs and outcomes after deployment is what catches it.",
       "concept": "ML in Production"
     },
@@ -206,12 +386,24 @@
       "id": "role-data-ml-q16",
       "prompt": "Why should a baseline model be trained before a complex one?",
       "options": [
-        { "id": "A", "text": "It establishes whether the complexity actually buys anything" },
-        { "id": "B", "text": "It is required by scikit-learn's API" },
-        { "id": "C", "text": "It reduces the size of the dataset" },
-        { "id": "D", "text": "It guarantees the complex model will converge" }
+        {
+          "id": "A",
+          "text": "It reduces the size of the dataset"
+        },
+        {
+          "id": "B",
+          "text": "It establishes whether the complexity actually buys anything"
+        },
+        {
+          "id": "C",
+          "text": "It guarantees the complex model will converge"
+        },
+        {
+          "id": "D",
+          "text": "It is required by scikit-learn's API"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Without a baseline there is no way to judge a score. A logistic regression that nearly matches a deep model usually wins on cost, latency and explainability.",
       "concept": "ML Practice"
     },
@@ -219,12 +411,24 @@
       "id": "role-data-ml-q17",
       "prompt": "In an A/B test, what does statistical power describe?",
       "options": [
-        { "id": "A", "text": "The size of the observed effect" },
-        { "id": "B", "text": "The probability of detecting a real effect if one exists" },
-        { "id": "C", "text": "The proportion of users in the treatment group" },
-        { "id": "D", "text": "The confidence that the null is true" }
+        {
+          "id": "A",
+          "text": "The confidence that the null is true"
+        },
+        {
+          "id": "B",
+          "text": "The size of the observed effect"
+        },
+        {
+          "id": "C",
+          "text": "The proportion of users in the treatment group"
+        },
+        {
+          "id": "D",
+          "text": "The probability of detecting a real effect if one exists"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Power depends on sample size, effect size and variance. An underpowered test that shows no significance has not shown the feature does not work.",
       "concept": "Experimentation"
     },
@@ -232,10 +436,22 @@
       "id": "role-data-ml-q18",
       "prompt": "What does a SQL window function let you do that GROUP BY does not?",
       "options": [
-        { "id": "A", "text": "Filter rows before aggregation" },
-        { "id": "B", "text": "Join more than two tables" },
-        { "id": "C", "text": "Compute an aggregate while keeping each row" },
-        { "id": "D", "text": "Guarantee the result is sorted" }
+        {
+          "id": "A",
+          "text": "Join more than two tables"
+        },
+        {
+          "id": "B",
+          "text": "Guarantee the result is sorted"
+        },
+        {
+          "id": "C",
+          "text": "Compute an aggregate while keeping each row"
+        },
+        {
+          "id": "D",
+          "text": "Filter rows before aggregation"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "GROUP BY collapses rows; a window function computes over a partition and returns a value per row, which is how running totals and per-group ranks are produced.",
@@ -245,12 +461,24 @@
       "id": "role-data-ml-q19",
       "prompt": "Why is dropping every row with a missing value often a poor choice?",
       "options": [
-        { "id": "A", "text": "Most libraries cannot drop rows efficiently" },
-        { "id": "B", "text": "Missing values always carry the strongest signal" },
-        { "id": "C", "text": "Dropping rows changes the column data types" },
-        { "id": "D", "text": "Missingness is rarely random, so it biases what remains" }
+        {
+          "id": "A",
+          "text": "Missing values always carry the strongest signal"
+        },
+        {
+          "id": "B",
+          "text": "Missingness is rarely random, so it biases what remains"
+        },
+        {
+          "id": "C",
+          "text": "Dropping rows changes the column data types"
+        },
+        {
+          "id": "D",
+          "text": "Most libraries cannot drop rows efficiently"
+        }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "If a field is missing more often for one group, dropping those rows removes that group disproportionately. Missingness is sometimes informative enough to encode as a feature.",
       "concept": "Data Cleaning"
     },
@@ -258,12 +486,24 @@
       "id": "role-data-ml-q20",
       "prompt": "What does feature scaling matter for?",
       "options": [
-        { "id": "A", "text": "Distance-based and gradient-based algorithms" },
-        { "id": "B", "text": "Decision trees and random forests" },
-        { "id": "C", "text": "Only for classification problems" },
-        { "id": "D", "text": "Reducing the number of features" }
+        {
+          "id": "A",
+          "text": "Only for classification problems"
+        },
+        {
+          "id": "B",
+          "text": "Reducing the number of features"
+        },
+        {
+          "id": "C",
+          "text": "Distance-based and gradient-based algorithms"
+        },
+        {
+          "id": "D",
+          "text": "Decision trees and random forests"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "kNN, SVMs and gradient descent are sensitive to feature magnitude, so an unscaled salary column dominates an age column. Tree splits are scale-invariant and unaffected.",
       "concept": "Feature Engineering"
     },
@@ -271,10 +511,22 @@
       "id": "role-data-ml-q21",
       "prompt": "What is overfitting visible as during training?",
       "options": [
-        { "id": "A", "text": "Both training and validation loss stay high" },
-        { "id": "B", "text": "Training loss keeps falling while validation loss rises" },
-        { "id": "C", "text": "Training loss rises steadily" },
-        { "id": "D", "text": "Validation loss is always lower than training loss" }
+        {
+          "id": "A",
+          "text": "Validation loss is always lower than training loss"
+        },
+        {
+          "id": "B",
+          "text": "Training loss keeps falling while validation loss rises"
+        },
+        {
+          "id": "C",
+          "text": "Both training and validation loss stay high"
+        },
+        {
+          "id": "D",
+          "text": "Training loss rises steadily"
+        }
       ],
       "correct_option_id": "B",
       "explanation": "The model is memorising training rows rather than learning generalisable structure. Early stopping halts at the point validation loss turns.",
@@ -284,10 +536,22 @@
       "id": "role-data-ml-q22",
       "prompt": "Why is a random forest usually more robust than a single decision tree?",
       "options": [
-        { "id": "A", "text": "It trains on more data" },
-        { "id": "B", "text": "It uses fewer features overall" },
-        { "id": "C", "text": "Averaging many decorrelated trees reduces variance" },
-        { "id": "D", "text": "It cannot overfit at all" }
+        {
+          "id": "A",
+          "text": "It cannot overfit at all"
+        },
+        {
+          "id": "B",
+          "text": "It trains on more data"
+        },
+        {
+          "id": "C",
+          "text": "Averaging many decorrelated trees reduces variance"
+        },
+        {
+          "id": "D",
+          "text": "It uses fewer features overall"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "Each tree sees a bootstrap sample and a random feature subset, so their errors are partly independent and averaging cancels much of the variance.",
@@ -297,12 +561,24 @@
       "id": "role-data-ml-q23",
       "prompt": "What is the difference between supervised and unsupervised learning?",
       "options": [
-        { "id": "A", "text": "Supervised learning uses labelled targets; unsupervised does not" },
-        { "id": "B", "text": "Unsupervised learning needs more compute by definition" },
-        { "id": "C", "text": "Supervised learning works only on images" },
-        { "id": "D", "text": "Unsupervised learning cannot be evaluated at all" }
+        {
+          "id": "A",
+          "text": "Unsupervised learning needs more compute by definition"
+        },
+        {
+          "id": "B",
+          "text": "Supervised learning uses labelled targets; unsupervised does not"
+        },
+        {
+          "id": "C",
+          "text": "Supervised learning works only on images"
+        },
+        {
+          "id": "D",
+          "text": "Unsupervised learning cannot be evaluated at all"
+        }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Supervised learning fits a mapping to known answers. Unsupervised methods such as clustering find structure without labels, and are harder but not impossible to evaluate.",
       "concept": "ML Fundamentals"
     },
@@ -310,12 +586,24 @@
       "id": "role-data-ml-q24",
       "prompt": "Why is a chart's y-axis starting at a non-zero value sometimes misleading?",
       "options": [
-        { "id": "A", "text": "It breaks most plotting libraries" },
-        { "id": "B", "text": "It exaggerates small differences visually" },
-        { "id": "C", "text": "It hides the largest values" },
-        { "id": "D", "text": "It changes the underlying data" }
+        {
+          "id": "A",
+          "text": "It exaggerates small differences visually"
+        },
+        {
+          "id": "B",
+          "text": "It hides the largest values"
+        },
+        {
+          "id": "C",
+          "text": "It breaks most plotting libraries"
+        },
+        {
+          "id": "D",
+          "text": "It changes the underlying data"
+        }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Truncating the axis magnifies a tiny change into a dramatic slope. It is legitimate when zero is not meaningful, but it must be obvious to the reader.",
       "concept": "Data Visualisation"
     },
@@ -323,10 +611,22 @@
       "id": "role-data-ml-q25",
       "prompt": "What does a train-serve skew mean in a deployed ML system?",
       "options": [
-        { "id": "A", "text": "The model file differs between environments" },
-        { "id": "B", "text": "Training used a different random seed" },
-        { "id": "C", "text": "Features are computed differently at training and inference" },
-        { "id": "D", "text": "The serving hardware is slower than the training hardware" }
+        {
+          "id": "A",
+          "text": "The serving hardware is slower than the training hardware"
+        },
+        {
+          "id": "B",
+          "text": "The model file differs between environments"
+        },
+        {
+          "id": "C",
+          "text": "Features are computed differently at training and inference"
+        },
+        {
+          "id": "D",
+          "text": "Training used a different random seed"
+        }
       ],
       "correct_option_id": "C",
       "explanation": "If a feature is computed one way in a training notebook and another way in the service, the model sees inputs it was never trained on. Sharing the transformation code removes it.",
