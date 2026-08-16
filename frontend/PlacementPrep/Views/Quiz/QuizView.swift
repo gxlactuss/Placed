@@ -103,6 +103,7 @@ struct QuizView: View {
                     }
                 }
                 .padding(PPSpacing.xl)
+                .ppContentColumn()
             }
             .scrollIndicators(.hidden)
 
@@ -129,6 +130,7 @@ struct QuizView: View {
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.vertical, PPSpacing.md)
+        .ppContentColumn()
     }
 
     /// Elapsed time on this question.
@@ -184,6 +186,7 @@ struct QuizView: View {
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.bottom, PPSpacing.md)
+        .ppContentColumn()
     }
 
     private var explanation: some View {
@@ -243,6 +246,10 @@ struct QuizView: View {
             }
         }
         .padding(PPSpacing.xl)
+        // Column first, material second: the controls line up with the question
+        // above them while the blurred bar still runs the full width, which is
+        // what makes it read as chrome rather than as one more card.
+        .ppContentColumn()
         .background(.ultraThinMaterial)
         .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {

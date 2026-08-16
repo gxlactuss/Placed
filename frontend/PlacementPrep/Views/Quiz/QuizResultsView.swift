@@ -25,6 +25,7 @@ struct QuizResultsView: View {
                     recommendations
                 }
                 .padding(PPSpacing.xl)
+                .ppContentColumn()
             }
             .scrollIndicators(.hidden)
 
@@ -239,6 +240,7 @@ struct QuizResultsView: View {
             .buttonStyle(.ppPrimary)
         }
         .padding(PPSpacing.xl)
+        .ppContentColumn()
         .background(.ultraThinMaterial)
         .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {
