@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It guarantees messages are processed in strict global order"
-        },
-        {
-          "id": "B",
           "text": "It removes the need for the consumer to handle errors"
         },
         {
+          "id": "B",
+          "text": "It guarantees messages are processed in strict global order"
+        },
+        {
           "id": "C",
-          "text": "It compresses messages automatically"
+          "text": "It decouples them, so a slow or failed consumer does not block the producer"
         },
         {
           "id": "D",
-          "text": "It decouples them, so a slow or failed consumer does not block the producer"
+          "text": "It compresses messages automatically"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "The queue absorbs bursts and outages, letting each side scale and fail independently. Global ordering is usually the opposite — it is sacrificed once you partition the queue for throughput.",
       "concept": "Message Queues"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Exactly-once needs coordination that is impossible to achieve end to end without idempotent consumers"
+          "text": "At-least-once guarantees strict ordering"
         },
         {
           "id": "B",
-          "text": "At-least-once uses less network bandwidth"
+          "text": "Exactly-once needs coordination that is impossible to achieve end to end without idempotent consumers"
         },
         {
           "id": "C",
-          "text": "At-least-once guarantees strict ordering"
+          "text": "At-least-once uses less network bandwidth"
         },
         {
           "id": "D",
           "text": "Exactly-once is only possible with UDP"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "A broker cannot know whether a consumer crashed before or after processing, so it must redeliver. True exactly-once semantics come from making the consumer idempotent, not from the transport.",
       "concept": "Delivery Semantics"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Prioritising messages from premium users"
-        },
-        {
-          "id": "B",
           "text": "Holding messages that repeatedly fail processing, so they stop blocking the main queue"
         },
         {
+          "id": "B",
+          "text": "Prioritising messages from premium users"
+        },
+        {
           "id": "C",
-          "text": "Storing messages that have been successfully processed"
+          "text": "Buffering messages during a planned deployment"
         },
         {
           "id": "D",
-          "text": "Buffering messages during a planned deployment"
+          "text": "Storing messages that have been successfully processed"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Without one, a single poison message can be retried forever and stall everything behind it. Diverting it after a retry limit preserves throughput and leaves the failure available for inspection.",
       "concept": "Message Queues"
     },
@@ -113,7 +113,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Jitter reduces the total number of retries to one"
+          "text": "Fixed intervals synchronise clients into coordinated retry waves that re-overload the service"
         },
         {
           "id": "B",
@@ -121,14 +121,14 @@
         },
         {
           "id": "C",
-          "text": "Fixed intervals are not supported by HTTP"
+          "text": "Jitter reduces the total number of retries to one"
         },
         {
           "id": "D",
-          "text": "Fixed intervals synchronise clients into coordinated retry waves that re-overload the service"
+          "text": "Fixed intervals are not supported by HTTP"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Clients that fail together retry together, hammering a recovering service in lockstep. Growing delays reduce pressure and random jitter spreads the attempts out so they no longer arrive as a thundering herd.",
       "concept": "Resilience Patterns"
     },
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The capacity of the bucket"
+          "text": "The number of clients sharing the limiter"
         },
         {
           "id": "B",
@@ -150,10 +150,10 @@
         },
         {
           "id": "D",
-          "text": "The number of clients sharing the limiter"
+          "text": "The capacity of the bucket"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Tokens accumulate up to the bucket's capacity while traffic is idle, and a burst can consume all of them at once. The refill rate sets the long-run sustained throughput instead.",
       "concept": "Rate Limiting"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Compressing data before transmission"
-        },
-        {
-          "id": "B",
           "text": "A downstream consumer signalling upstream to slow down when it cannot keep up"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Replaying old messages to rebuild state"
+        },
+        {
+          "id": "C",
+          "text": "Compressing data before transmission"
         },
         {
           "id": "D",
           "text": "Rejecting requests from unauthenticated clients"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Without backpressure, a fast producer drives unbounded queue growth until memory is exhausted and the failure is catastrophic. Propagating the limit upstream converts that into controlled slowdown.",
       "concept": "Flow Control"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It allows dependencies to share a single connection"
-        },
-        {
-          "id": "B",
           "text": "It reduces total memory usage across the service"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "One failing dependency cannot exhaust the resources needed by all the others"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "It guarantees each dependency responds within a fixed time"
+        },
+        {
+          "id": "D",
+          "text": "It allows dependencies to share a single connection"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "With one shared pool, calls blocked on a slow dependency consume every thread and the entire service stops. Separate compartments confine the damage, exactly as bulkheads do in a ship's hull.",
       "concept": "Resilience Patterns"
     },
@@ -217,11 +217,11 @@
         },
         {
           "id": "B",
-          "text": "It removes the need for a message broker"
+          "text": "It processes messages faster in every case"
         },
         {
           "id": "C",
-          "text": "It processes messages faster in every case"
+          "text": "It removes the need for a message broker"
         },
         {
           "id": "D",
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Shedding or simplifying non-essential features so core functionality keeps working"
+          "text": "Scaling automatically until the load is absorbed"
         },
         {
           "id": "B",
-          "text": "Shutting the service down cleanly to protect data"
+          "text": "Shedding or simplifying non-essential features so core functionality keeps working"
         },
         {
           "id": "C",
-          "text": "Scaling automatically until the load is absorbed"
+          "text": "Shutting the service down cleanly to protect data"
         },
         {
           "id": "D",
           "text": "Returning cached errors to every client"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Rather than failing entirely, the system drops recommendations, personalisation or analytics and keeps checkout working. This requires deciding in advance which features are expendable.",
       "concept": "Resilience Patterns"
     }

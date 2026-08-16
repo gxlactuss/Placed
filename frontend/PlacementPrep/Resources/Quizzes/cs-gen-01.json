@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Abstraction"
+          "text": "Encapsulation"
         },
         {
           "id": "B",
-          "text": "Polymorphism"
+          "text": "Abstraction"
         },
         {
           "id": "C",
-          "text": "Encapsulation"
+          "text": "Polymorphism"
         },
         {
           "id": "D",
           "text": "Composition"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Dynamic dispatch selects the implementation from the object's actual type, so calling code depends only on the interface. This is what makes substituting one subtype for another possible.",
       "concept": "OOP"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It removes the need for constructors"
-        },
-        {
-          "id": "B",
-          "text": "It lets a class inherit behaviour from several parents"
-        },
-        {
-          "id": "C",
           "text": "It hides internal state behind a controlled interface, so invariants cannot be broken from outside"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It makes all methods static"
+        },
+        {
+          "id": "C",
+          "text": "It removes the need for constructors"
+        },
+        {
+          "id": "D",
+          "text": "It lets a class inherit behaviour from several parents"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "By exposing only methods, a type can guarantee its own consistency. Anyone able to write the fields directly could put the object into a state its methods assume is impossible.",
       "concept": "OOP"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A reference that can rebind the caller's variable"
-        },
-        {
-          "id": "B",
           "text": "An unevaluated expression re-evaluated on each use"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "The address of the caller's variable"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "A copy of the argument's value"
+        },
+        {
+          "id": "D",
+          "text": "A reference that can rebind the caller's variable"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Because the callee works on a copy, assignments to the parameter are invisible to the caller. Call by reference passes the location instead, and call by name re-evaluates the expression at each use.",
       "concept": "Parameter Passing"
     },
@@ -96,11 +96,11 @@
         },
         {
           "id": "C",
-          "text": "Dynamic scoping is resolved entirely at compile time"
+          "text": "They differ only in performance, never in results"
         },
         {
           "id": "D",
-          "text": "They differ only in performance, never in results"
+          "text": "Dynamic scoping is resolved entirely at compile time"
         }
       ],
       "correct_option_id": "A",
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Overloading defines several methods with the same name but different parameters; overriding replaces an inherited method"
+          "text": "Both require the methods to be static"
         },
         {
           "id": "B",
-          "text": "Overloading replaces an inherited method; overriding varies the parameter list"
+          "text": "Overloading defines several methods with the same name but different parameters; overriding replaces an inherited method"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "Both require the methods to be static"
+          "text": "Overloading replaces an inherited method; overriding varies the parameter list"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Overloading is normally settled at compile time by argument types, while overriding is resolved at run time by the object's actual class — which is why only overriding gives polymorphic behaviour.",
       "concept": "OOP"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "The stack"
+          "text": "The code segment"
         },
         {
           "id": "C",
-          "text": "The heap"
+          "text": "The stack"
         },
         {
           "id": "D",
-          "text": "The code segment"
+          "text": "The heap"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Each call pushes an activation record holding parameters, locals and the return address, and popping it on return reclaims them automatically. Objects that must outlive the call go on the heap instead.",
       "concept": "Memory Model"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Writing past the end of an allocated buffer"
-        },
-        {
-          "id": "B",
           "text": "Freeing the same pointer twice"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Allocated memory that is never freed and can no longer be reached"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Reading memory that was never initialised"
+        },
+        {
+          "id": "D",
+          "text": "Writing past the end of an allocated buffer"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "The allocation stays reserved for the process lifetime even though nothing can use it, so a long-running program creeps upward in memory. The other options describe distinct bugs with their own symptoms.",
       "concept": "Memory Management"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It can be called from several threads at once"
-        },
-        {
-          "id": "B",
-          "text": "It is compiled into a loop automatically"
-        },
-        {
-          "id": "C",
           "text": "It has no side effects"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It calls itself, directly or indirectly, on a smaller subproblem"
+        },
+        {
+          "id": "C",
+          "text": "It is compiled into a loop automatically"
+        },
+        {
+          "id": "D",
+          "text": "It can be called from several threads at once"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A correct recursion needs a base case and progress toward it; without both it runs until the stack is exhausted. Being callable concurrently is reentrancy, which is a separate property.",
       "concept": "Recursion"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "An interface can hold state and implementations; an abstract class cannot"
-        },
-        {
-          "id": "B",
-          "text": "An abstract class may provide state and partial implementation; an interface primarily declares a contract"
-        },
-        {
-          "id": "C",
           "text": "Neither can declare methods"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Interfaces can only be used with primitive types"
+        },
+        {
+          "id": "C",
+          "text": "An interface can hold state and implementations; an abstract class cannot"
+        },
+        {
+          "id": "D",
+          "text": "An abstract class may provide state and partial implementation; an interface primarily declares a contract"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "An abstract class shares code with its subclasses but usually restricts a type to one parent. An interface describes capability, so an unrelated type can adopt it without inheriting anything.",
       "concept": "OOP"
     },
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Interpreters cannot use the CPU cache"
+          "text": "Compiled languages have simpler syntax"
         },
         {
           "id": "B",
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "Translation to machine code happens once ahead of time rather than during execution"
+          "text": "Interpreters cannot use the CPU cache"
         },
         {
           "id": "D",
-          "text": "Compiled languages have simpler syntax"
+          "text": "Translation to machine code happens once ahead of time rather than during execution"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "The interpreter pays translation and dispatch cost on every execution, and has less opportunity for whole-program optimisation. JIT compilation narrows the gap by compiling hot paths at run time.",
       "concept": "Language Implementation"
     }

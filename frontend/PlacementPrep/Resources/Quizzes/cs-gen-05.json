@@ -17,7 +17,7 @@
         },
         {
           "id": "B",
-          "text": "-2^(n-1) + 1 to 2^(n-1)"
+          "text": "-(2^(n-1) - 1) to 2^(n-1) - 1"
         },
         {
           "id": "C",
@@ -25,7 +25,7 @@
         },
         {
           "id": "D",
-          "text": "-(2^(n-1) - 1) to 2^(n-1) - 1"
+          "text": "-2^(n-1) + 1 to 2^(n-1)"
         }
       ],
       "correct_option_id": "A",
@@ -42,7 +42,7 @@
         },
         {
           "id": "B",
-          "text": "-10"
+          "text": "65525"
         },
         {
           "id": "C",
@@ -50,7 +50,7 @@
         },
         {
           "id": "D",
-          "text": "65525"
+          "text": "-10"
         }
       ],
       "correct_option_id": "C",
@@ -67,18 +67,18 @@
         },
         {
           "id": "B",
-          "text": "2^(2^n)"
-        },
-        {
-          "id": "C",
           "text": "n^2"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "2n"
+        },
+        {
+          "id": "D",
+          "text": "2^(2^n)"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "The truth table has 2^n rows and each row's output can independently be 0 or 1, giving 2 raised to the power 2^n functions. For n = 2 that is 16.",
       "concept": "Boolean Algebra"
     },
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "AND and XOR"
+          "text": "NAND alone"
         },
         {
           "id": "B",
@@ -96,14 +96,14 @@
         },
         {
           "id": "C",
-          "text": "AND and OR"
+          "text": "AND and XOR"
         },
         {
           "id": "D",
-          "text": "NAND alone"
+          "text": "AND and OR"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "NAND (and equally NOR) can build NOT, AND and OR, so any function can be realised from it. AND with OR cannot produce complementation, and XOR alone cannot either.",
       "concept": "Logic Gates"
     },
@@ -117,18 +117,18 @@
         },
         {
           "id": "B",
-          "text": "9"
+          "text": "64"
         },
         {
           "id": "C",
-          "text": "10"
+          "text": "9"
         },
         {
           "id": "D",
-          "text": "64"
+          "text": "10"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "One decoder takes the three high-order bits and its eight outputs enable one of eight second-stage decoders driven by the three low-order bits. That is 1 + 8 = 9 in total.",
       "concept": "Combinational Circuits"
     },
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "8"
+          "text": "258"
         },
         {
           "id": "B",
@@ -146,14 +146,14 @@
         },
         {
           "id": "C",
-          "text": "9"
+          "text": "8"
         },
         {
           "id": "D",
-          "text": "258"
+          "text": "9"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "The counter must hold 258 distinct states, and n flip-flops give 2^n. Since 2^8 = 256 is too few and 2^9 = 512 suffices, 9 are required.",
       "concept": "Sequential Circuits"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The latch holds its previous state"
+          "text": "The latch is reset"
         },
         {
           "id": "B",
-          "text": "Both outputs go to 1, which is an invalid (forbidden) condition"
-        },
-        {
-          "id": "C",
           "text": "The latch is set"
         },
         {
+          "id": "C",
+          "text": "The latch holds its previous state"
+        },
+        {
           "id": "D",
-          "text": "The latch is reset"
+          "text": "Both outputs go to 1, which is an invalid (forbidden) condition"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Both NAND gates are forced high, so Q and its complement are simultaneously 1 — a contradiction. Releasing both inputs at once then leaves the final state indeterminate.",
       "concept": "Latches & Flip-Flops"
     },
@@ -192,18 +192,18 @@
         },
         {
           "id": "B",
-          "text": "The clock arrives too late; raising its frequency fixes it"
+          "text": "The output toggles repeatedly while the clock is high; a master-slave or edge-triggered design fixes it"
         },
         {
           "id": "C",
-          "text": "Two flip-flops change state at once; adding a buffer fixes it"
+          "text": "The clock arrives too late; raising its frequency fixes it"
         },
         {
           "id": "D",
-          "text": "The output toggles repeatedly while the clock is high; a master-slave or edge-triggered design fixes it"
+          "text": "Two flip-flops change state at once; adding a buffer fixes it"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "With J = K = 1 and a clock pulse longer than the propagation delay, the output feeds back and toggles many times, so the final state is unpredictable. Master-slave splits the transfer into two half-cycles.",
       "concept": "Latches & Flip-Flops"
     },
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "0001 with overflow"
+          "text": "1001 with overflow"
         },
         {
           "id": "B",
@@ -221,11 +221,11 @@
         },
         {
           "id": "C",
-          "text": "1001 with overflow"
+          "text": "10001 with a carry that must be kept"
         },
         {
           "id": "D",
-          "text": "10001 with a carry that must be kept"
+          "text": "0001 with overflow"
         }
       ],
       "correct_option_id": "B",
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The time for the carry to propagate through all the stages"
+          "text": "The setup time of the input registers alone"
         },
         {
           "id": "B",
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "The time to compute the least significant sum bit"
+          "text": "The time for the carry to propagate through all the stages"
         },
         {
           "id": "D",
-          "text": "The setup time of the input registers alone"
+          "text": "The time to compute the least significant sum bit"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Each stage must wait for the carry from the one below, so the worst-case delay grows linearly with width. Carry-lookahead computes the carries in parallel to break this chain.",
       "concept": "Combinational Circuits"
     }

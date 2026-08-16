@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Adding idle bits between frames to maintain synchronisation"
+          "text": "Padding a frame with zeros to reach the minimum frame size"
         },
         {
           "id": "B",
-          "text": "Inserting a 0 after five consecutive 1s so data cannot imitate the frame delimiter"
-        },
-        {
-          "id": "C",
           "text": "Appending parity bits to each byte of the payload"
         },
         {
+          "id": "C",
+          "text": "Inserting a 0 after five consecutive 1s so data cannot imitate the frame delimiter"
+        },
+        {
           "id": "D",
-          "text": "Padding a frame with zeros to reach the minimum frame size"
+          "text": "Adding idle bits between frames to maintain synchronisation"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "The flag pattern 01111110 must be unique, so the transmitter inserts a 0 after any run of five 1s in the data and the receiver removes it. This is transparency, not padding.",
       "concept": "Framing"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "01111_0101"
-        },
-        {
-          "id": "B",
           "text": "0111110101 with the flag removed"
         },
         {
+          "id": "B",
+          "text": "011111000101"
+        },
+        {
           "id": "C",
-          "text": "0111110101"
+          "text": "01111_0101"
         },
         {
           "id": "D",
-          "text": "011111000101"
+          "text": "0111110101"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Scanning the output, after the run 11111 the next 0 was inserted by the stuffer and is removed. Deleting that single bit from 01111100101 recovers the original 0111110101.",
       "concept": "Framing"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "G(x) must have degree at least 16"
+          "text": "G(x) must have (x + 1) as a factor"
         },
         {
           "id": "B",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "G(x) must have (x + 1) as a factor"
+          "text": "G(x) must have degree at least 16"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "An error pattern with an odd number of 1s is not divisible by x + 1, so if x + 1 divides G(x) no such pattern can divide G(x) either, and every odd-weight error is caught.",
       "concept": "Error Detection"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "011"
+          "text": "000"
         },
         {
           "id": "B",
-          "text": "110"
+          "text": "011"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "000"
+          "text": "110"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Append three zeros to give 11000000 and divide by 1011 modulo 2. The remainder of that division is 011, which becomes the check sequence.",
       "concept": "Error Detection"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "5"
-        },
-        {
-          "id": "B",
           "text": "7"
         },
         {
+          "id": "B",
+          "text": "5"
+        },
+        {
           "id": "C",
-          "text": "6"
+          "text": "8"
         },
         {
           "id": "D",
-          "text": "8"
+          "text": "6"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Transmission time is 1000/10^6 = 1 ms and the round trip is 50 ms, so up to 51 frames can be outstanding. Representing a window of 51 requires ceil(log2(51+1)) = 6 bits.",
       "concept": "Flow Control"
     },
@@ -171,14 +171,14 @@
         },
         {
           "id": "C",
-          "text": "2^n - 1"
+          "text": "2^(n-1)"
         },
         {
           "id": "D",
-          "text": "2^(n-1)"
+          "text": "2^n - 1"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Selective repeat needs the sender and receiver windows to be disjoint in sequence space, so each may be at most half the space, giving 2^(n-1). Go-back-N can use 2^n - 1 because its receiver window is one.",
       "concept": "Sliding Window"
     },
@@ -192,7 +192,7 @@
         },
         {
           "id": "B",
-          "text": "60.0 percent"
+          "text": "93.8 percent"
         },
         {
           "id": "C",
@@ -200,7 +200,7 @@
         },
         {
           "id": "D",
-          "text": "93.8 percent"
+          "text": "60.0 percent"
         }
       ],
       "correct_option_id": "A",
@@ -217,18 +217,18 @@
         },
         {
           "id": "B",
-          "text": "A short frame on a high-bandwidth link with a long propagation delay"
+          "text": "A long frame on a low-bandwidth link with a short propagation delay"
         },
         {
           "id": "C",
-          "text": "A long frame on a high-bandwidth link with a short propagation delay"
+          "text": "A short frame on a high-bandwidth link with a long propagation delay"
         },
         {
           "id": "D",
-          "text": "A long frame on a low-bandwidth link with a short propagation delay"
+          "text": "A long frame on a high-bandwidth link with a short propagation delay"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Utilisation is transmission time divided by transmission plus round trip time. A small transmission time against a large propagation delay makes that ratio tiny — the sender spends nearly all its time waiting.",
       "concept": "Stop-and-Wait"
     },
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "4"
+          "text": "6"
         },
         {
           "id": "B",
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "6"
+          "text": "4"
         },
         {
           "id": "D",
           "text": "8"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Single-error correction on 16 data bits needs r with 2^r >= 16 + r + 1, satisfied at r = 5. Adding an overall parity bit for double-error detection makes 6 in total.",
       "concept": "Error Correction"
     }

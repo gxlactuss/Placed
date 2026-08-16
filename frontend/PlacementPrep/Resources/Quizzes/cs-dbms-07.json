@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Freedom from deadlock"
+          "text": "Conflict serializability"
         },
         {
           "id": "B",
-          "text": "Mutual exclusion on locked items"
+          "text": "Freedom from deadlock"
         },
         {
           "id": "C",
-          "text": "That transactions acquire locks before use"
+          "text": "Mutual exclusion on locked items"
         },
         {
           "id": "D",
-          "text": "Conflict serializability"
+          "text": "That transactions acquire locks before use"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "2PL enforces a growing phase then a shrinking phase, which guarantees serializability but says nothing about deadlock — two transactions can still wait on each other's locks in a cycle.",
       "concept": "Locking Protocols"
     },
@@ -42,7 +42,7 @@
         },
         {
           "id": "B",
-          "text": "Strict 2PL"
+          "text": "Basic 2PL"
         },
         {
           "id": "C",
@@ -50,10 +50,10 @@
         },
         {
           "id": "D",
-          "text": "Basic 2PL"
+          "text": "Strict 2PL"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Strict 2PL retains write locks until commit or abort, so no other transaction can read uncommitted data — hence no cascading aborts. Conservative 2PL acquires all locks up front and is deadlock-free but impractical.",
       "concept": "Locking Protocols"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Pre-empts the younger transaction"
-        },
-        {
-          "id": "B",
-          "text": "Restarts with a new timestamp"
-        },
-        {
-          "id": "C",
           "text": "Waits"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Is aborted (dies)"
+        },
+        {
+          "id": "C",
+          "text": "Restarts with a new timestamp"
+        },
+        {
+          "id": "D",
+          "text": "Pre-empts the younger transaction"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Wait-die is non-pre-emptive: an older (smaller timestamp) transaction waits, while a younger one requesting an older transaction's lock is aborted. Wound-wait is the pre-emptive mirror image.",
       "concept": "Deadlock Handling"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "The read proceeds and R-timestamp(X) is updated"
+          "text": "The read returns the previous version of X"
         },
         {
           "id": "B",
-          "text": "The read returns the previous version of X"
+          "text": "The read proceeds and R-timestamp(X) is updated"
         },
         {
           "id": "C",
@@ -121,11 +121,11 @@
         },
         {
           "id": "C",
-          "text": "The log is written only at commit time"
+          "text": "Undo and redo information are stored in separate files"
         },
         {
           "id": "D",
-          "text": "Undo and redo information are stored in separate files"
+          "text": "The log is written only at commit time"
         }
       ],
       "correct_option_id": "A",
@@ -146,11 +146,11 @@
         },
         {
           "id": "C",
-          "text": "Analysis, Undo, Redo"
+          "text": "Redo, Analysis, Undo"
         },
         {
           "id": "D",
-          "text": "Redo, Analysis, Undo"
+          "text": "Analysis, Undo, Redo"
         }
       ],
       "correct_option_id": "B",
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Immediately as each write executes"
+          "text": "Only after the transaction commits"
         },
         {
           "id": "B",
-          "text": "During the undo phase of recovery"
+          "text": "Immediately as each write executes"
         },
         {
           "id": "C",
-          "text": "Only after the transaction commits"
+          "text": "During the undo phase of recovery"
         },
         {
           "id": "D",
           "text": "At the next checkpoint"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Deferred modification buffers updates and applies them post-commit, so recovery needs redo only — an aborted transaction touched nothing. Immediate modification requires both undo and redo.",
       "concept": "Recovery"
     },
@@ -192,18 +192,18 @@
         },
         {
           "id": "B",
-          "text": "To detect deadlocks among running transactions"
+          "text": "To bound how much of the log must be examined after a crash"
         },
         {
           "id": "C",
-          "text": "To release all locks held by active transactions"
+          "text": "To detect deadlocks among running transactions"
         },
         {
           "id": "D",
-          "text": "To bound how much of the log must be examined after a crash"
+          "text": "To release all locks held by active transactions"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A checkpoint records a known-good point with buffers flushed, so recovery need not scan the log from the beginning of time. It limits recovery work, not concurrency.",
       "concept": "Recovery"
     },
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "IX (intention-exclusive)"
+          "text": "X (exclusive)"
         },
         {
           "id": "B",
@@ -221,14 +221,14 @@
         },
         {
           "id": "C",
-          "text": "X (exclusive)"
+          "text": "IX (intention-exclusive)"
         },
         {
           "id": "D",
           "text": "No table-level lock is needed"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Intention locks announce intent down the hierarchy, so a transaction wanting a table-level lock can detect conflicts without inspecting every row. X on a row requires IX (or SIX) on its ancestors.",
       "concept": "Locking Protocols"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The system cannot maintain timestamps"
-        },
-        {
-          "id": "B",
-          "text": "Conflicts between transactions are rare"
-        },
-        {
-          "id": "C",
           "text": "Deadlock detection is unavailable"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Transactions are long and highly contended"
+        },
+        {
+          "id": "C",
+          "text": "Conflicts between transactions are rare"
+        },
+        {
+          "id": "D",
+          "text": "The system cannot maintain timestamps"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "OCC skips locking and validates at commit, which is cheap when conflicts are unlikely. Under heavy contention the repeated validation failures and restarts make it perform worse than locking.",
       "concept": "Concurrency Control"
     }

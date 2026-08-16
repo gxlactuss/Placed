@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "6596"
+          "text": "8644"
         },
         {
           "id": "C",
-          "text": "8644"
+          "text": "6596"
         },
         {
           "id": "D",
           "text": "4548"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "2500 divided by 2048 gives page 1 with offset 452. Page 1 lives in frame 3, so the physical address is 3 x 2048 + 452 = 6144 + 452 = 6596.",
       "concept": "Address Translation"
     },
@@ -38,7 +38,7 @@
       "options": [
         {
           "id": "A",
-          "text": "16 MB"
+          "text": "4 MB"
         },
         {
           "id": "B",
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "4 MB"
+          "text": "4 KB"
         },
         {
           "id": "D",
-          "text": "4 KB"
+          "text": "16 MB"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "A 4 KB page needs 12 offset bits, leaving 20 bits of page number, so there are 2^20 entries. At 4 bytes each that is 4 MB per process — which is exactly why multi-level page tables exist.",
       "concept": "Page Tables"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "X / D"
+          "text": "(X - M) / (D - M)"
         },
         {
           "id": "B",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "(X - M) / (D - M)"
+          "text": "X / D"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "With fault rate p, X = (1 - p)M + pD = M + p(D - M). Rearranging gives p = (X - M)/(D - M).",
       "concept": "Demand Paging"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Will not be used for the longest time in the future"
-        },
-        {
-          "id": "B",
           "text": "Has been referenced the fewest times"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Was loaded into memory earliest"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Has not been used for the longest time in the past"
+        },
+        {
+          "id": "D",
+          "text": "Will not be used for the longest time in the future"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "OPT looks forward, which makes it unimplementable in practice but useful as a lower bound on fault count. Looking backward at recency is LRU, and eviction by load order is FIFO.",
       "concept": "Page Replacement"
     },
@@ -117,18 +117,18 @@
         },
         {
           "id": "B",
-          "text": "External fragmentation"
+          "text": "Belady's anomaly"
         },
         {
           "id": "C",
-          "text": "Belady's anomaly"
+          "text": "External fragmentation"
         },
         {
           "id": "D",
           "text": "Internal fragmentation"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Compaction slides allocated regions together so scattered free holes merge into one usable block. Internal fragmentation is waste inside an allocated block and cannot be reclaimed by moving blocks around.",
       "concept": "Fragmentation"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "The page table entry is invalid"
+          "text": "The page has been written to since it was loaded"
         },
         {
           "id": "C",
-          "text": "The page has been written to since it was loaded"
+          "text": "The page table entry is invalid"
         },
         {
           "id": "D",
           "text": "The page is currently locked in memory"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "A clean page can be discarded on eviction because an identical copy exists in the backing store; a dirty page must be written out first. This makes the bit a pure performance optimisation.",
       "concept": "Page Tables"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Tend to cluster in a small subset of its address space over a short interval"
-        },
-        {
-          "id": "B",
-          "text": "Are always accessed in strictly increasing address order"
-        },
-        {
-          "id": "C",
           "text": "Are spread uniformly across its entire address space"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Tend to cluster in a small subset of its address space over a short interval"
+        },
+        {
+          "id": "C",
           "text": "Change completely on every memory reference"
+        },
+        {
+          "id": "D",
+          "text": "Are always accessed in strictly increasing address order"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Loops and contiguous data structures concentrate references into a working set. Without this property, caches, TLBs and demand paging would all fail to pay off.",
       "concept": "Locality"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The number of processes in the ready queue"
-        },
-        {
-          "id": "B",
-          "text": "The TLB hit ratio"
-        },
-        {
-          "id": "C",
           "text": "The size of the swap partition"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "The number of processes in the ready queue"
+        },
+        {
+          "id": "C",
           "text": "The page replacement policy alone"
+        },
+        {
+          "id": "D",
+          "text": "The TLB hit ratio"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A TLB hit resolves the translation in cache time; a miss requires walking the page table in memory. Since the walk costs an extra access or more, effective time is dominated by the hit ratio.",
       "concept": "TLB"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "8"
-        },
-        {
-          "id": "B",
-          "text": "10"
-        },
-        {
-          "id": "C",
           "text": "7"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "6"
+        },
+        {
+          "id": "C",
+          "text": "8"
+        },
+        {
+          "id": "D",
+          "text": "10"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "The seven faults are on 1, 2, 3, 7, 4, 5 and 6. Page 2 is the first victim because it is never referenced again; 1 and 3 are then kept, so the closing references to 3 and 1 are both hits.",
       "concept": "Page Replacement"
     }

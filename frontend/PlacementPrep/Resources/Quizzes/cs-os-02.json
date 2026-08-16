@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "Running to Ready"
+          "text": "Blocked to Running"
         },
         {
           "id": "C",
-          "text": "Blocked to Ready"
+          "text": "Running to Ready"
         },
         {
           "id": "D",
-          "text": "Blocked to Running"
+          "text": "Blocked to Ready"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A blocked process whose I/O completes moves to Ready, not straight to Running — it must still be selected by the scheduler. The other three transitions correspond to preemption, dispatch and I/O completion.",
       "concept": "Process States"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The total time a process spends waiting in the ready queue"
+          "text": "The time to stop one process and start another running"
         },
         {
           "id": "B",
-          "text": "The time an I/O operation takes to complete"
-        },
-        {
-          "id": "C",
           "text": "The time between submitting a job and its completion"
         },
         {
+          "id": "C",
+          "text": "The time an I/O operation takes to complete"
+        },
+        {
           "id": "D",
-          "text": "The time to stop one process and start another running"
+          "text": "The total time a process spends waiting in the ready queue"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Dispatch latency is the overhead the dispatcher incurs switching context, switching to user mode, and jumping to the right instruction. It is pure overhead and matters most in real-time systems.",
       "concept": "Scheduling Basics"
     },
@@ -67,18 +67,18 @@
         },
         {
           "id": "B",
-          "text": "New"
+          "text": "Blocked (waiting)"
         },
         {
           "id": "C",
-          "text": "Terminated"
+          "text": "New"
         },
         {
           "id": "D",
-          "text": "Blocked (waiting)"
+          "text": "Terminated"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The process cannot proceed until the I/O completes, so it leaves the CPU and waits in the blocked state. It returns to Ready once the device signals completion.",
       "concept": "Process States"
     },
@@ -92,11 +92,11 @@
         },
         {
           "id": "B",
-          "text": "General purpose registers"
+          "text": "Program counter"
         },
         {
           "id": "C",
-          "text": "Program counter"
+          "text": "General purpose registers"
         },
         {
           "id": "D",
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Holding the boot loader"
-        },
-        {
-          "id": "B",
           "text": "Caching frequently read disk blocks"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Storing the file system journal"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Storing pages evicted from physical memory"
+        },
+        {
+          "id": "D",
+          "text": "Holding the boot loader"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Swap space backs virtual memory: when physical frames run short, pages are written out to swap and read back on demand. It is what allows a process's address space to exceed RAM.",
       "concept": "Virtual Memory"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "n - 1"
+          "text": "Independent of n"
         },
         {
           "id": "B",
-          "text": "n"
+          "text": "n - 1"
         },
         {
           "id": "C",
-          "text": "Independent of n"
+          "text": "n"
         },
         {
           "id": "D",
           "text": "2n"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "The Ready queue holds every runnable process not currently executing, and its length is bounded only by how many processes exist. It is the Running state that is capped at n.",
       "concept": "Process States"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Ready to Blocked, caused by a timer interrupt"
-        },
-        {
-          "id": "B",
           "text": "Blocked to Running, caused by I/O completion"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Terminated to Ready, caused by a restart"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Running to Ready, caused by the scheduler"
+        },
+        {
+          "id": "D",
+          "text": "Ready to Blocked, caused by a timer interrupt"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Preemption is exactly the Running to Ready transition — the scheduler takes the CPU away from a process that could still run. A ready process is not waiting on anything, so it cannot become blocked.",
       "concept": "Process States"
     },
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The scheduler process"
+          "text": "A timer interrupt"
         },
         {
           "id": "B",
@@ -196,14 +196,14 @@
         },
         {
           "id": "C",
-          "text": "A timer interrupt"
+          "text": "A device interrupt"
         },
         {
           "id": "D",
-          "text": "A device interrupt"
+          "text": "The scheduler process"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The scheduler is not an independently running process that can seize the CPU; it executes as part of the kernel while handling some other interrupt or trap. The other three are genuine asynchronous events.",
       "concept": "Interrupts"
     },
@@ -217,18 +217,18 @@
         },
         {
           "id": "B",
-          "text": "Executing one program on several CPUs at once"
-        },
-        {
-          "id": "C",
           "text": "Executing several programs concurrently by switching the CPU between them"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Allowing several users to share a single terminal"
+        },
+        {
+          "id": "D",
+          "text": "Executing one program on several CPUs at once"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Multiprogramming keeps several processes in memory and switches the CPU to another whenever the current one blocks, which raises CPU utilisation. It requires no more than a single processor.",
       "concept": "OS Fundamentals"
     },
@@ -238,11 +238,11 @@
       "options": [
         {
           "id": "A",
-          "text": "User processes are always loaded into read-only memory"
+          "text": "Memory protection hardware traps accesses outside the process's address space"
         },
         {
           "id": "B",
-          "text": "Each process runs on a dedicated processor"
+          "text": "User processes are always loaded into read-only memory"
         },
         {
           "id": "C",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "Memory protection hardware traps accesses outside the process's address space"
+          "text": "Each process runs on a dedicated processor"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Isolation is enforced at runtime by the MMU: an address outside the process's mapped region raises a fault. Compile-time checks cannot help, since a process can compute addresses at runtime.",
       "concept": "Protection"
     }

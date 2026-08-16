@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "2"
+          "text": "12"
         },
         {
           "id": "B",
@@ -21,14 +21,14 @@
         },
         {
           "id": "C",
-          "text": "12"
+          "text": "42"
         },
         {
           "id": "D",
-          "text": "42"
+          "text": "2"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Each P decrements and each V increments, so the value is 7 - 20 + 15 = 2. Note that processes blocked along the way do not change the arithmetic, since a blocked P has not completed.",
       "concept": "Semaphores"
     },
@@ -38,15 +38,15 @@
       "options": [
         {
           "id": "A",
-          "text": "-2"
+          "text": "0"
         },
         {
           "id": "B",
-          "text": "-4"
+          "text": "-2"
         },
         {
           "id": "C",
-          "text": "0"
+          "text": "-4"
         },
         {
           "id": "D",
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Mutual exclusion"
+          "text": "Bounded waiting"
         },
         {
           "id": "B",
@@ -75,7 +75,7 @@
         },
         {
           "id": "D",
-          "text": "Bounded waiting"
+          "text": "Mutual exclusion"
         }
       ],
       "correct_option_id": "B",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Mutual exclusion only"
+          "text": "Deadlock detection only"
         },
         {
           "id": "B",
-          "text": "Page replacement and mutual exclusion"
+          "text": "Mutual exclusion only"
         },
         {
           "id": "C",
-          "text": "Race conditions, process synchronisation and mutual exclusion"
+          "text": "Page replacement and mutual exclusion"
         },
         {
           "id": "D",
-          "text": "Deadlock detection only"
+          "text": "Race conditions, process synchronisation and mutual exclusion"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "A binary semaphore enforces mutual exclusion and thereby removes race conditions, while a counting semaphore can sequence events between processes. Page replacement is unrelated to semaphores.",
       "concept": "Semaphores"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "It guarantees both mutual exclusion and bounded waiting"
+          "text": "It guarantees mutual exclusion and is deadlock free, but not starvation free"
         },
         {
           "id": "B",
-          "text": "It guarantees mutual exclusion and is deadlock free, but not starvation free"
+          "text": "It requires processes to enter the critical section in FIFO order"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "It requires processes to enter the critical section in FIFO order"
+          "text": "It guarantees both mutual exclusion and bounded waiting"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Test-and-set is atomic, so mutual exclusion holds and some waiting process always succeeds. But nothing orders the waiters, so one unlucky process can be overtaken indefinitely — bounded waiting fails.",
       "concept": "Hardware Synchronisation"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Eliminate the possibility of deadlock entirely"
-        },
-        {
-          "id": "B",
           "text": "Guarantee the consumer never waits"
         },
         {
+          "id": "B",
+          "text": "Eliminate the possibility of deadlock entirely"
+        },
+        {
           "id": "C",
-          "text": "Remove the need for mutual exclusion on the buffer"
+          "text": "Increase throughput by reducing how often either party blocks"
         },
         {
           "id": "D",
-          "text": "Increase throughput by reducing how often either party blocks"
+          "text": "Remove the need for mutual exclusion on the buffer"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "More slots absorb bursts, so the producer fills up and the consumer empties out less often. Mutual exclusion on the shared buffer is still required, and a badly ordered wait can still deadlock.",
       "concept": "Producer-Consumer"
     },
@@ -167,19 +167,19 @@
         },
         {
           "id": "B",
-          "text": "X: b,a,c   Y: c,b,d   Z: a,d,c"
+          "text": "X: a,b,c   Y: b,c,d   Z: c,d,a"
         },
         {
           "id": "C",
-          "text": "X: a,c,b   Y: d,b,c   Z: c,a,d"
+          "text": "X: b,a,c   Y: c,b,d   Z: a,d,c"
         },
         {
           "id": "D",
-          "text": "X: a,b,c   Y: b,c,d   Z: c,d,a"
+          "text": "X: a,c,b   Y: d,b,c   Z: c,a,d"
         }
       ],
       "correct_option_id": "A",
-      "explanation": "In option C every process acquires semaphores in the same global order a < b < c < d, which makes a circular wait impossible. The other orderings each contain a process that grabs a later semaphore before an earlier one.",
+      "explanation": "In the correct ordering every process acquires semaphores in the same global order a < b < c < d, which makes a circular wait impossible. The other orderings each contain a process that grabs a later semaphore before an earlier one.",
       "concept": "Deadlock Prevention"
     },
     {
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Otherwise two processes could both observe the semaphore as available and enter together"
-        },
-        {
-          "id": "B",
-          "text": "Otherwise the semaphore value would overflow"
-        },
-        {
-          "id": "C",
           "text": "Because they always require a system call"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Because the scheduler cannot preempt kernel code"
+        },
+        {
+          "id": "C",
+          "text": "Otherwise two processes could both observe the semaphore as available and enter together"
+        },
+        {
+          "id": "D",
+          "text": "Otherwise the semaphore value would overflow"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "The test and the decrement must be indivisible. If a process is preempted between reading a positive value and decrementing it, another can read the same value, and both proceed into the critical section.",
       "concept": "Semaphores"
     },
@@ -213,11 +213,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Every philosopher picks up the right fork first, then the left"
+          "text": "Each philosopher waits a random time before picking up either fork"
         },
         {
           "id": "B",
-          "text": "Every philosopher picks up the left fork first, then the right"
+          "text": "Every philosopher picks up the right fork first, then the left"
         },
         {
           "id": "C",
@@ -225,7 +225,7 @@
         },
         {
           "id": "D",
-          "text": "Each philosopher waits a random time before picking up either fork"
+          "text": "Every philosopher picks up the left fork first, then the right"
         }
       ],
       "correct_option_id": "C",
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It must be written as a macro"
-        },
-        {
-          "id": "B",
-          "text": "It must be compiled without optimisation"
-        },
-        {
-          "id": "C",
           "text": "It must be recursive"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It must be reentrant"
+        },
+        {
+          "id": "C",
+          "text": "It must be compiled without optimisation"
+        },
+        {
+          "id": "D",
+          "text": "It must be written as a macro"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A reentrant program keeps no modifiable state in its code segment, holding per-user data in registers or a private stack. Editors and compilers are shared this way. Recursion is a different and unrelated property.",
       "concept": "Reentrancy"
     }

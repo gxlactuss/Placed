@@ -17,18 +17,18 @@
         },
         {
           "id": "B",
-          "text": "4.0 GB"
+          "text": "1.0 GB"
         },
         {
           "id": "C",
-          "text": "2.0 GB"
+          "text": "4.0 GB"
         },
         {
           "id": "D",
-          "text": "1.0 GB"
+          "text": "2.0 GB"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "A 4 kB block holds 4096/4 = 1024 addresses. Reachable blocks are 12 + 1024 + 1024^2 = 1,049,612, and at 4 kB each that is about 4.0 GB. The double-indirect level dominates the total.",
       "concept": "File Allocation"
     },
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "7"
+          "text": "8"
         },
         {
           "id": "D",
-          "text": "8"
+          "text": "7"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Each fork doubles the number of processes, so after three calls there are 2^3 = 8 processes in total. One of these is the original parent, leaving 7 children.",
       "concept": "System Calls"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Contiguous and linked only"
+          "text": "Linked and indexed only"
         },
         {
           "id": "B",
@@ -71,14 +71,14 @@
         },
         {
           "id": "C",
-          "text": "Contiguous and indexed only"
+          "text": "Contiguous and linked only"
         },
         {
           "id": "D",
-          "text": "Linked and indexed only"
+          "text": "Contiguous and indexed only"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Linked and indexed allocation place blocks anywhere on disk, so any free block is usable and no external fragmentation arises. Contiguous allocation needs a run of adjacent free blocks and therefore suffers from it.",
       "concept": "File Allocation"
     },
@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "96.0"
+          "text": "99.9"
         },
         {
           "id": "C",
@@ -100,7 +100,7 @@
         },
         {
           "id": "D",
-          "text": "99.9"
+          "text": "96.0"
         }
       ],
       "correct_option_id": "A",
@@ -121,11 +121,11 @@
         },
         {
           "id": "C",
-          "text": "malloc"
+          "text": "strlen"
         },
         {
           "id": "D",
-          "text": "strlen"
+          "text": "malloc"
         }
       ],
       "correct_option_id": "B",
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "First Come First Served"
-        },
-        {
-          "id": "B",
           "text": "C-SCAN"
         },
         {
+          "id": "B",
+          "text": "SCAN"
+        },
+        {
           "id": "C",
-          "text": "Shortest Seek Time First"
+          "text": "First Come First Served"
         },
         {
           "id": "D",
-          "text": "SCAN"
+          "text": "Shortest Seek Time First"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "SSTF always serves the nearest request, so a steady stream of requests near the head can postpone a far-away one indefinitely. The SCAN family bounds waiting by sweeping the whole disk.",
       "concept": "Disk Scheduling"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It never changes the direction of head movement"
+          "text": "It reverses direction at the last request rather than the last cylinder, and services in one direction only"
         },
         {
           "id": "B",
-          "text": "It always services requests in arrival order"
+          "text": "It never changes the direction of head movement"
         },
         {
           "id": "C",
-          "text": "It requires the disk to have a single platter"
+          "text": "It always services requests in arrival order"
         },
         {
           "id": "D",
-          "text": "It reverses direction at the last request rather than the last cylinder, and services in one direction only"
+          "text": "It requires the disk to have a single platter"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "LOOK avoids travelling to the physical end of the disk when no request lies there, and the circular variant jumps back to the lowest request and sweeps one way, giving more uniform waiting times.",
       "concept": "Disk Scheduling"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A named pipe has no on-disk data blocks and transfers data between processes in FIFO order"
-        },
-        {
-          "id": "B",
-          "text": "A named pipe can only be opened by the root user"
-        },
-        {
-          "id": "C",
           "text": "A named pipe cannot appear in the file system namespace"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "A named pipe has no on-disk data blocks and transfers data between processes in FIFO order"
+        },
+        {
+          "id": "C",
           "text": "A named pipe stores its data permanently on disk"
+        },
+        {
+          "id": "D",
+          "text": "A named pipe can only be opened by the root user"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "A FIFO has a name and an inode so unrelated processes can open it, but the data lives in a kernel buffer rather than on disk and is consumed as it is read.",
       "concept": "Inter-Process Communication"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Seek time only"
+          "text": "Transfer time only"
         },
         {
           "id": "B",
-          "text": "Seek time plus rotational latency"
-        },
-        {
-          "id": "C",
           "text": "Rotational latency plus transfer time"
         },
         {
+          "id": "C",
+          "text": "Seek time only"
+        },
+        {
           "id": "D",
-          "text": "Transfer time only"
+          "text": "Seek time plus rotational latency"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Access time is the seek to position the arm over the right cylinder plus the rotational wait for the sector to arrive under the head. Transfer time is the movement of data itself, after preparation is complete.",
       "concept": "Disk Performance"
     },
@@ -238,11 +238,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Kernel mode"
+          "text": "Kernel mode for the first instruction, then user mode"
         },
         {
           "id": "B",
-          "text": "Supervisor mode with interrupts disabled"
+          "text": "Kernel mode"
         },
         {
           "id": "C",
@@ -250,7 +250,7 @@
         },
         {
           "id": "D",
-          "text": "Kernel mode for the first instruction, then user mode"
+          "text": "Supervisor mode with interrupts disabled"
         }
       ],
       "correct_option_id": "C",

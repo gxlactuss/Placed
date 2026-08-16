@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "10.12.2.0/23"
-        },
-        {
-          "id": "B",
           "text": "10.12.2.0/24"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "10.12.0.0/22"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "10.12.2.0/22"
+        },
+        {
+          "id": "D",
+          "text": "10.12.2.0/23"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The range spans 512 addresses, which needs 9 host bits and therefore a /23 prefix. 10.12.2.0/23 covers exactly 10.12.2.0 through 10.12.3.255.",
       "concept": "CIDR"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "10"
+          "text": "13"
         },
         {
           "id": "B",
-          "text": "11"
+          "text": "10"
         },
         {
           "id": "C",
-          "text": "13"
+          "text": "11"
         },
         {
           "id": "D",
           "text": "12"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Each fragment spends 20 bytes on the header, leaving 80 bytes of payload — and 80 is a multiple of 8, as the fragment offset requires. The 980 payload bytes therefore need ceil(980/80) = 13 fragments, the last carrying only 20 bytes.",
       "concept": "Fragmentation"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Protocol"
+          "text": "Destination address"
         },
         {
           "id": "B",
@@ -71,7 +71,7 @@
         },
         {
           "id": "C",
-          "text": "Destination address"
+          "text": "Protocol"
         },
         {
           "id": "D",
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "To let a packet be discarded if it circulates in a routing loop"
+          "text": "To let the receiver reassemble fragments in order"
         },
         {
           "id": "B",
-          "text": "To give real-time traffic higher priority"
+          "text": "To let a packet be discarded if it circulates in a routing loop"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "To let the receiver reassemble fragments in order"
+          "text": "To give real-time traffic higher priority"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Transient inconsistencies between routing tables can create loops. Decrementing TTL at each hop guarantees such a packet is eventually dropped rather than consuming bandwidth forever.",
       "concept": "IP Header"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "130.34.12.80"
+          "text": "130.34.12.128"
         },
         {
           "id": "B",
-          "text": "130.34.12.128"
+          "text": "130.34.12.64"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "130.34.12.64"
+          "text": "130.34.12.80"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "A /26 block holds 64 addresses, so this block runs from 130.34.12.64 to 130.34.12.127. The address 130.34.12.128 is the start of the next block entirely.",
       "concept": "Subnetting"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "64 subnets and 1024 hosts"
+          "text": "64 subnets and 1022 hosts"
         },
         {
           "id": "C",
-          "text": "64 subnets and 1022 hosts"
+          "text": "64 subnets and 1024 hosts"
         },
         {
           "id": "D",
           "text": "62 subnets and 262142 hosts"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Class B leaves 16 host bits; taking 6 for the subnet leaves 10, so there are 2^6 = 64 subnets and 2^10 - 2 = 1022 usable hosts each, after excluding the all-zeros and all-ones addresses.",
       "concept": "Subnetting"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "ICMP"
-        },
-        {
-          "id": "B",
           "text": "DHCP"
         },
         {
+          "id": "B",
+          "text": "ICMP"
+        },
+        {
           "id": "C",
-          "text": "RARP"
+          "text": "ARP"
         },
         {
           "id": "D",
-          "text": "ARP"
+          "text": "RARP"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "ARP broadcasts a request asking who owns an IP address, and the owner replies with its hardware address. RARP does the reverse mapping, and DHCP assigns addresses rather than resolving them.",
       "concept": "ARP"
     },
@@ -188,11 +188,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Link state converges faster after a topology change and avoids count-to-infinity"
+          "text": "Link state protocols cannot be used on the Internet"
         },
         {
           "id": "B",
-          "text": "Link state protocols cannot be used on the Internet"
+          "text": "Link state converges faster after a topology change and avoids count-to-infinity"
         },
         {
           "id": "C",
@@ -203,7 +203,7 @@
           "text": "Distance vector requires every node to run Dijkstra's algorithm"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Link state floods link information so every router builds the same map and runs Dijkstra locally, converging quickly. Distance vector shares only distance estimates with neighbours, which is what allows count-to-infinity.",
       "concept": "Routing"
     },
@@ -217,7 +217,7 @@
         },
         {
           "id": "B",
-          "text": "RIP uses link state and OSPF uses distance vector"
+          "text": "Both RIP and OSPF use distance vector routing"
         },
         {
           "id": "C",
@@ -225,7 +225,7 @@
         },
         {
           "id": "D",
-          "text": "Both RIP and OSPF use distance vector routing"
+          "text": "RIP uses link state and OSPF uses distance vector"
         }
       ],
       "correct_option_id": "A",
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Time to live only"
+          "text": "Destination IP address and destination port"
         },
         {
           "id": "B",
-          "text": "Source IP address and source port"
+          "text": "Time to live only"
         },
         {
           "id": "C",
-          "text": "The MAC addresses only"
+          "text": "Source IP address and source port"
         },
         {
           "id": "D",
-          "text": "Destination IP address and destination port"
+          "text": "The MAC addresses only"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "NAT rewrites the private source address to its own public address, and rewrites the source port so replies can be demultiplexed back to the right internal host. Checksums are recomputed as a consequence.",
       "concept": "NAT"
     }

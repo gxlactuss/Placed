@@ -17,15 +17,15 @@
         },
         {
           "id": "B",
-          "text": "15"
-        },
-        {
-          "id": "C",
           "text": "18"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "22"
+        },
+        {
+          "id": "D",
+          "text": "15"
         }
       ],
       "correct_option_id": "A",
@@ -38,11 +38,11 @@
       "options": [
         {
           "id": "A",
-          "text": "First Come First Served"
+          "text": "Multilevel queue with round robin at every level"
         },
         {
           "id": "B",
-          "text": "Multilevel queue with round robin at every level"
+          "text": "First Come First Served"
         },
         {
           "id": "C",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Context switching overhead increases sharply"
-        },
-        {
-          "id": "B",
-          "text": "Average waiting time approaches zero"
-        },
-        {
-          "id": "C",
           "text": "It degenerates to Shortest Job First"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It degenerates to First Come First Served"
+        },
+        {
+          "id": "C",
+          "text": "Context switching overhead increases sharply"
+        },
+        {
+          "id": "D",
+          "text": "Average waiting time approaches zero"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "If no process is ever preempted, each simply runs to completion in arrival order — exactly FCFS. A very small quantum has the opposite problem: context switch overhead dominates.",
       "concept": "CPU Scheduling"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Priority inheritance"
-        },
-        {
-          "id": "B",
-          "text": "Aging"
-        },
-        {
-          "id": "C",
           "text": "Time slicing"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Preemption of the higher priority task"
+        },
+        {
+          "id": "C",
+          "text": "Priority inheritance"
+        },
+        {
+          "id": "D",
+          "text": "Aging"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "The low-priority task holding the lock temporarily inherits the priority of the highest-priority task waiting on it, so it cannot be preempted by unrelated medium-priority work. Aging solves starvation, which is a different problem.",
       "concept": "Real-Time Scheduling"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Round Robin"
+          "text": "First Come First Served"
         },
         {
           "id": "B",
-          "text": "First Come First Served"
+          "text": "Shortest Job First"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "Shortest Job First"
+          "text": "Round Robin"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "FCFS is non-preemptive and order-blind, so one CPU-bound job at the head of the queue holds up everything behind it, hurting both average waiting time and device utilisation.",
       "concept": "CPU Scheduling"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "Shortest Job First"
+          "text": "First Come First Served"
         },
         {
           "id": "C",
-          "text": "Round Robin"
+          "text": "Shortest Job First"
         },
         {
           "id": "D",
-          "text": "First Come First Served"
+          "text": "Round Robin"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Round robin is defined by its quantum: each process runs for at most that long before being moved to the back of the ready queue. The others are driven by burst length, arrival order or priority.",
       "concept": "CPU Scheduling"
     },
@@ -167,18 +167,18 @@
         },
         {
           "id": "B",
-          "text": "Shortest Job First"
-        },
-        {
-          "id": "C",
           "text": "Last In First Out"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Round Robin"
+        },
+        {
+          "id": "D",
+          "text": "Shortest Job First"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "The longest-waiting process always has the highest priority, so the CPU rotates among all of them in turn — which is round robin with the re-evaluation interval acting as the quantum.",
       "concept": "CPU Scheduling"
     },
@@ -192,15 +192,15 @@
         },
         {
           "id": "B",
-          "text": "Shortest Remaining Time First"
-        },
-        {
-          "id": "C",
           "text": "First Come First Served"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Static priority with preemption"
+        },
+        {
+          "id": "D",
+          "text": "Shortest Remaining Time First"
         }
       ],
       "correct_option_id": "A",
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Round robin minimises average turnaround time"
+          "text": "All non-preemptive policies give the same average turnaround time"
         },
         {
           "id": "B",
@@ -221,11 +221,11 @@
         },
         {
           "id": "C",
-          "text": "FCFS minimises average turnaround time"
+          "text": "Round robin minimises average turnaround time"
         },
         {
           "id": "D",
-          "text": "All non-preemptive policies give the same average turnaround time"
+          "text": "FCFS minimises average turnaround time"
         }
       ],
       "correct_option_id": "B",
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "n squared"
-        },
-        {
-          "id": "B",
           "text": "n"
         },
         {
+          "id": "B",
+          "text": "2 raised to the power n"
+        },
+        {
           "id": "C",
-          "text": "n factorial"
+          "text": "n squared"
         },
         {
           "id": "D",
-          "text": "2 raised to the power n"
+          "text": "n factorial"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "A non-preemptive schedule is just an ordering of the n processes, and there are n! orderings. This is why optimal scheduling by exhaustive search is impractical.",
       "concept": "CPU Scheduling"
     }

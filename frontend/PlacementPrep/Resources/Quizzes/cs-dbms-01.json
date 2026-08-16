@@ -17,11 +17,11 @@
         },
         {
           "id": "B",
-          "text": "The number of foreign keys referencing it"
+          "text": "The number of candidate keys"
         },
         {
           "id": "C",
-          "text": "The number of candidate keys"
+          "text": "The number of foreign keys referencing it"
         },
         {
           "id": "D",
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It must always be a single attribute"
-        },
-        {
-          "id": "B",
           "text": "It is a minimal superkey"
         },
         {
+          "id": "B",
+          "text": "It must always be a single attribute"
+        },
+        {
           "id": "C",
-          "text": "It may contain NULL values in the primary key column"
+          "text": "A relation can have at most one candidate key"
         },
         {
           "id": "D",
-          "text": "A relation can have at most one candidate key"
+          "text": "It may contain NULL values in the primary key column"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "A candidate key is a superkey with no redundant attributes — removing any attribute destroys uniqueness. A relation may have several, and one is chosen as the primary key.",
       "concept": "Keys & Constraints"
     },
@@ -67,18 +67,18 @@
         },
         {
           "id": "B",
-          "text": "Attribute values must be atomic"
+          "text": "No attribute of a primary key may be NULL"
         },
         {
           "id": "C",
-          "text": "No attribute of a primary key may be NULL"
+          "text": "Attribute values must be atomic"
         },
         {
           "id": "D",
           "text": "Every relation must have at least one foreign key"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Entity integrity forbids NULLs in any primary key attribute, since a NULL would make the tuple unidentifiable. Matching foreign keys is referential integrity.",
       "concept": "Keys & Constraints"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Having no attributes at all"
-        },
-        {
-          "id": "B",
           "text": "Participating in exactly one relationship"
         },
         {
+          "id": "B",
+          "text": "Having no attributes at all"
+        },
+        {
           "id": "C",
-          "text": "Being connected only to other weak entity sets"
+          "text": "Having no primary key of its own, depending on an identifying owner"
         },
         {
           "id": "D",
-          "text": "Having no primary key of its own, depending on an identifying owner"
+          "text": "Being connected only to other weak entity sets"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "A weak entity lacks a sufficient key of its own. It is identified by its partial key combined with the primary key of its identifying (owner) entity, via a total, identifying relationship.",
       "concept": "ER Model"
     },
@@ -167,18 +167,18 @@
         },
         {
           "id": "B",
-          "text": "Rename"
+          "text": "Selection"
         },
         {
           "id": "C",
-          "text": "Natural join"
+          "text": "Rename"
         },
         {
           "id": "D",
-          "text": "Selection"
+          "text": "Natural join"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "The primitive set is selection, projection, union, set difference, Cartesian product and rename. Natural join is derived — it can be expressed as a product followed by a selection and a projection.",
       "concept": "Relational Algebra"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A duplicate tuple in S"
-        },
-        {
-          "id": "B",
-          "text": "An error that the DBMS must reject"
-        },
-        {
-          "id": "C",
           "text": "A violation of referential integrity"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "A duplicate tuple in S"
+        },
+        {
+          "id": "C",
           "text": "A tuple in R that participates in no relationship with S"
+        },
+        {
+          "id": "D",
+          "text": "An error that the DBMS must reject"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Referential integrity requires a foreign key to either match an existing primary key in S or be entirely NULL. A NULL simply means the tuple currently has no counterpart — partial participation.",
       "concept": "Keys & Constraints"
     },
@@ -213,11 +213,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Conceptual (logical) level"
+          "text": "External (view) level"
         },
         {
           "id": "B",
-          "text": "External (view) level"
+          "text": "Internal (physical) level"
         },
         {
           "id": "C",
@@ -225,10 +225,10 @@
         },
         {
           "id": "D",
-          "text": "Internal (physical) level"
+          "text": "Conceptual (logical) level"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The conceptual level describes the whole database logically. The external level exposes per-user views, and the internal level describes physical storage. Separating them gives physical and logical data independence.",
       "concept": "DBMS Architecture"
     },
@@ -242,18 +242,18 @@
         },
         {
           "id": "B",
-          "text": "15"
+          "text": "8"
         },
         {
           "id": "C",
-          "text": "5"
+          "text": "15"
         },
         {
           "id": "D",
-          "text": "8"
+          "text": "5"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "The Cartesian product pairs every tuple of R with every tuple of S, giving 5 × 3 = 15 tuples. Its degree is the sum of the two degrees.",
       "concept": "Relational Algebra"
     }

@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "R1 ∩ R2 is non-empty"
-        },
-        {
-          "id": "B",
-          "text": "R1 ∩ R2 is a superkey of R1 or of R2"
-        },
-        {
-          "id": "C",
           "text": "R1 ∪ R2 = R"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Both R1 and R2 are in BCNF"
+        },
+        {
+          "id": "C",
+          "text": "R1 ∩ R2 is a superkey of R1 or of R2"
+        },
+        {
+          "id": "D",
+          "text": "R1 ∩ R2 is non-empty"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "The common attributes must functionally determine all of at least one fragment. A non-empty intersection alone is insufficient — without the FD, the natural join produces spurious tuples.",
       "concept": "Decomposition"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "BCNF decomposition is always dependency preserving but may be lossy"
-        },
-        {
-          "id": "B",
           "text": "Every BCNF decomposition preserves all functional dependencies"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "A lossless BCNF decomposition always exists, but it may not preserve all dependencies"
+        },
+        {
+          "id": "C",
+          "text": "BCNF decomposition is always dependency preserving but may be lossy"
         },
         {
           "id": "D",
           "text": "Some relations admit no lossless BCNF decomposition"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "A lossless join into BCNF is always achievable, but dependency preservation can be impossible — the classic example is R(A,B,C) with AB → C and C → B. 3NF, by contrast, guarantees both.",
       "concept": "Decomposition"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Yes — but only because A → B holds"
+          "text": "Yes — B is a key of R2"
         },
         {
           "id": "B",
-          "text": "No — the intersection is empty"
-        },
-        {
-          "id": "C",
           "text": "No — B determines nothing in either fragment"
         },
         {
+          "id": "C",
+          "text": "Yes — but only because A → B holds"
+        },
+        {
           "id": "D",
-          "text": "Yes — B is a key of R2"
+          "text": "No — the intersection is empty"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "The intersection is {B}, and B → CD makes B a superkey of R2(B,C,D). That satisfies the lossless-join condition, so the natural join reconstructs R exactly.",
       "concept": "Decomposition"
     },
@@ -88,7 +88,7 @@
       "options": [
         {
           "id": "A",
-          "text": "X is a superkey of R"
+          "text": "X ∩ Y is empty"
         },
         {
           "id": "B",
@@ -96,14 +96,14 @@
         },
         {
           "id": "C",
-          "text": "X ∩ Y is empty"
+          "text": "X is a superkey of R"
         },
         {
           "id": "D",
           "text": "R has no functional dependencies"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "4NF extends BCNF from functional to multivalued dependencies: every non-trivial MVD must have a superkey determinant. This removes the redundancy caused by two independent multivalued facts sharing a relation.",
       "concept": "Higher Normal Forms"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "4NF"
-        },
-        {
-          "id": "B",
           "text": "BCNF"
         },
         {
+          "id": "B",
+          "text": "3NF"
+        },
+        {
           "id": "C",
-          "text": "5NF (Project-Join Normal Form)"
+          "text": "4NF"
         },
         {
           "id": "D",
-          "text": "3NF"
+          "text": "5NF (Project-Join Normal Form)"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "5NF concerns relations that cannot be losslessly decomposed into two fragments but can be into three or more. 4NF handles multivalued dependencies, a special case of join dependencies.",
       "concept": "Higher Normal Forms"
     },
@@ -138,15 +138,15 @@
       "options": [
         {
           "id": "A",
-          "text": "The decomposition is lossless"
+          "text": "Every FD in F appears within a single Ri"
         },
         {
           "id": "B",
-          "text": "Each Ri is in BCNF"
+          "text": "The decomposition is lossless"
         },
         {
           "id": "C",
-          "text": "Every FD in F appears within a single Ri"
+          "text": "Each Ri is in BCNF"
         },
         {
           "id": "D",
@@ -167,15 +167,15 @@
         },
         {
           "id": "B",
-          "text": "Lossless and dependency preserving"
+          "text": "Lossy but dependency preserving"
         },
         {
           "id": "C",
-          "text": "Neither lossless nor dependency preserving"
+          "text": "Lossless and dependency preserving"
         },
         {
           "id": "D",
-          "text": "Lossy but dependency preserving"
+          "text": "Neither lossless nor dependency preserving"
         }
       ],
       "correct_option_id": "A",
@@ -196,11 +196,11 @@
         },
         {
           "id": "C",
-          "text": "No MVD on two attributes can be trivial"
+          "text": "A ↠ B where A is a foreign key"
         },
         {
           "id": "D",
-          "text": "A ↠ B where A is a foreign key"
+          "text": "No MVD on two attributes can be trivial"
         }
       ],
       "correct_option_id": "B",
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "3NF always removes more redundancy"
-        },
-        {
-          "id": "B",
           "text": "BCNF permits partial dependencies"
         },
         {
+          "id": "B",
+          "text": "3NF requires fewer relations in every case"
+        },
+        {
           "id": "C",
-          "text": "3NF guarantees a lossless, dependency-preserving decomposition; BCNF does not"
+          "text": "3NF always removes more redundancy"
         },
         {
           "id": "D",
-          "text": "3NF requires fewer relations in every case"
+          "text": "3NF guarantees a lossless, dependency-preserving decomposition; BCNF does not"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "There is always a 3NF decomposition that is both lossless and dependency preserving. Forcing BCNF may cost dependency preservation, meaning constraints must be checked by joining at runtime.",
       "concept": "Normalization"
     },
@@ -242,7 +242,7 @@
         },
         {
           "id": "B",
-          "text": "{A → BC, B → C}"
+          "text": "{A → B, B → C}"
         },
         {
           "id": "C",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "{A → B, B → C}"
+          "text": "{A → BC, B → C}"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A → C is implied by A → B and B → C, so it is extraneous; AB → C has the extraneous attribute B. What remains is {A → B, B → C}, whose closure equals F's with no redundant FD or attribute.",
       "concept": "Functional Dependencies"
     }

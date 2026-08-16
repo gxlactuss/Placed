@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "LALR is more powerful than canonical LR"
-        },
-        {
-          "id": "B",
           "text": "SLR is more powerful than canonical LR"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Canonical LR is more powerful than SLR"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "LL(1) is more powerful than LALR"
+        },
+        {
+          "id": "D",
+          "text": "LALR is more powerful than canonical LR"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "The containment is SLR within LALR within canonical LR. LALR merges LR states with identical cores, which keeps the table small but can introduce reduce-reduce conflicts that canonical LR avoids.",
       "concept": "Parsing"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "It has more non-terminals than terminals"
+          "text": "It contains epsilon productions"
         },
         {
           "id": "B",
@@ -71,14 +71,14 @@
         },
         {
           "id": "C",
-          "text": "It contains epsilon productions"
+          "text": "Some string has more than one distinct parse tree"
         },
         {
           "id": "D",
-          "text": "Some string has more than one distinct parse tree"
+          "text": "It has more non-terminals than terminals"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Ambiguity means the grammar assigns a sentence more than one structure, so the meaning is not determined. Left recursion and epsilon productions are separate properties that particular parsing methods dislike.",
       "concept": "Grammars"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A recursive descent parser would recurse forever without consuming input"
-        },
-        {
-          "id": "B",
-          "text": "It doubles the size of the parse table"
-        },
-        {
-          "id": "C",
           "text": "It makes the grammar ambiguous"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It prevents the grammar from being context free"
+        },
+        {
+          "id": "C",
+          "text": "A recursive descent parser would recurse forever without consuming input"
+        },
+        {
+          "id": "D",
+          "text": "It doubles the size of the parse table"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "For a rule like A to A alpha, the parser expands A into A again with no token consumed, giving infinite recursion. Bottom-up parsers have no such problem and often prefer left recursion.",
       "concept": "Parsing"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Syntax analysis"
-        },
-        {
-          "id": "B",
           "text": "Semantic analysis"
         },
         {
+          "id": "B",
+          "text": "Syntax analysis"
+        },
+        {
           "id": "C",
-          "text": "Lexical analysis"
+          "text": "Code generation"
         },
         {
           "id": "D",
-          "text": "Code generation"
+          "text": "Lexical analysis"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "The text is a valid identifier and the statement parses correctly, so only meaning is wrong. Semantic analysis consults the symbol table for declaration and type information.",
       "concept": "Compiler Phases"
     },
@@ -142,7 +142,7 @@
         },
         {
           "id": "B",
-          "text": "To record the order of tokens for backtracking"
+          "text": "To buffer the input source file"
         },
         {
           "id": "C",
@@ -150,7 +150,7 @@
         },
         {
           "id": "D",
-          "text": "To buffer the input source file"
+          "text": "To record the order of tokens for backtracking"
         }
       ],
       "correct_option_id": "C",
@@ -167,18 +167,18 @@
         },
         {
           "id": "B",
-          "text": "It occupies exactly three bytes"
+          "text": "It has at most one operator on the right-hand side with at most three operands involved"
         },
         {
           "id": "C",
-          "text": "It must be executed in three clock cycles"
+          "text": "It occupies exactly three bytes"
         },
         {
           "id": "D",
-          "text": "It has at most one operator on the right-hand side with at most three operands involved"
+          "text": "It must be executed in three clock cycles"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Each statement takes the form x = y op z, using temporaries to break complex expressions apart. That flat form is what makes data flow analysis and optimisation tractable.",
       "concept": "Intermediate Code"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Replaces recomputation of an expression whose operands are unchanged with a saved value"
-        },
-        {
-          "id": "B",
           "text": "Replaces a multiplication with repeated addition"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Moves loop-invariant computations outside the loop"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Removes code that can never be reached"
+        },
+        {
+          "id": "D",
+          "text": "Replaces recomputation of an expression whose operands are unchanged with a saved value"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The optimiser must first prove no operand was assigned in between, otherwise reuse would be unsound. The other options describe dead code elimination, code motion and strength reduction respectively.",
       "concept": "Optimisation"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The set of non-terminals reachable from A"
-        },
-        {
-          "id": "B",
-          "text": "The set of terminals that can appear immediately to the right of A in some sentential form"
-        },
-        {
-          "id": "C",
           "text": "The set of terminals that can begin a string derived from A"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "The set of productions whose left-hand side is A"
+        },
+        {
+          "id": "C",
+          "text": "The set of non-terminals reachable from A"
+        },
+        {
+          "id": "D",
+          "text": "The set of terminals that can appear immediately to the right of A in some sentential form"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "FOLLOW drives the decision to reduce or to apply an epsilon production in LL and SLR parsers. The set of terminals that can start a derivation from A is FIRST, not FOLLOW.",
       "concept": "Parsing"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Translating source code into assembly"
-        },
-        {
-          "id": "B",
-          "text": "Allocating registers within a function"
-        },
-        {
-          "id": "C",
           "text": "Resolving external symbol references and combining object modules"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Translating source code into assembly"
+        },
+        {
+          "id": "C",
           "text": "Expanding macros before compilation"
+        },
+        {
+          "id": "D",
+          "text": "Allocating registers within a function"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Modules compiled separately refer to symbols they do not define, and the linker binds those references and relocates addresses. Macro expansion belongs to the preprocessor and register allocation to the compiler back end.",
       "concept": "Linking"
     }

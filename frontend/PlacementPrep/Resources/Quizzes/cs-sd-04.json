@@ -17,7 +17,7 @@
         },
         {
           "id": "B",
-          "text": "Latency and throughput"
+          "text": "Availability and durability"
         },
         {
           "id": "C",
@@ -25,7 +25,7 @@
         },
         {
           "id": "D",
-          "text": "Availability and durability"
+          "text": "Latency and throughput"
         }
       ],
       "correct_option_id": "A",
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "All reads return the most recent write immediately"
+          "text": "Reads are always served by the primary node"
         },
         {
           "id": "B",
-          "text": "If writes stop, all replicas eventually converge to the same value"
+          "text": "All reads return the most recent write immediately"
         },
         {
           "id": "C",
-          "text": "Reads are always served by the primary node"
+          "text": "If writes stop, all replicas eventually converge to the same value"
         },
         {
           "id": "D",
           "text": "Writes are never lost under any circumstances"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "It is a liveness property with no bound on when convergence happens, and it says nothing about what intermediate reads return. That is precisely why stronger models such as read-your-writes are layered on top.",
       "concept": "Consistency Models"
     },
@@ -67,7 +67,7 @@
         },
         {
           "id": "B",
-          "text": "It removes the need for acknowledgements"
+          "text": "Applying the operation more than once has the same effect as applying it once"
         },
         {
           "id": "C",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "Applying the operation more than once has the same effect as applying it once"
+          "text": "It removes the need for acknowledgements"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "A client that times out cannot tell whether the request was lost or the response was. Safe retries therefore require the server to deduplicate, usually via a client-supplied idempotency key.",
       "concept": "Idempotency"
     },
@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "R = W"
+          "text": "R + W < N"
         },
         {
           "id": "C",
@@ -100,7 +100,7 @@
         },
         {
           "id": "D",
-          "text": "R + W < N"
+          "text": "R = W"
         }
       ],
       "correct_option_id": "A",
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "It requires all participants to be on the same machine"
+          "text": "It can only commit one transaction per second"
         },
         {
           "id": "B",
-          "text": "Participants that have voted to commit cannot proceed if the coordinator fails"
+          "text": "It requires all participants to be on the same machine"
         },
         {
           "id": "C",
@@ -125,10 +125,10 @@
         },
         {
           "id": "D",
-          "text": "It can only commit one transaction per second"
+          "text": "Participants that have voted to commit cannot proceed if the coordinator fails"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A prepared participant has promised it can commit and must hold its locks until told the outcome. If the coordinator dies at that moment, participants are stuck — which is what three-phase commit and consensus protocols address.",
       "concept": "Distributed Transactions"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "They keep every machine's clock synchronised"
+          "text": "They capture causal ordering without relying on synchronised clocks"
         },
         {
           "id": "C",
-          "text": "They capture causal ordering without relying on synchronised clocks"
+          "text": "They keep every machine's clock synchronised"
         },
         {
           "id": "D",
           "text": "They compress event history for storage"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Machine clocks drift and skew, so a later wall-clock stamp does not imply a later event. Vector clocks track causality directly and can detect genuinely concurrent updates that need conflict resolution.",
       "concept": "Logical Clocks"
     },
@@ -167,11 +167,11 @@
         },
         {
           "id": "B",
-          "text": "Deferring all writes until the workflow completes"
+          "text": "Holding a distributed lock for the duration of the workflow"
         },
         {
           "id": "C",
-          "text": "Holding a distributed lock for the duration of the workflow"
+          "text": "Deferring all writes until the workflow completes"
         },
         {
           "id": "D",
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Two disjoint majorities cannot exist simultaneously in one cluster"
-        },
-        {
-          "id": "B",
           "text": "Majorities make elections finish faster"
         },
         {
+          "id": "B",
+          "text": "It removes the need for heartbeats"
+        },
+        {
           "id": "C",
-          "text": "It guarantees the fastest node is always elected"
+          "text": "Two disjoint majorities cannot exist simultaneously in one cluster"
         },
         {
           "id": "D",
-          "text": "It removes the need for heartbeats"
+          "text": "It guarantees the fastest node is always elected"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Any two majorities of the same set must share at least one member, and that member will not vote for two leaders in the same term. So a partition can produce at most one leader.",
       "concept": "Consensus"
     },
@@ -213,11 +213,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Heartbeats consume most of the network bandwidth"
+          "text": "A slow node and a failed node are indistinguishable from the outside"
         },
         {
           "id": "B",
-          "text": "A slow node and a failed node are indistinguishable from the outside"
+          "text": "Heartbeats consume most of the network bandwidth"
         },
         {
           "id": "C",
@@ -228,7 +228,7 @@
           "text": "Failed nodes continue sending heartbeats"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "In an asynchronous network there is no timeout that separates crashed from merely slow. A short timeout declares healthy nodes dead; a long one delays recovery — the trade-off cannot be eliminated.",
       "concept": "Failure Detection"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Eventual consistency always uses less storage"
-        },
-        {
-          "id": "B",
           "text": "Eventual consistency guarantees lower durability"
         },
         {
+          "id": "B",
+          "text": "Eventual consistency always uses less storage"
+        },
+        {
           "id": "C",
-          "text": "Strong consistency generally costs more latency because of cross-node coordination"
+          "text": "Strong consistency removes the need for replication"
         },
         {
           "id": "D",
-          "text": "Strong consistency removes the need for replication"
+          "text": "Strong consistency generally costs more latency because of cross-node coordination"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Making every reader observe the newest write requires nodes to agree before responding, which costs at least one round trip. Eventual consistency answers locally and reconciles afterwards, trading correctness guarantees for speed.",
       "concept": "Consistency Models"
     }

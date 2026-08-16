@@ -17,7 +17,7 @@
         },
         {
           "id": "B",
-          "text": "N factorial"
+          "text": "2 raised to the power N"
         },
         {
           "id": "C",
@@ -25,10 +25,10 @@
         },
         {
           "id": "D",
-          "text": "2 raised to the power N"
+          "text": "N factorial"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Subset construction makes each DFA state a set of NFA states, so there are at most 2^N of them. This bound is tight — some languages genuinely require exponentially many DFA states.",
       "concept": "Finite Automata"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "10"
-        },
-        {
-          "id": "B",
           "text": "7"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "5"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "12"
+        },
+        {
+          "id": "D",
+          "text": "10"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "The machine must track the count of 0s modulo 2 and of 1s modulo 5 independently, giving 2 x 5 = 10 distinct reachable and pairwise distinguishable states.",
       "concept": "Finite Automata"
     },
@@ -67,7 +67,7 @@
         },
         {
           "id": "B",
-          "text": "Strings of the form a^n b^n for n >= 0"
+          "text": "Strings over {a,b} of length at most 5"
         },
         {
           "id": "C",
@@ -75,10 +75,10 @@
         },
         {
           "id": "D",
-          "text": "Strings over {a,b} of length at most 5"
+          "text": "Strings of the form a^n b^n for n >= 0"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Matching the counts of a's and b's requires unbounded memory, which a finite automaton lacks — the pumping lemma makes this precise. The others need only a bounded amount of state.",
       "concept": "Regular Languages"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Linear bounded automaton"
+          "text": "Finite automaton"
         },
         {
           "id": "B",
-          "text": "Finite automaton"
+          "text": "Turing machine"
         },
         {
           "id": "C",
@@ -100,7 +100,7 @@
         },
         {
           "id": "D",
-          "text": "Turing machine"
+          "text": "Linear bounded automaton"
         }
       ],
       "correct_option_id": "C",
@@ -117,18 +117,18 @@
         },
         {
           "id": "B",
-          "text": "Complement"
-        },
-        {
-          "id": "C",
           "text": "Union"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Intersection and complement both"
+        },
+        {
+          "id": "D",
+          "text": "Complement"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Union, concatenation and Kleene star preserve context-freeness, and so does intersection with a regular language. But intersecting two CFLs can produce a^n b^n c^n, which is not context free.",
       "concept": "Closure Properties"
     },
@@ -142,7 +142,7 @@
         },
         {
           "id": "B",
-          "text": "Whether a given DFA accepts a finite language"
+          "text": "Whether two given context-free grammars generate the same language"
         },
         {
           "id": "C",
@@ -150,10 +150,10 @@
         },
         {
           "id": "D",
-          "text": "Whether two given context-free grammars generate the same language"
+          "text": "Whether a given DFA accepts a finite language"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "CFG equivalence is undecidable, as is checking whether a CFG generates all strings. Membership in a CFG is decidable by CYK, and every question about DFAs listed here is decidable.",
       "concept": "Decidability"
     },
@@ -167,15 +167,15 @@
         },
         {
           "id": "B",
-          "text": "The two classes are identical"
+          "text": "Every recursively enumerable language is recursive"
         },
         {
           "id": "C",
-          "text": "Neither class is closed under union"
+          "text": "The two classes are identical"
         },
         {
           "id": "D",
-          "text": "Every recursively enumerable language is recursive"
+          "text": "Neither class is closed under union"
         }
       ],
       "correct_option_id": "A",
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Deciders use more tape than recognisers"
+          "text": "Complementation is not defined for infinite languages"
         },
         {
           "id": "B",
-          "text": "A decider can simply invert its answer, whereas a recogniser may loop forever on non-members"
-        },
-        {
-          "id": "C",
           "text": "Recognisers cannot read their input twice"
         },
         {
+          "id": "C",
+          "text": "A decider can simply invert its answer, whereas a recogniser may loop forever on non-members"
+        },
+        {
           "id": "D",
-          "text": "Complementation is not defined for infinite languages"
+          "text": "Deciders use more tape than recognisers"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Since a decider always halts, swapping accept and reject decides the complement. A recogniser that loops on a non-member gives no answer to invert — indeed a language and its complement both being recognisable implies both are decidable.",
       "concept": "Decidability"
     },
@@ -213,11 +213,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Type 0"
+          "text": "Type 3"
         },
         {
           "id": "B",
-          "text": "Type 1"
+          "text": "Type 0"
         },
         {
           "id": "C",
@@ -225,10 +225,10 @@
         },
         {
           "id": "D",
-          "text": "Type 3"
+          "text": "Type 1"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Type 3 grammars have productions restricted to a single terminal optionally followed by one non-terminal. Type 2 is context free, Type 1 context sensitive and Type 0 unrestricted.",
       "concept": "Chomsky Hierarchy"
     },
@@ -246,11 +246,11 @@
         },
         {
           "id": "C",
-          "text": "2 raised to the power n"
+          "text": "n squared"
         },
         {
           "id": "D",
-          "text": "n squared"
+          "text": "2 raised to the power n"
         }
       ],
       "correct_option_id": "A",

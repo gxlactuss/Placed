@@ -13,11 +13,11 @@
       "options": [
         {
           "id": "A",
-          "text": "The write is queued until the cache is warm"
+          "text": "The request fails and is retried by the client"
         },
         {
           "id": "B",
-          "text": "The application reads from the database and then populates the cache"
+          "text": "The write is queued until the cache is warm"
         },
         {
           "id": "C",
@@ -25,10 +25,10 @@
         },
         {
           "id": "D",
-          "text": "The request fails and is retried by the client"
+          "text": "The application reads from the database and then populates the cache"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "The application owns the logic: check cache, fall back to the database, then store the result. Only requested data is ever cached, at the cost of a slower first request per key.",
       "concept": "Caching Strategies"
     },
@@ -38,11 +38,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Reads are slower, but writes are safer"
+          "text": "Writes are faster, but data can be lost on a crash"
         },
         {
           "id": "B",
-          "text": "Writes are faster, but data can be lost on a crash"
+          "text": "Reads are slower, but writes are safer"
         },
         {
           "id": "C",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Adding or removing a node remaps only a small fraction of keys"
-        },
-        {
-          "id": "B",
           "text": "It eliminates the need for cache expiry"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "It guarantees a perfectly even distribution of keys"
+        },
+        {
+          "id": "C",
+          "text": "Adding or removing a node remaps only a small fraction of keys"
         },
         {
           "id": "D",
           "text": "It allows keys to be looked up without knowing the node count"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "With modulo hashing, changing the node count remaps almost every key and empties the cache. Consistent hashing places nodes on a ring so only the keys owned by the changed node move.",
       "concept": "Consistent Hashing"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Write-heavy transactional database queries"
-        },
-        {
-          "id": "B",
-          "text": "Per-user personalised account pages"
-        },
-        {
-          "id": "C",
           "text": "Static assets such as images, scripts and video segments"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Write-heavy transactional database queries"
+        },
+        {
+          "id": "C",
           "text": "Long-running background jobs"
+        },
+        {
+          "id": "D",
+          "text": "Per-user personalised account pages"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "CDNs cache identical bytes at edge locations near users, cutting latency and origin load. Content that differs per user has no reuse, so caching it at the edge gains little.",
       "concept": "CDN"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It always evicts the largest item first"
-        },
-        {
-          "id": "B",
-          "text": "It requires no bookkeeping at all"
-        },
-        {
-          "id": "C",
           "text": "It guarantees the minimum possible number of misses"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It exploits temporal locality — recently used items are likely to be used again"
+        },
+        {
+          "id": "C",
+          "text": "It requires no bookkeeping at all"
+        },
+        {
+          "id": "D",
+          "text": "It always evicts the largest item first"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "LRU approximates the unimplementable optimal policy by assuming the recent past predicts the near future. It behaves badly on scans, which sweep the cache with data used exactly once.",
       "concept": "Eviction Policies"
     },
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "The database can be removed entirely"
+          "text": "Write load falls by 90 percent"
         },
         {
           "id": "B",
@@ -221,11 +221,11 @@
         },
         {
           "id": "C",
-          "text": "Write load falls by 90 percent"
+          "text": "Query latency at the database increases tenfold"
         },
         {
           "id": "D",
-          "text": "Query latency at the database increases tenfold"
+          "text": "The database can be removed entirely"
         }
       ],
       "correct_option_id": "B",
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Total storage cost becomes unbounded"
-        },
-        {
-          "id": "B",
-          "text": "Requests are served twice"
-        },
-        {
-          "id": "C",
           "text": "An update must be invalidated at every layer, or stale data persists at some of them"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Total storage cost becomes unbounded"
+        },
+        {
+          "id": "C",
           "text": "The database stops receiving writes"
+        },
+        {
+          "id": "D",
+          "text": "Requests are served twice"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Each layer expires independently, so purging the CDN does nothing for copies already in browsers. This is why versioned asset URLs are preferred — a new URL sidesteps invalidation entirely.",
       "concept": "Cache Invalidation"
     }

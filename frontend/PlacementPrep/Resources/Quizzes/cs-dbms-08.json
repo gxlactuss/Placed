@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "500,000"
-        },
-        {
-          "id": "B",
-          "text": "1,000,000"
-        },
-        {
-          "id": "C",
           "text": "1,500"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "500"
+        },
+        {
+          "id": "C",
+          "text": "500,000"
+        },
+        {
+          "id": "D",
+          "text": "1,000,000"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "With 500 blocks of S plus buffers to spare, S fits in memory entirely: read S once (500) and R once (1000) = 1500 transfers. The quadratic 500,000 figure applies only when the outer relation must be processed in chunks.",
       "concept": "Join Algorithms"
     },
@@ -38,15 +38,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Replacing an outer join with an inner join unconditionally"
-        },
-        {
-          "id": "B",
           "text": "Pushing a projection below a selection that references the projected-away column"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Reordering aggregation before grouping"
+        },
+        {
+          "id": "C",
+          "text": "Replacing an outer join with an inner join unconditionally"
         },
         {
           "id": "D",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "10"
-        },
-        {
-          "id": "B",
-          "text": "1"
-        },
-        {
-          "id": "C",
           "text": "100"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "10"
+        },
+        {
+          "id": "C",
           "text": "9"
+        },
+        {
+          "id": "D",
+          "text": "1"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "The sort phase fills all 10 buffer blocks, sorts them in memory and writes each as a run, giving ceil(100/10) = 10 runs. The merge phase then combines them, using 9 blocks for input and 1 for output.",
       "concept": "External Sorting"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The number of indexes the predicate can use"
+          "text": "The number of disk blocks the predicate reads"
         },
         {
           "id": "B",
-          "text": "The fraction of tuples that satisfy the predicate"
+          "text": "The number of indexes the predicate can use"
         },
         {
           "id": "C",
-          "text": "The number of disk blocks the predicate reads"
+          "text": "The fraction of tuples that satisfy the predicate"
         },
         {
           "id": "D",
           "text": "The CPU cost of evaluating the predicate"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Selectivity is the expected fraction of rows passing the filter, estimated from catalogue statistics such as histograms. Low selectivity favours an index scan; high selectivity favours a full scan.",
       "concept": "Cost Estimation"
     },
@@ -121,11 +121,11 @@
         },
         {
           "id": "C",
-          "text": "No index exists on either relation"
+          "text": "The join predicate is an inequality"
         },
         {
           "id": "D",
-          "text": "The join predicate is an inequality"
+          "text": "No index exists on either relation"
         }
       ],
       "correct_option_id": "A",
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Bushy trees cannot use indexes"
-        },
-        {
-          "id": "B",
           "text": "They are the only trees that produce correct results"
         },
         {
+          "id": "B",
+          "text": "Bushy trees cannot use indexes"
+        },
+        {
           "id": "C",
-          "text": "They keep the search space manageable and allow pipelining of intermediate results"
+          "text": "They always produce the globally optimal plan"
         },
         {
           "id": "D",
-          "text": "They always produce the globally optimal plan"
+          "text": "They keep the search space manageable and allow pipelining of intermediate results"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Restricting to left-deep shapes cuts the plan space dramatically and suits pipelined execution, since one input to each join is always a base relation. It is a heuristic, so the true optimum may be missed.",
       "concept": "Query Optimization"
     },
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "2000"
-        },
-        {
-          "id": "B",
-          "text": "3000"
-        },
-        {
-          "id": "C",
           "text": "2,000,000"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "1000"
+        },
+        {
+          "id": "C",
+          "text": "3000"
+        },
+        {
+          "id": "D",
+          "text": "2000"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Each R tuple matches at most one S tuple, since the referenced attribute is a primary key. So the result has at most |R| = 1000 tuples — exactly 1000 if no foreign key value is NULL.",
       "concept": "Cost Estimation"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "To sort both relations on the join attribute"
+          "text": "To build a B+ tree index on the smaller relation"
         },
         {
           "id": "B",
-          "text": "To split both relations into buckets so matching tuples land in the same bucket"
-        },
-        {
-          "id": "C",
           "text": "To eliminate duplicate tuples before joining"
         },
         {
+          "id": "C",
+          "text": "To sort both relations on the join attribute"
+        },
+        {
           "id": "D",
-          "text": "To build a B+ tree index on the smaller relation"
+          "text": "To split both relations into buckets so matching tuples land in the same bucket"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Hashing the join attribute of both inputs guarantees that any pair that could match falls into the same partition, so each partition can be joined independently in memory.",
       "concept": "Join Algorithms"
     },
@@ -213,11 +213,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Requires the query to be read-only"
+          "text": "Always uses less disk I/O"
         },
         {
           "id": "B",
-          "text": "Always uses less disk I/O"
+          "text": "Requires the query to be read-only"
         },
         {
           "id": "C",
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The number of users connected to the database"
+          "text": "Catalogue statistics such as relation sizes, distinct value counts and histograms"
         },
         {
           "id": "B",
-          "text": "The order in which tables appear in the FROM clause"
-        },
-        {
-          "id": "C",
           "text": "The physical order of rows on disk only"
         },
         {
+          "id": "C",
+          "text": "The order in which tables appear in the FROM clause"
+        },
+        {
           "id": "D",
-          "text": "Catalogue statistics such as relation sizes, distinct value counts and histograms"
+          "text": "The number of users connected to the database"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Cost-based optimization estimates the cost of candidate plans from catalogue statistics. This is why stale statistics cause bad plans — and why running ANALYZE often fixes a sudden regression.",
       "concept": "Query Optimization"
     }

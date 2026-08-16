@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "{A, B, C, D}"
-        },
-        {
-          "id": "B",
           "text": "{A}"
         },
         {
+          "id": "B",
+          "text": "{A, B, C, D}"
+        },
+        {
           "id": "C",
-          "text": "{A, B, C}"
+          "text": "{A, B}"
         },
         {
           "id": "D",
-          "text": "{A, B}"
+          "text": "{A, B, C}"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Start with {A}; A → B adds B, B → C adds C, C → D adds D. The closure is all of R, so A is a superkey — and since no proper subset works, it is the candidate key.",
       "concept": "Functional Dependencies"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Every determinant is a candidate key"
-        },
-        {
-          "id": "B",
           "text": "No non-prime attribute is partially dependent on any candidate key"
         },
         {
+          "id": "B",
+          "text": "Every determinant is a candidate key"
+        },
+        {
           "id": "C",
-          "text": "It contains no multivalued dependencies"
+          "text": "No non-prime attribute is transitively dependent on any candidate key"
         },
         {
           "id": "D",
-          "text": "No non-prime attribute is transitively dependent on any candidate key"
+          "text": "It contains no multivalued dependencies"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "2NF removes partial dependencies — a non-prime attribute depending on only part of a composite candidate key. Removing transitive dependencies is 3NF; every determinant being a key is BCNF.",
       "concept": "Normalization"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "2NF but not 3NF"
-        },
-        {
-          "id": "B",
           "text": "BCNF"
         },
         {
+          "id": "B",
+          "text": "1NF only"
+        },
+        {
           "id": "C",
-          "text": "3NF but not BCNF"
+          "text": "2NF but not 3NF"
         },
         {
           "id": "D",
-          "text": "1NF only"
+          "text": "3NF but not BCNF"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Candidate keys are AB and BC, so prime attributes are A, B and C — every attribute is prime, hence no transitive dependency on a non-prime attribute, giving 3NF. But C → A has a non-superkey determinant, so BCNF fails.",
       "concept": "Normalization"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Decomposition"
-        },
-        {
-          "id": "B",
-          "text": "Transitivity"
-        },
-        {
-          "id": "C",
           "text": "Reflexivity"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Augmentation"
+        },
+        {
+          "id": "C",
+          "text": "Transitivity"
+        },
+        {
+          "id": "D",
+          "text": "Decomposition"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Augmentation permits adding the same attributes to both sides. Reflexivity gives X → Y when Y is a subset of X, and transitivity chains X → Y and Y → Z into X → Z.",
       "concept": "Functional Dependencies"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Every candidate key contains B"
+          "text": "B alone is the only candidate key"
         },
         {
           "id": "B",
-          "text": "Exactly one, namely AB"
-        },
-        {
-          "id": "C",
           "text": "0 — B appears in no candidate key"
         },
         {
+          "id": "C",
+          "text": "Exactly one, namely AB"
+        },
+        {
           "id": "D",
-          "text": "B alone is the only candidate key"
+          "text": "Every candidate key contains B"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "B never appears on the right-hand side of any FD, so no dependency can derive it. Any attribute that is never determined must belong to every candidate key. (Here the keys are AB, BC and BD.)",
       "concept": "Functional Dependencies"
     },
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Every relation in 3NF is also in BCNF"
+          "text": "The two are equivalent for all relations"
         },
         {
           "id": "B",
@@ -146,11 +146,11 @@
         },
         {
           "id": "C",
-          "text": "The two are equivalent for all relations"
+          "text": "BCNF is weaker than 2NF"
         },
         {
           "id": "D",
-          "text": "BCNF is weaker than 2NF"
+          "text": "Every relation in 3NF is also in BCNF"
         }
       ],
       "correct_option_id": "B",
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "All attributes are of the same data type"
-        },
-        {
-          "id": "B",
-          "text": "It has a primary key defined"
-        },
-        {
-          "id": "C",
           "text": "All attribute values are atomic (no repeating groups or multivalued attributes)"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "All attributes are of the same data type"
+        },
+        {
+          "id": "C",
           "text": "It has no functional dependencies"
+        },
+        {
+          "id": "D",
+          "text": "It has a primary key defined"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "1NF requires atomic, single-valued attributes drawn from their domain. Composite or repeating attributes must be flattened out before higher normal forms are even meaningful.",
       "concept": "Normalization"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A → C"
-        },
-        {
-          "id": "B",
           "text": "A → B"
         },
         {
+          "id": "B",
+          "text": "A → C"
+        },
+        {
           "id": "C",
-          "text": "None are redundant"
+          "text": "AB → C"
         },
         {
           "id": "D",
-          "text": "AB → C"
+          "text": "None are redundant"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "AB → C follows from A → C by augmentation, so removing it leaves the closure unchanged. Computing a canonical cover would drop it — note A → C itself is needed and is not redundant.",
       "concept": "Functional Dependencies"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The inability to store a department with no employees (insertion anomaly)"
+          "text": "Deadlock between transactions"
         },
         {
           "id": "B",
-          "text": "Loss of the ability to reconstruct the original relation"
-        },
-        {
-          "id": "C",
           "text": "Phantom reads during concurrent scans"
         },
         {
+          "id": "C",
+          "text": "The inability to store a department with no employees (insertion anomaly)"
+        },
+        {
           "id": "D",
-          "text": "Deadlock between transactions"
+          "text": "Loss of the ability to reconstruct the original relation"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Transitive dependencies force unrelated facts into one relation, producing insertion, deletion and update anomalies. Decomposition to 3NF separates them. Deadlocks and phantoms are concurrency issues, unrelated to normalization.",
       "concept": "Normalization"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "D"
+          "text": "BD"
         },
         {
           "id": "B",
-          "text": "A"
-        },
-        {
-          "id": "C",
           "text": "BC"
         },
         {
+          "id": "C",
+          "text": "D"
+        },
+        {
           "id": "D",
-          "text": "BD"
+          "text": "A"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "A+ = {A}, then A → BC adds B and C, B → D adds D, and CD → E adds E — so A+ is all of R and A is minimal. (E and CD are also keys, via E → A.)",
       "concept": "Functional Dependencies"
     }

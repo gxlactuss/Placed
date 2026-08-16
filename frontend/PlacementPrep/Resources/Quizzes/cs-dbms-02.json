@@ -21,14 +21,14 @@
         },
         {
           "id": "C",
-          "text": "WHERE filters rows before grouping; HAVING filters groups after aggregation"
+          "text": "WHERE works only on numeric columns"
         },
         {
           "id": "D",
-          "text": "WHERE works only on numeric columns"
+          "text": "WHERE filters rows before grouping; HAVING filters groups after aggregation"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "WHERE is applied to individual rows before GROUP BY, so it cannot reference aggregates. HAVING is applied to the groups produced by GROUP BY, so it can.",
       "concept": "SQL Querying"
     },
@@ -42,18 +42,18 @@
         },
         {
           "id": "B",
-          "text": "7"
+          "text": "5"
         },
         {
           "id": "C",
-          "text": "5"
+          "text": "7"
         },
         {
           "id": "D",
           "text": "3"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "COUNT(column) ignores NULLs, giving 7. COUNT(*) would return 10, and COUNT(DISTINCT C) would exclude duplicates as well.",
       "concept": "SQL Aggregates"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "CROSS JOIN"
+          "text": "INNER JOIN"
         },
         {
           "id": "B",
@@ -71,7 +71,7 @@
         },
         {
           "id": "C",
-          "text": "INNER JOIN"
+          "text": "CROSS JOIN"
         },
         {
           "id": "D",
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "UNKNOWN"
+          "text": "TRUE"
         },
         {
           "id": "B",
-          "text": "TRUE"
+          "text": "UNKNOWN"
         },
         {
           "id": "C",
@@ -103,7 +103,7 @@
           "text": "FALSE"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "SQL uses three-valued logic. Any comparison involving NULL yields UNKNOWN, which is why IS NULL exists — rows where the predicate is UNKNOWN are not returned by WHERE.",
       "concept": "NULL Semantics"
     },
@@ -113,11 +113,11 @@
       "options": [
         {
           "id": "A",
-          "text": "WHERE"
+          "text": "HAVING"
         },
         {
           "id": "B",
-          "text": "HAVING"
+          "text": "WHERE"
         },
         {
           "id": "C",
@@ -138,11 +138,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Removes rows containing NULLs"
+          "text": "Removes duplicates from column A only"
         },
         {
           "id": "B",
-          "text": "Removes duplicates from column A only"
+          "text": "Removes rows containing NULLs"
         },
         {
           "id": "C",
@@ -163,22 +163,22 @@
       "options": [
         {
           "id": "A",
-          "text": "TRUNCATE TABLE T"
+          "text": "ALTER TABLE T"
         },
         {
           "id": "B",
-          "text": "DELETE FROM T"
+          "text": "TRUNCATE TABLE T"
         },
         {
           "id": "C",
-          "text": "ALTER TABLE T"
+          "text": "DELETE FROM T"
         },
         {
           "id": "D",
           "text": "DROP TABLE T"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "TRUNCATE is a DDL operation that deallocates data pages wholesale. DELETE is DML, logs each row and can be rolled back; DROP removes the table definition entirely.",
       "concept": "SQL DDL/DML"
     },
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "1"
+          "text": "12"
         },
         {
           "id": "B",
-          "text": "4"
+          "text": "1"
         },
         {
           "id": "C",
-          "text": "12"
+          "text": "4"
         },
         {
           "id": "D",
           "text": "48"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "GROUP BY collapses the rows into one output row per distinct grouping value, so 4 departments give 4 rows, each with its own count.",
       "concept": "SQL Aggregates"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "CHECK"
-        },
-        {
-          "id": "B",
-          "text": "NOT NULL"
-        },
-        {
-          "id": "C",
           "text": "UNIQUE"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "CHECK"
+        },
+        {
+          "id": "C",
           "text": "DEFAULT"
+        },
+        {
+          "id": "D",
+          "text": "NOT NULL"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "UNIQUE enforces distinctness while generally allowing NULLs (which are not considered equal to one another). A PRIMARY KEY is effectively UNIQUE plus NOT NULL.",
       "concept": "Keys & Constraints"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It returns multiple columns by definition"
+          "text": "It references columns from the outer query, so it is re-evaluated per outer row"
         },
         {
           "id": "B",
-          "text": "It can only appear in the FROM clause"
-        },
-        {
-          "id": "C",
           "text": "It always executes faster than a join"
         },
         {
+          "id": "C",
+          "text": "It returns multiple columns by definition"
+        },
+        {
           "id": "D",
-          "text": "It references columns from the outer query, so it is re-evaluated per outer row"
+          "text": "It can only appear in the FROM clause"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "A correlated subquery depends on the current outer row, so conceptually it runs once per outer row. That dependency is exactly why it is often slower than an equivalent join.",
       "concept": "SQL Querying"
     }

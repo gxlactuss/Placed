@@ -17,7 +17,7 @@
         },
         {
           "id": "B",
-          "text": "Duplicate ACKs reset the congestion window to one MSS, while a timeout halves it"
+          "text": "Duplicate ACKs are ignored; only timeouts affect the window"
         },
         {
           "id": "C",
@@ -25,7 +25,7 @@
         },
         {
           "id": "D",
-          "text": "Duplicate ACKs are ignored; only timeouts affect the window"
+          "text": "Duplicate ACKs reset the congestion window to one MSS, while a timeout halves it"
         }
       ],
       "correct_option_id": "A",
@@ -38,11 +38,11 @@
       "options": [
         {
           "id": "A",
-          "text": "SYN = 0, SEQ = Y, ACK bit = 1, acknowledgement number X"
+          "text": "SYN = 1, SEQ = Y, ACK bit = 0, acknowledgement number X + 1"
         },
         {
           "id": "B",
-          "text": "SYN = 1, SEQ = Y, ACK bit = 0, acknowledgement number X + 1"
+          "text": "SYN = 0, SEQ = Y, ACK bit = 1, acknowledgement number X"
         },
         {
           "id": "C",
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "30"
+          "text": "32"
         },
         {
           "id": "B",
@@ -71,14 +71,14 @@
         },
         {
           "id": "C",
-          "text": "32"
+          "text": "33"
         },
         {
           "id": "D",
-          "text": "33"
+          "text": "30"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "In 60 seconds the link carries 60 x 10^9 / 8 = 7.5 x 10^9 bytes. Since 2^32 is about 4.29 x 10^9 and 2^33 is about 8.59 x 10^9, 33 bits are required.",
       "concept": "TCP Sequence Numbers"
     },
@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "UDP provides neither reliability nor congestion control, and has a smaller header"
+          "text": "UDP performs congestion control but not flow control"
         },
         {
           "id": "C",
@@ -100,10 +100,10 @@
         },
         {
           "id": "D",
-          "text": "UDP performs congestion control but not flow control"
+          "text": "UDP provides neither reliability nor congestion control, and has a smaller header"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "UDP adds only ports, length and a checksum over IP — 8 bytes against TCP's 20. It leaves reliability, ordering and congestion response to the application, which is why real-time media often prefers it.",
       "concept": "UDP"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "To measure the round trip time"
-        },
-        {
-          "id": "B",
           "text": "To retransmit a segment that was not acknowledged"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "To probe a receiver that has advertised a zero window"
+        },
+        {
+          "id": "C",
+          "text": "To measure the round trip time"
         },
         {
           "id": "D",
           "text": "To close a connection that has been idle too long"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "If the window update that reopens a zero window is lost, both ends would wait forever. The persist timer makes the sender periodically send a one-byte probe to elicit a fresh window advertisement.",
       "concept": "TCP Timers"
     },
@@ -142,7 +142,7 @@
         },
         {
           "id": "B",
-          "text": "0.6 seconds"
+          "text": "1.1 seconds"
         },
         {
           "id": "C",
@@ -150,10 +150,10 @@
         },
         {
           "id": "D",
-          "text": "1.1 seconds"
+          "text": "0.6 seconds"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "During a burst of length t seconds the host can send 1 + 10t megabytes but at most 20t. Setting 1 + 10t = 20t gives t = 0.1 s, covering 2 MB. The remaining 10 MB then goes at the sustained 10 MB/s, taking 1 s, for 1.1 s in total.",
       "concept": "Traffic Shaping"
     },
@@ -163,11 +163,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Sliding window"
+          "text": "Leaky bucket"
         },
         {
           "id": "B",
-          "text": "Leaky bucket"
+          "text": "Sliding window"
         },
         {
           "id": "C",
@@ -178,7 +178,7 @@
           "text": "Slow start"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "A leaky bucket drains at a fixed rate no matter how the input arrives, so the output is perfectly smooth. A token bucket by contrast permits a bounded burst by saving up unused capacity.",
       "concept": "Traffic Shaping"
     },
@@ -192,18 +192,18 @@
         },
         {
           "id": "B",
-          "text": "SMTP and SNMP"
+          "text": "FTP and SMTP"
         },
         {
           "id": "C",
-          "text": "SMTP and POP3"
+          "text": "SMTP and SNMP"
         },
         {
           "id": "D",
-          "text": "FTP and SMTP"
+          "text": "SMTP and POP3"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "SMTP pushes mail from the client to the server and between servers. Retrieval into a mailbox client is a pull operation, handled by POP3 or IMAP. SNMP is for network management.",
       "concept": "Application Protocols"
     },
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "1"
+          "text": "6"
         },
         {
           "id": "B",
@@ -221,14 +221,14 @@
         },
         {
           "id": "C",
-          "text": "5"
+          "text": "1"
         },
         {
           "id": "D",
-          "text": "6"
+          "text": "5"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Non-persistent HTTP uses a fresh connection per object. One connection fetches the HTML and five more fetch the images, giving six.",
       "concept": "HTTP"
     },
@@ -238,22 +238,22 @@
       "options": [
         {
           "id": "A",
-          "text": "DNS spoofing (cache poisoning)"
-        },
-        {
-          "id": "B",
           "text": "A zone transfer"
         },
         {
+          "id": "B",
+          "text": "DNS spoofing (cache poisoning)"
+        },
+        {
           "id": "C",
-          "text": "Reverse lookup"
+          "text": "Recursive resolution"
         },
         {
           "id": "D",
-          "text": "Recursive resolution"
+          "text": "Reverse lookup"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Injecting forged records into a resolver's cache redirects every later query for that name to the attacker until the entry expires. DNSSEC addresses this by letting resolvers verify the origin of records.",
       "concept": "DNS"
     }

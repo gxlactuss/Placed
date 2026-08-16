@@ -13,15 +13,15 @@
       "options": [
         {
           "id": "A",
-          "text": "12"
+          "text": "13"
         },
         {
           "id": "B",
-          "text": "10"
+          "text": "12"
         },
         {
           "id": "C",
-          "text": "13"
+          "text": "10"
         },
         {
           "id": "D",
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "6"
-        },
-        {
-          "id": "B",
-          "text": "2"
-        },
-        {
-          "id": "C",
           "text": "3"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "5"
+        },
+        {
+          "id": "C",
+          "text": "2"
+        },
+        {
+          "id": "D",
+          "text": "6"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Deadlock is impossible while m is at least N(k-1)+1, that is 6 >= N + 1, so N up to 5 is safe. With N = 6 each process can hold one unit and wait for a second, exhausting all six.",
       "concept": "Deadlock Avoidance"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "3"
+          "text": "1"
         },
         {
           "id": "B",
-          "text": "2"
+          "text": "3"
         },
         {
           "id": "C",
-          "text": "1"
+          "text": "2"
         },
         {
           "id": "D",
           "text": "4"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "C",
       "explanation": "Safety requires 4 >= 3(K-1)+1, so 3 >= 3(K-1), giving K = 2. With K = 3 each process could hold one instance and still need two more, with only one instance left over.",
       "concept": "Deadlock Avoidance"
     },
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "8"
+          "text": "9"
         },
         {
           "id": "B",
-          "text": "6"
-        },
-        {
-          "id": "C",
           "text": "7"
         },
         {
+          "id": "C",
+          "text": "8"
+        },
+        {
           "id": "D",
-          "text": "9"
+          "text": "6"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Each program can hold at most two units without completing, so 3 x 2 = 6 units can be tied up. A seventh unit always lets one program reach its requirement and finish, releasing its units.",
       "concept": "Deadlock Avoidance"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The system is in a safe state"
-        },
-        {
-          "id": "B",
           "text": "Deadlock may or may not have occurred"
         },
         {
+          "id": "B",
+          "text": "Deadlock has definitely occurred"
+        },
+        {
           "id": "C",
-          "text": "Starvation but never deadlock"
+          "text": "The system is in a safe state"
         },
         {
           "id": "D",
-          "text": "Deadlock has definitely occurred"
+          "text": "Starvation but never deadlock"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "With single instances a cycle is both necessary and sufficient for deadlock. When resource types have several instances a cycle is only necessary, so deadlock becomes possible rather than certain.",
       "concept": "Deadlock Detection"
     },
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "An unsafe state may still avoid deadlock, depending on future requests"
+          "text": "An unsafe state cannot be entered by any request"
         },
         {
           "id": "B",
@@ -150,10 +150,10 @@
         },
         {
           "id": "D",
-          "text": "An unsafe state cannot be entered by any request"
+          "text": "An unsafe state may still avoid deadlock, depending on future requests"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Unsafe means no ordering is guaranteed to let every process finish in the worst case. If processes happen not to claim their full maximum, the system can still complete — the Banker's algorithm is conservative by design.",
       "concept": "Banker's Algorithm"
     },
@@ -163,11 +163,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Making all resources shareable"
+          "text": "Numbering resources uniquely and requiring requests in increasing order"
         },
         {
           "id": "B",
-          "text": "Numbering resources uniquely and requiring requests in increasing order"
+          "text": "Allowing the system to preempt resources from a waiting process"
         },
         {
           "id": "C",
@@ -175,10 +175,10 @@
         },
         {
           "id": "D",
-          "text": "Allowing the system to preempt resources from a waiting process"
+          "text": "Making all resources shareable"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "A global ordering makes a cycle impossible, since a cycle would require some process to request a lower-numbered resource while holding a higher one. Option A attacks hold-and-wait and option C attacks no-preemption.",
       "concept": "Deadlock Prevention"
     },
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "It prevents deadlock but can cause starvation"
+          "text": "It prevents starvation but not deadlock"
         },
         {
           "id": "B",
@@ -196,14 +196,14 @@
         },
         {
           "id": "C",
-          "text": "It prevents starvation but not deadlock"
+          "text": "It prevents deadlock but can cause starvation"
         },
         {
           "id": "D",
           "text": "It prevents neither deadlock nor starvation"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Since no process ever holds one resource while waiting for another, hold-and-wait is eliminated and deadlock cannot occur. But a process may repeatedly lose its resources and be forced to restart, so it can starve.",
       "concept": "Deadlock Prevention"
     },
@@ -213,22 +213,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Some other process has Yi less than Xp"
-        },
-        {
-          "id": "B",
           "text": "The total of all Xi exceeds the number of instances of R"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Every other process has Yi greater than the sum of Xp and Xq"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Every other process has Yi equal to zero"
+        },
+        {
+          "id": "D",
+          "text": "Some other process has Yi less than Xp"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "B",
       "explanation": "Only p and q can finish immediately, releasing Xp + Xq instances between them. If every remaining process needs strictly more than that, none can proceed even after both release.",
       "concept": "Deadlock Detection"
     },
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Circular wait"
+          "text": "Preemption of allocated resources"
         },
         {
           "id": "B",
@@ -250,10 +250,10 @@
         },
         {
           "id": "D",
-          "text": "Preemption of allocated resources"
+          "text": "Circular wait"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Deadlock requires NO preemption — resources must not be forcibly taken back. Allowing preemption is in fact one of the standard ways to prevent deadlock.",
       "concept": "Deadlock Conditions"
     }

@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Consistency"
+          "text": "Isolation"
         },
         {
           "id": "B",
@@ -21,14 +21,14 @@
         },
         {
           "id": "C",
-          "text": "Durability"
+          "text": "Consistency"
         },
         {
           "id": "D",
-          "text": "Isolation"
+          "text": "Durability"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Durability means committed changes persist, normally ensured by forcing log records to stable storage before acknowledging the commit. Atomicity is all-or-nothing, not persistence.",
       "concept": "Transactions"
     },
@@ -46,14 +46,14 @@
         },
         {
           "id": "C",
-          "text": "Every transaction follows two-phase locking"
+          "text": "Its precedence (serialization) graph is acyclic"
         },
         {
           "id": "D",
-          "text": "Its precedence (serialization) graph is acyclic"
+          "text": "Every transaction follows two-phase locking"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "Build a node per transaction and an edge Ti → Tj for each conflicting pair where Ti acts first. The schedule is conflict serializable exactly when this graph has no cycle.",
       "concept": "Serializability"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Both are reads"
+          "text": "Both are writes only"
         },
         {
           "id": "B",
@@ -71,11 +71,11 @@
         },
         {
           "id": "C",
-          "text": "Both are writes only"
+          "text": "They occur in the same transaction"
         },
         {
           "id": "D",
-          "text": "They occur in the same transaction"
+          "text": "Both are reads"
         }
       ],
       "correct_option_id": "B",
@@ -88,22 +88,22 @@
       "options": [
         {
           "id": "A",
-          "text": "READ COMMITTED"
+          "text": "READ UNCOMMITTED"
         },
         {
           "id": "B",
-          "text": "REPEATABLE READ"
+          "text": "READ COMMITTED"
         },
         {
           "id": "C",
-          "text": "READ UNCOMMITTED"
+          "text": "REPEATABLE READ"
         },
         {
           "id": "D",
           "text": "SERIALIZABLE"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "READ COMMITTED only ever reads committed data, so no dirty reads, but it does not hold read locks to completion — so re-reading a row may yield a different value.",
       "concept": "Isolation Levels"
     },
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Reads the same row twice and gets different values"
-        },
-        {
-          "id": "B",
-          "text": "Reads a row that was deleted before it started"
-        },
-        {
-          "id": "C",
           "text": "Reads a value written by another transaction that has not yet committed"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "Reads the same row twice and gets different values"
+        },
+        {
+          "id": "C",
           "text": "Writes over another transaction's uncommitted write"
+        },
+        {
+          "id": "D",
+          "text": "Reads a row that was deleted before it started"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Reading uncommitted data is dangerous because the writer may abort, leaving the reader having acted on a value that never existed — a cascading rollback.",
       "concept": "Isolation Levels"
     },
@@ -142,18 +142,18 @@
         },
         {
           "id": "B",
-          "text": "No transaction ever aborts"
-        },
-        {
-          "id": "C",
           "text": "All writes happen at commit time"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "Every transaction reads only values written by committed transactions"
+        },
+        {
+          "id": "D",
+          "text": "No transaction ever aborts"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "If a transaction never reads uncommitted data, one abort can never force others to roll back. Every cascadeless schedule is recoverable, but not vice versa.",
       "concept": "Recoverability"
     },
@@ -196,11 +196,11 @@
         },
         {
           "id": "C",
-          "text": "Dirty read"
+          "text": "Non-repeatable read"
         },
         {
           "id": "D",
-          "text": "Non-repeatable read"
+          "text": "Dirty read"
         }
       ],
       "correct_option_id": "B",
@@ -213,11 +213,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Its final statement has executed"
+          "text": "It acquires all required locks"
         },
         {
           "id": "B",
-          "text": "It acquires all required locks"
+          "text": "It releases its first lock"
         },
         {
           "id": "C",
@@ -225,7 +225,7 @@
         },
         {
           "id": "D",
-          "text": "It releases its first lock"
+          "text": "Its final statement has executed"
         }
       ],
       "correct_option_id": "C",
@@ -238,15 +238,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Every view-serializable schedule is conflict serializable"
-        },
-        {
-          "id": "B",
           "text": "The two classes are disjoint"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "View serializability is a stricter condition"
+        },
+        {
+          "id": "C",
+          "text": "Every view-serializable schedule is conflict serializable"
         },
         {
           "id": "D",

@@ -13,7 +13,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Physical, Data Link, Network"
+          "text": "Transport, Session, Presentation, Application"
         },
         {
           "id": "B",
@@ -25,10 +25,10 @@
         },
         {
           "id": "D",
-          "text": "Transport, Session, Presentation, Application"
+          "text": "Physical, Data Link, Network"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "The lower three layers are concerned with getting bits between adjacent nodes and across the subnet. From Transport upward the layers hold a conversation between the two end hosts, with intermediate routers unaware of them.",
       "concept": "OSI Model"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "n(n-1)/2 and n"
+          "text": "n(n-1) and n-1"
         },
         {
           "id": "B",
-          "text": "n and n(n-1)/2"
-        },
-        {
-          "id": "C",
           "text": "n(n-1)/2 and n-1"
         },
         {
+          "id": "C",
+          "text": "n(n-1)/2 and n"
+        },
+        {
           "id": "D",
-          "text": "n(n-1) and n-1"
+          "text": "n and n(n-1)/2"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "A full mesh connects every unordered pair once, giving n(n-1)/2 links. A star connects each device to the central hub, giving n links.",
       "concept": "Topologies"
     },
@@ -63,7 +63,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Uniform Transmission Path"
+          "text": "Universal Transfer Protocol"
         },
         {
           "id": "B",
@@ -71,7 +71,7 @@
         },
         {
           "id": "C",
-          "text": "Universal Transfer Protocol"
+          "text": "Uniform Transmission Path"
         },
         {
           "id": "D",
@@ -113,15 +113,15 @@
       "options": [
         {
           "id": "A",
-          "text": "They identify the destination of the character"
-        },
-        {
-          "id": "B",
           "text": "They increase the effective data rate of the link"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "They carry parity information for error correction"
+        },
+        {
+          "id": "C",
+          "text": "They identify the destination of the character"
         },
         {
           "id": "D",
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "1920"
-        },
-        {
-          "id": "B",
           "text": "1600"
         },
         {
+          "id": "B",
+          "text": "2743"
+        },
+        {
           "id": "C",
-          "text": "2400"
+          "text": "1920"
         },
         {
           "id": "D",
-          "text": "2743"
+          "text": "2400"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Each character occupies 7 + 1 + 1 + 1 = 10 bits on the wire. So 19,200 / 10 = 1920 characters per second.",
       "concept": "Data Rate"
     },
@@ -163,7 +163,7 @@
       "options": [
         {
           "id": "A",
-          "text": "It doubles the data rate for a given bandwidth"
+          "text": "It removes the need for error detection"
         },
         {
           "id": "B",
@@ -171,11 +171,11 @@
         },
         {
           "id": "C",
-          "text": "It allows more than two voltage levels"
+          "text": "It doubles the data rate for a given bandwidth"
         },
         {
           "id": "D",
-          "text": "It removes the need for error detection"
+          "text": "It allows more than two voltage levels"
         }
       ],
       "correct_option_id": "B",
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Hub"
+          "text": "Repeater"
         },
         {
           "id": "B",
-          "text": "Router"
+          "text": "Hub"
         },
         {
           "id": "C",
-          "text": "Layer-2 switch"
+          "text": "Router"
         },
         {
           "id": "D",
-          "text": "Repeater"
+          "text": "Layer-2 switch"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "A switch learns which MAC addresses live on which port and forwards frames only where they are needed, so each port is its own collision domain. Hubs and repeaters work at the physical layer; routers work at the network layer.",
       "concept": "Network Devices"
     },
@@ -213,15 +213,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Routes packets between different IP networks"
-        },
-        {
-          "id": "B",
           "text": "Stores frames and forwards them by destination MAC address"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "Operates only on fibre optic media"
+        },
+        {
+          "id": "C",
+          "text": "Routes packets between different IP networks"
         },
         {
           "id": "D",
@@ -242,15 +242,15 @@
         },
         {
           "id": "B",
-          "text": "Code division multiplexing"
+          "text": "Wavelength division multiplexing"
         },
         {
           "id": "C",
-          "text": "Frequency division multiplexing"
+          "text": "Code division multiplexing"
         },
         {
           "id": "D",
-          "text": "Wavelength division multiplexing"
+          "text": "Frequency division multiplexing"
         }
       ],
       "correct_option_id": "A",

@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "They are two names for the same technique"
-        },
-        {
-          "id": "B",
-          "text": "Vertical adds more machines; horizontal adds more resources to one machine"
-        },
-        {
-          "id": "C",
           "text": "Vertical adds resources to one machine; horizontal adds more machines"
         },
         {
-          "id": "D",
+          "id": "B",
+          "text": "They are two names for the same technique"
+        },
+        {
+          "id": "C",
           "text": "Vertical applies to databases and horizontal only to web servers"
+        },
+        {
+          "id": "D",
+          "text": "Vertical adds more machines; horizontal adds more resources to one machine"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Scaling up means a bigger machine, which is simple but has a hard ceiling and a single point of failure. Scaling out means more machines, which scales further but forces you to deal with distribution.",
       "concept": "Scalability"
     },
@@ -38,15 +38,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Stateless servers use less CPU per request"
-        },
-        {
-          "id": "B",
           "text": "It guarantees requests are processed in order"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "It removes the need for a database"
+        },
+        {
+          "id": "C",
+          "text": "Stateless servers use less CPU per request"
         },
         {
           "id": "D",
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "The time taken to service a single request"
+          "text": "The total data stored by the system"
         },
         {
           "id": "B",
-          "text": "The percentage of requests that succeed"
-        },
-        {
-          "id": "C",
           "text": "The number of requests handled per second"
         },
         {
+          "id": "C",
+          "text": "The time taken to service a single request"
+        },
+        {
           "id": "D",
-          "text": "The total data stored by the system"
+          "text": "The percentage of requests that succeed"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Latency is per-request time and throughput is requests per unit time. They can move in opposite directions: batching often raises throughput while making each individual request slower.",
       "concept": "Performance Metrics"
     },
@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "It is cheaper to compute than the average"
+          "text": "It measures the number of failed requests"
         },
         {
           "id": "C",
@@ -100,7 +100,7 @@
         },
         {
           "id": "D",
-          "text": "It measures the number of failed requests"
+          "text": "It is cheaper to compute than the average"
         }
       ],
       "correct_option_id": "C",
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "A component whose failure brings down the whole system"
-        },
-        {
-          "id": "B",
           "text": "A bug that appears only once during testing"
         },
         {
+          "id": "B",
+          "text": "A component whose failure brings down the whole system"
+        },
+        {
           "id": "C",
-          "text": "The slowest component in a request path"
+          "text": "The first server a request reaches"
         },
         {
           "id": "D",
-          "text": "The first server a request reaches"
+          "text": "The slowest component in a request path"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "B",
       "explanation": "Availability is limited by any component with no redundancy. Ironically the load balancer added for redundancy becomes one itself unless it is deployed in a redundant pair.",
       "concept": "Availability"
     },
@@ -163,7 +163,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Databases cannot run on more than one machine at all"
+          "text": "Network bandwidth becomes irrelevant"
         },
         {
           "id": "B",
@@ -171,11 +171,11 @@
         },
         {
           "id": "C",
-          "text": "Queries become impossible to index"
+          "text": "Databases cannot run on more than one machine at all"
         },
         {
           "id": "D",
-          "text": "Network bandwidth becomes irrelevant"
+          "text": "Queries become impossible to index"
         }
       ],
       "correct_option_id": "B",
@@ -188,22 +188,22 @@
       "options": [
         {
           "id": "A",
-          "text": "It stores data durably on disk"
-        },
-        {
-          "id": "B",
-          "text": "It renders the user interface in the browser"
-        },
-        {
-          "id": "C",
           "text": "It holds business logic between the presentation and data tiers"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "It balances load across the database"
+        },
+        {
+          "id": "C",
+          "text": "It renders the user interface in the browser"
+        },
+        {
+          "id": "D",
+          "text": "It stores data durably on disk"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "A",
       "explanation": "Separating presentation, logic and storage lets each tier be scaled, deployed and reasoned about independently, and stops business rules from being duplicated in the UI.",
       "concept": "Architecture"
     },
@@ -213,7 +213,7 @@
       "options": [
         {
           "id": "A",
-          "text": "To let clients hide their IP addresses from the server"
+          "text": "To replace the need for a database"
         },
         {
           "id": "B",
@@ -221,14 +221,14 @@
         },
         {
           "id": "C",
-          "text": "To replace the need for a database"
+          "text": "To terminate TLS, route requests and shield backends from direct exposure"
         },
         {
           "id": "D",
-          "text": "To terminate TLS, route requests and shield backends from direct exposure"
+          "text": "To let clients hide their IP addresses from the server"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "A reverse proxy acts on behalf of the servers, centralising TLS termination, routing, caching and rate limiting. A forward proxy is the one that acts on behalf of clients.",
       "concept": "Architecture"
     },
@@ -242,11 +242,11 @@
         },
         {
           "id": "B",
-          "text": "About 5 minutes"
+          "text": "About 3.7 days"
         },
         {
           "id": "C",
-          "text": "About 3.7 days"
+          "text": "About 5 minutes"
         },
         {
           "id": "D",

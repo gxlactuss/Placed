@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "165000 ns"
-        },
-        {
-          "id": "B",
           "text": "570000 ns"
         },
         {
+          "id": "B",
+          "text": "165495 ns"
+        },
+        {
           "id": "C",
-          "text": "160000 ns"
+          "text": "165000 ns"
         },
         {
           "id": "D",
-          "text": "165495 ns"
+          "text": "160000 ns"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The clock is set by the slowest stage plus its register: 160 + 5 = 165 ns. Filling the pipeline costs 3 cycles, so the total is (1000 + 3) x 165 = 165,495 ns.",
       "concept": "Pipelining"
     },
@@ -38,22 +38,22 @@
       "options": [
         {
           "id": "A",
-          "text": "2^12 - 1"
-        },
-        {
-          "id": "B",
           "text": "2^14 - 1"
         },
         {
+          "id": "B",
+          "text": "2^13 - 1"
+        },
+        {
           "id": "C",
-          "text": "2^16 - 1"
+          "text": "2^12 - 1"
         },
         {
           "id": "D",
-          "text": "2^13 - 1"
+          "text": "2^16 - 1"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "Encoding 45 opcodes needs ceil(log2 45) = 6 bits, and each register field needs log2(64) = 6 bits. That leaves 32 - 6 - 6 - 6 = 14 bits, so the largest unsigned immediate is 2^14 - 1 = 16383.",
       "concept": "Instruction Formats"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Read after write (true dependence)"
-        },
-        {
-          "id": "B",
-          "text": "Write after write (output dependence)"
-        },
-        {
-          "id": "C",
           "text": "Structural hazard"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Write after read (anti-dependence)"
+        },
+        {
+          "id": "C",
+          "text": "Write after write (output dependence)"
+        },
+        {
+          "id": "D",
+          "text": "Read after write (true dependence)"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "RAW is a genuine data dependence and is usually handled by forwarding the result directly from a later pipeline stage. WAR and WAW are naming conflicts that register renaming can remove.",
       "concept": "Pipeline Hazards"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "19"
+          "text": "13"
         },
         {
           "id": "B",
-          "text": "15"
+          "text": "19"
         },
         {
           "id": "C",
@@ -100,7 +100,7 @@
         },
         {
           "id": "D",
-          "text": "13"
+          "text": "15"
         }
       ],
       "correct_option_id": "C",
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "10 ns"
+          "text": "14 ns"
         },
         {
           "id": "B",
-          "text": "45 ns"
+          "text": "10 ns"
         },
         {
           "id": "C",
-          "text": "27.5 ns"
+          "text": "45 ns"
         },
         {
           "id": "D",
-          "text": "14 ns"
+          "text": "27.5 ns"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "Averaging over the two cases gives 0.8 x 5 + 0.2 x 50 = 4 + 10 = 14 ns. Note how heavily a 20 percent miss rate weighs on the result.",
       "concept": "Cache Performance"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "PC-relative addressing"
+          "text": "Absolute (direct) addressing"
         },
         {
           "id": "B",
-          "text": "Immediate addressing"
-        },
-        {
-          "id": "C",
           "text": "Register addressing"
         },
         {
+          "id": "C",
+          "text": "PC-relative addressing"
+        },
+        {
           "id": "D",
-          "text": "Absolute (direct) addressing"
+          "text": "Immediate addressing"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "C",
       "explanation": "Encoding a displacement from the program counter means the code runs correctly wherever it is loaded. Absolute addresses would have to be patched at every relocation.",
       "concept": "Addressing Modes"
     },
@@ -171,11 +171,11 @@
         },
         {
           "id": "C",
-          "text": "Microprogrammed control as the norm"
+          "text": "A large number of addressing modes"
         },
         {
           "id": "D",
-          "text": "A large number of addressing modes"
+          "text": "Microprogrammed control as the norm"
         }
       ],
       "correct_option_id": "B",
@@ -192,7 +192,7 @@
         },
         {
           "id": "B",
-          "text": "It allows I/O without any device driver"
+          "text": "It increases the raw speed of the I/O device"
         },
         {
           "id": "C",
@@ -200,7 +200,7 @@
         },
         {
           "id": "D",
-          "text": "It increases the raw speed of the I/O device"
+          "text": "It allows I/O without any device driver"
         }
       ],
       "correct_option_id": "C",
@@ -217,18 +217,18 @@
         },
         {
           "id": "B",
-          "text": "The tag field grows until it exceeds the address width"
+          "text": "Fewer blocks fit, so useful data is evicted and unused bytes are fetched"
         },
         {
           "id": "C",
-          "text": "Larger blocks disable prefetching"
+          "text": "The tag field grows until it exceeds the address width"
         },
         {
           "id": "D",
-          "text": "Fewer blocks fit, so useful data is evicted and unused bytes are fetched"
+          "text": "Larger blocks disable prefetching"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "Big blocks exploit spatial locality up to a point, but for a fixed capacity they reduce the number of distinct regions cached and waste bandwidth on bytes never referenced.",
       "concept": "Cache Memory"
     },
@@ -238,7 +238,7 @@
       "options": [
         {
           "id": "A",
-          "text": "1, 8 and 23"
+          "text": "1, 11 and 20"
         },
         {
           "id": "B",
@@ -246,14 +246,14 @@
         },
         {
           "id": "C",
-          "text": "1, 11 and 20"
+          "text": "1, 7 and 24"
         },
         {
           "id": "D",
-          "text": "1, 7 and 24"
+          "text": "1, 8 and 23"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Single precision uses 1 sign bit, an 8-bit exponent biased by 127, and a 23-bit fraction with an implicit leading 1. Double precision uses 1, 11 and 52.",
       "concept": "Floating Point"
     }

@@ -13,22 +13,22 @@
       "options": [
         {
           "id": "A",
-          "text": "1000 bits"
-        },
-        {
-          "id": "B",
           "text": "250 bits"
         },
         {
-          "id": "C",
+          "id": "B",
           "text": "512 bits"
         },
         {
-          "id": "D",
+          "id": "C",
           "text": "500 bits"
+        },
+        {
+          "id": "D",
+          "text": "1000 bits"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "C",
       "explanation": "One-way propagation is 500 / (2 x 10^8) = 2.5 microseconds, so the round trip is 5 microseconds. The sender must still be transmitting after that, needing 10^8 x 5 x 10^-6 = 500 bits.",
       "concept": "CSMA/CD"
     },
@@ -63,22 +63,22 @@
       "options": [
         {
           "id": "A",
-          "text": "Jam signal"
-        },
-        {
-          "id": "B",
-          "text": "Runt"
-        },
-        {
-          "id": "C",
           "text": "Jabber"
         },
         {
-          "id": "D",
+          "id": "B",
           "text": "Giant"
+        },
+        {
+          "id": "C",
+          "text": "Jam signal"
+        },
+        {
+          "id": "D",
+          "text": "Runt"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "D",
       "explanation": "Runts are usually the debris of a collision and are discarded. A frame exceeding the maximum length is a giant, and a station transmitting continuously is jabbering.",
       "concept": "Ethernet"
     },
@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Destination address"
+          "text": "Length or type field"
         },
         {
           "id": "B",
-          "text": "Frame check sequence"
+          "text": "Destination address"
         },
         {
           "id": "C",
@@ -100,7 +100,7 @@
         },
         {
           "id": "D",
-          "text": "Length or type field"
+          "text": "Frame check sequence"
         }
       ],
       "correct_option_id": "C",
@@ -113,22 +113,22 @@
       "options": [
         {
           "id": "A",
-          "text": "CSMA/CD"
+          "text": "CSMA/CA"
         },
         {
           "id": "B",
-          "text": "Pure ALOHA"
-        },
-        {
-          "id": "C",
           "text": "Token passing"
         },
         {
+          "id": "C",
+          "text": "CSMA/CD"
+        },
+        {
           "id": "D",
-          "text": "CSMA/CA"
+          "text": "Pure ALOHA"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "A",
       "explanation": "A wireless station cannot listen while transmitting, so collisions cannot be detected. 802.11 therefore avoids them using random backoff before sending, plus optional RTS/CTS to address hidden terminals.",
       "concept": "Wireless LAN"
     },
@@ -138,22 +138,22 @@
       "options": [
         {
           "id": "A",
-          "text": "135"
+          "text": "500"
         },
         {
           "id": "B",
-          "text": "368"
-        },
-        {
-          "id": "C",
           "text": "184"
         },
         {
+          "id": "C",
+          "text": "368"
+        },
+        {
           "id": "D",
-          "text": "500"
+          "text": "135"
         }
       ],
-      "correct_option_id": "A",
+      "correct_option_id": "D",
       "explanation": "Frame time is 1 ms, so the offered load G is 1. Pure ALOHA throughput is G x e^(-2G) = e^-2, which is about 0.135, giving roughly 135 frames per second.",
       "concept": "ALOHA"
     },
@@ -163,7 +163,7 @@
       "options": [
         {
           "id": "A",
-          "text": "np(1-p)"
+          "text": "(1-p)^(n-1)"
         },
         {
           "id": "B",
@@ -171,11 +171,11 @@
         },
         {
           "id": "C",
-          "text": "p(1-p)^n"
+          "text": "np(1-p)"
         },
         {
           "id": "D",
-          "text": "(1-p)^(n-1)"
+          "text": "p(1-p)^n"
         }
       ],
       "correct_option_id": "B",
@@ -188,7 +188,7 @@
       "options": [
         {
           "id": "A",
-          "text": "5"
+          "text": "4"
         },
         {
           "id": "B",
@@ -196,14 +196,14 @@
         },
         {
           "id": "C",
-          "text": "3"
+          "text": "5"
         },
         {
           "id": "D",
-          "text": "4"
+          "text": "3"
         }
       ],
-      "correct_option_id": "C",
+      "correct_option_id": "D",
       "explanation": "Interconnecting switches consumes ports. With three switches, two ports are used for the links between them, leaving 8 + 6 + 7 = 21 free ports, which is enough. Two switches offer only 14 usable ports.",
       "concept": "Switching"
     },
@@ -213,11 +213,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Frame check sequence"
+          "text": "Backoff token"
         },
         {
           "id": "B",
-          "text": "Backoff token"
+          "text": "Jam signal"
         },
         {
           "id": "C",
@@ -225,10 +225,10 @@
         },
         {
           "id": "D",
-          "text": "Jam signal"
+          "text": "Frame check sequence"
         }
       ],
-      "correct_option_id": "D",
+      "correct_option_id": "B",
       "explanation": "The 32-bit jam signal ensures the collision lasts long enough for every other station to notice it, so all parties abort and back off rather than some continuing with corrupted data.",
       "concept": "CSMA/CD"
     },
@@ -238,11 +238,11 @@
       "options": [
         {
           "id": "A",
-          "text": "0.5"
+          "text": "0.625"
         },
         {
           "id": "B",
-          "text": "0.625"
+          "text": "0.5"
         },
         {
           "id": "C",
@@ -253,7 +253,7 @@
           "text": "1.0"
         }
       ],
-      "correct_option_id": "B",
+      "correct_option_id": "A",
       "explanation": "A transmitted successfully so its counter reset: it now draws from {0,1}. B has collided twice and draws from {0,1,2,3}. A wins when it draws strictly smaller — 5 of the 8 equally likely pairs — giving 0.625.",
       "concept": "Backoff"
     }
