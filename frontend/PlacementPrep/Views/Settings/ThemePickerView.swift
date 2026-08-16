@@ -34,6 +34,7 @@ struct ThemePickerView: View {
                     }
                 }
                 .padding(PPSpacing.xl)
+                .ppContentColumn()
                 .animation(PPMotion.settle, value: store.isDynamic)
             }
             .scrollIndicators(.hidden)

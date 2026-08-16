@@ -46,6 +46,7 @@ struct AppIconPickerView: View {
                     }
                 }
                 .padding(PPSpacing.xl)
+                .ppContentColumn()
             }
             .scrollIndicators(.hidden)
         }

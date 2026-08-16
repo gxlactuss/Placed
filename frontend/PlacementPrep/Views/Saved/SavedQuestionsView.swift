@@ -44,6 +44,7 @@ struct SavedQuestionsView: View {
         .padding(.horizontal, PPSpacing.xl)
         .padding(.top, PPSpacing.xl)
         .padding(.bottom, PPSpacing.md)
+        .ppContentColumn()
     }
 
     private var list: some View {
@@ -54,6 +55,7 @@ struct SavedQuestionsView: View {
                 }
             }
             .padding(PPSpacing.xl)
+            .ppContentColumn()
             .animation(PPMotion.settle, value: saved.savedIDs)
         }
         .scrollIndicators(.hidden)
