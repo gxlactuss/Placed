@@ -100,6 +100,70 @@ enum Subject: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
         case .mixed: "Related Concepts"
         }
     }
+
+    /// One line under the title on a subject folder, in the same register as
+    /// `Category.blurb`: what the topic actually covers, not a restatement of
+    /// its name.
+    var blurb: String {
+        switch self {
+        case .operatingSystems: "Processes, memory, scheduling, deadlocks"
+        case .networks: "TCP/IP, routing, HTTP, the OSI layers"
+        case .dbms: "SQL, normalisation, transactions, indexing"
+        case .systemDesign: "Scaling, caching, queues, trade-offs"
+        case .algorithms: "Sorting, graphs, DP, greedy, searching"
+        case .dataStructures: "Arrays, trees, heaps, hashing, graphs"
+        case .quantitative: "Numbers, ratios, time and work, probability"
+        case .logical: "Puzzles, sequences, seating, deduction"
+        case .verbal: "Comprehension, grammar, vocabulary"
+        case .general: "Theory, compilers, architecture, OOP"
+        case .mixed: "Bit tricks, maths, complexity, OOP for interviews"
+        }
+    }
+
+    /// SF Symbol for the folder badge. Drawn inside the parent category's
+    /// palette (see `PPCategoryBadge`), so a topic still reads as part of its
+    /// track while being distinguishable within it.
+    var badgeSymbol: String {
+        switch self {
+        case .operatingSystems: "gearshape.2"
+        case .networks: "network"
+        case .dbms: "cylinder.split.1x2"
+        case .systemDesign: "square.grid.3x3.topleft.filled"
+        case .algorithms: "function"
+        case .dataStructures: "tree"
+        case .quantitative: "number"
+        case .logical: "puzzlepiece"
+        case .verbal: "text.book.closed"
+        case .general: "books.vertical"
+        case .mixed: "shuffle"
+        }
+    }
+}
+
+// MARK: - Track
+
+/// One list of quizzes a student actually plays through: a category, narrowed to
+/// a topic when that category has topics.
+///
+/// This exists because the unlock chain is per topic, not per category. "Quiz 2
+/// opens once quiz 1 is passed" is only a sensible rule between quizzes about
+/// the same thing — chaining all 30 CS quizzes into one line meant a student who
+/// wanted DBMS had to clear seven Operating Systems quizzes to reach it. The
+/// track is what the chain, the progress count and the navigation value are all
+/// keyed on.
+///
+/// `subject` is `nil` for a category with no topics (Your Role), where the
+/// track is simply the whole category.
+struct QuizTrack: Hashable, Identifiable, Sendable {
+
+    let category: Category
+    let subject: Subject?
+
+    var id: String { "\(category.rawValue)/\(subject?.rawValue ?? "all")" }
+
+    var title: String { subject?.title ?? category.title }
+    var blurb: String { subject?.blurb ?? category.blurb }
+    var badgeSymbol: String { subject?.badgeSymbol ?? category.badgeSymbol }
 }
 
 // MARK: - Question

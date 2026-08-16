@@ -50,12 +50,15 @@ extension Category {
 struct PPCategoryBadge: View {
 
     let category: Category
+    /// Overrides the category's own mark while keeping its palette — how a
+    /// topic folder reads as part of its track and still distinct within it.
+    var symbol: String?
     var size: CGFloat = 56
 
     var body: some View {
         let palette = category.palette
 
-        Image(systemName: category.badgeSymbol)
+        Image(systemName: symbol ?? category.badgeSymbol)
             .font(.system(size: size * 0.42, weight: .medium))
             .foregroundStyle(palette.glyph)
             .frame(width: size, height: size)
