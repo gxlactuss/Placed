@@ -54,10 +54,13 @@ cd frontend
 ./Scripts/fetch-company-csvs.sh          # (re)populate Resources/Companies/*.csv
 python3 Scripts/fetch-company-logos.py   # (re)populate Resources/Logos/*.png
 python3 Scripts/validate-quizzes.py      # gate: run after touching any quiz JSON
+python3 Scripts/shuffle-quiz-answers.py  # re-deal the answer key if a quiz trips the pattern check
 xcodegen generate                        # required after any data file add/delete
 ```
 
 `validate-quizzes.py` cross-checks each quiz JSON's `category`/`subject`/`difficulty` **against the actual Swift enums in `QuizBankModels.swift`** — a value the enum doesn't declare is valid JSON but fails to decode at runtime, so this catches it before the app does. It also enforces A–D option ids, a valid answer key, unique ids/prompts, non-colliding orders, and that the answer-letter spread isn't guessable. Its exit code is non-zero on failure, so it can gate a commit.
+
+"Not guessable" is now two separate checks, because the bank failed the interesting one while passing the obvious one. The **spread** check counts letters across the whole bank; the **sequence** check (`answer_key_patterns`) reads each quiz's key in order and rejects five answers marching one letter at a time (A, B, C, D, A — in either direction) or three of the same letter running. The bank was originally authored as a straight A, B, C, D cycle down every file: a perfectly even spread that a student could ride without reading a prompt. `Scripts/shuffle-quiz-answers.py` is the fix — it rewrites the four option **texts** onto a fresh arrangement of the A–D ids and moves `correct_option_id` with the answer, dealing target letters from a balanced deck and re-rolling until the sequence check passes. Option **ids stay A–D in order**, because they are the persistence and answer keys, so nothing downstream notices. It is deterministic for a given `--seed`, skips any question whose options refer to each other by letter ("Both A and B"), and has a `--dry-run`. If you hand-author a quiz and the validator complains about a run, re-run the shuffler rather than nudging one answer.
 
 ### Backend
 

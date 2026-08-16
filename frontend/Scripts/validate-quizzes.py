@@ -55,6 +55,33 @@ def swift_enum_values(source, name):
     return values
 
 
+def answer_key_patterns(letters):
+    """Runs in a quiz's answer key that a student could ride instead of reading.
+
+    An even A/B/C/D spread across the whole bank says nothing about the order
+    within one quiz: the bank was originally authored as A, B, C, D, A, B, C, D
+    straight down each file, which is perfectly balanced and completely
+    predictable. So this looks at the sequence, not the totals — five answers
+    marching one letter at a time (in either direction, wrapping D to A) or
+    three of the same letter back to back.
+
+    `Scripts/shuffle-quiz-answers.py` re-deals a file that trips this.
+    """
+    ids = "ABCD"
+    if any(letter not in ids for letter in letters):
+        return []  # a bad key is already reported by the per-question checks
+
+    steps = [(ids.index(b) - ids.index(a)) % 4 for a, b in zip(letters, letters[1:])]
+    found, run = [], 0
+    for i, step in enumerate(steps):
+        run = run + 1 if i and steps[i - 1] == step else 1
+        if step == 0 and run >= 2:
+            found.append(f"answer key repeats {letters[i + 1]} {run + 1} times from Q{i - run + 2}")
+        elif step in (1, 3) and run >= 4:
+            found.append(f"answer key cycles for {run + 1} questions from Q{i - run + 2}")
+    return found[:1]  # one report per quiz; the fix re-deals the whole file
+
+
 def main():
     source = open(MODELS).read()
     categories = swift_enum_values(source, "Category")
@@ -91,6 +118,7 @@ def main():
 
         quiz_ids[quiz.get("id")] += 1
         orders[quiz.get("category")][quiz.get("order")] += 1
+        answer_key = []
 
         for question in quiz.get("questions", []):
             total += 1
@@ -111,6 +139,9 @@ def main():
                 if not question.get(field):
                     problems.append(f"{name}/{qid}: empty {field}")
             keys[question.get("correct_option_id")] += 1
+            answer_key.append(question.get("correct_option_id"))
+
+        problems += [f"{name}: {p}" for p in answer_key_patterns(answer_key)]
 
     problems += [f"duplicate quiz id {k}" for k, v in quiz_ids.items() if v > 1]
     problems += [f"duplicate question id {k}" for k, v in question_ids.items() if v > 1]
