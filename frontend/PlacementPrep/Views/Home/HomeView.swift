@@ -30,6 +30,7 @@ struct HomeView: View {
                 streakCard
             }
             .padding(PPSpacing.xl)
+            .ppContentColumn()
         }
         .scrollIndicators(.hidden)
         .foregroundStyle(Color.ppText)
