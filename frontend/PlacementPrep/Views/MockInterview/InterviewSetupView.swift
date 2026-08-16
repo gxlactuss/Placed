@@ -51,6 +51,7 @@ struct InterviewSetupView: View {
                 startButton
             }
             .padding(PPSpacing.xl)
+            .ppContentColumn()
         }
         .scrollIndicators(.hidden)
         .foregroundStyle(Color.ppText)

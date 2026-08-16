@@ -34,6 +34,7 @@ struct InterviewResultsView: View {
                     }
                 }
                 .padding(PPSpacing.xl)
+                .ppContentColumn()
             }
             .scrollIndicators(.hidden)
 
@@ -184,6 +185,7 @@ struct InterviewResultsView: View {
                 .buttonStyle(.ppPrimary)
         }
         .padding(PPSpacing.xl)
+        .ppContentColumn()
         .background(.ultraThinMaterial)
         .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {

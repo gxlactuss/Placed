@@ -184,7 +184,6 @@ struct MockInterviewView: View {
 
             Spacer(minLength: PPSpacing.sm)
 
-            // Icon-only here: the title and round badge already claim this row.
             FocusModeToggle(compact: true)
 
             PPIconButton(systemName: "xmark", diameter: 36) { leaveRound() }
@@ -193,6 +192,10 @@ struct MockInterviewView: View {
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.vertical, PPSpacing.lg)
+        // The wave below is deliberately *not* columned — it hangs off this
+        // header's bottom edge across the full width, and insetting it would
+        // leave the thing it is attached to showing either side.
+        .ppContentColumn()
     }
 
     // MARK: - Transcript
@@ -214,6 +217,7 @@ struct MockInterviewView: View {
                 }
                 .padding(.horizontal, PPSpacing.xl)
                 .padding(.bottom, PPSpacing.lg)
+                .ppContentColumn()
             }
             .scrollIndicators(.hidden)
             .animation(PPMotion.settle, value: model.turns.count)
@@ -312,6 +316,7 @@ struct MockInterviewView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, PPSpacing.xl)
+        .ppContentColumn()
         // Matches the quiz footer: one static blur region over the transcript.
         .background(.ultraThinMaterial)
         .background(Color.ppGround.opacity(0.6))

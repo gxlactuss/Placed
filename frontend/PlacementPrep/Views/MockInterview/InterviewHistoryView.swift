@@ -56,6 +56,7 @@ struct InterviewHistoryView: View {
                 }
             }
             .padding(PPSpacing.xl)
+            .ppContentColumn()
         }
         .scrollIndicators(.hidden)
     }

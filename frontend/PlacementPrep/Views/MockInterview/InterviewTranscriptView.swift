@@ -40,6 +40,7 @@ struct InterviewTranscriptView: View {
                 transcript(session)
             }
             .padding(PPSpacing.xl)
+            .ppContentColumn()
         }
         .scrollIndicators(.hidden)
     }

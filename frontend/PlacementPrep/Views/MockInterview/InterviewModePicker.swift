@@ -93,6 +93,7 @@ struct InterviewModePicker: View {
                 }
             }
             .padding(PPSpacing.xl)
+            .ppContentColumn()
         }
         .scrollIndicators(.hidden)
         .foregroundStyle(Color.ppText)
