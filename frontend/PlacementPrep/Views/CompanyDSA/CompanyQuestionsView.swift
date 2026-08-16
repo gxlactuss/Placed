@@ -85,6 +85,10 @@ struct CompanyQuestionsView: View {
                 rows
             }
         }
+        // The whole panel, not the pieces — the fast-scroll rail hugs the
+        // trailing edge of the list, so it has to travel with the column rather
+        // than stay pinned to a screen edge the rows no longer reach.
+        .ppContentColumn(PPSize.wideColumn)
     }
 
     // MARK: - Header
