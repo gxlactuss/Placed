@@ -45,9 +45,10 @@ targets:
         PRODUCT_NAME: PlacementPrep
         INFOPLIST_FILE: PlacementPrep/Resources/Info.plist
         GENERATE_INFOPLIST_FILE: NO
-        # iPhone only — the designs are phone-width and the layouts are not
-        # adapted for regular-width size classes yet.
-        TARGETED_DEVICE_FAMILY: "1"
+        # iPhone and iPad. The designs are still phone-width by intent — on a
+        # regular-width screen the screens keep their measure via
+        # `.ppContentColumn()` rather than stretching (see PPContentColumn.swift).
+        TARGETED_DEVICE_FAMILY: "1,2"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         # The XP-tier icons. These names must stay in step with
         # `XPLevel.alternateIconName` — that's what the picker asks iOS for, and
