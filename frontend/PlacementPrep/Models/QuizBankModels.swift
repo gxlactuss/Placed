@@ -267,6 +267,11 @@ struct Quiz: Codable, Identifiable, Hashable, Sendable {
 /// A quiz paired with its unlock state, which is what the list UI actually needs.
 struct QuizListItem: Identifiable, Hashable, Sendable {
     let quiz: Quiz
+    /// 1-based position **within its track**, which is what the row marker
+    /// shows. Not `quiz.order`, which numbers across the whole category: inside
+    /// the Operating Systems folder the first quiz is "1", even though it is the
+    /// 9th CS quiz authored.
+    let number: Int
     let isUnlocked: Bool
     /// Best score recorded so far, as a percentage. Nil if never attempted.
     let bestScore: Int?

@@ -21,9 +21,9 @@ final class QuizProgressStore {
 
     /// TESTING ONLY — when true, every quiz reports as unlocked so any of them
     /// can be opened without clearing the one before it. Progress is still
-    /// recorded normally, so flipping this back to `false` restores the real
-    /// pass-to-unlock progression with no loss of saved scores.
-    static let unlockAllForTesting = true
+    /// recorded normally, so flipping it either way loses no saved score.
+    /// Ships `false`: the pass-to-unlock progression is the real behaviour.
+    static let unlockAllForTesting = false
 
     /// Quiz id -> best score percentage.
     private(set) var bestScores: [String: Int]
@@ -105,22 +105,28 @@ final class QuizProgressStore {
         persist()
     }
 
-    /// Pairs each quiz with its unlock state.
+    /// Pairs each quiz with its unlock state and its position in the list.
     ///
-    /// The rule: the first quiz in a category is always open, and every later
-    /// one opens when the quiz immediately before it has been passed. Walking
-    /// the ordered list once means a gap cannot be skipped — failing quiz 3
-    /// leaves 4 onward shut even if 4 was somehow passed earlier.
+    /// The rule: the first quiz is always open, and every later one opens when
+    /// the quiz immediately before it has been passed. Walking the ordered list
+    /// once means a gap cannot be skipped — failing quiz 3 leaves 4 onward shut
+    /// even if 4 was somehow passed earlier.
+    ///
+    /// The chain is only as long as the array handed in, which is why the caller
+    /// passes **one track** (see `QuizBank.quizzes(in:track:)`) rather than a
+    /// whole category. Chaining every CS quiz into one line would put seven
+    /// Operating Systems quizzes between a student and the first DBMS one.
     func listItems(for quizzes: [Quiz]) -> [QuizListItem] {
         var previousPassed = true
 
-        return quizzes.map { quiz in
+        return quizzes.enumerated().map { position, quiz in
             // Role quizzes sit outside the chain. A student sees exactly one of
             // them, so there is no earlier quiz to have passed — walking the
             // chain would leave it permanently shut.
             let chained = quiz.category != .role
             let item = QuizListItem(
                 quiz: quiz,
+                number: position + 1,
                 isUnlocked: Self.unlockAllForTesting || !chained || previousPassed,
                 bestScore: bestScores[quiz.id]
             )
