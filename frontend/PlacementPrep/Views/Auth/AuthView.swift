@@ -27,6 +27,7 @@ struct AuthView: View {
             }
             .padding(PPSpacing.xl)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .ppContentColumn()
         }
         .scrollIndicators(.hidden)
         .scrollBounceBehavior(.basedOnSize)

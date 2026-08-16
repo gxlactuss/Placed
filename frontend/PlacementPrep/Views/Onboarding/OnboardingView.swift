@@ -26,6 +26,7 @@ struct OnboardingView: View {
             }
             .padding(PPSpacing.xl)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .ppContentColumn()
         }
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.interactively)
