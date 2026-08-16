@@ -1,13 +1,19 @@
 import SwiftUI
 
-/// Ordered quizzes within a category, each showing its lock or pass state.
+/// Ordered quizzes within one track, each showing its lock or pass state.
+///
+/// A track is a topic (DBMS, Operating Systems) rather than a whole category,
+/// which is what makes the unlock chain usable — see `QuizTrackListView`.
 struct QuizListView: View {
 
-    let category: Category
+    let track: QuizTrack
 
     @Environment(QuizBank.self) private var bank
     @Environment(QuizProgressStore.self) private var progress
     @State private var activeQuiz: Quiz?
+    // Not `private`: a private stored property makes the memberwise
+    // initializer private too, and this view is constructed by name.
+    var columns = PPAdaptiveColumns()
 
     var body: some View {
         Group {
@@ -17,7 +23,7 @@ struct QuizListView: View {
                 list
             }
         }
-        .navigationTitle(category.title)
+        .navigationTitle(track.title)
         .navigationBarTitleDisplayMode(.inline)
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
@@ -27,12 +33,15 @@ struct QuizListView: View {
     }
 
     private var items: [QuizListItem] {
-        progress.listItems(for: bank.quizzes(in: category))
+        progress.listItems(for: bank.quizzes(in: track))
     }
 
+    /// A grid rather than a stack, because a track runs to 30 quizzes and the
+    /// rows are short: on a regular-width screen `columns` gives two, on a phone
+    /// exactly one, which is the stack this used to be.
     private var list: some View {
         ScrollView {
-            LazyVStack(spacing: PPSpacing.md) {
+            LazyVGrid(columns: columns.grid(), spacing: PPSpacing.md) {
                 ForEach(items) { item in
                     Button {
                         activeQuiz = item.quiz
@@ -45,6 +54,7 @@ struct QuizListView: View {
             }
             .padding(.horizontal, PPSpacing.xl)
             .padding(.vertical, PPSpacing.lg)
+            .ppContentColumn(PPSize.wideColumn)
         }
         .scrollIndicators(.hidden)
     }
@@ -105,7 +115,7 @@ struct QuizListView: View {
                     .font(.system(size: 13, weight: .bold))
                     .foregroundStyle(Color.ppOnAccent)
             } else {
-                Text("\(item.quiz.order)")
+                Text("\(item.number)")
                     .font(.ppMicro)
                     .foregroundStyle(Color.ppMuted)
             }
@@ -120,7 +130,7 @@ struct QuizListView: View {
                 .foregroundStyle(Color.ppMuted)
             Text("No quizzes authored yet")
                 .font(.ppBodyMedium)
-            Text("Add \(category.rawValue)-NN.json under Resources/Quizzes, then run xcodegen generate.")
+            Text("Add a quiz JSON for \(track.title) under Resources/Quizzes, then run xcodegen generate.")
                 .font(.ppCaption)
                 .foregroundStyle(Color.ppMuted)
                 .multilineTextAlignment(.center)
@@ -132,7 +142,7 @@ struct QuizListView: View {
 
 #Preview {
     NavigationStack {
-        QuizListView(category: .csFundamentals)
+        QuizListView(track: QuizTrack(category: .csFundamentals, subject: .dbms))
     }
     .environment(QuizBank())
     .environment(QuizProgressStore.preview())

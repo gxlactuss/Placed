@@ -160,6 +160,16 @@ Shape and parsing rules that are load-bearing:
 - The three data folders are declared as **`type: folder`** references in `project.yml` (not groups), so they land in the bundle as real subdirectories that `bundle.urls(forResourcesWithExtension:subdirectory:)` can enumerate. Keep them folder references.
 - `DSACompany.kjsitRecruiters` is a hardcoded set of companies that recruited on KJSIT's 2025-26 campus, surfaced with a green tag among the ~38 generic ones.
 
+### Quiz tracks
+
+The quiz tab is three levels: **category → topic folder → quizzes**. `QuizTrack` (a `Category` plus an optional `Subject`) is the value that navigation, the unlock chain and the progress counts are all keyed on.
+
+The middle level exists because of the lock, not because the list was long. "Quiz 2 opens once quiz 1 is passed" only means something between quizzes about the same thing — with all 30 CS quizzes in one chain, a student who wanted DBMS had to clear seven Operating Systems quizzes to reach it. A folder per topic gives each subject its own chain, so every topic is open from its own first quiz.
+
+`QuizBank.subjects(in:)` derives the folders from the **bundled files**, not from a list on `Category`, so authoring a first `cs-compilers-01.json` makes the folder appear with no enum to remember to update. Topics are ordered by where their first quiz sits, which works because the `order` values are authored in contiguous blocks per topic (DBMS 1–8, OS 9–15, CN 16–20…) — interleave them and the folders reorder.
+
+A category with no topics (Your Role) skips the folder screen entirely: `QuizCategoryView` pushes its single track's quiz list, since a folder list of one card is just a tap in the way.
+
 ### Navigation
 
 `DashboardView` owns `selectedTab` as state and passes a `Binding` into `HomeView`, so Home's shortcut cards switch tabs rather than pushing duplicate screens. The quiz session is a `fullScreenCover` (it owns the screen and dismisses via its own X), not a navigation push.

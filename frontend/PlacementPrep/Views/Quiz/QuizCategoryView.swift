@@ -28,11 +28,22 @@ struct QuizCategoryView: View {
                     }
                 }
                 .padding(PPSpacing.xl)
+                .ppContentColumn()
             }
             .scrollIndicators(.hidden)
             .toolbar(.hidden, for: .navigationBar)
+            // A category with topics opens its folder list; one without (Your
+            // Role) has a single track, so the folder screen would be one card
+            // standing between the student and the quiz — push the quizzes.
             .navigationDestination(for: Category.self) { category in
-                QuizListView(category: category)
+                if bank.subjects(in: category).isEmpty {
+                    QuizListView(track: QuizTrack(category: category, subject: nil))
+                } else {
+                    QuizTrackListView(category: category)
+                }
+            }
+            .navigationDestination(for: QuizTrack.self) { track in
+                QuizListView(track: track)
             }
             .foregroundStyle(Color.ppText)
             .ppScreenBackground()
