@@ -20,13 +20,22 @@ settings:
 targets:
   PlacementPrep:
     type: application
-    platform: iOS
+    # `auto` rather than `iOS`, because the target now builds for two
+    # destinations. Mac Catalyst runs the same UIKit binary on macOS, so the
+    # Mac build is the iPad build — which is exactly why it costs nothing here:
+    # every screen already caps its measure with `.ppContentColumn()`, so a
+    # resizable window shows the same column an iPad does (see
+    # PPContentColumn.swift). There is no separate Mac layout to maintain.
+    platform: auto
+    supportedDestinations: [iOS, macCatalyst]
     sources:
       - path: PlacementPrep
         excludes:
           # Consumed via INFOPLIST_FILE below; excluding it here stops Xcode
           # also copying it into the bundle as a loose resource.
           - "Resources/Info.plist"
+          # Same reasoning — consumed via CODE_SIGN_ENTITLEMENTS.
+          - "Resources/PlacementPrep.entitlements"
           # Added below as a folder reference instead.
           - "Resources/Companies"
           - "Resources/Quizzes"
@@ -45,14 +54,33 @@ targets:
         PRODUCT_NAME: PlacementPrep
         INFOPLIST_FILE: PlacementPrep/Resources/Info.plist
         GENERATE_INFOPLIST_FILE: NO
+        # macOS sandboxes every app, so the Mac build needs to declare the four
+        # things it actually does (network, microphone, the resume file the
+        # student picks). Harmless on iOS, which ignores the file.
+        CODE_SIGN_ENTITLEMENTS: PlacementPrep/Resources/PlacementPrep.entitlements
+        # "Sign to Run Locally". A Mac build must carry a signature even to
+        # launch on the machine that built it — unlike the iOS Simulator, which
+        # happily runs unsigned, which is why DEVELOPMENT_TEAM can stay blank
+        # above. Scoped to the macOS SDK so the iOS side is untouched. Replace
+        # both with your team + Automatic before distributing the Mac app.
+        "CODE_SIGN_STYLE[sdk=macosx*]": Manual
+        "CODE_SIGN_IDENTITY[sdk=macosx*]": "-"
         # iPhone and iPad. The designs are still phone-width by intent — on a
         # regular-width screen the screens keep their measure via
         # `.ppContentColumn()` rather than stretching (see PPContentColumn.swift).
         TARGETED_DEVICE_FAMILY: "1,2"
+        # Keep one bundle id across both destinations. Xcode's default is to
+        # prefix the Catalyst build with `maccatalyst.`, which would give the Mac
+        # app a different identity — and the identity is load-bearing twice
+        # over: it's the `placementprep://` URL scheme owner the OAuth redirect
+        # comes back to, and it's the Keychain access group holding the JWT.
+        DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         # The XP-tier icons. These names must stay in step with
         # `XPLevel.alternateIconName` — that's what the picker asks iOS for, and
         # a mismatch fails silently at runtime rather than at build time.
+        # Catalyst has no alternate-icon API at all, so on the Mac the picker
+        # shows its unavailable state instead (AppIconService.isAvailable).
         ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: "AppIconTier2 AppIconTier3 AppIconTier4 AppIconTier5 AppIconTier6"
         ENABLE_PREVIEWS: YES
         SWIFT_EMIT_LOC_STRINGS: YES
