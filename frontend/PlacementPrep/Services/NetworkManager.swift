@@ -30,14 +30,52 @@ enum NetworkError: Error, LocalizedError {
 final class NetworkManager {
     static let shared = NetworkManager()
 
-    /// Debug builds talk to a local backend; Release builds talk to the deployed
-    /// Fly.io app. Keep the Release host in sync with `fly.toml`'s `app` name
-    /// (Fly serves it at `https://<app>.fly.dev`).
-    #if DEBUG
-    private let baseURL = URL(string: "http://localhost:8000")!
-    #else
-    private let baseURL = URL(string: "https://placementprep-api.fly.dev")!
-    #endif
+    /// Where the backend lives. Resolved once at init, in priority order:
+    ///
+    ///   1. the `PPBackendURL` user default, if it parses
+    ///   2. `compiledBackendURL` below
+    ///
+    /// The override exists because the Mac build is handed around as a `.dmg`
+    /// (see DISTRIBUTE-MAC.md), and a `.dmg` that hardcodes its backend can only
+    /// ever be repointed by someone with Xcode. One default write repoints it:
+    ///
+    ///     defaults write ~/Library/Preferences/com.placementprep.app \
+    ///       PPBackendURL "http://192.168.1.5:8000"
+    ///
+    /// Write the **path**, not the bundle id. `defaults write com.placementprep.app`
+    /// looks equivalent and isn't: if a sandboxed build of the same bundle id has
+    /// ever run on that Mac, macOS silently redirects the write into
+    /// `~/Library/Containers/.../Preferences/`, and the unsigned `.dmg` build —
+    /// which carries no entitlements and so is *not* sandboxed — keeps reading
+    /// the plain path and never sees it. That is not hypothetical; it is what
+    /// happened the first time this was tested on a machine that had also run
+    /// the Debug build. The path form is unambiguous on both.
+    ///
+    /// On iOS the key simply goes unset and the compiled default wins.
+    private let baseURL: URL
+
+    /// There is deliberately no hosted backend to point Release at: this ships to
+    /// a couple of developers who each run the API themselves. If one ever gets
+    /// deployed, this is the line to change — and `DISTRIBUTE-MAC.md`'s checklist
+    /// is the reminder to change it before cutting a build.
+    private static let compiledBackendURL = URL(string: "http://localhost:8000")!
+
+    /// Rejects a malformed override rather than trapping on it: a typo in a
+    /// `defaults write` should fall back to the compiled default, not refuse to
+    /// launch the app.
+    static func resolveBaseURL(
+        defaults: UserDefaults = .standard,
+        fallback: URL = NetworkManager.compiledBackendURL
+    ) -> URL {
+        guard let raw = defaults.string(forKey: "PPBackendURL")?
+                .trimmingCharacters(in: .whitespacesAndNewlines),
+              !raw.isEmpty,
+              let url = URL(string: raw),
+              url.scheme == "http" || url.scheme == "https",
+              url.host != nil
+        else { return fallback }
+        return url
+    }
 
     private let session: URLSession
     private let decoder: JSONDecoder
@@ -52,6 +90,8 @@ final class NetworkManager {
     var onUnauthorized: (() -> Void)?
 
     private init(session: URLSession? = nil) {
+        self.baseURL = Self.resolveBaseURL()
+
         // A bounded timeout so an unreachable backend fails fast instead of
         // hanging the launch splash (which waits on `/api/auth/me`).
         if let session {
