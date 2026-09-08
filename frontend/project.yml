@@ -84,6 +84,14 @@ targets:
         ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: "AppIconTier2 AppIconTier3 AppIconTier4 AppIconTier5 AppIconTier6"
         ENABLE_PREVIEWS: YES
         SWIFT_EMIT_LOC_STRINGS: YES
+      configs:
+        Release:
+          # Notarization refuses a Mac binary without the hardened runtime, and
+          # notarization is what lets a .dmg off a website open at all (see
+          # DISTRIBUTE-MAC.md). Release-only and macOS-only on purpose: turning
+          # it on for Debug fights the local debugger for no benefit, since a
+          # Debug build is never the thing that gets distributed.
+          "ENABLE_HARDENED_RUNTIME[sdk=macosx*]": YES
 
 schemes:
   PlacementPrep:
