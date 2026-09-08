@@ -8,11 +8,13 @@ Three top-level folders. The frontend now talks to the backend over HTTP for **a
 
 - `backend/` — FastAPI app, **packaged by feature**: `app/ai/` (Groq/Gemini generation + Whisper transcription), `app/auth/` (JWT, email OTP, Google/GitHub sign-in), `app/content/` (quizzes, DSA, companies), `app/core/` (settings). Imports the `database` package.
 - `database/` — standalone SQLModel package: the table models (`database/models/`) and the engine/session (`database/db.py`). Kept separate from the backend so the schema lives in one place; it reads `DATABASE_URL` from the environment and has no dependency on the backend.
-- `frontend/` — SwiftUI iOS app (iOS 17+), no third-party dependencies
+- `frontend/` — SwiftUI app (iOS 17+), no third-party dependencies. One target, two destinations: **iOS and Mac Catalyst** (see "The macOS build").
 
 App icons live in `frontend/PlacementPrep/Resources/Assets.xcassets`: `AppIcon` plus five **alternate** sets (`AppIconTier2`…`AppIconTier6`) that the XP tiers unlock, declared via `ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES` in `project.yml`. Their names must match `XPLevel.alternateIconName` — a mismatch fails silently at runtime, not at build time. Because app-icon sets can't be relied on to load through `UIImage(named:)`, each also has a 180px `IconPreviewTier*` imageset that the in-app picker draws.
 
 Deployment config (`Dockerfile`, `fly.toml`, `.dockerignore`, `DEPLOY.md`) lives at the **repo root**, because the image needs both `backend/` and `database/` — so the Docker build context is the whole repo and `fly deploy` runs from the root.
+
+`DISTRIBUTE-MAC.md` (also at the root) is the runbook for cutting the Mac `.dmg`; `frontend/Scripts/package-mac.sh` does the work.
 
 ## Commands
 
@@ -34,6 +36,14 @@ cd frontend
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
 xcodebuild -project PlacementPrep.xcodeproj -scheme PlacementPrep \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
+```
+
+The Mac build is the same scheme with a different destination:
+
+```bash
+xcodebuild -project PlacementPrep.xcodeproj -scheme PlacementPrep \
+  -destination 'platform=macOS,arch=arm64,variant=Mac Catalyst' build
+open ~/Library/Developer/Xcode/DerivedData/PlacementPrep-*/Build/Products/Debug-maccatalyst/PlacementPrep.app
 ```
 
 Driving the simulator directly (useful for visual verification):
@@ -138,6 +148,46 @@ Working today: auth routes (`login`, `signup`, `GET/PATCH /me`, `verify`, `resen
 - `Components/PPBrandMark.swift` — the Google and GitHub sign-in marks on `AuthView`, drawn from SVG path data by a small hand-rolled parser (`M L H V C S Z`, no arcs) rather than shipped as PNGs, so they scale with Dynamic Type. **The one sanctioned place that hardcodes colour**: Google's brand terms forbid recolouring the "G", so its four hues are literals. GitHub's mark is monochrome and takes a `tint` defaulting to `ppText`, so it inverts on the light themes. Don't "fix" the Google literals into palette tokens.
 
 Visual conventions worth keeping: depth comes from hairline borders, not shadows; filled controls are amber with **ink** (`ppGround`) marks rather than white; one loud amber element per screen.
+
+### The macOS build
+
+The app ships for macOS as a **Mac Catalyst** destination on the same target — `platform: auto` plus `supportedDestinations: [iOS, macCatalyst]` in `project.yml`. There is no second target, no shared-source shimming and **no `#if os(macOS)` anywhere**: the Mac build compiles the identical UIKit-backed binary the iPad build does.
+
+It costs nothing because the iPad work already paid for it. `PPContentColumn` caps every screen at 640/980pt, so a resizable Mac window shows the same measure an iPad does with more ground either side — which is the whole adaptation. Verified at 1247pt wide: the column holds and nothing stretches.
+
+What Catalyst gives us for free, and each of these was checked rather than assumed: `AVAudioSession` and the held-to-talk recording, `ASWebAuthenticationSession` and the `placementprep://` OAuth redirect, `fullScreenCover`, `keyboardType`/`textContentType`, `navigationBarTitleDisplayMode`, `UIGraphicsImageRenderer` in the resume OCR, and the Metal shader (`default.metallib` builds for the Mac GPU). The three `type: folder` resource references land as real subdirectories in `Contents/Resources/`, so `QuizBank` and `CompanyBank` enumerate all 85 quizzes and 38 CSVs unchanged.
+
+Two things the Mac genuinely loses, both already handled:
+
+- **Alternate app icons.** Catalyst has no such API; `UIApplication.supportsAlternateIcons` returns false, so `AppIconService.isAvailable` is false and `AppIconPickerView` shows its unavailable state. The XP tiers still work — only the icon reward is inert.
+- **Haptics.** `PPHaptics` compiles and no-ops. Nothing to do.
+
+Three build settings are load-bearing and were each chosen deliberately:
+
+- `DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO` — Xcode's default prefixes the Catalyst build with `maccatalyst.`, giving the Mac app a *different* identity. The identity is load-bearing twice: it owns the `placementprep://` URL scheme the OAuth redirect comes back to, and it's the Keychain access group holding the JWT.
+- `CODE_SIGN_IDENTITY[sdk=macosx*]: "-"` ("Sign to Run Locally") — a Mac build must carry a signature even to launch on the machine that built it, unlike the iOS Simulator, which is why `DEVELOPMENT_TEAM` can stay blank. Swap both for a real team before distributing. Ad-hoc signing can make the Keychain return `errSecMissingEntitlement` (-34018); if the Mac build won't hold a login, that's the first thing to check, and a real signing identity is the fix.
+- `CODE_SIGN_ENTITLEMENTS` → `Resources/PlacementPrep.entitlements` — macOS sandboxes every app, so the four capabilities the phone build simply has must be declared back: network client, audio input, user-selected read-only files, plus the sandbox itself. iOS ignores the file. Add nothing speculatively; an unused entitlement is an App Review question with no good answer. It's excluded from `sources` for the same reason `Info.plist` is — otherwise Xcode also copies it into the bundle as a loose resource.
+
+**If this ever becomes a native macOS target**, Catalyst is the crutch and these are the seams it hides — the list is the migration, in rough order of cost:
+
+- `VoiceService` — `AVAudioSession` does not exist on macOS. Permissions move to `AVCaptureDevice.requestAccess(for: .audio)`; `AVAudioRecorder` itself survives. Biggest single piece of work.
+- `ResumeTextExtractor` — `UIGraphicsImageRenderer` and `UIImage(contentsOfFile:)` → `CGContext`/`NSImage`. The PDFKit and Vision halves are already cross-platform, as is the `startAccessingSecurityScopedResource()` wrapping.
+- `DashboardView` — `TabView` renders on macOS but reads as a phone app in a window; a `NavigationSplitView` sidebar is what would make it feel native, and that's a design decision, not a port.
+- `OAuthService` — the `UIWindowScene` presentation anchor → `NSWindow`.
+- `FocusModeStore` — `isIdleTimerDisabled` → `ProcessInfo.beginActivity(.idleDisplaySleepDisabled)`.
+- `PPAppearance` — the `UITabBar`/`UINavigationBar` proxies have no AppKit equivalent; it becomes a no-op.
+- `PPCompanyLogo` — already `#if canImport(UIKit)`-guarded, but the fallback returns `nil`, so logos would silently vanish until an `NSImage` path is written.
+- `AppIconService` — drops entirely. `NSApplication.applicationIconImage` is a runtime substitute if the tier reward is worth keeping.
+- Call sites needing `#if os(iOS)`: 2 `fullScreenCover` → `sheet`, 5 `navigationBarTitleDisplayMode`, 1 `keyboardType`, 2 `textInputAutocapitalization`. `submitLabel` (5) is fine as-is — SwiftUI has it on macOS 12+.
+- `PPTextField` is the subtle one. It carries a stored `UITextContentType?` in its own signature, and that *type* has no macOS spelling; the AppKit equivalent `NSTextContentType` is also a smaller set — it has `.username`/`.password`/`.newPassword`/`.oneTimeCode` but not the `.emailAddress` and `.name` the auth and onboarding screens pass. So this is an API change to a design-system component every form uses, not a call-site guard.
+
+Unaffected by any of that: `PPLiquidWave` and the Metal shader, `KeychainService`, `PPContentColumn`, all eight data stores, and the entire backend.
+
+**Distribution.** `Scripts/package-mac.sh` archives Release/Catalyst and builds a drag-to-Applications `.dmg`; `DISTRIBUTE-MAC.md` is the runbook. It ships **unsigned on purpose** — the audience is two developers, so `xattr -dr com.apple.quarantine` on the receiving Mac replaces a $99 Developer ID. Since macOS Sequoia there is no Control-click ▸ Open bypass, so that command is not optional, and `-r` matters because the flag is set inside the bundle too. `ENABLE_HARDENED_RUNTIME` is set for **Release + macOS only** (notarization refuses a binary without it; enabling it for Debug just fights the debugger), and the script still does the full signed path when handed `DEVELOPER_ID` + `NOTARY_PROFILE`.
+
+An ad-hoc-signed Mac build **cannot use the Keychain**: an item needs an access group, that comes from the signing identity's Team ID, and ad-hoc signing has none, so `SecItemAdd` returns `errSecMissingEntitlement` (-34018). It fails *silently* and the symptom is remote from the cause — sign-in succeeds and the UI advances, then the next authenticated call 401s, because `NetworkManager.authTokenProvider` re-reads `KeychainService.loadToken()` on every request and there is no in-memory copy. `KeychainService` now falls back to a `0600` file in Application Support, engaged only by a real `SecItemAdd` failure, so iOS and signed builds never reach it. Reproduced on the sandboxed Debug build too, so the sandbox is not the variable.
+
+The unsigned build passes `CODE_SIGNING_ALLOWED=NO`, so it carries **no entitlements and is not sandboxed** — which flips a detail that cost an hour to find. `NetworkManager.baseURL` is overridable at runtime via the `PPBackendURL` default, and that default must be written **by path** (`defaults write ~/Library/Preferences/com.placementprep.app …`): on any Mac where the sandboxed Debug build has also run, `defaults write com.placementprep.app …` is silently redirected into the container, which the unsandboxed `.dmg` build never reads. There is no hosted backend behind the Release build any more — `compiledBackendURL` is `http://localhost:8000` and each developer runs their own API, or one is shared over the LAN.
 
 ### Frontend data layer
 
