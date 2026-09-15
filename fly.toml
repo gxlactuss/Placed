@@ -1,19 +1,11 @@
-# Fly.io config for the Placement Prep API.
-# `app` must be globally unique — change it if `fly launch`/`fly deploy` reports
-# the name is taken, and keep it in sync with the volume + secrets commands.
 app = "placementprep-api"
-primary_region = "bom"  # Mumbai — closest region to the user base
+primary_region = "bom"
 
 [build]
 
 [env]
-  # SQLite lives on the mounted volume (four slashes = absolute path) so the
-  # database survives redeploys and machine restarts.
   DATABASE_URL = "sqlite:////data/placement_prep.db"
   GEMINI_MODEL = "gemini-flash-latest"
-
-# JWT_SECRET_KEY and GEMINI_API_KEY are NOT here — set them as secrets:
-#   fly secrets set JWT_SECRET_KEY=... GEMINI_API_KEY=...
 
 [http_service]
   internal_port = 8080
@@ -29,8 +21,6 @@ primary_region = "bom"  # Mumbai — closest region to the user base
     method = "GET"
     path = "/health"
 
-# Persistent disk for SQLite. Create it once before the first deploy:
-#   fly volumes create placementprep_data --region bom --size 1
 [[mounts]]
   source = "placementprep_data"
   destination = "/data"

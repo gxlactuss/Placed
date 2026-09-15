@@ -1,8 +1,6 @@
-# Build context is the repo root — keep the image small and secrets out.
 .git/
 frontend/
 
-# Python cruft / local envs
 **/.venv/
 **/__pycache__/
 **/*.pyc
@@ -11,12 +9,10 @@ frontend/
 **/.mypy_cache/
 **/.ruff_cache/
 
-# Secrets and local data (never bake into the image)
 **/.env
 **/*.db
 **/*.sqlite3
 data/
 
-# Editor / OS
 .vscode/
 .DS_Store
