@@ -1,28 +1,14 @@
 import SwiftUI
 
-/// A selectable multiple-choice answer on the quiz screen.
-///
-/// Answering is a one-shot commit: the moment the user taps, the row resolves to
-/// `.correct` or `.incorrect` and every option in the question locks. `state` is
-/// therefore kept separate from "did the user tap this one", so a resolved
-/// question can simultaneously mark the user's wrong pick and reveal the right
-/// answer. Drive it with `PPOptionRow.State.resolve(...)` below.
 struct PPOptionRow: View {
 
     enum State: Equatable {
-        /// No answer committed yet — the row is tappable.
         case idle
-        /// The committed answer, and it was right.
         case correct
-        /// The committed answer, and it was wrong.
         case incorrect
-        /// Not chosen, but revealed as the right answer after a wrong pick.
         case revealed
-        /// Not chosen, question already resolved. Dimmed and inert.
         case dimmed
 
-        /// Resolves the state for one option given the question's answer state.
-        /// Pass `selectedID` as nil while the question is still unanswered.
         static func resolve(
             optionID: String,
             selectedID: String?,
@@ -40,7 +26,6 @@ struct PPOptionRow: View {
             return .dimmed
         }
 
-        /// True once the question is committed — the row must not accept taps.
         var isLocked: Bool { self != .idle }
     }
 
@@ -67,7 +52,6 @@ struct PPOptionRow: View {
                 if let trailingSymbol {
                     Image(systemName: trailingSymbol)
                         .foregroundStyle(accent)
-                        // One-shot bounce when the verdict lands; free after that.
                         .symbolEffect(.bounce, value: state)
                 }
             }
@@ -79,8 +63,6 @@ struct PPOptionRow: View {
             }
         }
         .buttonStyle(.plain)
-        // Once committed the answer cannot be changed, so locked rows stop
-        // taking hits entirely rather than merely looking inert.
         .disabled(state.isLocked)
         .opacity(state == .dimmed ? 0.55 : 1)
         .animation(PPMotion.snappy, value: state)
@@ -88,7 +70,6 @@ struct PPOptionRow: View {
         .accessibilityValue(Text(accessibilityValue))
     }
 
-    /// The states that paint themselves in a semantic colour.
     private var isHighlighted: Bool {
         switch state {
         case .idle, .dimmed: false

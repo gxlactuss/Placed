@@ -1,11 +1,5 @@
 import SwiftUI
 
-/// A group of selectable chips where the highlighted capsule slides between
-/// options via `matchedGeometryEffect` — one shared background view moving,
-/// not N views animating independently.
-///
-/// Two layouts: `.wrapping` flows onto new lines (quiz setup), `.scrolling`
-/// stays on one horizontally scrolling row (company filter).
 struct PPSegmentedChips<ID: Hashable>: View {
 
     enum Style {

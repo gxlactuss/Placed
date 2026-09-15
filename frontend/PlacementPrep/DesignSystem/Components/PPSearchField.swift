@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// Search input on the Companies screen. Shows a clear button once text is entered.
 struct PPSearchField: View {
 
     let placeholder: String

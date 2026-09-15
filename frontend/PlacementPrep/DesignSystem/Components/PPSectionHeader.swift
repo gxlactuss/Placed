@@ -1,7 +1,5 @@
 import SwiftUI
 
-/// Uppercased group label above a stack of cards, e.g. "PRACTICE MODES".
-/// The optional accessory sits on the trailing edge.
 struct PPSectionHeader<Accessory: View>: View {
 
     let title: String

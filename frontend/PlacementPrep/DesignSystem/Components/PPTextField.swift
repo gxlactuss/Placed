@@ -1,8 +1,5 @@
 import SwiftUI
 
-/// Labeled text input used on the auth screen. Mirrors `PPSearchField`'s
-/// surface-fill-plus-hairline treatment so forms read as the same system, and
-/// adds a small caps label above the field and an optional secure-entry toggle.
 struct PPTextField: View {
 
     let label: String
@@ -12,9 +9,6 @@ struct PPTextField: View {
     var isSecure: Bool = false
     var keyboard: UIKeyboardType = .default
     var textContentType: UITextContentType? = nil
-    /// Capitalization for free-text fields (name, role). Ignored for secure and
-    /// email fields, which never auto-capitalize (a capital would corrupt a
-    /// password, email, or username like "admin").
     var autocapitalization: TextInputAutocapitalization = .sentences
     var submitLabel: SubmitLabel = .next
     var onSubmit: () -> Void = {}

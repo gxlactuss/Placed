@@ -1,9 +1,6 @@
 import SwiftUI
 
-/// Thin capsule progress track — the resume card and the quiz question counter.
 struct PPProgressBar: View {
-
-    /// Clamped to 0...1.
     let progress: Double
     var height: CGFloat = 4
     var tint: Color = .ppAccent
@@ -26,8 +23,6 @@ struct PPProgressBar: View {
     }
 }
 
-/// The scoring ring on the results screen. The centre is a view builder so the
-/// caller decides what sits inside it.
 struct PPRingProgress<Center: View>: View {
 
     let progress: Double

@@ -1,7 +1,5 @@
 import SwiftUI
 
-/// A number over a label. Appears bare inside the amber hero card (`.inline`)
-/// and inside its own surface card on the results screen (`.card`).
 struct PPStatTile: View {
 
     enum Style {
@@ -12,7 +10,6 @@ struct PPStatTile: View {
     let value: String
     let label: String
     var style: Style = .card
-    /// Overrides for context — the amber hero card sets these to ink.
     var valueColor: Color = .ppText
     var labelColor: Color = .ppMuted
 
@@ -39,7 +36,6 @@ struct PPStatTile: View {
     }
 }
 
-/// Evenly divided row of inline tiles, as on the home hero card.
 struct PPStatRow: View {
 
     struct Item: Identifiable {
