@@ -1,20 +1,4 @@
 #!/usr/bin/env python3
-"""
-Validates every quiz JSON in PlacementPrep/Resources/Quizzes.
-
-Crucially this cross-checks the `category`, `subject` and `difficulty` strings
-against the actual Swift enums in QuizBankModels.swift. A structurally perfect
-JSON file with a value the enum does not declare still fails to decode at run
-time, and the app can only report it as a load error after the fact.
-
-Also checks: option ids are exactly A-D, the answer key names a real option,
-option texts are distinct, ids and prompts are unique across the whole bank,
-orders do not collide within a category, and the A-D answer spread is not so
-skewed that guessing pays.
-
-Usage:  python3 Scripts/validate-quizzes.py
-Exit code is non-zero if anything fails, so it can gate a commit.
-"""
 
 import collections
 import glob
@@ -29,11 +13,6 @@ QUIZZES = os.path.join(ROOT, "PlacementPrep", "Resources", "Quizzes", "*.json")
 
 
 def swift_enum_values(source, name):
-    """Raw values of a String-backed Swift enum.
-
-    Handles both `case a = "x"` and the comma form `case a, b, c` — missing the
-    latter is exactly the kind of gap that makes a validator quietly useless.
-    """
     match = re.search(r"enum\s+%s\s*:[^{]*\{(.*?)\n\}" % name, source, re.S)
     if not match:
         sys.exit(f"could not find enum {name} in {MODELS}")
@@ -56,20 +35,9 @@ def swift_enum_values(source, name):
 
 
 def answer_key_patterns(letters):
-    """Runs in a quiz's answer key that a student could ride instead of reading.
-
-    An even A/B/C/D spread across the whole bank says nothing about the order
-    within one quiz: the bank was originally authored as A, B, C, D, A, B, C, D
-    straight down each file, which is perfectly balanced and completely
-    predictable. So this looks at the sequence, not the totals — five answers
-    marching one letter at a time (in either direction, wrapping D to A) or
-    three of the same letter back to back.
-
-    `Scripts/shuffle-quiz-answers.py` re-deals a file that trips this.
-    """
     ids = "ABCD"
     if any(letter not in ids for letter in letters):
-        return []  # a bad key is already reported by the per-question checks
+        return []
 
     steps = [(ids.index(b) - ids.index(a)) % 4 for a, b in zip(letters, letters[1:])]
     found, run = [], 0
@@ -79,7 +47,7 @@ def answer_key_patterns(letters):
             found.append(f"answer key repeats {letters[i + 1]} {run + 1} times from Q{i - run + 2}")
         elif step in (1, 3) and run >= 4:
             found.append(f"answer key cycles for {run + 1} questions from Q{i - run + 2}")
-    return found[:1]  # one report per quiz; the fix re-deals the whole file
+    return found[:1]
 
 
 def main():
@@ -108,7 +76,6 @@ def main():
             problems.append(f"{name}: invalid JSON — {exc}")
             continue
 
-        # Enum cross-check — the failure mode that only shows up at run time.
         if quiz.get("category") not in categories:
             problems.append(f"{name}: category {quiz.get('category')!r} is not a Category case")
         if "subject" in quiz and quiz["subject"] not in subjects:
@@ -150,7 +117,6 @@ def main():
         problems += [f"{category}: order {o} used {n} times"
                      for o, n in counts.items() if n > 1]
 
-    # A heavy skew lets a student beat the pass mark by always picking one letter.
     if total:
         worst = max(keys.values()) / total
         if worst > 0.35:

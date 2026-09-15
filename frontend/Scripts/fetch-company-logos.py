@@ -1,26 +1,4 @@
 #!/usr/bin/env python3
-"""
-Populates PlacementPrep/Resources/Logos with one PNG per bundled company.
-
-Sources are tried in order of how close they are to the company's REAL logo:
-
-  1. Homepage <link rel="apple-touch-icon"> — the actual full-colour brand mark
-     the company ships for iOS home screens. Square by design, usually 180px+.
-  2. /apple-touch-icon.png at the domain root — same asset, conventional path.
-  3. Google favicon service at 256px — the real favicon, resolution varies.
-  4. icon.horse / DuckDuckGo icon services — aggregators that sometimes hold
-     a larger icon than the site advertises.
-
-Monochrome glyph sets (Simple Icons and friends) are deliberately NOT used:
-they render Google as a flat blue "G" rather than the real multicolour mark.
-A slightly soft real logo beats a sharp wrong one.
-
-Anything below MIN_PIXELS is rejected as too blurry for a 3x display. A company
-with no usable logo gets no file, and the app falls back to an initials mark.
-
-Usage:  python3 Scripts/fetch-company-logos.py
-Then:   xcodegen generate
-"""
 
 import os
 import re
@@ -31,7 +9,6 @@ import tempfile
 import urllib.parse
 import urllib.request
 
-# company name -> (domain, simple-icons slug or None for the last-resort glyph)
 COMPANIES = {
     "Adobe":          ("adobe.com",         None),
     "Amazon":         ("amazon.com",        None),
@@ -66,7 +43,6 @@ COMPANIES = {
     "Zepto":          ("zeptonow.com",      None),
     "Zoho":           ("zoho.com",          "zoho"),
     "Zomato":         ("zomato.com",        "zomato"),
-    # On-campus recruiters from the 2025-26 placement list.
     "Accenture":      ("accenture.com",     "accenture"),
     "Deloitte":       ("deloitte.com",      "deloitte"),
     "IDFC First Bank":("idfcfirstbank.com", None),
@@ -74,18 +50,8 @@ COMPANIES = {
     "Media.net":      ("media.net",         None),
 }
 
-# 48px is soft when upscaled to a 36pt chip on a 3x screen, but it is the real
-# logo. Below this it turns to mush, so those companies get an initials mark.
 MIN_PIXELS = 48
 
-# Curated by hand because every automatic source gave the wrong mark:
-#   Microsoft  - sites serve a washed-out tile; this is the four-colour logo
-#                from Wikimedia Commons, cropped to just the squares.
-#   Samsung    - sites serve a generic blue "S"; this is the SAMSUNG wordmark
-#                from Commons, auto-trimmed of its whitespace canvas.
-#   Salesforce - only a 32px favicon exists; this is the iOS app icon (cloud).
-#   Zomato     - only a 16px favicon exists; this is the iOS app icon.
-# The script leaves these files alone so a re-run cannot overwrite them.
 MANUAL = {"Microsoft", "Samsung", "Salesforce", "Zomato"}
 UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
                     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"}
@@ -113,7 +79,6 @@ def png_size(path):
 
 
 def save_if_good(data, dest):
-    """Write image bytes, keep only if it decodes and is large enough."""
     if not data or len(data) < 200:
         return False
     with open(dest, "wb") as f:
@@ -122,14 +87,12 @@ def save_if_good(data, dest):
     if w < MIN_PIXELS or h < MIN_PIXELS:
         os.remove(dest)
         return False
-    # Normalise everything to PNG so the app has one loader path.
     subprocess.run(["sips", "-s", "format", "png", dest, "--out", dest],
                    capture_output=True)
     return True
 
 
 def icon_links_from_homepage(domain):
-    """Parse <link rel=...icon...> tags, biggest declared size first."""
     for base in (f"https://www.{domain}", f"https://{domain}"):
         html = fetch(base)
         if not html:
@@ -176,9 +139,6 @@ def from_favicon_service(domain, dest):
 
 
 def from_icon_services(domain, dest):
-    # DuckDuckGo first: icon.horse silently GENERATES a grey letter placeholder
-    # when it finds nothing, which looks like a broken image in the list. Its
-    # results are worth spot-checking before trusting them.
     for url in (f"https://icons.duckduckgo.com/ip3/{domain}.ico",
                 f"https://icon.horse/icon/{domain}"):
         if save_if_good(fetch(url), dest):
@@ -187,7 +147,6 @@ def from_icon_services(domain, dest):
 
 
 def _unused_from_simple_icons(slug, dest, tmp):
-    """Monochrome glyph — last resort, not the real logo."""
     if not slug:
         return False
     data = fetch(f"https://cdn.simpleicons.org/{slug}")
@@ -216,12 +175,10 @@ def main():
     out = os.path.join(root, "PlacementPrep", "Resources", "Logos")
     os.makedirs(out, exist_ok=True)
 
-    # Optional name filter: `fetch-company-logos.py Deloitte "Media.net"` only
-    # refreshes the named companies, leaving every other logo untouched.
     only = set(sys.argv[1:])
     selected = {n: v for n, v in COMPANIES.items() if not only or n in only}
 
-    rows, missing, glyphs = [], [], []  # glyphs retained for reporting shape
+    rows, missing, glyphs = [], [], []
     with tempfile.TemporaryDirectory() as tmp:
         for name, (domain, slug) in sorted(selected.items()):
             dest = os.path.join(out, f"{name}.png")

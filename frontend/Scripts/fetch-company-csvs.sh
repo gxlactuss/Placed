@@ -1,15 +1,4 @@
 #!/usr/bin/env bash
-#
-# Populates PlacementPrep/Resources/Companies with one CSV per company, taken
-# from the "5. All.csv" file of each company folder in:
-#   https://github.com/liquidslr/leetcode-company-wise-problems
-#
-# The repo has ~470 company folders, each holding five CSVs (30 days, 3 months,
-# 6 months, >6 months, all). Only the all-time list is used here, flattened to
-# "<Company>.csv" so the app can enumerate companies from filenames alone.
-#
-# Usage:  ./Scripts/fetch-company-csvs.sh
-# Then:   xcodegen generate
 set -euo pipefail
 
 REPO="https://github.com/liquidslr/leetcode-company-wise-problems.git"
