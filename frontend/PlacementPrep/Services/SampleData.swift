@@ -1,29 +1,13 @@
 import Foundation
 
-/// Local stand-in for the backend so the whole UI is explorable with no server
-/// running. Every screen currently reads from here.
-///
-/// When the API is wired up, the job is to map the decoded API models onto these
-/// same presentation types and delete the stored arrays below — the views should
-/// not need to change.
 enum SampleData {
-
-    // MARK: - Profile
-
     static let userName = "Khushi Shelke"
     static let targetRole = "Software Engineer"
-    // The streak is real now — see `StreakStore`; the canned values that used to
-    // sit here are gone rather than left to rot.
     static let quizzesTaken = 24
     static let averageScore = 78
     static let interviewsTaken = 6
 
-    // MARK: - Quiz
-
     static func questions(topic: QuizTopic, difficulty: QuizDifficulty) -> [SampleQuizQuestion] {
-        // The sample bank is not large enough to filter meaningfully by topic and
-        // difficulty, so the full set is returned and tagged with the requested
-        // configuration. Replace with a real query when the API lands.
         allQuestions.map { question in
             var tagged = question
             tagged.topic = topic
@@ -155,8 +139,6 @@ enum SampleData {
         ),
     ]
 
-    // MARK: - Companies
-
     static let companies: [CompanySummary] = [
         CompanySummary(slug: "google", name: "Google", questionCount: 100),
         CompanySummary(slug: "amazon", name: "Amazon", questionCount: 120),
@@ -194,11 +176,8 @@ enum SampleData {
         .init(title: "Rotting Oranges", leetcodeURL: "https://leetcode.com/problems/rotting-oranges", difficulty: "medium", frequency: 0.75),
     ]
 
-    // MARK: - Mock interview
-
     static let interviewOpener = "Let's start. Can you walk me through a project where you had to improve the performance of a system?"
 
-    /// Canned interviewer replies, played in order as the user answers.
     static let interviewFollowUps: [String] = [
         "Good. How did you decide what to cache, and how did you handle cache invalidation?",
         "Makes sense. What happened to your error rate and tail latency under peak load?",
@@ -206,12 +185,9 @@ enum SampleData {
         "Thanks — last one. How would you design a URL shortener that handles a billion redirects a day?",
     ]
 
-    /// Stand-in for real speech-to-text while the recogniser is not wired up.
     static let sampleTranscription = "In my final-year project the API was slow, so I added Redis caching and cut p95 latency from 800ms to 120ms."
 }
 
-/// A quiz question with its answer key held client-side, which the real API
-/// deliberately does not expose until submission.
 struct SampleQuizQuestion: Identifiable {
     let id = UUID()
     var topic: QuizTopic = .csFundamentals
