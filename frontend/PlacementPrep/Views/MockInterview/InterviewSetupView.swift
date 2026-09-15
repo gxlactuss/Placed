@@ -1,37 +1,24 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-/// Shown once per account, before the first mock interview.
-///
-/// Collects the target role (compulsory) and, optionally, a resume. The resume
-/// never leaves the device as a file: `ResumeTextExtractor` reads it with Vision
-/// on-device, `ResumeParser` narrows it to the projects section and strips
-/// contact details, and only that text goes to the backend — as a single Gemini
-/// call, because the free tier allows just five a minute.
 struct InterviewSetupView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
     @Environment(InterviewSetupStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
-    /// Picked, not typed — same list as onboarding, so the account's role and
-    /// the interview's role can never be two spellings of one job.
     @State private var role: CareerRole?
     @State private var phase: Phase = .idle
     @State private var showFileImporter = false
-    /// Held from the on-device parse so `finish()` can persist them — the rounds
-    /// are prompted with these, not with the model's summary.
     @State private var projectsText: String?
     @State private var skills: String?
 
-    /// Where the resume half of the screen has got to. The role field stays
-    /// live throughout — only the resume work has stages.
     private enum Phase: Equatable {
         case idle
-        case reading            // Vision OCR, on-device
-        case summarising        // the one Gemini call
-        case done(String)       // summary text
-        case noProjects         // read fine, but found no projects section
+        case reading
+        case summarising
+        case done(String)
+        case noProjects
         case failed(String)
 
         var isBusy: Bool { self == .reading || self == .summarising }
@@ -57,15 +44,10 @@ struct InterviewSetupView: View {
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
         .onAppear {
-            // Prefill from the account so the common case is one tap.
             if role == nil {
                 role = CareerRole(title: store.setup?.targetRole)
                     ?? CareerRole(title: auth.currentUser?.targetRole)
             }
-            // Reopened to change something — carry the existing resume forward.
-            // These are `@State`, so without this a student who came back only
-            // to fix their role would save nil over a resume that was fine and
-            // silently re-lock the rounds it had unlocked.
             if case .idle = phase, let saved = store.setup, saved.hasProjects {
                 projectsText = saved.projectsText
                 skills = saved.skills
@@ -85,8 +67,6 @@ struct InterviewSetupView: View {
             }
         }
     }
-
-    // MARK: - Sections
 
     private var heading: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
@@ -234,18 +214,12 @@ struct InterviewSetupView: View {
         }
     }
 
-    // MARK: - Work
-
-    /// On-device read → narrow to projects → one Gemini call.
     private func processResume(at url: URL) {
         phase = .reading
         Task {
             do {
                 let text = try await ResumeTextExtractor.extractText(from: url)
                 let extraction = ResumeParser.extractProjects(from: text)
-                // Keep the extracted material: the projects round needs the real
-                // text, and the tech-stack round needs the skills list. Only the
-                // projects half is sent for summarising.
                 projectsText = extraction.foundProjectsSection ? extraction.text : nil
                 skills = ResumeParser.extractSkills(from: text)
 
@@ -280,16 +254,12 @@ struct InterviewSetupView: View {
             skills: skills
         ))
 
-        // Keep the account's role in step, so Home's greeting and the interview
-        // don't disagree about what the student is preparing for.
         if trimmedRole != auth.currentUser?.targetRole {
             Task { await auth.updateTargetRole(trimmedRole) }
         }
         dismiss()
     }
 }
-
-// MARK: - Wire types
 
 struct ResumeSummaryRequest: Encodable {
     let targetRole: String

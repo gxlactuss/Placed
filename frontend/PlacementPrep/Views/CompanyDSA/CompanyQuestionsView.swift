@@ -1,7 +1,5 @@
 import SwiftUI
 
-/// One company's question list: progress summary, difficulty filter, search,
-/// and a checkbox per row that persists via `SolvedStore`.
 struct CompanyQuestionsView: View {
 
     let company: DSACompany
@@ -16,13 +14,9 @@ struct CompanyQuestionsView: View {
     @State private var isLoading = true
     @State private var query = ""
     @State private var difficultyFilter: DifficultyFilter = .all
-    /// Opt-in topic filter. Empty by default and never shown on the rows
-    /// themselves — many people would rather not see a problem's category before
-    /// they solve it.
     @State private var topicFilter: Set<String> = []
     @State private var showTopicSheet = false
 
-    /// `DSADifficulty` plus an "All" case, so the filter can be one chip group.
     enum DifficultyFilter: Hashable, CaseIterable {
         case all, easy, medium, hard
 
@@ -85,13 +79,8 @@ struct CompanyQuestionsView: View {
                 rows
             }
         }
-        // The whole panel, not the pieces — the fast-scroll rail hugs the
-        // trailing edge of the list, so it has to travel with the column rather
-        // than stay pinned to a screen edge the rows no longer reach.
         .ppContentColumn(PPSize.wideColumn)
     }
-
-    // MARK: - Header
 
     private var header: some View {
         VStack(alignment: .leading, spacing: PPSpacing.lg) {
@@ -116,9 +105,6 @@ struct CompanyQuestionsView: View {
         .padding(.top, PPSpacing.md)
     }
 
-    /// Subtle funnel that opens the topic sheet. Deliberately understated and
-    /// disabled when the data carries no topics, so it stays out of the way for
-    /// anyone who never wants to filter.
     private var topicFilterButton: some View {
         Button { showTopicSheet = true } label: {
             HStack(spacing: PPSpacing.xs) {
@@ -145,8 +131,6 @@ struct CompanyQuestionsView: View {
         .accessibilityLabel("Filter by topic")
     }
 
-    /// The active topic filters, each removable. Only appears once the user has
-    /// opted in, so topics never surface unprompted.
     private var activeTopicChips: some View {
         FlowRow(spacing: PPSpacing.sm) {
             ForEach(topicFilter.sorted(), id: \.self) { topic in
@@ -193,8 +177,6 @@ struct CompanyQuestionsView: View {
         }
     }
 
-    // MARK: - Rows
-
     private var rows: some View {
         ProblemListScroll(problems: visible) { problem in
             row(problem)
@@ -204,29 +186,19 @@ struct CompanyQuestionsView: View {
     private func row(_ problem: DSAProblem) -> some View {
         let isSolved = solved.isSolved(problem.id)
 
-        // The difficulty tints the whole row, not just its badge — scanning a
-        // long list for "the easy ones" shouldn't mean reading every pill. A
-        // solved row drops most of the wash, so the list still reads as done
-        // versus not done first, difficulty second.
         return PPCard(wash: problem.difficulty.accent.opacity(isSolved ? 0.25 : 1)) {
             HStack(spacing: PPSpacing.md) {
                 PPCheckbox(
                     isOn: Binding(
                         get: { isSolved },
                         set: { _ in
-                            // Animate so the row slides down to the solved
-                            // section (or back up) rather than jumping.
                             withAnimation(PPMotion.settle) { solved.toggle(problem.id) }
-                            // Ticking one off is practice; un-ticking a mistake
-                            // isn't, so only the solving direction counts.
                             if isSolved {
                                 PPHaptics.light()
                             } else {
                                 PPHaptics.success()
                                 streak.recordActivity()
                                 xp.awardStreakDay()
-                                // Paid once per problem ever: un-ticking doesn't
-                                // refund, so re-ticking can't be farmed.
                                 xp.award(.problemSolved(
                                     slug: problem.id,
                                     difficulty: problem.difficulty
@@ -269,8 +241,6 @@ struct CompanyQuestionsView: View {
         }
     }
 
-    // MARK: - Derived
-
     private var visible: [DSAProblem] {
         var result = problems
 
@@ -278,7 +248,6 @@ struct CompanyQuestionsView: View {
             result = result.filter { $0.difficulty == level }
         }
 
-        // Union filter: a problem matches if it carries any of the chosen topics.
         if !topicFilter.isEmpty {
             result = result.filter { problem in
                 problem.topics.contains { topicFilter.contains($0) }
@@ -293,9 +262,6 @@ struct CompanyQuestionsView: View {
             }
         }
 
-        // Solved problems sink to the bottom, keeping the app-wide "done, move
-        // on" feel. Each group stays in its original frequency order — the
-        // enumerated offset is a stable tiebreaker, since `sorted` is not stable.
         return result.enumerated()
             .sorted { lhs, rhs in
                 let lSolved = solved.isSolved(lhs.element.id)
@@ -306,8 +272,6 @@ struct CompanyQuestionsView: View {
             .map(\.element)
     }
 
-    /// Distinct topics across the company's problems, most common first, tallied
-    /// once when the list loads rather than on every render.
     private static func topics(in problems: [DSAProblem]) -> [TopicCount] {
         var counts: [String: Int] = [:]
         for problem in problems {
@@ -330,7 +294,6 @@ struct CompanyQuestionsView: View {
 }
 
 extension DSADifficulty {
-    /// Maps onto the design system's difficulty palette.
     var accent: Color {
         switch self {
         case .easy: .ppEasy
@@ -340,17 +303,12 @@ extension DSADifficulty {
     }
 }
 
-/// A topic name paired with how many of the company's problems carry it.
 struct TopicCount: Identifiable, Hashable {
     let name: String
     let count: Int
     var id: String { name }
 }
 
-// MARK: - Topic filter sheet
-
-/// The opt-in topic chooser. Multi-select, union semantics; the count beside
-/// each topic tells the user how much a filter will narrow the list.
 private struct TopicFilterSheet: View {
 
     let topics: [TopicCount]
@@ -435,11 +393,6 @@ private struct TopicFilterSheet: View {
     }
 }
 
-// MARK: - Scrollable list with a wide, grabbable scrollbar
-
-/// Live scroll position, shared with the scrollbar. An object (not view `@State`)
-/// so that updating it on every scroll frame re-renders only the thin scrollbar,
-/// never the list — the parent's filter/sort over thousands of rows stays put.
 @Observable
 private final class ScrollTracker {
     var offset: CGFloat = 0
@@ -449,12 +402,9 @@ private final class ScrollTracker {
     var maxOffset: CGFloat { max(contentHeight - viewportHeight, 0) }
     var isScrollable: Bool { maxOffset > 1 }
     var progress: Double { maxOffset > 0 ? min(max(Double(offset / maxOffset), 0), 1) : 0 }
-    /// Fraction of the content on screen — sizes the thumb.
     var visibleRatio: Double { contentHeight > 0 ? min(max(Double(viewportHeight / contentHeight), 0), 1) : 1 }
 }
 
-/// The problem list paired with a custom scrollbar. Splits scroll tracking into
-/// `ScrollTracker` so the heavy `LazyVStack` isn't rebuilt as the thumb moves.
 private struct ProblemListScroll<Row: View>: View {
 
     let problems: [DSAProblem]
@@ -464,9 +414,6 @@ private struct ProblemListScroll<Row: View>: View {
     private let space = "lcProblems"
 
     var body: some View {
-        // Outer reader gives the viewport height directly; the inner one tracks
-        // how far the content has scrolled. Both write straight to `tracker`,
-        // which only the scrollbar observes.
         GeometryReader { outer in
             ScrollViewReader { proxy in
                 HStack(spacing: 0) {
@@ -505,8 +452,6 @@ private struct ProblemListScroll<Row: View>: View {
     }
 }
 
-/// A slim thumb inside a wide (24pt) hit column. Reflects the scroll position
-/// and can be dragged — or clicked anywhere on the track — to scrub the list.
 private struct ProblemScrollbar: View {
 
     let tracker: ScrollTracker
@@ -524,10 +469,8 @@ private struct ProblemScrollbar: View {
             let thumbY = CGFloat(isDragging ? dragProgress : tracker.progress) * travel
 
             ZStack(alignment: .top) {
-                // A clear fill makes the whole column a hit target.
                 Color.clear
 
-                // Full-height track, so the control is discoverable at rest.
                 Capsule()
                     .fill(Color.ppBorder)
                     .frame(width: 4)

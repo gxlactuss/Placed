@@ -1,10 +1,5 @@
 import SwiftUI
 
-/// The rounds a student can pick from.
-///
-/// `rawValue` is the wire value the backend parses into its own `InterviewMode`
-/// — keep the two in step, and don't rename a case once it has shipped, since
-/// it's persisted on the session row.
 enum InterviewMode: String, CaseIterable, Identifiable, Codable {
     case hr
     case projects
@@ -37,10 +32,6 @@ enum InterviewMode: String, CaseIterable, Identifiable, Codable {
         }
     }
 
-    /// All outline, no filled variants: the tiles already carry a hairline
-    /// border, and mixing `.fill` marks in made some rounds read heavier than
-    /// others in the same list. Shapes are deliberately unalike so no two rounds
-    /// are confusable at tile size.
     var icon: String {
         switch self {
         case .hr: "person.text.rectangle"
@@ -52,10 +43,6 @@ enum InterviewMode: String, CaseIterable, Identifiable, Codable {
         }
     }
 
-    /// Why this round can't be started yet, or `nil` when it can.
-    ///
-    /// Only the two resume-derived rounds are ever gated — everything else runs
-    /// without a resume, which is why uploading one is optional.
     func lockReason(for setup: InterviewSetup?) -> String? {
         switch self {
         case .projects:
@@ -68,17 +55,11 @@ enum InterviewMode: String, CaseIterable, Identifiable, Codable {
     }
 }
 
-/// Round chooser — the screen the Interview tab shows when no round is running.
 struct InterviewModePicker: View {
 
     let setup: InterviewSetup?
     let onPick: (InterviewMode) -> Void
-    /// Reopens setup. The only route back to it once a setup has been saved —
-    /// without this a student who skipped the resume (or whose upload failed)
-    /// is stuck looking at two rounds they can never unlock.
     let onEditSetup: () -> Void
-    /// Opens the saved interviews. Lives on the picker because this is the
-    /// interview hub, and a past round is a thing you reach for from here.
     let onOpenHistory: () -> Void
 
     @Environment(FocusModeStore.self) private var focus
@@ -106,8 +87,6 @@ struct InterviewModePicker: View {
             Text(setup.map { "Tailored to \($0.targetRole)." } ?? "Choose what you want to be asked about.")
                 .font(.ppBody)
                 .foregroundStyle(Color.ppMuted)
-            // Named for whichever job the student still has to do: adding a
-            // resume is the one that unlocks rounds, so it leads when missing.
             HStack(spacing: PPSpacing.lg) {
                 Button(setup?.hasProjects == true ? "Change role or resume" : "Add your resume") {
                     onEditSetup()
@@ -121,8 +100,6 @@ struct InterviewModePicker: View {
         .padding(.top, PPSpacing.sm)
     }
 
-    /// Nudge rather than a gate — Focus mode is genuinely optional, and the
-    /// toggle's own sheet explains what iOS will and won't let it do.
     private var focusPrompt: some View {
         PPCard {
             HStack(alignment: .center, spacing: PPSpacing.lg) {
@@ -142,9 +119,6 @@ struct InterviewModePicker: View {
 
     private func row(for mode: InterviewMode) -> some View {
         let lock = mode.lockReason(for: setup)
-        // A locked row opens setup rather than doing nothing: its subtitle already
-        // says "Upload your resume to unlock", so tapping it should do that. Left
-        // disabled, the instruction would be one the screen gives no way to obey.
         return Button {
             if lock == nil { onPick(mode) } else { onEditSetup() }
         } label: {
@@ -170,8 +144,6 @@ struct InterviewModePicker: View {
             }
         }
         .buttonStyle(.ppPressable)
-        // Dimmed to read as unavailable, but not so far that it looks inert —
-        // it's still a live target that takes you to the fix.
         .opacity(lock == nil ? 1 : 0.75)
     }
 }

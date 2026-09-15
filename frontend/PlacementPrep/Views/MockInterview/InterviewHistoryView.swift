@@ -1,13 +1,5 @@
 import SwiftUI
 
-/// Every interview the student has recorded, newest first.
-///
-/// Nothing here is "saved" by an explicit action — every round has always been
-/// written to the server as it happened. What was missing was any way back to
-/// them, so this is the door rather than a new store. Rounds where nothing was
-/// answered are filtered out server-side; opening a round writes a session
-/// immediately, so without that the list would fill with interviews that never
-/// took place.
 struct InterviewHistoryView: View {
 
     @Environment(\.dismiss) private var dismiss
@@ -87,8 +79,6 @@ struct InterviewHistoryView: View {
                 Spacer(minLength: PPSpacing.sm)
 
                 VStack(alignment: .trailing, spacing: PPSpacing.xs) {
-                    // A mark only exists if the debrief was generated, which a
-                    // student can skip by leaving before the results screen.
                     if let rating = interview.rating {
                         Text("\(rating)/10")
                             .font(.ppBodyMedium)
@@ -103,7 +93,6 @@ struct InterviewHistoryView: View {
         }
     }
 
-    /// Same thresholds as the results ring, so a colour means one thing app-wide.
     private func tint(for rating: Int) -> Color {
         switch rating {
         case 8...: .ppEasy

@@ -1,11 +1,5 @@
 import SwiftUI
 
-/// A saved interview, reopened: the full transcript and — if one was generated
-/// at the time — the debrief that went with it.
-///
-/// The debrief is only ever *read* here. Fetching a past interview must not
-/// spend a model request, so a round the student left before the results screen
-/// simply shows no mark rather than quietly generating one on reopen.
 struct InterviewTranscriptView: View {
 
     let summaryID: Int
@@ -106,8 +100,6 @@ struct InterviewTranscriptView: View {
         }
     }
 
-    /// Mirrors the live interview's bubbles, so a saved round reads the same way
-    /// it did when it happened.
     private func transcript(_ session: InterviewSession) -> some View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
             PPSectionHeader("Transcript")

@@ -1,14 +1,10 @@
 import SwiftUI
 
-/// Company picker: a searchable list of every company with a bundled CSV.
-/// Selecting one pushes its question list.
 struct CompanyListView: View {
 
     @Environment(CompanyBank.self) private var bank
     @Environment(SolvedStore.self) private var solved
     @State private var query = ""
-    // Not `private`: a private stored property makes the memberwise
-    // initializer private too, and this view is constructed by name.
     var columns = PPAdaptiveColumns()
 
     var body: some View {
@@ -31,8 +27,6 @@ struct CompanyListView: View {
         }
     }
 
-    /// Serif header plus the in-house search field, matching the rest of the app.
-    /// A system `.searchable` bar would render in SF and reserve nav-bar space.
     private var header: some View {
         VStack(alignment: .leading, spacing: PPSpacing.lg) {
             Text("LeetCode").font(.ppDisplay)
@@ -42,14 +36,9 @@ struct CompanyListView: View {
         .padding(.horizontal, PPSpacing.xl)
         .padding(.top, PPSpacing.lg)
         .padding(.bottom, PPSpacing.md)
-        // Same width as the grid below, so the title, the overview card and the
-        // first column of companies all start on one line.
         .ppContentColumn(PPSize.wideColumn)
     }
 
-    /// Combined progress across every distinct problem in the bank. Deduped by
-    /// slug in `CompanyBank.catalog`, so solving "Two Sum" advances this once no
-    /// matter how many company lists carry it.
     private var overviewCard: some View {
         PPCard(padding: PPSpacing.lg) {
             VStack(alignment: .leading, spacing: PPSpacing.md) {
@@ -88,8 +77,6 @@ struct CompanyListView: View {
         }
     }
 
-    /// Roughly 38 companies, each a logo and a name — the row that most wants a
-    /// second column when there is width for one.
     private var list: some View {
         ScrollView {
             LazyVGrid(columns: columns.grid(spacing: PPSpacing.sm), spacing: PPSpacing.sm) {
@@ -128,7 +115,6 @@ struct CompanyListView: View {
         }
     }
 
-    /// One pass over the deduped catalog: total, solved, and solved-per-level.
     private var stats: (total: Int, solved: Int, solvedByLevel: [DSADifficulty: Int]) {
         var solvedByLevel: [DSADifficulty: Int] = [:]
         var solvedTotal = 0
@@ -153,8 +139,6 @@ struct CompanyListView: View {
         )
     }
 
-    /// Shown when no CSVs made it into the bundle — far more useful than an
-    /// empty list, since the likely cause is a setup step being missed.
     private var missingDataState: some View {
         emptyState(
             icon: "tray",
