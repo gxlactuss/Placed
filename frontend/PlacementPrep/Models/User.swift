@@ -18,13 +18,10 @@ struct User: Codable, Identifiable {
     }
 }
 
-/// Body for `POST /api/auth/verify`.
 struct VerifyCodeRequest: Codable {
     let code: String
 }
 
-/// Partial profile update for `PATCH /api/auth/me`. Nil fields are omitted by
-/// the synthesized encoder, so only what's set is sent.
 struct UserUpdate: Codable {
     var fullName: String?
     var targetRole: String?

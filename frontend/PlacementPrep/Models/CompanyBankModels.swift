@@ -1,6 +1,5 @@
 import Foundation
 
-/// Difficulty as published in the CSV (`EASY` / `MEDIUM` / `HARD`).
 enum DSADifficulty: String, CaseIterable, Identifiable, Codable, Hashable {
     case easy, medium, hard
 
@@ -8,7 +7,6 @@ enum DSADifficulty: String, CaseIterable, Identifiable, Codable, Hashable {
 
     var title: String { rawValue.capitalized }
 
-    /// Single letter for the summary line, e.g. "12/30 E".
     var initial: String { title.prefix(1).uppercased() }
 
     init?(csvValue: String) {
@@ -16,27 +14,14 @@ enum DSADifficulty: String, CaseIterable, Identifiable, Codable, Hashable {
     }
 }
 
-/// One LeetCode problem within a company's list.
-///
-/// Note there is no `isSolved` here. The same problem appears in many companies'
-/// lists, and solved state has to outlive any particular parse of a CSV, so it
-/// lives in `SolvedStore` keyed by `id`. Keeping this a plain value type means
-/// parsing stays cheap and testable.
 struct DSAProblem: Identifiable, Hashable, Sendable {
-
-    /// The LeetCode slug (`two-sum`), taken from the problem URL. Stable across
-    /// companies and across data refreshes, which makes it the right key for
-    /// persisted solved state — unlike title or row position.
     let id: String
     let title: String
     let url: URL?
     let difficulty: DSADifficulty
-    /// 0–100 as published, where 100 is the most frequently asked.
     let frequency: Double
     let topics: [String]
 
-    /// Builds a problem from one keyed CSV row. Returns nil when a required
-    /// column is missing or unparseable, so bad rows drop out quietly.
     init?(csvRow row: [String: String]) {
         guard
             let rawDifficulty = row["Difficulty"],
@@ -57,7 +42,6 @@ struct DSAProblem: Identifiable, Hashable, Sendable {
             .filter { !$0.isEmpty }
     }
 
-    /// `https://leetcode.com/problems/two-sum` -> `two-sum`
     private static func slug(fromLink link: String) -> String? {
         guard let components = URL(string: link)?.pathComponents else { return nil }
         guard let last = components.last, last != "/" else { return nil }
@@ -65,19 +49,11 @@ struct DSAProblem: Identifiable, Hashable, Sendable {
     }
 }
 
-/// A company whose question list ships as a bundled CSV.
-///
-/// Constructed from the filename alone so the picker can list all 470 companies
-/// without parsing a single CSV — problems load only when one is opened.
 struct DSACompany: Identifiable, Hashable, Sendable {
-    /// Lowercased filename stem, e.g. `goldman sachs`.
     var id: String { name.lowercased() }
     let name: String
     let fileURL: URL
 
-    /// The subset that recruited on KJSIT's 2025-26 campus. Surfaced with a
-    /// green tag in the list so students can spot the companies that actually
-    /// visited, among the ~470 generic ones.
     static let kjsitRecruiters: Set<String> = [
         "deloitte", "media.net", "idfc first bank", "accenture", "ltimindtree",
     ]

@@ -1,6 +1,5 @@
 import Foundation
 
-/// A finished, on-device-scored quiz attempt sent to `POST /api/quiz/submit`.
 struct QuizAttemptRequest: Codable {
     let quizId: String
     let totalQuestions: Int
@@ -15,7 +14,6 @@ struct QuizAttemptRequest: Codable {
     }
 }
 
-/// Best score for a quiz, from `GET /api/quiz/progress`.
 struct QuizProgressItem: Codable {
     let quizId: String
     let bestScore: Int
@@ -26,7 +24,6 @@ struct QuizProgressItem: Codable {
     }
 }
 
-/// Body for `POST /api/dsa/solved`.
 struct SolvedSlugRequest: Codable {
     let slug: String
 }

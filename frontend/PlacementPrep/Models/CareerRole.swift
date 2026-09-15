@@ -1,20 +1,5 @@
 import Foundation
 
-/// The role a student is preparing for.
-///
-/// Replaces the free-text field onboarding used to show. A typed role is what
-/// lets the technical interview round get specific ("why did you pick Riverpod
-/// over Provider") instead of generic, and it is what a role-locked quiz is
-/// keyed on.
-///
-/// **What gets persisted is `title`, not `rawValue`.** `User.target_role` on the
-/// backend is a plain string that is interpolated straight into interview
-/// prompts, so it has to stay human-readable — a prompt reading "applying for
-/// the role of 'ios_developer'" is worse than one reading "iOS Developer". The
-/// slug exists only so quiz files and Swift code have a stable key to match on;
-/// changing a `title` is therefore safe for prompts but will orphan accounts
-/// that stored the old wording, which `init(title:)` absorbs by matching
-/// loosely.
 enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
     case frontend = "frontend"
     case backend = "backend"
@@ -35,7 +20,6 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
 
     var id: String { rawValue }
 
-    /// The wording stored on the account and shown everywhere in the app.
     var title: String {
         switch self {
         case .frontend: "Frontend Developer"
@@ -57,8 +41,6 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
-    /// The stack a student picking this role would expect to be asked about.
-    /// Shown under the title so the choice is obvious without guesswork.
     var blurb: String {
         switch self {
         case .frontend: "React, CSS, the browser, accessibility"
@@ -80,8 +62,6 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
-    /// All verified present in the runtime symbol catalog for iOS 17 — a name
-    /// that does not exist renders blank rather than failing to build.
     var icon: String {
         switch self {
         case .frontend: "macwindow"
@@ -103,7 +83,6 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
-    /// Broad family, used only to group the picker into readable sections.
     var family: Family {
         switch self {
         case .frontend, .backend, .fullStack, .javaSpring, .python: .software
@@ -130,12 +109,6 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
         var roles: [CareerRole] { CareerRole.allCases.filter { $0.family == self } }
     }
 
-    /// Recovers the role from whatever is stored on the account.
-    ///
-    /// Matching is loose — case and punctuation are stripped — because the value
-    /// may be a title this build no longer uses, or free text typed before roles
-    /// were a fixed list. An unrecognised value returns `nil`, which everywhere
-    /// treats as "no specialisation", never as an error.
     init?(title stored: String?) {
         guard let stored, !stored.trimmingCharacters(in: .whitespaces).isEmpty else { return nil }
         let normalised = Self.normalise(stored)
@@ -150,17 +123,6 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
     }
 }
 
-// MARK: - Role-locked quizzes
-
-/// The quiz a role unlocks.
-///
-/// Roles are clubbed where the material genuinely overlaps, because one quiz per
-/// role would mean near-duplicate banks: an Android and a Flutter candidate are
-/// asked much the same things about lifecycle, state and the platform. Splitting
-/// them would trade real breadth for a distinction the questions cannot support.
-///
-/// `rawValue` appears in quiz JSON as `role_group`, so it is a persistence key —
-/// don't rename one once its quiz has shipped.
 enum RoleQuizGroup: String, CaseIterable, Identifiable, Codable, Hashable {
     case webFrontend = "web_frontend"
     case backendWeb = "backend_web"
@@ -192,14 +154,12 @@ enum RoleQuizGroup: String, CaseIterable, Identifiable, Codable, Hashable {
 }
 
 extension CareerRole {
-    /// The one quiz this role unlocks.
     var quizGroup: RoleQuizGroup {
         switch self {
         case .frontend: .webFrontend
         case .backend, .fullStack: .backendWeb
         case .javaSpring: .javaSpring
         case .python: .python
-        // Clubbed, as the material is largely shared across the four.
         case .flutter, .reactNative, .android, .ios: .mobile
         case .cyberSecurity: .cyberSecurity
         case .devOps, .cloud: .devopsCloud
