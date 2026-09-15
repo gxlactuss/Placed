@@ -1,11 +1,3 @@
-"""Prompt construction for the post-quiz debrief.
-
-Split from `interview_prompts` for the same reason that module exists at all:
-this is *content*, edited far more often than the code that sends it. The two
-don't share wording — an interview reply is spoken aloud and must be plain
-speech, while this is rendered as a report and asks for JSON.
-"""
-
 from __future__ import annotations
 
 
@@ -17,13 +9,6 @@ def quiz_summary_prompt(
     total_questions: int,
     missed: list[dict],
 ) -> str:
-    """Turns the questions a student got wrong into a debrief they can act on.
-
-    `missed` carries the whole question — prompt, what they picked, the right
-    answer, and the concept tag — because a summary written from concept names
-    alone ("revise Arrays") is exactly the raw-data restatement this is meant to
-    replace.
-    """
     if missed:
         detail = "\n\n".join(
             f"Question: {item.get('prompt', '').strip()}\n"
@@ -34,7 +19,6 @@ def quiz_summary_prompt(
         )
         body = f"They got these wrong:\n---\n{detail}\n---"
     else:
-        # A clean sweep still gets a debrief; it just has nothing to correct.
         body = "They answered every question correctly."
 
     return f"""A student has just finished a practice quiz and needs to know what to do about the result.

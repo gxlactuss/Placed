@@ -1,19 +1,3 @@
-"""Role-specific material for the technical interview round.
-
-The client stores a role as its *title* on `User.target_role` — human wording,
-because it is interpolated straight into prompts. This module recovers the role
-from that string and supplies what a real interviewer for it would actually
-probe.
-
-Kept apart from `interview_prompts` because it grows along a different axis:
-that module gains material when a *round* is added, this one when a *role* is.
-
-Matching is deliberately loose (case and punctuation stripped) and returns
-``None`` rather than raising, so a role this build doesn't know — free text from
-an older account, or a title that has since been reworded — degrades to the
-generic technical round instead of failing an interview.
-"""
-
 from __future__ import annotations
 
 from enum import Enum
@@ -24,8 +8,6 @@ def _normalise(value: str) -> str:
 
 
 class CareerRole(str, Enum):
-    """Mirrors the client's `CareerRole`. Keep the titles in step with it."""
-
     FRONTEND = "frontend"
     BACKEND = "backend"
     FULL_STACK = "full_stack"
@@ -45,7 +27,6 @@ class CareerRole(str, Enum):
 
     @classmethod
     def match(cls, stored: str | None) -> "CareerRole | None":
-        """Recovers a role from whatever the account has stored."""
         if not stored or not stored.strip():
             return None
         target = _normalise(stored)
@@ -54,9 +35,6 @@ class CareerRole(str, Enum):
                 return role
         return None
 
-
-#: The exact wording the client persists. Changing one is safe for prompts but
-#: orphans accounts holding the old string, which `match` absorbs loosely.
 _TITLES: dict[CareerRole, str] = {
     CareerRole.FRONTEND: "Frontend Developer",
     CareerRole.BACKEND: "Backend Developer",
@@ -76,11 +54,6 @@ _TITLES: dict[CareerRole, str] = {
     CareerRole.EMBEDDED: "Embedded / IoT Engineer",
 }
 
-
-#: What a real interviewer for this role digs into, and the specific shallow
-#: answer they would push past. Each entry is deliberately concrete: the whole
-#: point of asking a student to pick a role is that "tell me about your tech
-#: stack" becomes "why did you reach for a StateFlow rather than LiveData".
 _TECHNICAL_BRIEFS: dict[CareerRole, str] = {
     CareerRole.FRONTEND: """\
 Probe: how React (or their framework) actually re-renders and why a component re-rendered when they didn't expect it; keys in lists; state that should have been derived instead of stored; CSS layout with flexbox and grid, and why something overflowed; the event loop, and why a fetch resolved after a click handler finished; bundle size and what they did about it; accessibility beyond adding alt text; what breaks on a slow network or a small screen.
@@ -134,10 +107,5 @@ Push past: "I used an Arduino library" — ask what the library is doing to the 
 
 
 def technical_brief(target_role: str | None) -> str | None:
-    """Role-specific probing material for the technical round.
-
-    ``None`` when the role isn't recognised, which leaves the generic brief in
-    place rather than inventing specialisation for a role we know nothing about.
-    """
     role = CareerRole.match(target_role)
     return _TECHNICAL_BRIEFS.get(role) if role else None
