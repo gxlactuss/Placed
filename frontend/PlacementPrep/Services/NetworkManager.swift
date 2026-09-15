@@ -26,43 +26,13 @@ enum NetworkError: Error, LocalizedError {
     }
 }
 
-/// Thin async/await wrapper around URLSession for talking to the FastAPI backend.
 final class NetworkManager {
     static let shared = NetworkManager()
 
-    /// Where the backend lives. Resolved once at init, in priority order:
-    ///
-    ///   1. the `PPBackendURL` user default, if it parses
-    ///   2. `compiledBackendURL` below
-    ///
-    /// The override exists because the Mac build is handed around as a `.dmg`
-    /// (see DISTRIBUTE-MAC.md), and a `.dmg` that hardcodes its backend can only
-    /// ever be repointed by someone with Xcode. One default write repoints it:
-    ///
-    ///     defaults write ~/Library/Preferences/com.placementprep.app \
-    ///       PPBackendURL "http://192.168.1.5:8000"
-    ///
-    /// Write the **path**, not the bundle id. `defaults write com.placementprep.app`
-    /// looks equivalent and isn't: if a sandboxed build of the same bundle id has
-    /// ever run on that Mac, macOS silently redirects the write into
-    /// `~/Library/Containers/.../Preferences/`, and the unsigned `.dmg` build —
-    /// which carries no entitlements and so is *not* sandboxed — keeps reading
-    /// the plain path and never sees it. That is not hypothetical; it is what
-    /// happened the first time this was tested on a machine that had also run
-    /// the Debug build. The path form is unambiguous on both.
-    ///
-    /// On iOS the key simply goes unset and the compiled default wins.
     private let baseURL: URL
 
-    /// There is deliberately no hosted backend to point Release at: this ships to
-    /// a couple of developers who each run the API themselves. If one ever gets
-    /// deployed, this is the line to change — and `DISTRIBUTE-MAC.md`'s checklist
-    /// is the reminder to change it before cutting a build.
     private static let compiledBackendURL = URL(string: "http://localhost:8000")!
 
-    /// Rejects a malformed override rather than trapping on it: a typo in a
-    /// `defaults write` should fall back to the compiled default, not refuse to
-    /// launch the app.
     static func resolveBaseURL(
         defaults: UserDefaults = .standard,
         fallback: URL = NetworkManager.compiledBackendURL
@@ -81,19 +51,13 @@ final class NetworkManager {
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
 
-    /// Injected so ViewModels can attach the bearer token without NetworkManager
-    /// owning auth state itself.
     var authTokenProvider: (() -> String?)?
 
-    /// Fired when an *authenticated* request comes back 401 — i.e. the stored
-    /// session has lapsed. The auth layer uses this to drop back to login.
     var onUnauthorized: (() -> Void)?
 
     private init(session: URLSession? = nil) {
         self.baseURL = Self.resolveBaseURL()
 
-        // A bounded timeout so an unreachable backend fails fast instead of
-        // hanging the launch splash (which waits on `/api/auth/me`).
         if let session {
             self.session = session
         } else {
@@ -104,11 +68,6 @@ final class NetworkManager {
         }
 
         let decoder = JSONDecoder()
-        // The backend emits two flavours of timestamp: timezone-aware ISO8601
-        // for freshly generated values, and *naive* strings with microseconds
-        // (e.g. "2026-07-24T12:45:15.865875") for datetimes round-tripped through
-        // SQLite. The stock `.iso8601` strategy rejects both fractional seconds
-        // and a missing timezone, so we parse leniently across the known shapes.
         decoder.dateDecodingStrategy = .custom { decoder in
             let raw = try decoder.singleValueContainer().decode(String.self)
             guard let date = LenientDate.parse(raw) else {
@@ -126,12 +85,10 @@ final class NetworkManager {
         self.encoder = encoder
     }
 
-    /// The backend URL that starts a social sign-in flow for `provider`.
     func oauthLoginURL(provider: String) -> URL {
         URL(string: "/api/auth/oauth/\(provider)/login", relativeTo: baseURL)!.absoluteURL
     }
 
-    /// Performs a request and decodes the JSON response body.
     func request<Response: Decodable>(
         path: String,
         method: HTTPMethod = .get,
@@ -146,8 +103,6 @@ final class NetworkManager {
         }
     }
 
-    /// Performs a request and ignores the response body — for endpoints that
-    /// return 204 No Content (e.g. marking a problem solved).
     func send(
         path: String,
         method: HTTPMethod = .get,
@@ -182,9 +137,6 @@ final class NetworkManager {
         return try await perform(urlRequest, requiresAuth: requiresAuth)
     }
 
-    /// Uploads a file as `multipart/form-data` and decodes the JSON response —
-    /// used for the spoken-answer recording, which can't go through the JSON
-    /// body path.
     func upload<Response: Decodable>(
         path: String,
         fileURL: URL,
@@ -228,8 +180,6 @@ final class NetworkManager {
         }
     }
 
-    /// Sends a prepared request and maps the status code — shared by the JSON
-    /// and multipart paths so 401 handling can't drift between them.
     private func perform(_ urlRequest: URLRequest, requiresAuth: Bool) async throws -> Data {
         let data: Data
         let response: URLResponse
@@ -247,8 +197,6 @@ final class NetworkManager {
         case 200..<300:
             return data
         case 401:
-            // Only a lapsed *session* should bounce to login — a 401 on an
-            // unauthenticated call (e.g. wrong password on login) is not that.
             if requiresAuth { onUnauthorized?() }
             throw NetworkError.unauthorized
         default:
@@ -258,9 +206,6 @@ final class NetworkManager {
     }
 }
 
-/// Tolerant parser for the timestamp shapes the backend can produce.
-/// Tries, in order: ISO8601 with timezone (± fractional seconds), then
-/// timezone-naive strings (assumed UTC, ± fractional seconds).
 enum LenientDate {
     private static let iso8601: [ISO8601DateFormatter] = {
         let withFraction = ISO8601DateFormatter()
@@ -291,7 +236,6 @@ enum LenientDate {
     }
 }
 
-/// Type-erasing wrapper so `request` can accept any Encodable body.
 private struct AnyEncodable: Encodable {
     private let encodeClosure: (Encoder) throws -> Void
 

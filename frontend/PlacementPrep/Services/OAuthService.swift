@@ -4,20 +4,14 @@ import UIKit
 enum OAuthError: Error {
     case cannotStart
     case cancelled
-    case provider(String)  // error code the backend redirected back
+    case provider(String)
 }
 
-/// Runs a backend-brokered OAuth flow in a secure system web sheet. The app
-/// opens the backend's `/oauth/{provider}/login` URL; the backend does the whole
-/// dance and redirects our JWT back to the `placementprep://` scheme, which this
-/// session intercepts. No client IDs or secrets ever live in the app.
 @MainActor
 final class OAuthService: NSObject, ASWebAuthenticationPresentationContextProviding {
 
     private var session: ASWebAuthenticationSession?
 
-    /// Returns the JWT from the callback, or throws (`.cancelled` if the user
-    /// dismissed, `.provider(code)` if the backend reported an error).
     func authenticate(url: URL, callbackScheme: String) async throws -> String {
         let callbackURL: URL = try await withCheckedThrowingContinuation { continuation in
             let session = ASWebAuthenticationSession(
@@ -35,7 +29,7 @@ final class OAuthService: NSObject, ASWebAuthenticationPresentationContextProvid
             }
             session.presentationContextProvider = self
             session.prefersEphemeralWebBrowserSession = false
-            self.session = session  // retain for the lifetime of the flow
+            self.session = session
             if !session.start() {
                 continuation.resume(throwing: OAuthError.cannotStart)
             }
