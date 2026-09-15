@@ -1,20 +1,12 @@
 import SwiftUI
 
-/// The debrief shown once a round finishes: a mark out of 10, what went wrong,
-/// and what to work on.
-///
-/// Deliberately shaped like `QuizResultsView` — same ring, same "Areas to
-/// improve" heading, same footer — because it answers the same question after a
-/// different exercise, and a student shouldn't have to learn two results screens.
 struct InterviewResultsView: View {
 
     let model: InterviewSessionModel
     let onAnotherRound: () -> Void
     let onClose: () -> Void
 
-    /// Ring animates up from zero rather than snapping to the mark.
     @State private var animatedProgress: Double = 0
-    /// Drives the one-shot staggered reveal of the cards below the ring.
     @State private var revealed = false
 
     var body: some View {
@@ -52,10 +44,23 @@ struct InterviewResultsView: View {
     }
 
     private var header: some View {
-        Text("\(model.role) · Round debrief")
-            .ppSectionLabelStyle()
-            .multilineTextAlignment(.center)
-            .padding(.top, PPSpacing.lg)
+        VStack(spacing: PPSpacing.xs) {
+            Text("\(model.role) · Round debrief")
+                .ppSectionLabelStyle()
+                .multilineTextAlignment(.center)
+            roundReach
+                .font(.ppCaption)
+                .foregroundStyle(Color.ppMuted)
+        }
+        .padding(.top, PPSpacing.lg)
+    }
+
+    private var roundReach: Text {
+        if let difficulty = model.difficulty {
+            Text("^[\(model.answeredCount) question](inflect: true) · finished at \(difficulty.title)")
+        } else {
+            Text("^[\(model.answeredCount) question](inflect: true)")
+        }
     }
 
     private func ring(_ feedback: InterviewFeedback) -> some View {
@@ -70,8 +75,6 @@ struct InterviewResultsView: View {
         .padding(.vertical, PPSpacing.sm)
     }
 
-    /// Same thresholds the quiz ring uses, so a colour means the same thing in
-    /// both places.
     private func tint(for rating: Int) -> Color {
         switch rating {
         case 8...: .ppEasy
@@ -90,8 +93,6 @@ struct InterviewResultsView: View {
         }
     }
 
-    /// What they actually got wrong, each with its correction. Empty is a real
-    /// outcome — a clean round shows nothing here rather than an empty heading.
     @ViewBuilder
     private func mistakes(_ feedback: InterviewFeedback) -> some View {
         if !feedback.mistakes.isEmpty {
@@ -111,8 +112,6 @@ struct InterviewResultsView: View {
         }
     }
 
-    /// `offset` continues the stagger across both lists, so the second one
-    /// doesn't restart the animation from zero halfway down the screen.
     private func section(
         _ title: String,
         items: [String],

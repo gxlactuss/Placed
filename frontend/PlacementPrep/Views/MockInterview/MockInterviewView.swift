@@ -1,13 +1,5 @@
 import SwiftUI
 
-/// Mock interview transcript with a hold-to-talk control.
-///
-/// The screen is a thin render of `InterviewSessionModel`, which runs the real
-/// round-trip: `VoiceService` records the held answer, it's uploaded to
-/// `/api/interview/transcribe` (Whisper) for text, and `/api/interview/*`
-/// supplies the questions and follow-ups. There's no live word-by-word bubble —
-/// the transcript only exists once the recording is sent, so the mic halo and
-/// `promptText` carry the feedback while recording.
 struct MockInterviewView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
@@ -17,14 +9,10 @@ struct MockInterviewView: View {
     @Environment(XPStore.self) private var xp
     @State private var model = InterviewSessionModel()
     @State private var showSetup = false
-    /// `nil` means no round is running, so the tab shows the picker.
     @State private var mode: InterviewMode?
     @State private var showResults = false
     @State private var showHistory = false
 
-    /// The setup screen's answer wins — it's the more deliberate one, collected
-    /// for this specific interview. Falls back to the account's role, then a
-    /// generic default so the interview can always start.
     private var resolvedRole: String {
         let candidates = [
             setupStore.setup?.targetRole,
@@ -50,13 +38,9 @@ struct MockInterviewView: View {
                 )
             }
         }
-        // First visit for this account: collect role (+ optional resume) before
-        // anything else, so the rounds have something to be tailored to.
         .onAppear { showSetup = !setupStore.isComplete }
         .fullScreenCover(isPresented: $showSetup) { InterviewSetupView() }
         .sheet(isPresented: $showHistory) { InterviewHistoryView() }
-        // The DSA round needs a problem to talk about, and the catalog is built
-        // off the main actor on first use.
         .task { await companyBank.loadCatalogIfNeeded() }
     }
 
@@ -69,7 +53,6 @@ struct MockInterviewView: View {
         }
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
-        // Keyed on the mode so switching rounds starts a fresh session.
         .task(id: mode) {
             await model.startIfNeeded(
                 targetRole: resolvedRole,
@@ -77,22 +60,14 @@ struct MockInterviewView: View {
                 context: context(for: mode)
             )
         }
-        // The debrief is the point of finishing, so it comes up on its own. Not
-        // offered when the interviewer walked out: there's nothing to mark, and
-        // a score would land as a second telling-off.
         .onChange(of: model.isFinished) { _, finished in
             guard finished else { return }
-            // Counts toward the streak even when the interviewer walked out —
-            // sitting the round is the practice; the grade is a separate matter.
             streak.recordActivity()
             xp.awardStreakDay()
             guard !model.wasEndedByInterviewer else { return }
             showResults = true
             Task { await model.loadFeedback() }
         }
-        // The round's XP is settled by the mark, so it waits for the debrief —
-        // and hangs off the debrief arriving rather than the request that asked
-        // for it, so a retry after a failed first attempt still pays.
         .onChange(of: model.feedback) { _, feedback in
             guard
                 let rating = feedback?.rating,
@@ -113,9 +88,6 @@ struct MockInterviewView: View {
         }
     }
 
-    /// Only ever sends what the round actually needs — the projects round has no
-    /// use for a DSA problem, and shipping unused resume text would widen what
-    /// leaves the device for no benefit.
     private func context(for mode: InterviewMode) -> InterviewContextPayload {
         var payload = InterviewContextPayload()
         switch mode {
@@ -124,19 +96,29 @@ struct MockInterviewView: View {
         case .techStack:
             payload.skills = setupStore.setup?.skills
         case .dsaApproach:
-            payload.dsaProblem = randomProblemTitle()
+            payload.dsaProblems = problemPool()
         case .hr, .coreCs, .panelDebate:
             break
         }
         return payload
     }
 
-    /// A problem drawn from the bundled company lists. The catalog is keyed by
-    /// LeetCode slug, so the slug is title-cased back into something speakable.
-    /// `nil` is fine — the prompt tells the model to choose its own.
-    private func randomProblemTitle() -> String? {
-        guard let slug = companyBank.catalog.keys.randomElement() else { return nil }
-        return slug
+    private static let problemsPerDifficulty = 10
+
+    private func problemPool() -> DSAProblemPool? {
+        guard !companyBank.catalog.isEmpty else { return nil }
+        let slugs = Dictionary(grouping: companyBank.catalog.keys) { companyBank.catalog[$0] }
+        func sample(_ difficulty: DSADifficulty) -> [String] {
+            (slugs[difficulty] ?? [])
+                .shuffled()
+                .prefix(Self.problemsPerDifficulty)
+                .map(Self.speakableTitle)
+        }
+        return DSAProblemPool(easy: sample(.easy), medium: sample(.medium), hard: sample(.hard))
+    }
+
+    private static func speakableTitle(_ slug: String) -> String {
+        slug
             .split(separator: "-")
             .map { $0.prefix(1).uppercased() + $0.dropFirst() }
             .joined(separator: " ")
@@ -147,20 +129,7 @@ struct MockInterviewView: View {
         mode = nil
     }
 
-    /// Sits between the header and the transcript so it reads as part of the
-    /// chrome rather than as another message in the conversation.
-    ///
-    /// It is driven by the mic meter, so it only has something real to show while
-    /// the student is holding to talk. The thinking state is not decoration for
-    /// its own sake: the gap between releasing the button and the reply arriving
-    /// covers an upload, a transcription and a generation, and a strip that keeps
-    /// moving is the cheapest way to say the app has not stalled.
     private var voiceWave: some View {
-        // Deliberately unpadded horizontally: the liquid hangs off the header
-        // above it and spans the full width, so insetting it would leave the
-        // thing it's supposed to be attached to visible on either side. Taller
-        // than the strip it replaced, too — at bar-meter height the warp has
-        // nowhere to fall and reads as a blur.
         PPLiquidWave(level: model.level, mode: waveMode, height: 72)
             .padding(.bottom, PPSpacing.md)
     }
@@ -171,15 +140,15 @@ struct MockInterviewView: View {
         return .idle
     }
 
-    // MARK: - Header
-
     private var header: some View {
         HStack {
             VStack(alignment: .leading, spacing: PPSpacing.xs) {
                 Text(mode?.title ?? "Mock Interview").font(.ppTitle)
-                Text(model.role)
+                Text(roundDetail)
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
+                    .contentTransition(.numericText())
+                    .animation(PPMotion.snappy, value: model.difficulty)
             }
 
             Spacer(minLength: PPSpacing.sm)
@@ -188,17 +157,20 @@ struct MockInterviewView: View {
 
             PPIconButton(systemName: "xmark", diameter: 36) { leaveRound() }
 
-            PPBadge("Round \(min(model.round, model.totalRounds)) of \(model.totalRounds)", tone: .accent)
+            PPBadge("Q\(model.questionNumber)", tone: .accent)
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.vertical, PPSpacing.lg)
-        // The wave below is deliberately *not* columned — it hangs off this
-        // header's bottom edge across the full width, and insetting it would
-        // leave the thing it is attached to showing either side.
         .ppContentColumn()
     }
 
-    // MARK: - Transcript
+    private var roundDetail: String {
+        if model.isWarmUp { return "\(model.role) · Warm-up" }
+        if let difficulty = model.difficulty {
+            return "\(model.role) · \(difficulty.title) questions"
+        }
+        return model.role
+    }
 
     private var transcript: some View {
         ScrollViewReader { proxy in
@@ -272,9 +244,6 @@ struct MockInterviewView: View {
         }
     }
 
-
-    // MARK: - Controls
-
     private var controls: some View {
         VStack(spacing: PPSpacing.md) {
             if model.isFinished {
@@ -284,8 +253,6 @@ struct MockInterviewView: View {
                     .font(.ppHeadline)
                     .multilineTextAlignment(.center)
                 HStack(spacing: PPSpacing.md) {
-                    // Reopens the debrief they were shown automatically, so
-                    // dismissing it isn't the same as throwing it away.
                     if !model.wasEndedByInterviewer {
                         Button("See results") {
                             showResults = true
@@ -305,6 +272,8 @@ struct MockInterviewView: View {
                     model.startRecording()
                 } onStop: {
                     model.stopRecording()
+                } onCancel: {
+                    model.cancelRecording()
                 }
                 .disabled(model.isThinking)
                 .opacity(model.isThinking ? 0.4 : 1)
@@ -317,7 +286,6 @@ struct MockInterviewView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, PPSpacing.xl)
         .ppContentColumn()
-        // Matches the quiz footer: one static blur region over the transcript.
         .background(.ultraThinMaterial)
         .background(Color.ppGround.opacity(0.6))
         .overlay(alignment: .top) {
@@ -344,8 +312,9 @@ struct MockInterviewView: View {
     private var promptText: String {
         if model.phase == .transcribing { return "Transcribing your answer…" }
         if model.isThinking { return "Thinking…" }
-        if model.isRecording { return "Recording… release when you're done" }
+        if model.isRecording { return "Release to send · slide left to discard" }
         if !model.micAuthorized { return "Hold to allow the microphone, then answer" }
+        if model.didDiscardRecording { return "Discarded — hold to answer again" }
         return "Hold to answer"
     }
 
