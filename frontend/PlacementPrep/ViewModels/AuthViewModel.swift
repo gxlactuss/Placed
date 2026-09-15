@@ -2,9 +2,6 @@ import Foundation
 
 @MainActor
 final class AuthViewModel: ObservableObject {
-
-    /// The three states the app gate switches on. `.checking` is the brief window
-    /// on launch while a stored token is validated against `/api/auth/me`.
     enum SessionState: Equatable { case checking, authenticated, unauthenticated }
 
     @Published var sessionState: SessionState = .unauthenticated
@@ -20,9 +17,6 @@ final class AuthViewModel: ObservableObject {
         network.onUnauthorized = { [weak self] in
             Task { @MainActor in self?.handleExpiredSession() }
         }
-        // A stored token is only *trusted* after `/me` confirms it — otherwise a
-        // stale/expired token would drop the user into a dashboard that 401s on
-        // every call. Validate before showing the tabs.
         if KeychainService.loadToken() != nil {
             sessionState = .checking
             Task { await validateSession() }
@@ -35,15 +29,10 @@ final class AuthViewModel: ObservableObject {
             currentUser = user
             sessionState = .authenticated
         } catch NetworkError.unauthorized {
-            // Token is genuinely invalid/expired — clear it and show login.
             KeychainService.deleteToken()
             currentUser = nil
             sessionState = .unauthenticated
         } catch {
-            // Couldn't reach the backend (offline / server down). Don't punish
-            // the user or discard a possibly-valid token — trust it for now; a
-            // real 401 on a later authed call will bounce to login via
-            // `handleExpiredSession`. (Quiz + company content works offline.)
             sessionState = .authenticated
         }
     }
@@ -82,8 +71,6 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
-    /// Confirms the emailed code. On success `currentUser` updates (isVerified
-    /// true) and the gate advances past the verify screen.
     @discardableResult
     func verifyEmail(code: String) async -> Bool {
         errorMessage = nil
@@ -103,7 +90,6 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
-    /// Requests a fresh verification code for the signed-in user.
     func resendVerification() async {
         errorMessage = nil
         do {
@@ -113,8 +99,6 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
-    /// Saves the onboarding answers and flips `onboarded`. Returns whether it
-    /// succeeded; on success `currentUser` updates and the gate moves to the tabs.
     @discardableResult
     func completeOnboarding(fullName: String, targetRole: String) async -> Bool {
         errorMessage = nil
@@ -131,9 +115,6 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
-    /// Updates just the target role, from the interview setup screen. Silent:
-    /// the interview proceeds on the locally saved role either way, so a failure
-    /// here isn't worth interrupting the student for.
     func updateTargetRole(_ role: String) async {
         guard let updated: User = try? await network.request(
             path: "/api/auth/me",
@@ -143,9 +124,6 @@ final class AuthViewModel: ObservableObject {
         currentUser = updated
     }
 
-    /// Social sign-in (Google/GitHub). Opens the backend-brokered flow, stores
-    /// the returned JWT, then validates it to load the user (which advances the
-    /// gate — new accounts land on onboarding, verified by the provider).
     func signInWithOAuth(_ provider: String) async {
         errorMessage = nil
         isLoading = true
@@ -161,7 +139,6 @@ final class AuthViewModel: ObservableObject {
                 errorMessage = "Signed in, but couldn't load your profile. Please try again."
             }
         } catch OAuthError.cancelled {
-            // User dismissed the sheet — not an error.
         } catch let OAuthError.provider(code) {
             errorMessage = Self.oauthMessage(for: code)
         } catch {
@@ -185,8 +162,6 @@ final class AuthViewModel: ObservableObject {
         sessionState = .unauthenticated
     }
 
-    /// An authenticated request came back 401 mid-session — the token lapsed, so
-    /// drop straight back to login.
     private func handleExpiredSession() {
         guard sessionState != .unauthenticated else { return }
         KeychainService.deleteToken()
@@ -201,8 +176,6 @@ final class AuthViewModel: ObservableObject {
         sessionState = .authenticated
     }
 
-    /// Surfaces the backend's `detail` string (e.g. "Email already registered")
-    /// rather than the generic "Server error (400): ..." wrapper.
     private func message(for error: Error) -> String {
         if case let NetworkError.server(_, body) = error,
            let data = body.data(using: .utf8),

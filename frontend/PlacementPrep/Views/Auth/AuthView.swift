@@ -1,9 +1,5 @@
 import SwiftUI
 
-/// The sign-in / sign-up gate shown until a JWT is in the Keychain. Composed
-/// from `DesignSystem` primitives so it reads as the same editorial system as
-/// the rest of the app: serif wordmark, hairline fields, one amber call to
-/// action, everything else quiet.
 struct AuthView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
@@ -36,8 +32,6 @@ struct AuthView: View {
         .animation(PPMotion.settle, value: mode)
     }
 
-    // MARK: - Brand
-
     private var brand: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
             Text("PlacementPrep")
@@ -51,8 +45,6 @@ struct AuthView: View {
         .padding(.top, PPSpacing.xxl)
         .padding(.bottom, PPSpacing.sm)
     }
-
-    // MARK: - Fields
 
     private var fields: some View {
         VStack(spacing: PPSpacing.lg) {
@@ -86,8 +78,6 @@ struct AuthView: View {
         }
     }
 
-    // MARK: - Error
-
     @ViewBuilder
     private var errorBanner: some View {
         if let message = auth.errorMessage {
@@ -110,8 +100,6 @@ struct AuthView: View {
         }
     }
 
-    // MARK: - Primary CTA
-
     private var primaryButton: some View {
         Button(action: submit) {
             if auth.isLoading {
@@ -127,8 +115,6 @@ struct AuthView: View {
         .animation(PPMotion.snappy, value: canSubmit)
         .animation(PPMotion.snappy, value: auth.isLoading)
     }
-
-    // MARK: - Social sign-in
 
     private var socialSection: some View {
         VStack(spacing: PPSpacing.md) {
@@ -172,8 +158,6 @@ struct AuthView: View {
             .frame(maxWidth: .infinity)
     }
 
-    // MARK: - Mode toggle
-
     private var modeToggle: some View {
         HStack(spacing: PPSpacing.sm) {
             Text(mode == .login ? "New here?" : "Already have an account?")
@@ -189,12 +173,9 @@ struct AuthView: View {
         .padding(.top, PPSpacing.sm)
     }
 
-    // MARK: - Logic
-
     private var canSubmit: Bool {
         switch mode {
         case .login:
-            // Login accepts a username or an email, so only require non-empty.
             let identifierOK = !email.trimmingCharacters(in: .whitespaces).isEmpty
             return identifierOK && !password.isEmpty
         case .signup:
@@ -215,9 +196,6 @@ struct AuthView: View {
                     email: email,
                     password: password,
                     fullName: trimmedName.isEmpty ? nil : trimmedName,
-                    // Collected on the very next screen, from a fixed list.
-                    // A role must be one of the known ones or the technical
-                    // round and the role-locked quiz have nothing to key on.
                     targetRole: nil
                 )
             }

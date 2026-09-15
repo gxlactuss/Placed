@@ -3,7 +3,7 @@ import Foundation
 @MainActor
 final class QuizViewModel: ObservableObject {
     @Published var questions: [QuizQuestion] = []
-    @Published var selectedAnswers: [String: String] = [:] // questionId -> optionId
+    @Published var selectedAnswers: [String: String] = [:]
     @Published var result: QuizResult?
     @Published var isLoading = false
     @Published var errorMessage: String?

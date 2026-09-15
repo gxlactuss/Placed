@@ -1,16 +1,9 @@
 import SwiftUI
 
-/// The app's four destinations.
 enum AppTab: Hashable {
     case home, quiz, interview, companies
 }
 
-/// Root TabView. Selection is hoisted into state so Home's shortcut cards can
-/// switch tabs — tapping "Mock Interview" on Home should land on the same screen
-/// the tab bar reaches, not push a second copy onto Home's stack.
-///
-/// Uses the system tab bar restyled by `PPAppearance` rather than a custom bar,
-/// so safe-area insets, keyboard avoidance and VoiceOver ordering keep working.
 struct DashboardView: View {
 
     @Environment(XPStore.self) private var xp
@@ -18,15 +11,10 @@ struct DashboardView: View {
 
     var body: some View {
         tabs
-            // Crossing a tier is the one XP moment worth interrupting for, and
-            // it can happen on any tab — so it's handled here, above all four,
-            // rather than in whichever screen paid out.
             .overlay(alignment: .top) { levelUpBanner }
             .task(id: xp.pendingLevelUp) {
                 guard let level = xp.pendingLevelUp else { return }
                 PPHaptics.levelUp()
-                // The new tier's icon is applied for them; the picker is there
-                // to go back to an earlier one.
                 await AppIconService.apply(level)
                 try? await Task.sleep(for: .seconds(4))
                 withAnimation(PPMotion.settle) { xp.pendingLevelUp = nil }
@@ -67,8 +55,6 @@ struct DashboardView: View {
     }
 }
 
-/// The tier-crossed banner. Deliberately a strip rather than a modal: it says
-/// what changed and gets out of the way, and it dismisses itself.
 private struct XPLevelUpBanner: View {
 
     let level: XPLevel

@@ -1,13 +1,6 @@
 import SwiftUI
 
-/// The Focus mode control, shown on Home and in the mock interview header.
-///
-/// Deliberately quieter than a `ppPrimary` button even when on: both screens
-/// already spend their one loud amber moment elsewhere (Home's hero, the
-/// interview's mic), so this reads as an accent-tinted chip rather than a fill.
 struct FocusModeToggle: View {
-
-    /// Icon-only, for headers that are already carrying a title and a badge.
     var compact = false
 
     @Environment(FocusModeStore.self) private var focus
@@ -15,9 +8,6 @@ struct FocusModeToggle: View {
 
     var body: some View {
         Button {
-            // The first tap explains what the app can and can't do *before*
-            // flipping anything — see `FocusModeStore`. After that it's a
-            // straight toggle.
             if focus.hasSeenBriefing {
                 withAnimation(PPMotion.snappy) { focus.toggle() }
             } else {
@@ -54,15 +44,6 @@ struct FocusModeToggle: View {
     private var border: Color { focus.isOn ? .ppAccent700.opacity(0.55) : .ppBorder }
 }
 
-// MARK: - Briefing
-
-/// One-time explainer, shown before Focus mode is first switched on.
-///
-/// It exists because the honest version of this feature has a hole in it: the
-/// app can hold the screen awake, but only the student can put the phone into
-/// Do Not Disturb. Rather than ship a button that silently does half of what its
-/// name implies, this says so and hands over the Shortcuts automation that
-/// closes the gap.
 struct FocusModeBriefing: View {
 
     @Environment(FocusModeStore.self) private var focus
@@ -104,8 +85,6 @@ struct FocusModeBriefing: View {
                 .buttonStyle(.ppPrimary)
 
                 Button("Not now") {
-                    // Still counts as briefed: they've read it, so the next tap
-                    // shouldn't make them read it again.
                     focus.markBriefed()
                     dismiss()
                 }
@@ -120,9 +99,6 @@ struct FocusModeBriefing: View {
         .presentationDragIndicator(.visible)
     }
 
-    /// The sanctioned way to get true auto-DND: a personal automation in the
-    /// Shortcuts app. We can open Shortcuts, but not write the automation — so
-    /// the steps are spelled out.
     private var automationCard: some View {
         PPCard {
             VStack(alignment: .leading, spacing: PPSpacing.md) {
@@ -135,9 +111,6 @@ struct FocusModeBriefing: View {
                     .fixedSize(horizontal: false, vertical: true)
 
                 Button {
-                    // Opened, never `canOpenURL`-probed, so no
-                    // LSApplicationQueriesSchemes entry is needed; if Shortcuts
-                    // is unavailable the open simply no-ops.
                     if let url = URL(string: "shortcuts://") { openURL(url) }
                 } label: {
                     Label("Open Shortcuts", systemImage: "arrow.up.forward.app")

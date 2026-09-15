@@ -1,8 +1,5 @@
 import SwiftUI
 
-/// Email verification, shown after sign-up (gated on `currentUser.isVerified`).
-/// The user enters the 6-digit code emailed to them; a resend and a log-out
-/// escape hatch are provided for a wrong address.
 struct VerifyEmailView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
@@ -57,13 +54,11 @@ struct VerifyEmailView: View {
             textContentType: .oneTimeCode
         )
         .onChange(of: code) { _, newValue in
-            // Keep it to 6 digits.
             let digits = newValue.filter(\.isNumber)
             code = String(digits.prefix(6))
             resendNotice = nil
         }
         #if DEBUG
-        // Dev builds use a fixed code (no email is sent), so prefill it and say so.
         .onAppear { if code.isEmpty { code = "123456" } }
         .overlay(alignment: .bottomLeading) {
             Text("Dev build — code is 123456")

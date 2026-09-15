@@ -1,9 +1,5 @@
 import SwiftUI
 
-/// Home tab. Assembled entirely from the `DesignSystem` primitives. Name and
-/// role come from the signed-in account, the streak from `StreakStore`, and the
-/// practice counts are read live from the bundled content — so nothing on this
-/// screen can drift from reality.
 struct HomeView: View {
 
     @Binding var selectedTab: AppTab
@@ -35,15 +31,11 @@ struct HomeView: View {
         .scrollIndicators(.hidden)
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
-        // Building the deduped catalog is the only way to show a true problem
-        // count; it runs once, off the main actor, and flips the card when ready.
         .task { await companyBank.loadCatalogIfNeeded() }
         .sheet(isPresented: $showThemeSheet) { ThemePickerView() }
         .sheet(isPresented: $showSavedSheet) { SavedQuestionsView() }
         .sheet(isPresented: $showIconSheet) { AppIconPickerView() }
     }
-
-    // MARK: - Top bar
 
     private var topBar: some View {
         HStack(alignment: .center) {
@@ -53,8 +45,6 @@ struct HomeView: View {
             Spacer(minLength: PPSpacing.md)
             FocusModeToggle()
                 .padding(.trailing, PPSpacing.sm)
-            // Tapping the avatar opens the profile menu. It holds just the theme
-            // switcher today; account/settings items land here later.
             Menu {
                 Button {
                     showSavedSheet = true
@@ -83,8 +73,6 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Greeting
-
     private var greeting: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
             Text("\(timeOfDayGreeting),")
@@ -107,10 +95,6 @@ struct HomeView: View {
         }
     }
 
-    // MARK: - Interview hero
-
-    /// The one loud moment on the screen. Warm amber-wash panel with a large
-    /// mic watermark and an amber call to action — flat, no gradient or glow.
     private var interviewHero: some View {
         Button {
             selectedTab = .interview
@@ -153,8 +137,6 @@ struct HomeView: View {
         .buttonStyle(.ppPressable)
     }
 
-    /// Looks like a `ppPrimary` button but is a plain label, so it can live
-    /// inside the tappable hero card without nesting a second button.
     private var startRoundPill: some View {
         HStack(spacing: PPSpacing.sm) {
             Text("Start round")
@@ -166,8 +148,6 @@ struct HomeView: View {
         .frame(height: 46)
         .background(Color.ppAccent, in: .capsule)
     }
-
-    // MARK: - Keep practicing
 
     private var keepPracticing: some View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
@@ -226,11 +206,6 @@ struct HomeView: View {
         .buttonStyle(.ppPressable)
     }
 
-    // MARK: - XP
-
-    /// The balance, the tier it sits in, and how far it is to the next one.
-    /// Tapping opens the icon gallery — the tiers are only meaningful because of
-    /// what they unlock, so the card is the way in.
     private var xpCard: some View {
         Button {
             showIconSheet = true
@@ -278,8 +253,6 @@ struct HomeView: View {
         return "\(remaining) XP to \(next.title)"
     }
 
-    // MARK: - Streak
-
     private var streakCard: some View {
         PPCard {
             HStack(spacing: PPSpacing.lg) {
@@ -307,9 +280,6 @@ struct HomeView: View {
         }
     }
 
-    /// Nudges toward the next thing rather than restating the number above:
-    /// nothing yet → how to start, kept it today → the best to beat, and an
-    /// untouched day on a live streak → the one that matters.
     private var streakSubtitle: String {
         let best = streak.bestStreak
         if streak.currentStreak == 0 {
@@ -323,8 +293,6 @@ struct HomeView: View {
             : "Best: \(best) days"
     }
 
-    /// Compact week dots: filled for practised days, a ring for today, a faint
-    /// disc for the rest of the week.
     private var streakDots: some View {
         let progress = streak.weekProgress
         let todayIndex = streak.todayIndexInWeek
@@ -346,21 +314,15 @@ struct HomeView: View {
         .accessibilityLabel("\(progress.count { $0 }) of 7 days this week")
     }
 
-    // MARK: - Live counts
-
     private var quizQuestionCount: Int {
         quizBank.quizzes.reduce(0) { $0 + $1.questions.count }
     }
 
-    /// Shows the true distinct-problem count once the catalog has been built;
-    /// falls back to the company count until then so the card is never blank.
     private var problemMetric: String {
         companyBank.isCatalogReady
             ? "\(companyBank.catalog.count.formatted()) problems"
             : "\(companyBank.companies.count) companies"
     }
-
-    // MARK: - Helpers
 
     private var todayLine: String {
         Date().formatted(.dateTime.weekday(.wide).month(.abbreviated).day())
@@ -374,9 +336,6 @@ struct HomeView: View {
         }
     }
 
-    /// Real signed-in name when the account carries one, else the sample name
-    /// (a token restored from the Keychain has no user attached until a `/me`
-    /// endpoint exists, so the fallback keeps the header populated).
     private var displayName: String {
         let name = auth.currentUser?.fullName?.trimmingCharacters(in: .whitespaces) ?? ""
         return name.isEmpty ? SampleData.userName : name

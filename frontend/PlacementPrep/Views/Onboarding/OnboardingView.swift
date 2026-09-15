@@ -1,17 +1,11 @@
 import SwiftUI
 
-/// First-run setup, shown once after sign-up (gated on `currentUser.onboarded`).
-/// Collects a display name, the role being prepared for, and a starter theme,
-/// then PATCHes the profile and flips `onboarded` so the tabs take over.
 struct OnboardingView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
     @Bindable private var theme = ThemeStore.shared
 
     @State private var name = ""
-    /// A picked role rather than typed text. The technical interview round and
-    /// the role-locked quizzes both key off this, and neither can do anything
-    /// useful with a free-text job title nobody else spells the same way.
     @State private var role: CareerRole?
 
     var body: some View {
@@ -33,15 +27,10 @@ struct OnboardingView: View {
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
         .onAppear {
-            // Prefill anything captured at sign-up.
             name = auth.currentUser?.fullName ?? ""
-            // Recovers a role stored as free text by an earlier build; an
-            // unrecognised one just leaves the picker empty.
             role = CareerRole(title: auth.currentUser?.targetRole)
         }
     }
-
-    // MARK: - Sections
 
     private var header: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
@@ -150,8 +139,6 @@ struct OnboardingView: View {
         .animation(PPMotion.snappy, value: canSubmit)
     }
 
-    // MARK: - Logic
-
     private var canSubmit: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty && role != nil
     }
@@ -159,8 +146,6 @@ struct OnboardingView: View {
     private func submit() {
         guard canSubmit, !auth.isLoading else { return }
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
-        // The title is what gets stored, not the slug — it goes straight into
-        // interview prompts, which have to read as English.
         Task { await auth.completeOnboarding(fullName: trimmedName, targetRole: role?.title ?? "") }
     }
 }
