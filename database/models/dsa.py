@@ -6,9 +6,6 @@ from sqlmodel import Field, SQLModel
 
 
 class SolvedProblem(SQLModel, table=True):
-    """A LeetCode problem a user has marked solved, keyed by slug. One row per
-    (user, slug); the unique constraint makes marking-solved idempotent."""
-
     __tablename__ = "solved_problems"
     __table_args__ = (UniqueConstraint("user_id", "slug", name="uq_solved_user_slug"),)
 
