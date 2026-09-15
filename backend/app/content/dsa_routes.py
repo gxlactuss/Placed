@@ -14,7 +14,6 @@ def list_solved(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """The slugs this user has marked solved."""
     rows = session.exec(
         select(SolvedProblem).where(SolvedProblem.user_id == int(user_id))
     ).all()
@@ -27,7 +26,6 @@ def mark_solved(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Marks a problem solved. Idempotent — a repeat is a no-op."""
     existing = session.exec(
         select(SolvedProblem)
         .where(SolvedProblem.user_id == int(user_id))
@@ -44,7 +42,6 @@ def unmark_solved(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Unmarks a problem. Idempotent — removing an absent slug is a no-op."""
     existing = session.exec(
         select(SolvedProblem)
         .where(SolvedProblem.user_id == int(user_id))

@@ -19,24 +19,14 @@ router = APIRouter(prefix="/api/quiz", tags=["quiz"])
 
 @router.get("/questions", response_model=list[QuizQuestion])
 def get_quiz_questions(topic: QuizTopic, difficulty: QuizDifficulty):
-    # Quizzes are bundled in the client today; this server-side bank is unused.
     raise NotImplementedError("Wire up the question bank data source here")
 
 
 @router.post("/summary", response_model=QuizSummaryResponse)
 def quiz_summary(
     payload: QuizSummaryRequest,
-    # Unused, but the dependency is the auth gate — it rejects an absent or
-    # invalid JWT before we spend a model request on it.
-    user_id: str = Depends(get_current_user_id),  # noqa: ARG001
+    user_id: str = Depends(get_current_user_id),
 ):
-    """Explains a finished quiz instead of restating the score.
-
-    Stateless, like the resume summary: quizzes are bundled and scored on-device,
-    so the questions arrive with the request and nothing is written back. That
-    also means there's nothing to cache against — the client holds the result for
-    as long as the results screen is up, and a retake is a genuinely new attempt.
-    """
     result = generate_quiz_summary(
         quiz_title=payload.quiz_title,
         subject=payload.subject,
@@ -54,7 +44,6 @@ def submit_quiz(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Records a finished, on-device-scored attempt."""
     result = QuizResult(
         user_id=int(user_id),
         quiz_id=payload.quiz_id,
@@ -83,7 +72,6 @@ def get_quiz_progress(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Best score per quiz — the shape the client's progress store mirrors."""
     rows = session.exec(
         select(QuizResult).where(QuizResult.user_id == int(user_id))
     ).all()

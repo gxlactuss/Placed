@@ -5,7 +5,7 @@ class DSAQuestion(BaseModel):
     title: str
     leetcode_url: str
     difficulty: str
-    frequency: float | None = None  # how often this company asks it, if known
+    frequency: float | None = None
 
 
 class CompanySummary(BaseModel):
