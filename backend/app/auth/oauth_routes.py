@@ -15,16 +15,12 @@ router = APIRouter(prefix="/api/auth/oauth", tags=["oauth"])
 
 
 def _redirect_to_app(**params: str) -> RedirectResponse:
-    """Hands the result back to the app via its custom URL scheme. The client's
-    ASWebAuthenticationSession intercepts this scheme and reads token/error."""
     url = f"{settings.app_redirect_scheme}://oauth?{urlencode(params)}"
     return RedirectResponse(url, status_code=302)
 
 
 @router.get("/{provider}/login")
 def oauth_login(provider: str):
-    """Kicks off the flow: redirect the in-app browser to the provider's consent
-    screen. Misconfiguration bounces straight back to the app with an error."""
     if not oauth_service.is_known(provider):
         return _redirect_to_app(error="unknown_provider")
     if not oauth_service.is_configured(provider):
@@ -41,8 +37,6 @@ def oauth_callback(
     error: str | None = None,
     session: Session = Depends(get_session),
 ):
-    """Provider redirects here with a code. Exchange it, find-or-create the user,
-    and redirect our own JWT back to the app."""
     if error:
         return _redirect_to_app(error=error)
     if not oauth_service.is_configured(provider):
@@ -59,10 +53,9 @@ def oauth_callback(
     if not user:
         user = User(
             email=email,
-            # Unusable password — OAuth accounts sign in only via the provider.
             hashed_password=hash_password(secrets.token_urlsafe(32)),
             full_name=name,
-            is_verified=True,  # the provider has verified the email
+            is_verified=True,
             onboarded=False,
         )
         session.add(user)

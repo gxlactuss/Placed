@@ -1,10 +1,3 @@
-"""Backend-brokered OAuth for Google and GitHub.
-
-The app never sees client IDs/secrets: it opens `/api/auth/oauth/{provider}/login`,
-the backend runs the whole OAuth dance, and hands our own JWT back to the app via
-the custom URL scheme. All provider config lives in settings/.env.
-"""
-
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urlencode
 
@@ -17,11 +10,8 @@ _STATE_TTL_MINUTES = 10
 
 
 class OAuthError(Exception):
-    """Raised for any failure during the OAuth exchange; the route maps it to an
-    error redirect back to the app."""
+    pass
 
-
-# Per-provider endpoints and the scopes we request.
 _PROVIDERS = {
     "google": {
         "authorize_url": "https://accounts.google.com/o/oauth2/v2/auth",
@@ -61,9 +51,6 @@ def is_configured(provider: str) -> bool:
 def redirect_uri(provider: str) -> str:
     return f"{settings.oauth_redirect_base}/api/auth/oauth/{provider}/callback"
 
-
-# ---- CSRF state (stateless, signed with the JWT secret) -------------------
-
 def make_state(provider: str) -> str:
     payload = {
         "provider": provider,
@@ -78,9 +65,6 @@ def verify_state(provider: str, state: str) -> bool:
     except jwt.PyJWTError:
         return False
     return payload.get("provider") == provider
-
-
-# ---- Flow steps -----------------------------------------------------------
 
 def authorize_url(provider: str, state: str) -> str:
     client_id, _ = _credentials(provider)
@@ -115,7 +99,7 @@ def _exchange_code(provider: str, code: str) -> str:
         )
         resp.raise_for_status()
         token = resp.json().get("access_token")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise OAuthError(f"token_exchange_failed: {exc}") from exc
     if not token:
         raise OAuthError("no_access_token")
@@ -123,7 +107,6 @@ def _exchange_code(provider: str, code: str) -> str:
 
 
 def _fetch_profile(provider: str, access_token: str) -> tuple[str, str | None]:
-    """Returns (email, full_name). Raises OAuthError if no email is available."""
     headers = {"Authorization": f"Bearer {access_token}", "Accept": "application/json"}
     try:
         with httpx.Client(timeout=10.0, headers=headers) as client:
@@ -131,16 +114,16 @@ def _fetch_profile(provider: str, access_token: str) -> tuple[str, str | None]:
             if provider == "google":
                 email = info.get("email")
                 name = info.get("name")
-            else:  # github
+            else:
                 name = info.get("name") or info.get("login")
                 email = info.get("email")
-                if not email:  # primary email is often private — fetch it explicitly
+                if not email:
                     emails = client.get(_PROVIDERS["github"]["emails_url"]).json()
                     primary = next(
                         (e for e in emails if e.get("primary") and e.get("verified")), None
                     )
                     email = primary.get("email") if primary else None
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise OAuthError(f"profile_fetch_failed: {exc}") from exc
     if not email:
         raise OAuthError("no_email")
@@ -148,6 +131,5 @@ def _fetch_profile(provider: str, access_token: str) -> tuple[str, str | None]:
 
 
 def complete_login(provider: str, code: str) -> tuple[str, str | None]:
-    """Exchanges the code and returns (email, full_name) for the account."""
     access_token = _exchange_code(provider, code)
     return _fetch_profile(provider, access_token)

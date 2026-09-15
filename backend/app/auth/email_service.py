@@ -8,13 +8,6 @@ logger = logging.getLogger("email")
 
 
 def send_verification_email(to_email: str, code: str) -> None:
-    """Sends the 6-digit verification code.
-
-    With no RESEND_API_KEY configured, runs in dev mode: logs the code to the
-    server console so sign-up is fully testable without any provider. With a key,
-    sends via Resend. Failures are logged, never raised — sign-up shouldn't fail
-    because email is down, and the client can trigger a resend.
-    """
     subject = "Your Placement Prep verification code"
 
     if not settings.resend_api_key:
@@ -39,5 +32,5 @@ def send_verification_email(to_email: str, code: str) -> None:
             timeout=10.0,
         )
         response.raise_for_status()
-    except Exception as exc:  # noqa: BLE001 — never let email break sign-up
+    except Exception as exc:
         logger.error("[email] failed to send to %s: %s", to_email, exc)

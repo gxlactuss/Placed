@@ -27,12 +27,6 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
 def _issue_verification_code(user: User, session: Session) -> None:
-    """Sets the verification code and (for real codes) emails it.
-
-    In dev/demo mode (`dev_verification_code` set) the code is fixed and never
-    expires, and no email is sent. Otherwise a random 6-digit code is stored with
-    an expiry and emailed.
-    """
     if settings.dev_verification_code:
         user.verification_code = settings.dev_verification_code
         user.verification_code_expires_at = None
@@ -55,8 +49,6 @@ def me(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Returns the signed-in user. The client calls this on launch to validate a
-    stored token — a 401/404 here means the saved session is stale."""
     user = session.get(User, int(user_id))
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -69,8 +61,6 @@ def update_me(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Partial profile update — used by the onboarding flow to save name/role
-    and mark the user onboarded. Only the fields present in the body are applied."""
     user = session.get(User, int(user_id))
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -100,8 +90,6 @@ def signup(payload: UserCreate, session: Session = Depends(get_session)):
     session.commit()
     session.refresh(user)
 
-    # New account is unverified; send the first code. The client gates on
-    # is_verified and shows the verify screen next.
     _issue_verification_code(user, session)
     session.refresh(user)
 
@@ -115,19 +103,17 @@ def verify_email(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Confirms the emailed 6-digit code and marks the account verified."""
     user = session.get(User, int(user_id))
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     if user.is_verified:
-        return UserRead.model_validate(user)  # idempotent
+        return UserRead.model_validate(user)
 
     if not user.verification_code or not secrets.compare_digest(
         user.verification_code, payload.code
     ):
         raise HTTPException(status_code=400, detail="That code isn't right. Try again.")
 
-    # SQLite stores the expiry naive-UTC, so compare against a naive-UTC now.
     now_naive = datetime.now(timezone.utc).replace(tzinfo=None)
     if user.verification_code_expires_at and now_naive > user.verification_code_expires_at:
         raise HTTPException(status_code=400, detail="That code expired — request a new one.")
@@ -146,7 +132,6 @@ def resend_verification(
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    """Issues a fresh code for the signed-in user (no-op if already verified)."""
     user = session.get(User, int(user_id))
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
