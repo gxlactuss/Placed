@@ -2,29 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- The Mac Catalyst build's sandbox. iOS ignores this file entirely — an
-	     iOS app is always sandboxed and cannot ask for more — so everything
-	     here exists to buy back, on macOS, a capability the phone build simply
-	     has. Add nothing speculatively: an entitlement the app doesn't use is
-	     an App Review question with no good answer. -->
 	<key>com.apple.security.app-sandbox</key>
 	<true/>
-
-	<!-- NetworkManager (auth, quiz/DSA progress sync, the interview routes) and
-	     nothing else — the app is never a server, so no network.server. -->
 	<key>com.apple.security.network.client</key>
 	<true/>
-
-	<!-- The mock interview's held-to-talk recording (VoiceService). Pairs with
-	     NSMicrophoneUsageDescription in Info.plist: the entitlement makes the
-	     prompt possible, the usage string is what it says. -->
 	<key>com.apple.security.device.audio-input</key>
 	<true/>
-
-	<!-- The resume the student picks in InterviewSetupView's `fileImporter`.
-	     Read-only, because we only ever OCR it — ResumeTextExtractor already
-	     wraps the read in startAccessingSecurityScopedResource(), which is what
-	     makes a file from outside the container readable at all. -->
 	<key>com.apple.security.files.user-selected.read-only</key>
 	<true/>
 </dict>

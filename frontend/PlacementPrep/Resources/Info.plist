@@ -20,8 +20,6 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
-	<!-- Allows cleartext HTTP to localhost / LAN for local backend dev. Public
-	     domains still require HTTPS, so the deployed backend is unaffected. -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
@@ -29,8 +27,6 @@
 	</dict>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Placement Prep needs microphone access so you can speak your answers during mock interviews.</string>
-	<!-- Custom scheme the backend redirects the finished OAuth JWT back to;
-	     ASWebAuthenticationSession intercepts it (see OAuthService). -->
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -49,18 +45,10 @@
 		<key>UIColorName</key>
 		<string></string>
 	</dict>
-	<!-- iPhone stays portrait: the screens are one column and rotating them
-	     buys nothing but a shorter one. -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<!-- iPad takes all four. An iPad can be docked or held either way round,
-	     and refusing an orientation there reads as a phone app that was let
-	     onto the wrong device. The layouts hold up because every screen caps
-	     its content column instead of filling the width (see
-	     PPContentColumn.swift), so a landscape iPad shows the same measure as
-	     a portrait one, just with more ground either side. -->
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
