@@ -1,15 +1,5 @@
 import SwiftUI
 
-// MARK: - Palette
-//
-// A theme is nothing but a full set of token values. The screens never read a
-// palette directly — they read `Color.ppGround` and friends, which resolve
-// through `ThemeStore.shared`. This struct is the single place a theme's colours
-// are declared, and the only thing the picker's live preview reads explicitly.
-
-/// The resolved colours for one theme. Depth cues (`border`) are stored as
-/// finished colours, not opacities, because a light theme rules its hairlines in
-/// black where a dark theme rules them in white.
 struct Palette: Hashable {
     let ground: Color
     let surface: Color
@@ -18,19 +8,11 @@ struct Palette: Hashable {
     let text: Color
     let muted: Color
 
-    /// The loud accent, used for one element per screen and for filled controls.
     let accent: Color
-    /// Lighter/darker accent tints. On dark themes these read lighter (accent
-    /// text on ink); on light themes they read darker (accent text on paper).
     let accent300: Color
     let accent400: Color
     let accent700: Color
-    /// The dim wash behind the hero card — a dark tint of the accent on dark
-    /// themes, a pale tint on light ones.
     let accentSection: Color
-    /// The mark colour that sits *on top of* the accent (button labels, ticks).
-    /// Always the theme's ink, which is the ground on dark themes but the text
-    /// colour on light ones — so it can't just be `ground`.
     let onAccent: Color
 
     let easy: Color
@@ -40,15 +22,9 @@ struct Palette: Hashable {
     let border: Color
     let borderStrong: Color
 
-    /// Drives `preferredColorScheme`, so system controls (keyboard, tab bar
-    /// glass, menus) render for the right mode.
     let colorScheme: ColorScheme
 }
 
-// MARK: - Themes
-
-/// The four shipped themes. `rawValue` is the persistence key, so don't rename
-/// a case once it has shipped.
 enum AppTheme: String, CaseIterable, Identifiable, Hashable {
     case amber
     case neon
@@ -75,14 +51,11 @@ enum AppTheme: String, CaseIterable, Identifiable, Hashable {
         }
     }
 
-    // Hairlines: the one depth cue in the system. White on dark grounds, black
-    // on light ones.
     private static let darkBorder = Color.white.opacity(0.08)
     private static let darkBorderStrong = Color.white.opacity(0.16)
     private static let lightBorder = Color.black.opacity(0.10)
     private static let lightBorderStrong = Color.black.opacity(0.18)
 
-    /// Warm dark — the original Ledger palette, unchanged.
     private static let amberPalette = Palette(
         ground: Color(hex: 0x0E0F12),
         surface: Color(hex: 0x17181D),
@@ -103,7 +76,6 @@ enum AppTheme: String, CaseIterable, Identifiable, Hashable {
         colorScheme: .dark
     )
 
-    /// Cool dark — a bright mint accent on a navy ink ground.
     private static let neonPalette = Palette(
         ground: Color(hex: 0x0F1B2D),
         surface: Color(hex: 0x172536),
@@ -124,8 +96,6 @@ enum AppTheme: String, CaseIterable, Identifiable, Hashable {
         colorScheme: .dark
     )
 
-    /// Warm light — plum ink and a coral accent on warm paper. Depth inverts:
-    /// cards recede a touch below the ground and hairlines rule in black.
     private static let coralDrivePalette = Palette(
         ground: Color(hex: 0xFAF9F6),
         surface: Color(hex: 0xF3F0EA),
@@ -146,8 +116,6 @@ enum AppTheme: String, CaseIterable, Identifiable, Hashable {
         colorScheme: .light
     )
 
-    /// Cool light — the light sibling of Neon: navy ink and a teal accent on
-    /// cool paper.
     private static let paperTrailPalette = Palette(
         ground: Color(hex: 0xF5F7F9),
         surface: Color(hex: 0xEDF0F3),
@@ -169,22 +137,6 @@ enum AppTheme: String, CaseIterable, Identifiable, Hashable {
     )
 }
 
-// MARK: - Store
-
-/// The single source of truth for the active theme.
-///
-/// A singleton because the `Color.pp*` tokens are static and have no view to
-/// read an environment from — they resolve through `shared`. It is still
-/// `@Observable`, so any view body that touches a token (directly or via a
-/// `PP*` component) re-renders when the theme changes. Selection and the dynamic
-/// flag persist in `UserDefaults`, matching `SolvedStore`/`QuizProgressStore`.
-///
-/// Two knobs the UI drives, and one derived value everything else reads:
-/// - `selection` — the theme the user picked by hand.
-/// - `isDynamic` — when on, the theme follows the clock instead of `selection`
-///   (Coral Drive by day, Amber after dark).
-/// - `activeTheme` — what's actually applied, and what the tokens resolve
-///   through. Stored rather than computed so a clock-driven flip repaints.
 @Observable
 final class ThemeStore {
 
@@ -193,13 +145,9 @@ final class ThemeStore {
     private static let selectionKey = "selectedTheme"
     private static let dynamicKey = "dynamicTheme"
 
-    /// Boundary hours for the dynamic schedule: Coral Drive in `[day, night)`,
-    /// Amber otherwise.
     private static let dayHour = 7
     private static let nightHour = 19
 
-    /// The hand-picked theme. Ignored while `isDynamic` is on, but remembered so
-    /// turning dynamic back off restores it.
     var selection: AppTheme {
         didSet {
             guard selection != oldValue else { return }
@@ -208,7 +156,6 @@ final class ThemeStore {
         }
     }
 
-    /// When on, `activeTheme` tracks the time of day rather than `selection`.
     var isDynamic: Bool {
         didSet {
             guard isDynamic != oldValue else { return }
@@ -218,11 +165,8 @@ final class ThemeStore {
         }
     }
 
-    /// The theme actually in effect — every `Color.pp*` token resolves through
-    /// this.
     private(set) var activeTheme: AppTheme = .amber
 
-    /// Cancels a pending scheduled flip when the schedule changes.
     private var flipGeneration = 0
 
     init() {
@@ -234,14 +178,10 @@ final class ThemeStore {
         scheduleNextFlip()
     }
 
-    /// Recomputes the active theme now. Cheap and idempotent — call it on app
-    /// foreground so a boundary crossed while suspended is picked up.
     func refresh() {
         let resolved = Self.resolve(selection: selection, isDynamic: isDynamic)
         guard resolved != activeTheme else { return }
         activeTheme = resolved
-        // The tab/nav bars are UIKit appearance proxies, not SwiftUI, so they
-        // don't observe the token change — reapply them by hand.
         PPAppearance.configure()
     }
 
@@ -249,15 +189,11 @@ final class ThemeStore {
         isDynamic ? themeForNow() : selection
     }
 
-    /// Coral Drive from 07:00 up to 19:00, Amber the rest of the day.
     static func themeForNow(date: Date = Date(), calendar: Calendar = .current) -> AppTheme {
         let hour = calendar.component(.hour, from: date)
         return (dayHour..<nightHour).contains(hour) ? .coralDrive : .amber
     }
 
-    /// Schedules a single refresh at the next 07:00/19:00 boundary, which then
-    /// chains the following one — no periodic polling, nothing kept awake. The
-    /// generation token invalidates any flip still pending from an old schedule.
     private func scheduleNextFlip() {
         flipGeneration &+= 1
         guard isDynamic else { return }

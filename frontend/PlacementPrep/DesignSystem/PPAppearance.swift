@@ -3,12 +3,6 @@ import SwiftUI
 import UIKit
 #endif
 
-/// UIKit-backed chrome that SwiftUI has no native modifier for.
-///
-/// The designs show a tinted tab bar. Rather than hand-rolling a custom bar —
-/// which would give up safe-area handling, keyboard avoidance, VoiceOver
-/// ordering and every future OS refinement — the system bar is restyled through
-/// `UITabBarAppearance` to match the palette.
 enum PPAppearance {
 
     static func configure() {
