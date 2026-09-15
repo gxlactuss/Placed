@@ -1,60 +1,27 @@
-"""Prompt construction for the mock interview rounds.
-
-Kept out of `llm_service` because this is *content*, not plumbing: the quality
-of the interview lives almost entirely in these strings, and they'll be edited
-far more often than the code that sends them.
-
-Every round shares `_HARD_RULES` (one question, spoken aloud, no markdown) and
-adds a `focus` brief. The brief is where a round earns its keep — see
-`InterviewMode.PROJECTS`, which is the most heavily specified because a generic
-"tell me about your project" is worthless when we can already see the resume.
-"""
-
 from __future__ import annotations
 
 import json
-from enum import Enum
 
+from app.ai.interview_difficulty import (
+    CALIBRATION_QUESTIONS,
+    HIGHEST_LEVEL,
+    IGNORED_PAUSE_SECONDS,
+    MAX_QUESTIONS,
+    MIN_QUESTIONS,
+    START_LEVEL,
+    TurnPlan,
+    Verdict,
+    is_long_pause,
+)
+
+from app.ai.interview_mode import InterviewMode
+from app.ai.interview_rounds import RoundSpec, SeedQuestion, spec_for
 from app.ai.roles import technical_brief
 
-
-class InterviewMode(str, Enum):
-    HR = "hr"
-    TECH_STACK = "tech_stack"
-    CORE_CS = "core_cs"
-    PROJECTS = "projects"
-    PANEL_DEBATE = "panel_debate"
-    DSA_APPROACH = "dsa_approach"
-
-    @classmethod
-    def parse(cls, raw: str | None) -> "InterviewMode":
-        """Falls back to CORE_CS for unknown or missing modes — sessions created
-        before modes existed have NULL, and an unknown string from a newer
-        client shouldn't 500 an interview."""
-        try:
-            return cls(raw or "")
-        except ValueError:
-            return cls.CORE_CS
-
-
-#: Appended by the model to its closing message when it decides to stop a round
-#: early. A sentinel rather than structured JSON for the same reason
-#: `NO_PROJECTS_SENTINEL` is one, and a stronger one here: every reply in this
-#: file is under orders to be plain speakable text, so asking for JSON would
-#: fight the hard rules. `llm_service` strips it before the text is returned.
 END_INTERVIEW_SENTINEL = "[[END_INTERVIEW]]"
 
-#: Appended when a round reaches its natural end, as opposed to being walked out
-#: of. Only the group discussion uses it today — its moderator closes the floor
-#: once the topic has been argued out. Deliberately *not* offered to the
-#: interviewer rounds: those are still ended by the client's round cap, and a
-#: model that can close whenever it likes tends to wrap up after two questions.
 ROUND_COMPLETE_SENTINEL = "[[ROUND_COMPLETE]]"
 
-
-#: Applies to every round. These are the rules that keep replies speakable:
-#: the client reads them aloud with AVSpeechSynthesizer, so markdown, numbering
-#: and stage directions all get pronounced.
 _HARD_RULES = """\
 Hard rules:
 - Reply with exactly ONE question. Never number it, never stack two questions together.
@@ -62,10 +29,6 @@ Hard rules:
 - Keep it under 70 words.
 - The candidate answers by speaking, and the transcript may contain speech-recognition errors. Interpret them generously and never comment on spelling, grammar or phrasing."""
 
-
-#: Only ever attached to follow-up prompts — the opening question has no answer
-#: to react to, and including these there invites the model to acknowledge
-#: something the candidate has not said yet.
 _REACTION_RULES = """\
 Responding to the answer:
 - React to the answer before you move on. A short, genuine response to what they actually said — an acknowledgement, a correction, or a note of what was good — then your next question. One or two short sentences of reaction at most.
@@ -75,14 +38,6 @@ Responding to the answer:
 - Vary how you open. Do not begin every reply the same way, and skip the reaction entirely when you are pressing on the same point and it would just interrupt.
 - Put a full stop between the reaction and the question. Joining them with a comma reads as one breathless sentence, and it is spoken aloud."""
 
-
-#: How the model decides to stop a round. Only ever attached to follow-up
-#: prompts — the opening question has no answer to judge yet.
-#:
-#: The list of things that must NOT end an interview is longer than the list
-#: that must, on purpose. Every user of this app is a student who is bad at
-#: interviews and knows it; a tool that walks out on a nervous answer is worse
-#: than useless. The line being drawn is bad faith, not low quality.
 _CONDUCT_RULES = f"""\
 Ending the interview early:
 
@@ -109,16 +64,7 @@ never say the marker out loud as part of a sentence."""
 
 
 def _role_block(role: str, mode: InterviewMode) -> str:
-    """The role brief, placed above the round's focus and stated as outranking it.
-
-    The resume says what the candidate has already done; the role is what they're
-    about to be judged against, and questions that drift from it are the main way
-    a mock interview stops being worth the student's time. Previously the role
-    appeared once, as a noun in the opening sentence, which left the model free to
-    interview a data-science student about generic web-backend trivia.
-    """
     if mode is InterviewMode.PANEL_DEBATE:
-        # No candidate to probe here, so the role only steers topic choice.
         return (
             f"THE ROLE: {role}\n\n"
             "Favour discussion topics someone entering this field would be expected to "
@@ -135,7 +81,7 @@ does day to day: the skills it leans on, the tools it lives in, the problems it
 exists to solve, and what a real interviewer hiring for it would need to find out.
 Then ask only questions that serve that.
 
-- Pitch every question at the level this role is hired at. A campus intern and a senior engineer are not asked the same thing about the same topic.
+- Anchor the difficulty levels to the level this role is hired at: a standard question for this role is the middle of the scale, and a campus intern and a senior engineer are not asked the same thing about the same topic.
 - Use the vocabulary this role actually uses, so the practice transfers to the real interview.
 - Where the resume points one way and the role points another, follow the role: ask how what they have done transfers to what this job needs. Do not drift into an interview for the job they have already done.
 - If something on their resume is irrelevant to this role, leave it alone. Interview time is short and a real interviewer would spend it on what matters."""
@@ -144,7 +90,6 @@ Then ask only questions that serve that.
 def _projects_brief(role: str, context: dict) -> str:
     projects = (context.get("projects_text") or "").strip()
     if not projects:
-        # Resume was skipped. Say so rather than inventing projects.
         return """\
 FOCUS: the candidate's own projects.
 
@@ -171,13 +116,6 @@ How to interview on this:
 
 
 def _tech_stack_brief(role: str, context: dict) -> str:
-    """The technical round, specialised to the role the student picked.
-
-    The role material matters more than the resume here: a skills list says what
-    they claim, but the role says what an interviewer for that job would actually
-    dig into. A student who picked iOS should be asked about retain cycles even
-    if their resume only says "Swift".
-    """
     skills = (context.get("skills") or "").strip()
     specific = technical_brief(role)
 
@@ -281,9 +219,8 @@ How this works:
 - The moderator must not interject mid-discussion. Being handed the floor is exactly what does not happen in a real group discussion.
 
 Closing the discussion:
-- Once the topic has been argued from both sides — usually after the candidate has made three or four substantive contributions — the MODERATOR closes it, and only the moderator ever does.
-- That closing message is the moderator alone: thank both speakers and say in one sentence that the discussion is over. Take no side and pick no winner. Then put {ROUND_COMPLETE_SENTINEL} alone on the final line.
-- Never say that marker out loud as part of a sentence, and never use it in any other message.
+- Only the MODERATOR ever closes it, and only when the "Ending the round" instructions allow it.
+- That closing message is the moderator alone: thank both speakers and say in one sentence that the discussion is over. Take no side and pick no winner.
 
 The "one question" hard rule does not apply to this round; the one-speaker-per-message
 rule replaces it. The "react then ask" rule does not apply either — an opponent
@@ -291,26 +228,54 @@ arguing back is already responding, and the two-sentence limit here wins over th
 seventy-word one. Every other hard rule still applies, especially plain speakable
 text and never awarding a verdict."""
 
+_PROBLEM_LISTS = (
+    ("easy", "Easy", "levels 1 and 2"),
+    ("medium", "Medium", f"level {START_LEVEL}"),
+    ("hard", "Hard", "levels 4 and 5"),
+)
+
+
+def _problem_pool(context: dict) -> str:
+    pool = context.get("dsa_problems") or {}
+    lines = []
+    for key, label, levels in _PROBLEM_LISTS:
+        titles = [str(t).strip() for t in pool.get(key) or [] if str(t).strip()]
+        if titles:
+            lines.append(f"- {label}, for {levels}: {', '.join(titles)}")
+
+    legacy = (context.get("dsa_problem") or "").strip()
+    if not lines and legacy:
+        lines.append(f"- Any level, if it fits: {legacy}")
+
+    if not lines:
+        return (
+            "Choose well-known interview problems whose difficulty matches the level: easy "
+            "ones for levels 1 and 2, medium for 3, hard for 4 and 5."
+        )
+    return (
+        "Draw the full problems from these lists, taken from the companies the candidate is "
+        "preparing for, using the list that matches the level. If a list runs out, choose a "
+        "well-known problem of the same difficulty:\n" + "\n".join(lines)
+    )
+
 
 def _dsa_brief(role: str, context: dict) -> str:
-    problem = (context.get("dsa_problem") or "").strip()
-    chosen = (
-        f'The problem is: "{problem}". Open by stating the problem in one or two sentences '
-        f"in your own words, then ask for their approach."
-        if problem
-        else "Choose a well-known interview problem of moderate difficulty. State it in one "
-             "or two sentences, then ask for their approach."
-    )
     return f"""\
-FOCUS: talking through a data-structures problem out loud.
+FOCUS: talking through data-structures problems out loud.
 
-{chosen}
+The round opens with short warm-up questions that you will be given, each answerable in
+one go. After the warm-up, work through full problems one at a time, each pitched at the
+level you are told to use.
+
+{_problem_pool(context)}
 
 How to interview on this:
 - This is a SPOKEN round. Never ask them to write or dictate code, and never read code aloud yourself.
-- Work in this order: get a brute-force approach first, then push for a better one, then time and space complexity, then edge cases. Do not let them jump straight to the optimal answer without stating the naive one — interviewers want to see the progression.
+- State each problem in one or two sentences in your own words, then ask for their approach.
+- Take each problem through several questions in this order: a brute-force approach first, then a better one, then time and space complexity, then edge cases. Do not let them jump straight to the optimal answer without stating the naive one — interviewers want to see the progression.
 - Ask them to justify the data structure they pick. "Why a hash map rather than sorting first" is the question that separates memorisation from understanding.
-- If they are stuck, give one small nudge rather than the answer, then ask again."""
+- If they are stuck, give one small nudge rather than the answer, then ask again. How soon to nudge depends on the level.
+- When the level changes partway through a problem, apply it to how hard you push on that problem, and choose the next problem at the new level. Never reuse a problem."""
 
 
 _BRIEFS = {
@@ -331,52 +296,286 @@ def _preamble(role: str, mode: InterviewMode, context: dict) -> str:
         )
     else:
         opening = (
-            "You are conducting a short mock interview for a campus-placement candidate "
+            "You are conducting a mock interview for a campus-placement candidate "
             f"applying for the role of '{role}'."
         )
-    # Role first, then the round's focus: the brief is *how* to interview, the
-    # role block is *what about*, and the model weights earlier context heavily.
     return f"{opening}\n\n{_role_block(role, mode)}\n\n{_BRIEFS[mode](role, context)}\n\n{_HARD_RULES}"
 
 
-def opening_prompt(role: str, mode: InterviewMode, context: dict) -> str:
-    closing = (
-        "Open the discussion now."
-        if mode is InterviewMode.PANEL_DEBATE
-        else "Ask your opening question now."
+def _seed_question(spec: RoundSpec, seed: SeedQuestion, role: str) -> str:
+    text = seed.text.replace("{role}", role)
+    if spec.tailored:
+        return (
+            f'"{text}"\n'
+            "This is a template. Make it specific — fill any part in angle brackets with a "
+            "project or skill you can actually see on their resume or that they have told "
+            "you about, or aim it at what they just said — but keep its substance and its "
+            "difficulty. If there is nothing specific to fill it with, ask them to name one."
+        )
+    return (
+        f'"{text}"\n'
+        "Put it in your own words if that reads more naturally, but do not make it easier, "
+        "harder, or about something else."
     )
+
+
+def opening_prompt(
+    role: str, mode: InterviewMode, context: dict, seed: SeedQuestion | None = None
+) -> str:
+    if mode is InterviewMode.PANEL_DEBATE:
+        closing = "Open the discussion now."
+    elif seed is not None:
+        closing = (
+            "Ask your opening question now. It is the first of a short warm-up drawn from the "
+            "same set for every candidate, so the questions after it can be pitched fairly:\n"
+            f"{_seed_question(spec_for(mode), seed, role)}"
+        )
+    else:
+        closing = "Ask your opening question now."
     return f"{_preamble(role, mode, context)}\n\n{closing}"
+
+_VERBATIM_EXCHANGES = 8
+
+
+def _exchanges(transcript: list[dict]) -> list[tuple[dict, dict | None]]:
+    pairs: list[tuple[dict, dict | None]] = []
+    for turn in transcript:
+        if turn.get("speaker") == "ai":
+            pairs.append((turn, None))
+        elif pairs and pairs[-1][1] is None:
+            pairs[-1] = (pairs[-1][0], turn)
+    return pairs
+
+
+def _verbatim(pairs: list[tuple[dict, dict | None]]) -> str:
+    lines = []
+    for question, answer in pairs:
+        lines.append(f"ai: {question.get('text', '')}")
+        if answer is not None:
+            lines.append(f"user: {answer.get('text', '')}")
+    return "\n".join(lines)
+
+
+def _grade_text(value) -> str:
+    return "na" if value is None else str(value)
+
+
+def _ledger_line(number: int, question: dict, answer: dict | None) -> str:
+    subject = question.get("topic") or "subject not recorded"
+    level = question.get("level", START_LEVEL)
+    if answer is None:
+        return f"- Q{number} (level {level}, {subject}): not answered"
+    return (
+        f"- Q{number} (level {level}, {subject}): accuracy "
+        f"{_grade_text(answer.get('accuracy'))}, ease {_grade_text(answer.get('ease'))}"
+    )
+
+
+def _history(transcript: list[dict]) -> str:
+    pairs = _exchanges(transcript)
+    if len(pairs) <= _VERBATIM_EXCHANGES + 1:
+        return _verbatim(pairs)
+
+    middle = pairs[1:-_VERBATIM_EXCHANGES]
+    ledger = "\n".join(
+        _ledger_line(number, question, answer)
+        for number, (question, answer) in enumerate(middle, start=2)
+    )
+    return (
+        f"{_verbatim(pairs[:1])}\n\n"
+        "Earlier exchanges, one line each (level, subject, and the grades you gave):\n"
+        f"{ledger}\n\n"
+        f"The most recent exchanges, word for word:\n{_verbatim(pairs[-_VERBATIM_EXCHANGES:])}"
+    )
+
+
+def _delivery(transcript: list[dict], long_pause_seconds: int) -> str:
+    latest = next((t for t in reversed(transcript) if t.get("speaker") == "user"), {})
+    think = latest.get("think_seconds")
+    speaking = latest.get("speaking_seconds")
+    words = len(str(latest.get("text", "")).split())
+
+    parts = []
+    if isinstance(think, (int, float)):
+        if think > IGNORED_PAUSE_SECONDS:
+            parts.append(
+                "they took several minutes to start, which most likely means they stepped "
+                "away, so read nothing into that pause"
+            )
+        else:
+            parts.append(f"they started answering {round(think)} seconds after your message appeared")
+    if isinstance(speaking, (int, float)) and speaking > 0:
+        parts.append(f"spoke for {round(speaking)} seconds, about {words} words")
+
+    if not parts:
+        return "No timing was recorded for this answer, so judge ease from the words alone."
+    pause = (
+        " That is a long pause for this round, so ease is at most 1."
+        if is_long_pause(think, long_pause_seconds)
+        else ""
+    )
+    return f"How they delivered it: {', and '.join(parts)}.{pause}"
+
+
+def _next_turn(plan: TurnPlan, spec: RoundSpec, role: str) -> str:
+    noun = spec.turn_noun
+    if plan.must_close:
+        return ""
+
+    if plan.seed is not None:
+        return f"""\
+YOUR NEXT MESSAGE
+
+The round is still in its warm-up: this is warm-up {noun} {plan.warm_up_number} of {CALIBRATION_QUESTIONS}, all at level {START_LEVEL} and drawn from the same set for every candidate, so the level that follows is set fairly. However the last answer went, react to it, then make this your next {noun} rather than following up on the last one:
+{_seed_question(spec, plan.seed, role)}"""
+
+    warm_up_note = (
+        "\nThese levels account for the whole warm-up, not only this answer, so they may not "
+        "move the way this one answer alone would suggest."
+        if plan.finishes_warm_up
+        else ""
+    )
+    return f"""\
+YOUR NEXT MESSAGE
+
+Pitch your next {noun} at the level that matches the grades you just gave:
+- accuracy 3 with ease 1 or 2: level {plan.level_for(Verdict.STRONG)}.
+- accuracy 0, or accuracy 1 with ease 0 or 1: level {plan.level_for(Verdict.WEAK)}.
+- anything else, including na: level {plan.level_for(Verdict.ADEQUATE)}.{warm_up_note}
+A higher level means a harder {noun}, never a colder tone; a lower one means an easier {noun}, never a patronising one. Never tell the candidate a level, or that it changed.
+
+The level changes what you ask, not how you reply: still react to their latest answer first, as described above, and then ask ONE {noun} — a single step, never several stacked into one message."""
+
+
+def _ending(plan: TurnPlan, spec: RoundSpec) -> str:
+    noun = spec.turn_noun
+    if plan.must_close:
+        return f"""\
+ENDING THE ROUND
+
+They have now given {MAX_QUESTIONS} answers, the most a round allows. Do not ask anything else: react to this answer, close the round in one or two sentences, and put {ROUND_COMPLETE_SENTINEL} alone on the final line. Never say that marker out loud."""
+
+    if not plan.may_close:
+        return f"""\
+ENDING THE ROUND
+
+They have given {plan.answered} answers so far, and every round runs to at least {MIN_QUESTIONS}. Do NOT close it yet, however the answers have gone — give your next {noun}. (Ending it for bad faith, as described earlier, is still allowed.)"""
+
+    if plan.settled_level is not None:
+        settled = f"The difficulty has settled around level {plan.settled_level}."
+    elif plan.recent_levels:
+        levels = ", ".join(str(level) for level in plan.recent_levels)
+        settled = f"The difficulty has not settled yet — the most recent levels were {levels}."
+    else:
+        settled = ""
+    final = (
+        f"\n\nIf you carry on, your next {noun} is the last one this round allows, so make it "
+        "the one that would tell you the most."
+        if plan.is_final_question
+        else ""
+    )
+    return f"""\
+ENDING THE ROUND
+
+They have given {plan.answered} answers, out of at most {MAX_QUESTIONS}. {settled}
+
+Close the round only once this is true: {spec.conclusion}. Answers being good or bad is not a reason to close on its own, and once it is true, do not drag the round out.
+
+To close: instead of another {noun}, react to their answer, say in one or two sentences that this is the end of the round, and put {ROUND_COMPLETE_SENTINEL} alone on the final line. Never say that marker out loud, and never use it in a message that asks anything.{final}"""
+
+
+def _adaptive_block(
+    role: str, plan: TurnPlan, spec: RoundSpec, transcript: list[dict]
+) -> str:
+    noun = spec.turn_noun
+    ladder = "\n".join(f"{level}: {text}" for level, text in enumerate(spec.ladder, start=1))
+    return f"""\
+DIFFICULTY
+
+This round adapts to the candidate. Every {noun} is pitched at a level from 1 to {HIGHEST_LEVEL}, where {START_LEVEL} is a standard campus-placement {noun} for this role:
+{ladder}
+
+The {noun} they just answered was pitched at level {plan.current_level}.
+
+GRADING THE LATEST ANSWER
+
+{_delivery(transcript, spec.long_pause_seconds)}
+
+accuracy, from 0 to 3. In this round that means {spec.accuracy_means}.
+3: fully meets that for the level it was asked at.
+2: mostly there, but thin, or with a small gap or error.
+1: partly there — a real idea buried in wrong or missing pieces.
+0: wrong, off the point, or no real answer.
+
+ease, from 0 to 2 — how readily the answer came.
+2: they started without a long pause and answered in a steady line of thought, without hedging.
+1: they got there but worked for it — a long pause first, visible hedging such as "I think maybe", or restarting the answer.
+0: they struggled — trailed off, guessed, said they were not sure, or needed the question again. An answer they say they are unsure of is 0, however quickly they started.
+
+In this round, only a wait of more than {spec.long_pause_seconds} seconds before starting counts as a long pause; thinking before answering is not hesitation. Grade only what they said and how readily they said it — never mark ease down for accent, grammar or speech-recognition errors. Use na for both grades when there was nothing to grade: they asked you to repeat or clarify, or you are redirecting a flippant answer.
+
+{_next_turn(plan, spec, role)}
+
+{_ending(plan, spec)}"""
+
+
+def _reply_format(spec: RoundSpec) -> str:
+    return f"""\
+REPLY FORMAT
+
+Start your reply with this line, on its own, before anything you say:
+[[ASSESS accuracy=<0-3 or na> ease=<0-2 or na> topic=<a few words naming the subject of your next {spec.turn_noun}, or closing>]]
+For example: [[ASSESS accuracy=2 ease=1 topic=DBMS: isolation levels]]
+That line is removed before your reply reaches the candidate, and it is the only exception to "output only the words you would say out loud". Everything after it follows every rule above."""
 
 
 def follow_up_prompt(
-    role: str, mode: InterviewMode, context: dict, transcript: list[dict], latest_answer: str
+    role: str,
+    mode: InterviewMode,
+    context: dict,
+    transcript: list[dict],
+    latest_answer: str,
+    plan: TurnPlan,
 ) -> str:
-    history = "\n".join(f"{turn['speaker']}: {turn['text']}" for turn in transcript)
+    spec = spec_for(mode)
     closing = (
-        "Continue the discussion."
+        "Grade their latest contribution, then continue the discussion."
         if mode is InterviewMode.PANEL_DEBATE
-        else "Ask your next question, following on from what they just said."
+        else "Grade their latest answer, then give your reply."
     )
     return (
         f"{_preamble(role, mode, context)}\n\n"
         f"{_REACTION_RULES}\n\n"
         f"{_CONDUCT_RULES}\n\n"
-        f"Conversation so far:\n{history}\n\n"
+        f"Conversation so far:\n{_history(transcript)}\n\n"
         f"Their latest answer: {latest_answer}\n\n"
+        f"{_adaptive_block(role, plan, spec, transcript)}\n\n"
+        f"{_reply_format(spec)}\n\n"
         f"{closing}"
     )
 
 
-def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> str:
-    """The post-round debrief: a mark out of 10 and what to fix.
+def _difficulty_track(transcript: list[dict]) -> str:
+    levels = [
+        turn["level"]
+        for turn in transcript
+        if turn.get("speaker") == "ai" and isinstance(turn.get("level"), int)
+    ]
+    if not levels:
+        return ""
+    return f"""
+The questions adapted to their answers on a scale of 1 to {HIGHEST_LEVEL}, where {START_LEVEL} is a
+standard campus-placement question for this role; the first {CALIBRATION_QUESTIONS} were a fixed
+warm-up at {START_LEVEL}. The levels asked, in order: {", ".join(str(level) for level in levels)}.
 
-    The only prompt in this file that asks for JSON rather than speech. It can:
-    nothing here is read aloud — the client renders it as a report — so the hard
-    rules that keep every other reply speakable don't apply.
-    """
-    # Relabelled from the stored "ai"/"user" speakers: given the raw labels the
-    # model echoes them back into its own output ("ai: What is a deadlock? should
-    # be answered with…"), which reads as a leaked internal format on screen.
+Weigh each answer by the level it was asked at. A correct answer at 4 or 5 is stronger
+evidence than one at 1 or 2, and a round that kept falling to 1 and 2 has not shown
+campus-level knowledge, however fluent the individual answers sounded. Never mention
+level numbers in what you write — describe what they could and could not handle.
+"""
+
+
+def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> str:
     speakers = {"ai": "Interviewer", "user": "Candidate"}
     history = "\n".join(
         f"{speakers.get(turn['speaker'], turn['speaker'])}: {turn['text']}"
@@ -402,6 +601,7 @@ def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> s
     return f"""You are assessing a mock interview a student has just finished, for a '{role}' role.
 
 {lens}
+{_difficulty_track(transcript)}
 
 The transcript below came from speech recognition, so it contains misheard words,
 missing punctuation and false starts. Those are the recogniser's errors, not the
@@ -461,8 +661,6 @@ speaker label, never quote the transcript back, and never start with "you said".
 
 
 def decode_context(context_json: str | None) -> dict:
-    """Tolerant read of the stored context blob — a malformed or absent one just
-    means an untailored round, never a failed interview."""
     if not context_json:
         return {}
     try:
