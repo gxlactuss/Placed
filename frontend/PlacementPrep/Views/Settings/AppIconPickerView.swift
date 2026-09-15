@@ -1,18 +1,11 @@
 import SwiftUI
 import UIKit
 
-/// The icon gallery: one row per XP tier, unlocked ones selectable and locked
-/// ones showing what they cost.
-///
-/// Locked tiers are shown rather than hidden — a reward you can't see isn't one.
-/// What they don't show is the art: the preview tile is a silhouette until the
-/// tier is reached, so the unlock still has something to reveal.
 struct AppIconPickerView: View {
 
     @Environment(XPStore.self) private var xp
     @Environment(\.dismiss) private var dismiss
 
-    /// Mirrors the live icon so the tick moves the moment one is applied.
     @State private var appliedLevel = AppIconService.currentLevel
 
     var body: some View {
@@ -93,8 +86,6 @@ struct AppIconPickerView: View {
         }
     }
 
-    /// Only shown where iOS won't swap icons at all. Tiers still unlock, so the
-    /// gallery stays useful rather than becoming an error screen.
     private var unsupportedNote: some View {
         Text("This device won't let apps change their icon, so your pick can't be applied here.")
             .font(.ppCaption)
@@ -103,8 +94,6 @@ struct AppIconPickerView: View {
             .padding(.top, PPSpacing.xs)
     }
 }
-
-// MARK: - Row
 
 private struct AppIconRow: View {
 
@@ -150,7 +139,6 @@ private struct AppIconRow: View {
         return "\(xpNeeded) XP to go"
     }
 
-    /// The real icon once it's in the bundle; a locked silhouette before that.
     private var iconTile: some View {
         ZStack {
             RoundedRectangle(cornerRadius: PPRadius.md)
@@ -162,8 +150,6 @@ private struct AppIconRow: View {
                     .scaledToFill()
                     .clipShape(.rect(cornerRadius: PPRadius.md))
             } else {
-                // Locked tiers show that something is there without showing
-                // what: the unlock should still have something to reveal.
                 Image(systemName: "lock.fill")
                     .font(.system(size: 20, weight: .medium))
                     .foregroundStyle(Color.ppMuted)

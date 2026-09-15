@@ -1,11 +1,5 @@
 import SwiftUI
 
-/// The bookmarked-questions page, presented as a sheet from the profile menu.
-///
-/// Reads the saved ids back through `QuizBank` so the content is always the
-/// live bundled question, never a stale copy. Each card reviews one question:
-/// prompt, the correct answer, and its explanation. Un-saving removes it here
-/// and clears the bookmark everywhere.
 struct SavedQuestionsView: View {
 
     @Environment(QuizBank.self) private var bank

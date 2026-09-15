@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// Quiz tab root: pick a track, then a quiz within it.
 struct QuizCategoryView: View {
 
     @Environment(QuizBank.self) private var bank
@@ -10,8 +9,6 @@ struct QuizCategoryView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: PPSpacing.lg) {
-                    // In-content serif header rather than a system large title:
-                    // the nav bar renders in SF, which fights the Ledger type scale.
                     Text("Quiz")
                         .font(.ppDisplay)
                         .padding(.bottom, PPSpacing.xs)
@@ -32,9 +29,6 @@ struct QuizCategoryView: View {
             }
             .scrollIndicators(.hidden)
             .toolbar(.hidden, for: .navigationBar)
-            // A category with topics opens its folder list; one without (Your
-            // Role) has a single track, so the folder screen would be one card
-            // standing between the student and the quiz — push the quizzes.
             .navigationDestination(for: Category.self) { category in
                 if bank.subjects(in: category).isEmpty {
                     QuizListView(track: QuizTrack(category: category, subject: nil))
@@ -76,8 +70,6 @@ struct QuizCategoryView: View {
                         .foregroundStyle(Color.ppMuted)
                 }
 
-                // Denominator is the planned track size, so the copy reads
-                // sensibly while only some quizzes have been authored.
                 HStack {
                     Text("\(passed) of \(category.plannedQuizCount) passed")
                         .font(.ppMicro)
@@ -97,8 +89,6 @@ struct QuizCategoryView: View {
         }
     }
 
-    /// Surfaces malformed quiz JSON during authoring instead of silently
-    /// dropping the file.
     private var authoringErrors: some View {
         PPCard(tone: .elevated) {
             VStack(alignment: .leading, spacing: PPSpacing.sm) {

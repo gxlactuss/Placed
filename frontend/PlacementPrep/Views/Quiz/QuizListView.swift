@@ -1,9 +1,5 @@
 import SwiftUI
 
-/// Ordered quizzes within one track, each showing its lock or pass state.
-///
-/// A track is a topic (DBMS, Operating Systems) rather than a whole category,
-/// which is what makes the unlock chain usable — see `QuizTrackListView`.
 struct QuizListView: View {
 
     let track: QuizTrack
@@ -11,8 +7,6 @@ struct QuizListView: View {
     @Environment(QuizBank.self) private var bank
     @Environment(QuizProgressStore.self) private var progress
     @State private var activeQuiz: Quiz?
-    // Not `private`: a private stored property makes the memberwise
-    // initializer private too, and this view is constructed by name.
     var columns = PPAdaptiveColumns()
 
     var body: some View {
@@ -36,9 +30,6 @@ struct QuizListView: View {
         progress.listItems(for: bank.quizzes(in: track))
     }
 
-    /// A grid rather than a stack, because a track runs to 30 quizzes and the
-    /// rows are short: on a regular-width screen `columns` gives two, on a phone
-    /// exactly one, which is the stack this used to be.
     private var list: some View {
         ScrollView {
             LazyVGrid(columns: columns.grid(), spacing: PPSpacing.md) {
@@ -95,11 +86,9 @@ struct QuizListView: View {
                 }
             }
         }
-        // Locked rows read as inert rather than merely un-tappable.
         .opacity(item.isUnlocked ? 1 : 0.5)
     }
 
-    /// Numbered marker that becomes a tick once the quiz is passed.
     private func statusMark(_ item: QuizListItem) -> some View {
         ZStack {
             Circle()

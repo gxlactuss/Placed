@@ -1,15 +1,12 @@
 import SwiftUI
 
-/// Score summary shown once the last question is answered.
 struct QuizResultsView: View {
 
     let model: QuizSessionModel
     let onRetry: () -> Void
     let onClose: () -> Void
 
-    /// Ring animates from zero on appear rather than snapping to the score.
     @State private var animatedProgress: Double = 0
-    /// Drives the one-shot staggered reveal of the cards below the ring.
     @State private var revealed = false
 
     var body: some View {
@@ -38,8 +35,6 @@ struct QuizResultsView: View {
             }
             revealed = true
         }
-        // Fires once per attempt — the model guards against a second request,
-        // and a retake resets it.
         .task { await model.loadSummary() }
     }
 
@@ -50,8 +45,6 @@ struct QuizResultsView: View {
             .padding(.top, PPSpacing.lg)
     }
 
-    /// States plainly whether the next quiz just unlocked — the single most
-    /// important thing on this screen once progression is in play.
     private var verdict: some View {
         let passed = model.hasPassed
 
@@ -104,9 +97,6 @@ struct QuizResultsView: View {
                 label: "Correct",
                 valueColor: .ppEasy
             )
-            // The real payout, not what the score is nominally worth: a retake
-            // of a quiz already cleared at 70% earns nothing, and claiming
-            // otherwise would make the number on Home look broken.
             PPStatTile(
                 value: model.xpEarned > 0 ? "+\(model.xpEarned)" : "—",
                 label: "XP",
@@ -115,9 +105,6 @@ struct QuizResultsView: View {
         }
     }
 
-    /// The part of this screen that says something the student couldn't work out
-    /// themselves. Everything else here is arithmetic on their own answers; this
-    /// is the pattern behind them and what to do about it.
     @ViewBuilder
     private var aiSummary: some View {
         if let summary = model.summary {
@@ -156,9 +143,6 @@ struct QuizResultsView: View {
                 Spacer(minLength: 0)
             }
         } else if let error = model.summaryError {
-            // Deliberately quiet: the score, the answers and the per-question
-            // explanations are all already on screen and all still correct. This
-            // is the one extra layer, and losing it isn't worth an alarm.
             Text(error)
                 .font(.ppMicro)
                 .foregroundStyle(Color.ppMuted)
@@ -189,8 +173,6 @@ struct QuizResultsView: View {
                             Spacer()
                         }
                     }
-                    // One-shot staggered entrance: opacity + a small offset,
-                    // 80ms apart. Nothing runs after the cards settle.
                     .opacity(revealed ? 1 : 0)
                     .offset(y: revealed ? 0 : 14)
                     .animation(

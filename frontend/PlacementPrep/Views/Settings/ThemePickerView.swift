@@ -1,11 +1,5 @@
 import SwiftUI
 
-/// The theme chooser, presented as a sheet from the profile menu.
-///
-/// Selecting a row switches the live app immediately (the sheet repaints too),
-/// so the choice is its own preview. Each row also carries a small static
-/// swatch drawn in *that* theme's colours — the only place a palette is read
-/// explicitly rather than through the `Color.pp*` tokens.
 struct ThemePickerView: View {
 
     @Bindable private var store = ThemeStore.shared
@@ -22,13 +16,10 @@ struct ThemePickerView: View {
                     ForEach(AppTheme.allCases) { theme in
                         ThemeOptionRow(
                             theme: theme,
-                            // The tick tracks what's actually applied, so in
-                            // dynamic mode it marks the time-of-day theme.
                             isSelected: store.activeTheme == theme
                         ) {
                             withAnimation(PPMotion.settle) { store.selection = theme }
                         }
-                        // Manual picks are inert while the clock is in charge.
                         .disabled(store.isDynamic)
                         .opacity(store.isDynamic ? 0.45 : 1)
                     }
@@ -41,13 +32,11 @@ struct ThemePickerView: View {
         }
         .background(Color.ppGround.ignoresSafeArea())
         .foregroundStyle(Color.ppText)
-        // Sized so every option is visible without scrolling.
         .presentationDetents([.fraction(0.9), .large])
         .presentationDragIndicator(.visible)
         .preferredColorScheme(store.activeTheme.palette.colorScheme)
     }
 
-    /// Governs the four options below it: when on, the theme follows the clock.
     private var dynamicRow: some View {
         PPCard {
             HStack(spacing: PPSpacing.lg) {
@@ -83,8 +72,6 @@ struct ThemePickerView: View {
         .padding(.bottom, PPSpacing.md)
     }
 }
-
-// MARK: - Row
 
 private struct ThemeOptionRow: View {
 
@@ -129,22 +116,16 @@ private struct ThemeOptionRow: View {
     }
 }
 
-// MARK: - Swatch
-
-/// A miniature of a home screen, drawn entirely in one theme's palette so the
-/// four options read as four distinct looks at a glance. Reused by onboarding.
 struct ThemeSwatch: View {
 
     let palette: Palette
 
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            // Title line.
             RoundedRectangle(cornerRadius: 2)
                 .fill(palette.text)
                 .frame(width: 34, height: 5)
 
-            // A card with an accent tile and two muted lines.
             HStack(spacing: 5) {
                 RoundedRectangle(cornerRadius: 3)
                     .fill(palette.accent)
@@ -161,7 +142,6 @@ struct ThemeSwatch: View {
                 RoundedRectangle(cornerRadius: 5).strokeBorder(palette.border, lineWidth: 1)
             }
 
-            // The loud accent pill (the "start" button).
             Capsule().fill(palette.accent).frame(width: 36, height: 8)
         }
         .padding(8)

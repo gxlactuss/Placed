@@ -1,8 +1,5 @@
 import SwiftUI
 
-/// Plays one quiz, then shows its result. Category-agnostic — it renders
-/// whatever `Quiz` it is handed, so a 3-question aptitude set and a 10-question
-/// CS set use the same view.
 struct QuizView: View {
 
     let quiz: Quiz
@@ -35,8 +32,6 @@ struct QuizView: View {
         .onAppear { model.startTimer() }
         .onDisappear { model.stopTimer() }
         .onChange(of: model.isFinished) { _, finished in
-            // Record on completion, not on every answer, so an abandoned run
-            // never counts toward unlocking.
             if finished {
                 progress.record(
                     score: model.scorePercentage,
@@ -44,12 +39,7 @@ struct QuizView: View {
                     total: model.questions.count,
                     for: quiz
                 )
-                // Finishing counts as practice whatever the score — the streak
-                // rewards turning up, not passing.
                 streak.recordActivity()
-                // What the results screen reports is what was actually paid —
-                // the day's +10 only if this was the first activity today, and
-                // the quiz's +5 only if this quiz hadn't already cleared 70%.
                 var earned = xp.awardStreakDay()
                 if model.scorePercentage >= XPAward.quizThreshold {
                     earned += xp.award(.quizPassed(quizID: quiz.id))
@@ -58,8 +48,6 @@ struct QuizView: View {
             }
         }
     }
-
-    // MARK: - Question phase
 
     private var questionScreen: some View {
         VStack(spacing: 0) {
@@ -84,9 +72,6 @@ struct QuizView: View {
                                     correctID: model.current.correctOptionID
                                 )
                             ) {
-                                // Only the first tap commits, so the haptic has
-                                // to be gated the same way or a resolved
-                                // question buzzes on every stray tap.
                                 guard model.currentAnswer == nil else { return }
                                 model.answer(option.id)
                                 if option.id == model.current.correctOptionID {
@@ -115,9 +100,6 @@ struct QuizView: View {
         HStack(spacing: PPSpacing.md) {
             PPIconButton(systemName: "xmark", diameter: 36) { dismiss() }
 
-            // The badges are what gives, if the row is tight: they can shrink
-            // and then truncate, whereas a wrapped clock is what this bar used
-            // to do wrong.
             PPBadge(quiz.category.title, tone: .neutral)
             PPBadge(quiz.difficulty.title, tone: .tinted(quiz.difficulty.accent))
                 .layoutPriority(1)
@@ -133,12 +115,6 @@ struct QuizView: View {
         .ppContentColumn()
     }
 
-    /// Elapsed time on this question.
-    ///
-    /// `fixedSize` and the highest layout priority in the row are load-bearing:
-    /// with a long category badge alongside it, SwiftUI used to solve the tight
-    /// row by wrapping "00:07" onto a second line inside its own capsule. The
-    /// pill is never the thing that gives.
     private var timerPill: some View {
         HStack(spacing: PPSpacing.xs) {
             Image(systemName: "clock")
@@ -158,8 +134,6 @@ struct QuizView: View {
         .accessibilityLabel("Time on this question")
     }
 
-    /// Bookmarks the current question for review on the Saved page. Filled and
-    /// accent-tinted once saved.
     private var saveButton: some View {
         let isSaved = saved.isSaved(model.current.id)
         return PPIconButton(
@@ -217,8 +191,6 @@ struct QuizView: View {
             }
 
             HStack(spacing: PPSpacing.md) {
-                // Back, not undo: an answered question stays answered when you
-                // return to it — this is here so a skipped one can be picked up.
                 PPIconButton(systemName: "chevron.left", diameter: 46) {
                     withAnimation { model.goBack() }
                 }
@@ -246,9 +218,6 @@ struct QuizView: View {
             }
         }
         .padding(PPSpacing.xl)
-        // Column first, material second: the controls line up with the question
-        // above them while the blurred bar still runs the full width, which is
-        // what makes it read as chrome rather than as one more card.
         .ppContentColumn()
         .background(.ultraThinMaterial)
         .background(Color.ppGround.opacity(0.6))
@@ -258,8 +227,6 @@ struct QuizView: View {
         .animation(PPMotion.snappy, value: model.currentAnswer)
     }
 
-    /// Jumps to the nearest question left unanswered. Without it, picking the
-    /// skipped ones back up on a ten-question set means tapping Back nine times.
     private var skippedHint: some View {
         Button {
             withAnimation { model.goToNextSkipped() }
