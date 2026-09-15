@@ -1,8 +1,5 @@
 import SwiftUI
 
-/// Difficulty semantics for the DSA content, kept separate from the networking
-/// models so the design system stays independent. See the `QuizDifficulty`
-/// bridge at the bottom of this file.
 enum PPDifficulty: String, CaseIterable, Identifiable {
     case easy, medium, hard
 
@@ -18,20 +15,14 @@ enum PPDifficulty: String, CaseIterable, Identifiable {
         }
     }
 
-    /// Single-letter form used in the "12/30 E · 9/50 M · 2/20 H" summary line.
     var initial: String { title.prefix(1).uppercased() }
 }
 
-/// A small tinted pill. Difficulty labels, topic tags and frequency markers all
-/// use this shape.
 struct PPBadge: View {
 
     enum Tone {
-        /// Blurple pill for topics, e.g. "CS Fundamentals".
         case accent
-        /// Low-contrast pill for metadata, e.g. "Freq 98%".
         case neutral
-        /// Any palette colour — pass `difficulty.color` here.
         case tinted(Color)
     }
 
@@ -51,9 +42,6 @@ struct PPBadge: View {
     var body: some View {
         Text(text)
             .font(.ppMicro)
-            // A pill is one line by definition. In a tight row it shrinks a
-            // little, then truncates — it never grows a second line and drags
-            // the row's height with it.
             .lineLimit(1)
             .minimumScaleFactor(0.8)
             .foregroundStyle(foreground)
@@ -79,7 +67,6 @@ struct PPBadge: View {
     }
 }
 
-/// Horizontally scrolling selector used for the company filter row.
 struct PPFilterChip: View {
 
     let title: String
@@ -105,8 +92,6 @@ struct PPFilterChip: View {
         .animation(.easeOut(duration: 0.15), value: isSelected)
     }
 }
-
-// MARK: - Model bridge
 
 extension PPDifficulty {
     init(_ difficulty: QuizDifficulty) {

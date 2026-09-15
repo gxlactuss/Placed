@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// Solved-state control on the company problem list.
 struct PPCheckbox: View {
 
     @Binding var isOn: Bool
@@ -31,12 +30,10 @@ struct PPCheckbox: View {
     }
 }
 
-/// The circular day marker in the daily streak strip.
 struct PPStreakDay: View {
 
     let label: String
     let isComplete: Bool
-    /// Draws the dashed ring used for today when practice is still pending.
     var isToday: Bool = false
 
     var body: some View {

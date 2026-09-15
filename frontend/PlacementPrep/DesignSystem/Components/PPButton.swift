@@ -1,8 +1,5 @@
 import SwiftUI
 
-/// Button styling for the three button weights in the designs:
-/// the bordered blurple call to action ("Next", "Retry quiz"), the neutral
-/// companion beside it ("Skip", "Review answers"), and a borderless text button.
 struct PPButtonStyle: ButtonStyle {
 
     enum Variant {
@@ -12,12 +9,7 @@ struct PPButtonStyle: ButtonStyle {
     }
 
     var variant: Variant = .primary
-    /// Set false for buttons that should hug their label instead of filling the row.
     var expands: Bool = true
-    /// Breathing room either side of the label. Buttons that sit *inside* a line
-    /// of text zero this out: otherwise the padding is invisible but still
-    /// measured, so a centred sentence ends up centred on the padding rather
-    /// than on the words, and reads as off-centre.
     var horizontalPadding: CGFloat = PPSpacing.xl
 
     func makeBody(configuration: Configuration) -> some View {
@@ -66,14 +58,11 @@ extension ButtonStyle where Self == PPButtonStyle {
     static var ppPrimary: PPButtonStyle { PPButtonStyle(variant: .primary) }
     static var ppSecondary: PPButtonStyle { PPButtonStyle(variant: .secondary) }
     static var ppGhost: PPButtonStyle { PPButtonStyle(variant: .ghost, expands: false) }
-    /// A ghost button that reads as a word in a sentence ("New here? **Create one**").
-    /// No side padding, so the sentence centres on its visible text.
     static var ppInlineLink: PPButtonStyle {
         PPButtonStyle(variant: .ghost, expands: false, horizontalPadding: 0)
     }
 }
 
-/// Places the icon after the title, as on the "Next →" control.
 struct TrailingIconLabelStyle: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack(spacing: PPSpacing.sm) {
@@ -87,15 +76,12 @@ extension LabelStyle where Self == TrailingIconLabelStyle {
     static var trailingIcon: TrailingIconLabelStyle { TrailingIconLabelStyle() }
 }
 
-/// Circular icon button — used for the microphone control on the mock interview
-/// screen and the dismiss control on the quiz screen.
 struct PPIconButton: View {
 
     let systemName: String
     var diameter: CGFloat = 44
     var tint: Color = .ppText
     var fill: Color = .ppSurface
-    /// Draws a soft halo behind the button, as on the active recording control.
     var isGlowing: Bool = false
     let action: () -> Void
 
@@ -134,7 +120,6 @@ struct PPIconButton: View {
         Button("Start") {}
             .buttonStyle(.ppGhost)
 
-        // Inline link: the pair should sit optically centred in the row.
         HStack(spacing: PPSpacing.sm) {
             Text("New here?")
                 .font(.ppBody)

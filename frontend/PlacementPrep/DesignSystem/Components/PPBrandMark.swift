@@ -1,15 +1,5 @@
 import SwiftUI
 
-/// The vendor sign-in marks: Google's four-colour "G" and GitHub's Invertocat.
-///
-/// Drawn as vector paths rather than bundled PNGs so they stay sharp at any size
-/// and scale with Dynamic Type alongside the button label they sit next to.
-///
-/// This is the one deliberate exception to "screens never hardcode colour":
-/// Google's brand terms don't permit recolouring the "G", so its four hues are
-/// literals here instead of palette tokens. GitHub's mark *is* monochrome and
-/// takes a `tint`, so it defaults to `ppText` and inverts correctly on the light
-/// themes.
 struct PPBrandMark: View {
 
     enum Provider {
@@ -18,11 +8,9 @@ struct PPBrandMark: View {
     }
 
     let provider: Provider
-    /// Applies to monochrome marks only — Google's "G" ignores it by design.
     var tint: Color = .ppText
     var size: CGFloat = 18
 
-    /// Tracks the text size so the mark keeps pace with the label beside it.
     @ScaledMetric(relativeTo: .body) private var scale: CGFloat = 1
 
     var body: some View {
@@ -33,11 +21,9 @@ struct PPBrandMark: View {
             }
         }
         .frame(width: size * scale, height: size * scale)
-        .accessibilityHidden(true)  // the button's own label already names the provider
+        .accessibilityHidden(true)
     }
 
-    // The "G" is four separate wedges, each its own flat colour — no gradients,
-    // which is also why it sits comfortably in this design system.
     private var google: some View {
         ZStack {
             VectorMark(BrandPath.googleBlue, viewBox: 48).fill(Color(hex: 0x4285F4))
@@ -52,9 +38,6 @@ struct PPBrandMark: View {
     }
 }
 
-// MARK: - Path data
-
-/// Official mark geometry, as SVG path data in its own viewBox.
 private enum BrandPath {
     static let googleBlue = """
         M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z
@@ -78,9 +61,6 @@ private enum BrandPath {
         """
 }
 
-// MARK: - Vector shape
-
-/// A `Shape` built from SVG path data, scaled to fit its frame.
 private struct VectorMark: Shape {
 
     private let data: String
@@ -94,24 +74,18 @@ private struct VectorMark: Shape {
     func path(in rect: CGRect) -> Path {
         let side = min(rect.width, rect.height)
         let scale = side / viewBox
-        // Centre the (square) mark in whatever frame it was handed.
         let transform = CGAffineTransform(translationX: (rect.width - side) / 2,
                                           y: (rect.height - side) / 2)
             .scaledBy(x: scale, y: scale)
         return Self.parse(data).applying(transform)
     }
 
-    /// Minimal SVG path-data reader — `M L H V C S Z`, absolute and relative,
-    /// which is everything the two marks above use (no arcs, no exponents).
-    /// Hand-rolled for the same reason `CSVParser` is: a dependency isn't worth
-    /// ~80 lines of scanning. SVG and SwiftUI agree on y-down, so no flip.
     private static func parse(_ data: String) -> Path {
         var path = Path()
         let chars = Array(data)
         var i = 0
         var current = CGPoint.zero
         var subpathStart = CGPoint.zero
-        /// Second control point of the previous curve — `S` reflects it.
         var lastControl: CGPoint?
         var command: Character = "M"
 
@@ -127,7 +101,6 @@ private struct VectorMark: Shape {
                 i += 1
             }
             while i < chars.count, chars[i].isNumber || chars[i] == "." {
-                // "1.5.5" is two numbers, so a second dot ends this one.
                 if chars[i] == ".", text.contains(".") { break }
                 text.append(chars[i])
                 i += 1
@@ -143,14 +116,11 @@ private struct VectorMark: Shape {
                 command = chars[i]
                 i += 1
             } else if !(chars[i].isNumber || chars[i] == "-" || chars[i] == "+" || chars[i] == ".") {
-                i += 1  // unrecognised byte: step over it rather than spin
+                i += 1
                 continue
             }
-            // Otherwise the previous command simply repeats with fresh operands.
 
             let isRelative = command.isLowercase
-            // Relative operands are all measured from the point the command
-            // started at, so this reads `current` before any of them land.
             func point(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
                 isRelative ? CGPoint(x: current.x + x, y: current.y + y) : CGPoint(x: x, y: y)
             }
@@ -162,7 +132,6 @@ private struct VectorMark: Shape {
                 current = target
                 subpathStart = target
                 lastControl = nil
-                // Further coordinate pairs after a moveto are implicit linetos.
                 command = isRelative ? "l" : "L"
 
             case "L":
@@ -218,7 +187,6 @@ private struct VectorMark: Shape {
 
 #Preview("Brand marks") {
     VStack(spacing: PPSpacing.lg) {
-        // At button size, beside a label.
         Button {} label: {
             Label { Text("Continue with Google") } icon: { PPBrandMark(provider: .google) }
         }
@@ -229,7 +197,6 @@ private struct VectorMark: Shape {
         }
         .buttonStyle(.ppSecondary)
 
-        // Blown up, to check the geometry.
         HStack(spacing: PPSpacing.xl) {
             PPBrandMark(provider: .google, size: 64)
             PPBrandMark(provider: .github, size: 64)

@@ -1,7 +1,5 @@
 import SwiftUI
 
-/// Rounded square holding an SF Symbol. Leads the practice mode cards, the
-/// resume card, the streak card and the recommendation rows.
 struct PPIconTile: View {
 
     let systemName: String
@@ -16,8 +14,6 @@ struct PPIconTile: View {
             .frame(width: size, height: size)
             .background(fill, in: .rect(cornerRadius: PPRadius.md))
             .overlay {
-                // Icons sit in a thin ruled square — an annotation, not a
-                // candy tile.
                 RoundedRectangle(cornerRadius: PPRadius.md)
                     .strokeBorder(Color.ppBorderStrong, lineWidth: 1)
             }
@@ -25,7 +21,6 @@ struct PPIconTile: View {
     }
 }
 
-/// Circular avatar with a graceful fallback when no image has loaded yet.
 struct PPAvatar: View {
 
     var image: Image?
@@ -50,7 +45,6 @@ struct PPAvatar: View {
     }
 }
 
-/// Compact pill pairing an icon with a value, e.g. the streak counter in the header.
 struct PPIconPill: View {
 
     let systemName: String

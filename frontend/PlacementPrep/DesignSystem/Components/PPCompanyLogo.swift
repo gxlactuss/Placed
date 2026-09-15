@@ -3,16 +3,6 @@ import SwiftUI
 import UIKit
 #endif
 
-/// Company mark for the LeetCode lists.
-///
-/// Logos sit on a light chip rather than directly on the ground. Brand marks
-/// come in every colour — several are solid black (Apple, Uber, Bloomberg) and
-/// would vanish against the near-black background. A consistent light tile is
-/// legible for every logo without per-brand special-casing, and reads as a
-/// deliberate "logo tile" rather than an accident.
-///
-/// Companies with no bundled logo fall back to an initials mark, which is what
-/// the ~440 unbundled companies use.
 struct PPCompanyLogo: View {
 
     let companyName: String
@@ -51,9 +41,6 @@ struct PPCompanyLogo: View {
     }
 }
 
-/// Caches decoded logos so scrolling a long company list does not hit the disk
-/// on every row. Misses are remembered too, so a company without a logo does
-/// not trigger a bundle lookup on each redraw.
 @MainActor
 final class CompanyLogoCache {
 
