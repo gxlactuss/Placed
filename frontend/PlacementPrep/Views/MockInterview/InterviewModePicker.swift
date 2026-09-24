@@ -57,6 +57,7 @@ enum InterviewMode: String, CaseIterable, Identifiable, Codable {
 
 struct InterviewModePicker: View {
 
+    let role: String
     let setup: InterviewSetup?
     let onPick: (InterviewMode) -> Void
     let onEditSetup: () -> Void
@@ -84,11 +85,11 @@ struct InterviewModePicker: View {
     private var heading: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
             Text("Pick a round").font(.ppDisplay)
-            Text(setup.map { "Tailored to \($0.targetRole)." } ?? "Choose what you want to be asked about.")
+            Text("Tailored to \(role).")
                 .font(.ppBody)
                 .foregroundStyle(Color.ppMuted)
             HStack(spacing: PPSpacing.lg) {
-                Button(setup?.hasProjects == true ? "Change role or resume" : "Add your resume") {
+                Button(setup == nil ? "Add your resume" : "Change role or resume") {
                     onEditSetup()
                 }
                 .buttonStyle(.ppInlineLink)
@@ -150,8 +151,8 @@ struct InterviewModePicker: View {
 
 #Preview("With resume") {
     InterviewModePicker(
+        role: "Backend Engineer",
         setup: InterviewSetup(
-            targetRole: "Backend Engineer",
             projectsSummary: nil,
             projectsText: "PlacementPrep — SwiftUI + FastAPI",
             skills: "Go, Redis, Docker"
@@ -165,7 +166,8 @@ struct InterviewModePicker: View {
 
 #Preview("Resume skipped") {
     InterviewModePicker(
-        setup: InterviewSetup(targetRole: "Backend Engineer"),
+        role: "Backend Engineer",
+        setup: nil,
         onPick: { _ in },
         onEditSetup: {},
         onOpenHistory: {}
