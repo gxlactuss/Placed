@@ -1,7 +1,6 @@
 import Foundation
 
 struct InterviewSetup: Codable, Equatable {
-    var targetRole: String
     var projectsSummary: String?
     var projectsText: String?
     var skills: String?
@@ -23,15 +22,14 @@ final class InterviewSetupStore {
         self.defaults = defaults
     }
 
-    var isComplete: Bool { setup != nil }
-
     func adopt(userId: Int) {
         guard self.userId != userId else { return }
         self.userId = userId
         setup = load(for: userId)
     }
 
-    func save(_ setup: InterviewSetup) {
+    func save(_ setup: InterviewSetup?) {
+        guard let setup else { return reset() }
         self.setup = setup
         guard let userId, let data = try? JSONEncoder().encode(setup) else { return }
         defaults.set(data, forKey: Self.key(for: userId))
