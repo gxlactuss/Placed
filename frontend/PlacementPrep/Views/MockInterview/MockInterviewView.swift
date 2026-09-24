@@ -14,15 +14,8 @@ struct MockInterviewView: View {
     @State private var showHistory = false
 
     private var resolvedRole: String {
-        let candidates = [
-            setupStore.setup?.targetRole,
-            auth.currentUser?.targetRole
-        ]
-        for candidate in candidates {
-            let role = candidate?.trimmingCharacters(in: .whitespaces) ?? ""
-            if !role.isEmpty { return role }
-        }
-        return "Software Engineer"
+        let role = auth.currentUser?.targetRole?.trimmingCharacters(in: .whitespaces) ?? ""
+        return role.isEmpty ? "Software Engineer" : role
     }
 
     var body: some View {
@@ -31,6 +24,7 @@ struct MockInterviewView: View {
                 round(mode)
             } else {
                 InterviewModePicker(
+                    role: resolvedRole,
                     setup: setupStore.setup,
                     onPick: { mode = $0 },
                     onEditSetup: { showSetup = true },
@@ -38,8 +32,7 @@ struct MockInterviewView: View {
                 )
             }
         }
-        .onAppear { showSetup = !setupStore.isComplete }
-        .fullScreenCover(isPresented: $showSetup) { InterviewSetupView() }
+        .sheet(isPresented: $showSetup) { InterviewSetupView() }
         .sheet(isPresented: $showHistory) { InterviewHistoryView() }
         .task { await companyBank.loadCatalogIfNeeded() }
     }
@@ -335,7 +328,7 @@ struct MockInterviewView: View {
         .environment(StreakStore.preview())
         .environment(XPStore.preview())
         .environment(InterviewSetupStore.preview(
-            InterviewSetup(targetRole: "Backend Engineer", projectsSummary: nil)
+            InterviewSetup(projectsSummary: nil)
         ))
         .environmentObject(AuthViewModel())
 }
