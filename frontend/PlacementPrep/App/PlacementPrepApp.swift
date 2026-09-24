@@ -30,6 +30,7 @@ struct PlacementPrepApp: App {
                         VerifyEmailView()
                     } else if let user = auth.currentUser, !user.onboarded {
                         OnboardingView()
+                            .environment(interviewSetup)
                     } else {
                         DashboardView()
                             .environment(companyBank)
