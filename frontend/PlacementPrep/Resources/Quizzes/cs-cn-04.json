@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Each fragment spends 20 bytes on the header, leaving 80 bytes of payload — and 80 is a multiple of 8, as the fragment offset requires. The 980 payload bytes therefore need ceil(980/80) = 13 fragments, the last carrying only 20 bytes.",
+      "explanation": "Each fragment spends 20 bytes on the header, leaving 80 bytes of payload, and 80 is a multiple of 8, as the fragment offset requires. The 980 payload bytes therefore need ceil(980/80) = 13 fragments, the last carrying only 20 bytes.",
       "concept": "Fragmentation"
     },
     {

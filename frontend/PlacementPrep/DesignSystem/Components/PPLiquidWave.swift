@@ -128,11 +128,11 @@ private final class MotionFilter {
                 PPLiquidWave(mode: .thinking)
             }
             VStack(alignment: .leading, spacing: PPSpacing.sm) {
-                Text("Listening — quiet").font(.ppCaption).foregroundStyle(Color.ppMuted)
+                Text("Listening (quiet)").font(.ppCaption).foregroundStyle(Color.ppMuted)
                 PPLiquidWave(level: 0.15, mode: .listening)
             }
             VStack(alignment: .leading, spacing: PPSpacing.sm) {
-                Text("Listening — loud").font(.ppCaption).foregroundStyle(Color.ppMuted)
+                Text("Listening (loud)").font(.ppCaption).foregroundStyle(Color.ppMuted)
                 PPLiquidWave(level: 0.9, mode: .listening, height: 60)
             }
         }

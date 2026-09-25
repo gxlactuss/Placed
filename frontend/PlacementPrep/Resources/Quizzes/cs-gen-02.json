@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Subset construction makes each DFA state a set of NFA states, so there are at most 2^N of them. This bound is tight — some languages genuinely require exponentially many DFA states.",
+      "explanation": "Subset construction makes each DFA state a set of NFA states, so there are at most 2^N of them. This bound is tight: some languages genuinely require exponentially many DFA states.",
       "concept": "Finite Automata"
     },
     {
@@ -79,7 +79,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Matching the counts of a's and b's requires unbounded memory, which a finite automaton lacks — the pumping lemma makes this precise. The others need only a bounded amount of state.",
+      "explanation": "Matching the counts of a's and b's requires unbounded memory, which a finite automaton lacks, the pumping lemma makes this precise. The others need only a bounded amount of state.",
       "concept": "Regular Languages"
     },
     {
@@ -204,7 +204,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Since a decider always halts, swapping accept and reject decides the complement. A recogniser that loops on a non-member gives no answer to invert — indeed a language and its complement both being recognisable implies both are decidable.",
+      "explanation": "Since a decider always halts, swapping accept and reject decides the complement. A recogniser that loops on a non-member gives no answer to invert; indeed a language and its complement both being recognisable implies both are decidable.",
       "concept": "Decidability"
     },
     {

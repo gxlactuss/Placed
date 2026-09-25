@@ -248,7 +248,7 @@ struct HomeView: View {
 
     private var xpFootnote: String {
         guard let next = xp.nextLevel, let remaining = xp.xpToNextLevel else {
-            return "Top tier — every icon unlocked"
+            return "Top tier: every icon unlocked"
         }
         return "\(remaining) XP to \(next.title)"
     }

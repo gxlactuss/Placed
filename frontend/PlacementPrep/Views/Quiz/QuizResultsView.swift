@@ -54,7 +54,7 @@ struct QuizResultsView: View {
                     .foregroundStyle(passed ? Color.ppEasy : Color.ppMedium)
 
                 VStack(alignment: .leading, spacing: PPSpacing.xs) {
-                    Text(passed ? "Passed — next quiz unlocked" : "Not passed yet")
+                    Text(passed ? "Passed: next quiz unlocked" : "Not passed yet")
                         .font(.ppBodyMedium)
                     Text(passed
                          ? "You cleared the \(model.quiz.passPercentage)% pass mark."
@@ -98,7 +98,7 @@ struct QuizResultsView: View {
                 valueColor: .ppEasy
             )
             PPStatTile(
-                value: model.xpEarned > 0 ? "+\(model.xpEarned)" : "—",
+                value: model.xpEarned > 0 ? "+\(model.xpEarned)" : "0",
                 label: "XP",
                 valueColor: model.xpEarned > 0 ? .ppAccent : .ppMuted
             )

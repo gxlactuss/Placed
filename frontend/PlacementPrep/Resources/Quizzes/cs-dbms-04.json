@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "READ COMMITTED only ever reads committed data, so no dirty reads, but it does not hold read locks to completion — so re-reading a row may yield a different value.",
+      "explanation": "READ COMMITTED only ever reads committed data, so no dirty reads, but it does not hold read locks to completion, so re-reading a row may yield a different value.",
       "concept": "Isolation Levels"
     },
     {
@@ -129,7 +129,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Reading uncommitted data is dangerous because the writer may abort, leaving the reader having acted on a value that never existed — a cascading rollback.",
+      "explanation": "Reading uncommitted data is dangerous because the writer may abort, leaving the reader having acted on a value that never existed, a cascading rollback.",
       "concept": "Isolation Levels"
     },
     {
@@ -163,15 +163,15 @@
       "options": [
         {
           "id": "A",
-          "text": "Yes — equivalent to T1 followed by T2"
+          "text": "Yes, equivalent to T1 followed by T2"
         },
         {
           "id": "B",
-          "text": "No — the precedence graph has a cycle"
+          "text": "No, the precedence graph has a cycle"
         },
         {
           "id": "C",
-          "text": "Yes — equivalent to T2 followed by T1"
+          "text": "Yes, equivalent to T2 followed by T1"
         },
         {
           "id": "D",
@@ -250,11 +250,11 @@
         },
         {
           "id": "D",
-          "text": "Some view-serializable schedules are not conflict serializable — these contain blind writes"
+          "text": "Some view-serializable schedules are not conflict serializable; these contain blind writes"
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Conflict serializability is a strict subset of view serializability. The schedules in the gap always involve blind writes — a write with no preceding read of that item by the same transaction.",
+      "explanation": "Conflict serializability is a strict subset of view serializability. The schedules in the gap always involve blind writes, a write with no preceding read of that item by the same transaction.",
       "concept": "Serializability"
     }
   ]

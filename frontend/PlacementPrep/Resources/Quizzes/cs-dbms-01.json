@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Degree (or arity) is the number of attributes — the width of the table. The number of tuples is the cardinality.",
+      "explanation": "Degree (or arity) is the number of attributes, the width of the table. The number of tuples is the cardinality.",
       "concept": "Relational Model"
     },
     {
@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "A candidate key is a superkey with no redundant attributes — removing any attribute destroys uniqueness. A relation may have several, and one is chosen as the primary key.",
+      "explanation": "A candidate key is a superkey with no redundant attributes; removing any attribute destroys uniqueness. A relation may have several, and one is chosen as the primary key.",
       "concept": "Keys & Constraints"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "The primitive set is selection, projection, union, set difference, Cartesian product and rename. Natural join is derived — it can be expressed as a product followed by a selection and a projection.",
+      "explanation": "The primitive set is selection, projection, union, set difference, Cartesian product and rename. Natural join is derived: it can be expressed as a product followed by a selection and a projection.",
       "concept": "Relational Algebra"
     },
     {
@@ -204,7 +204,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Referential integrity requires a foreign key to either match an existing primary key in S or be entirely NULL. A NULL simply means the tuple currently has no counterpart — partial participation.",
+      "explanation": "Referential integrity requires a foreign key to either match an existing primary key in S or be entirely NULL. A NULL simply means the tuple currently has no counterpart; partial participation.",
       "concept": "Keys & Constraints"
     },
     {

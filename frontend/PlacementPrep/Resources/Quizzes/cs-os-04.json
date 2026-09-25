@@ -129,7 +129,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Test-and-set is atomic, so mutual exclusion holds and some waiting process always succeeds. But nothing orders the waiters, so one unlucky process can be overtaken indefinitely — bounded waiting fails.",
+      "explanation": "Test-and-set is atomic, so mutual exclusion holds and some waiting process always succeeds. But nothing orders the waiters, so one unlucky process can be overtaken indefinitely; bounded waiting fails.",
       "concept": "Hardware Synchronisation"
     },
     {

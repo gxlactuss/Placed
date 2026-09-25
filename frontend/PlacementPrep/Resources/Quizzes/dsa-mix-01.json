@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Omega gives a lower bound — the cost grows at least this fast. When the upper and lower bounds match, Theta expresses the tight bound.",
+      "explanation": "Omega gives a lower bound: the cost grows at least this fast. When the upper and lower bounds match, Theta expresses the tight bound.",
       "concept": "Asymptotic Notation"
     },
     {

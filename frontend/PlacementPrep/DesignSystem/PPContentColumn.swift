@@ -29,7 +29,7 @@ struct PPAdaptiveColumns: DynamicProperty {
         VStack(spacing: PPSpacing.md) {
             ForEach(0..<4, id: \.self) { index in
                 PPCard {
-                    Text("Card \(index + 1) — held to \(Int(PPSize.contentColumn))pt however wide the screen is")
+                    Text("Card \(index + 1), held to \(Int(PPSize.contentColumn))pt however wide the screen is")
                         .font(.ppBody)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

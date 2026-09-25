@@ -79,7 +79,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Sharding only helps if load spreads evenly. A skewed key recreates the single-node bottleneck on one shard while wasting the rest — which is why high-cardinality, uniformly distributed keys are preferred.",
+      "explanation": "Sharding only helps if load spreads evenly. A skewed key recreates the single-node bottleneck on one shard while wasting the rest, which is why high-cardinality, uniformly distributed keys are preferred.",
       "concept": "Sharding"
     },
     {
@@ -254,7 +254,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "The two workloads want opposite things — row-oriented short transactions versus column-oriented full scans. Keeping them on one instance means long analytical queries starve the transactional path.",
+      "explanation": "The two workloads want opposite things: row-oriented short transactions versus column-oriented full scans. Keeping them on one instance means long analytical queries starve the transactional path.",
       "concept": "OLTP vs OLAP"
     }
   ]

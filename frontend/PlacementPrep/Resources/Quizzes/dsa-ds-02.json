@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Point the new node's next at the current head and move the head pointer to the new node — two constant-time operations, independent of list length.",
+      "explanation": "Point the new node's next at the current head and move the head pointer to the new node, two constant-time operations, independent of list length.",
       "concept": "Linked Lists"
     },
     {
@@ -138,7 +138,7 @@
       "options": [
         {
           "id": "A",
-          "text": "Recurse to the end and rebuild — this uses O(n) stack"
+          "text": "Recurse to the end and rebuild; this uses O(n) stack"
         },
         {
           "id": "B",

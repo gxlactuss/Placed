@@ -44,7 +44,7 @@ struct ThemePickerView: View {
 
                 VStack(alignment: .leading, spacing: PPSpacing.xs) {
                     Text("Dynamic theme").font(.ppHeadline)
-                    Text("Follows the time of day — Coral Drive from 7am, Amber from 7pm.")
+                    Text("Follows the time of day: Coral Drive from 7am, Amber from 7pm.")
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
                         .fixedSize(horizontal: false, vertical: true)

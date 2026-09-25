@@ -8,7 +8,7 @@ final class VoiceService: NSObject {
         var errorDescription: String? {
             switch self {
             case .couldNotStart:
-                return "Couldn't start recording. Check microphone access — on the Simulator, enable I/O ▸ Microphone and allow it in macOS System Settings ▸ Privacy ▸ Microphone."
+                return "Couldn't start recording. Check microphone access. On the Simulator, enable I/O ▸ Microphone and allow it in macOS System Settings ▸ Privacy ▸ Microphone."
             }
         }
     }

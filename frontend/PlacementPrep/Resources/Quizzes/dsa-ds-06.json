@@ -213,23 +213,23 @@
       "options": [
         {
           "id": "A",
-          "text": "Yes — the array is always fully sorted"
+          "text": "Yes, the array is always fully sorted"
         },
         {
           "id": "B",
-          "text": "Yes — an in-order traversal yields sorted output"
+          "text": "Yes, an in-order traversal yields sorted output"
         },
         {
           "id": "C",
-          "text": "No — it is only partially ordered along root-to-leaf paths"
+          "text": "No, it is only partially ordered along root-to-leaf paths"
         },
         {
           "id": "D",
-          "text": "Yes — but only for min-heaps"
+          "text": "Yes, but only for min-heaps"
         }
       ],
       "correct_option_id": "C",
-      "explanation": "The heap property orders each parent relative to its children but says nothing about siblings or across subtrees, so the array is not sorted. Repeatedly extracting the root does produce sorted output — that is heapsort.",
+      "explanation": "The heap property orders each parent relative to its children but says nothing about siblings or across subtrees, so the array is not sorted. Repeatedly extracting the root does produce sorted output; that is heapsort.",
       "concept": "Heaps"
     },
     {

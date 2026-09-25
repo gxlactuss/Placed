@@ -92,7 +92,7 @@
         },
         {
           "id": "B",
-          "text": "Primary clustering — occupied runs grow and lengthen probe sequences"
+          "text": "Primary clustering; occupied runs grow and lengthen probe sequences"
         },
         {
           "id": "C",
@@ -204,7 +204,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Rehashing into a bigger array restores a low load factor and short chains. It costs O(n) but happens rarely, so it is O(1) amortised per insertion — the same argument as dynamic array doubling.",
+      "explanation": "Rehashing into a bigger array restores a low load factor and short chains. It costs O(n) but happens rarely, so it is O(1) amortised per insertion, the same argument as dynamic array doubling.",
       "concept": "Rehashing"
     },
     {

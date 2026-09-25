@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "2PL enforces a growing phase then a shrinking phase, which guarantees serializability but says nothing about deadlock — two transactions can still wait on each other's locks in a cycle.",
+      "explanation": "2PL enforces a growing phase then a shrinking phase, which guarantees serializability but says nothing about deadlock, two transactions can still wait on each other's locks in a cycle.",
       "concept": "Locking Protocols"
     },
     {
@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Strict 2PL retains write locks until commit or abort, so no other transaction can read uncommitted data — hence no cascading aborts. Conservative 2PL acquires all locks up front and is deadlock-free but impractical.",
+      "explanation": "Strict 2PL retains write locks until commit or abort, so no other transaction can read uncommitted data, hence no cascading aborts. Conservative 2PL acquires all locks up front and is deadlock-free but impractical.",
       "concept": "Locking Protocols"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Deferred modification buffers updates and applies them post-commit, so recovery needs redo only — an aborted transaction touched nothing. Immediate modification requires both undo and redo.",
+      "explanation": "Deferred modification buffers updates and applies them post-commit, so recovery needs redo only, an aborted transaction touched nothing. Immediate modification requires both undo and redo.",
       "concept": "Recovery"
     },
     {

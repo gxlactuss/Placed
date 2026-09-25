@@ -125,7 +125,7 @@
         },
         {
           "id": "D",
-          "text": "Nearly constant — the inverse Ackermann function of n"
+          "text": "Nearly constant, the inverse Ackermann function of n"
         }
       ],
       "correct_option_id": "D",
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "A segment tree has n leaves and about n internal nodes, so roughly 2n to 4n nodes in an array implementation — linear space. Its build time is likewise O(n).",
+      "explanation": "A segment tree has n leaves and about n internal nodes, so roughly 2n to 4n nodes in an array implementation; linear space. Its build time is likewise O(n).",
       "concept": "Segment Trees"
     },
     {

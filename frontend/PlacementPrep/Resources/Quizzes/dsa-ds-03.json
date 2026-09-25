@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Push each opening bracket and pop on each closing one, checking the pair matches. The last opened bracket must be the first closed — exactly LIFO order.",
+      "explanation": "Push each opening bracket and pop on each closing one, checking the pair matches. The last opened bracket must be the first closed, exactly LIFO order.",
       "concept": "Stacks"
     },
     {

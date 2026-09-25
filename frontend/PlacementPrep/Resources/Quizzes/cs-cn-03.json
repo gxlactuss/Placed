@@ -254,7 +254,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "A transmitted successfully so its counter reset: it now draws from {0,1}. B has collided twice and draws from {0,1,2,3}. A wins when it draws strictly smaller — 5 of the 8 equally likely pairs — giving 0.625.",
+      "explanation": "A transmitted successfully so its counter reset: it now draws from {0,1}. B has collided twice and draws from {0,1,2,3}. A wins when it draws strictly smaller: 5 of the 8 equally likely pairs, giving 0.625.",
       "concept": "Backoff"
     }
   ]

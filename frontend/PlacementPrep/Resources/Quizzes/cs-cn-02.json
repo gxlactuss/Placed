@@ -229,7 +229,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Utilisation is transmission time divided by transmission plus round trip time. A small transmission time against a large propagation delay makes that ratio tiny — the sender spends nearly all its time waiting.",
+      "explanation": "Utilisation is transmission time divided by transmission plus round trip time. A small transmission time against a large propagation delay makes that ratio tiny: the sender spends nearly all its time waiting.",
       "concept": "Stop-and-Wait"
     },
     {

@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Elements sit in contiguous memory, so the address of index i is base + i x elementSize — a single arithmetic step. This random access is the array's defining advantage over a linked list.",
+      "explanation": "Elements sit in contiguous memory, so the address of index i is base + i x elementSize, a single arithmetic step. This random access is the array's defining advantage over a linked list.",
       "concept": "Arrays"
     },
     {
@@ -79,7 +79,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "A resize costs O(n) but doubling means resizes happen geometrically rarely, so n appends cost O(n) in total — O(1) each on average. Doubling rather than growing by a constant is what makes this work.",
+      "explanation": "A resize costs O(n) but doubling means resizes happen geometrically rarely, so n appends cost O(n) in total, O(1) each on average. Doubling rather than growing by a constant is what makes this work.",
       "concept": "Dynamic Arrays"
     },
     {

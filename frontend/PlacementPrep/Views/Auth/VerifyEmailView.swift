@@ -61,7 +61,7 @@ struct VerifyEmailView: View {
         #if DEBUG
         .onAppear { if code.isEmpty { code = "123456" } }
         .overlay(alignment: .bottomLeading) {
-            Text("Dev build — code is 123456")
+            Text("Dev build: code is 123456")
                 .font(.ppMicro)
                 .foregroundStyle(Color.ppMuted)
                 .offset(y: 20)

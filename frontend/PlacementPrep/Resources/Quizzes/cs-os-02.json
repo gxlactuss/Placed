@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "A blocked process whose I/O completes moves to Ready, not straight to Running — it must still be selected by the scheduler. The other three transitions correspond to preemption, dispatch and I/O completion.",
+      "explanation": "A blocked process whose I/O completes moves to Ready, not straight to Running, it must still be selected by the scheduler. The other three transitions correspond to preemption, dispatch and I/O completion.",
       "concept": "Process States"
     },
     {
@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "The TLB is a cache of translations, not architectural state — it is simply flushed (or tagged with an address space id) on a switch. Registers, PC and PSW must all be preserved to resume the process correctly.",
+      "explanation": "The TLB is a cache of translations, not architectural state; it is simply flushed (or tagged with an address space id) on a switch. Registers, PC and PSW must all be preserved to resume the process correctly.",
       "concept": "Context Switching"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Preemption is exactly the Running to Ready transition — the scheduler takes the CPU away from a process that could still run. A ready process is not waiting on anything, so it cannot become blocked.",
+      "explanation": "Preemption is exactly the Running to Ready transition: the scheduler takes the CPU away from a process that could still run. A ready process is not waiting on anything, so it cannot become blocked.",
       "concept": "Process States"
     },
     {

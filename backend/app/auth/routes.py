@@ -116,7 +116,7 @@ def verify_email(
 
     now_naive = datetime.now(timezone.utc).replace(tzinfo=None)
     if user.verification_code_expires_at and now_naive > user.verification_code_expires_at:
-        raise HTTPException(status_code=400, detail="That code expired — request a new one.")
+        raise HTTPException(status_code=400, detail="That code expired. Request a new one.")
 
     user.is_verified = True
     user.verification_code = None

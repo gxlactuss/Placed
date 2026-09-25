@@ -129,7 +129,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Las Vegas algorithms guarantee correctness but their runtime is a random variable — randomized quicksort is an example. Monte Carlo algorithms trade the opposite way: fixed time, small error probability.",
+      "explanation": "Las Vegas algorithms guarantee correctness but their runtime is a random variable: randomized quicksort is an example. Monte Carlo algorithms trade the opposite way: fixed time, small error probability.",
       "concept": "Randomized Algorithms"
     },
     {

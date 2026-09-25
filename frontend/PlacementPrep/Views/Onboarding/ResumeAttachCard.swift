@@ -107,7 +107,7 @@ struct ResumeAttachCard: View {
             }
             .animation(PPMotion.snappy, value: importer.phase)
 
-            Text("Read on your phone — only your project descriptions and skills are sent, never your contact details.")
+            Text("Read on your phone. Only your project descriptions and skills are sent, never your contact details.")
                 .font(.ppMicro)
                 .foregroundStyle(Color.ppMuted)
                 .fixedSize(horizontal: false, vertical: true)
@@ -168,7 +168,7 @@ struct ResumeAttachCard: View {
                 .foregroundStyle(Color.ppMuted)
                 .fixedSize(horizontal: false, vertical: true)
             if importer.skills != nil {
-                Text("Skills found — unlocks the tech-stack round.")
+                Text("Skills found. Unlocks the tech-stack round.")
                     .font(.ppMicro)
                     .foregroundStyle(Color.ppEasy)
             }
@@ -233,7 +233,7 @@ struct ResumeSummaryResponse: Decodable {
 #Preview("Attached") {
     ResumeAttachCard(
         importer: ResumeImporter(restoring: InterviewSetup(
-            projectsSummary: "PlacementPrep — a SwiftUI + FastAPI prep app with voice mock interviews.",
+            projectsSummary: "PlacementPrep: a SwiftUI + FastAPI prep app with voice mock interviews.",
             projectsText: "PlacementPrep",
             skills: "Swift, Python"
         )),

@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "The queue absorbs bursts and outages, letting each side scale and fail independently. Global ordering is usually the opposite — it is sacrificed once you partition the queue for throughput.",
+      "explanation": "The queue absorbs bursts and outages, letting each side scale and fail independently. Global ordering is usually the opposite: it is sacrificed once you partition the queue for throughput.",
       "concept": "Message Queues"
     },
     {

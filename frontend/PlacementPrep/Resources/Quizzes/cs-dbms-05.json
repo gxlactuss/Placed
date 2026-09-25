@@ -129,7 +129,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "With fan-out near 100, one level indexes ~10^2 entries, two ~10^4, three ~10^6. So around three levels suffice — which is why a point lookup costs only a handful of I/Os.",
+      "explanation": "With fan-out near 100, one level indexes ~10^2 entries, two ~10^4, three ~10^6. So around three levels suffice, which is why a point lookup costs only a handful of I/Os.",
       "concept": "B+ Trees"
     },
     {
@@ -229,7 +229,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "If the index alone supplies every column referenced by the query, the engine performs an index-only scan and skips the extra lookups into the heap — often a large saving.",
+      "explanation": "If the index alone supplies every column referenced by the query, the engine performs an index-only scan and skips the extra lookups into the heap; often a large saving.",
       "concept": "Indexing"
     },
     {

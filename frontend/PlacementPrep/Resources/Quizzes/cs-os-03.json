@@ -79,7 +79,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "If no process is ever preempted, each simply runs to completion in arrival order — exactly FCFS. A very small quantum has the opposite problem: context switch overhead dominates.",
+      "explanation": "If no process is ever preempted, each simply runs to completion in arrival order, exactly FCFS. A very small quantum has the opposite problem: context switch overhead dominates.",
       "concept": "CPU Scheduling"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "The longest-waiting process always has the highest priority, so the CPU rotates among all of them in turn — which is round robin with the re-evaluation interval acting as the quantum.",
+      "explanation": "The longest-waiting process always has the highest priority, so the CPU rotates among all of them in turn, which is round robin with the re-evaluation interval acting as the quantum.",
       "concept": "CPU Scheduling"
     },
     {

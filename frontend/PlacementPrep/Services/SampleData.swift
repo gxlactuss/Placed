@@ -182,7 +182,7 @@ enum SampleData {
         "Good. How did you decide what to cache, and how did you handle cache invalidation?",
         "Makes sense. What happened to your error rate and tail latency under peak load?",
         "Let's switch topics. Tell me about a time you disagreed with a teammate on a technical decision.",
-        "Thanks — last one. How would you design a URL shortener that handles a billion redirects a day?",
+        "Thanks, last one. How would you design a URL shortener that handles a billion redirects a day?",
     ]
 
     static let sampleTranscription = "In my final-year project the API was slow, so I added Redis caching and cut p95 latency from 800ms to 120ms."

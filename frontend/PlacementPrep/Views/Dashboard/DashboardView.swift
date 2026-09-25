@@ -67,7 +67,7 @@ private struct XPLevelUpBanner: View {
                 .foregroundStyle(Color.ppOnAccent)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("\(level.title) — new tier")
+                Text("\(level.title): new tier")
                     .font(.ppBodyMedium)
                 Text(level.alternateIconName == nil
                      ? "Keep going."

@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Cats are pets and no cat is a dog, so those cats are pets that are not dogs — hence some pets are not dogs. Dogs could still be pets, so 'no pet is a dog' is too strong.",
+      "explanation": "Cats are pets and no cat is a dog, so those cats are pets that are not dogs, hence some pets are not dogs. Dogs could still be pets, so 'no pet is a dog' is too strong.",
       "concept": "Syllogisms"
     },
     {
@@ -129,7 +129,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "If rain always makes the ground wet, then a dry ground proves it did not rain. This valid form is called modus tollens — denying the consequent denies the antecedent.",
+      "explanation": "If rain always makes the ground wet, then a dry ground proves it did not rain. This valid form is called modus tollens; denying the consequent denies the antecedent.",
       "concept": "Logical Deduction"
     }
   ]

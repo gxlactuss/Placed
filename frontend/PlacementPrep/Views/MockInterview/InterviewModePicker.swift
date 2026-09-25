@@ -24,9 +24,9 @@ enum InterviewMode: String, CaseIterable, Identifiable, Codable {
     var subtitle: String {
         switch self {
         case .hr: "Tell me about yourself, strengths, conflict, why this role."
-        case .projects: "Defend what you built — decisions, trade-offs, what broke."
+        case .projects: "Defend what you built: decisions, trade-offs, what broke."
         case .techStack: "Depth on the technologies your resume claims."
-        case .coreCs: "OS, DBMS, networks, OOP — asked in every campus interview."
+        case .coreCs: "OS, DBMS, networks, OOP, asked in every campus interview."
         case .dsaApproach: "Talk through a problem's approach. No code."
         case .panelDebate: "A moderator sets the topic. Argue it out with one opponent."
         }
@@ -154,7 +154,7 @@ struct InterviewModePicker: View {
         role: "Backend Engineer",
         setup: InterviewSetup(
             projectsSummary: nil,
-            projectsText: "PlacementPrep — SwiftUI + FastAPI",
+            projectsText: "PlacementPrep: SwiftUI + FastAPI",
             skills: "Go, Redis, Docker"
         ),
         onPick: { _ in },

@@ -88,7 +88,7 @@ extension ButtonStyle where Self == PPPressableStyle {
             PPCard {
                 VStack(alignment: .leading, spacing: PPSpacing.sm) {
                     Text("Company-wise DSA").font(.ppHeadline)
-                    Text("Tap me — cards press with a spring")
+                    Text("Tap me: cards press with a spring")
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
                 }

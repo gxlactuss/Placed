@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "SQL uses three-valued logic. Any comparison involving NULL yields UNKNOWN, which is why IS NULL exists — rows where the predicate is UNKNOWN are not returned by WHERE.",
+      "explanation": "SQL uses three-valued logic. Any comparison involving NULL yields UNKNOWN, which is why IS NULL exists; rows where the predicate is UNKNOWN are not returned by WHERE.",
       "concept": "NULL Semantics"
     },
     {

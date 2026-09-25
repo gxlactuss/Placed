@@ -242,7 +242,7 @@ struct MockInterviewView: View {
             if model.isFinished {
                 Text(model.wasEndedByInterviewer
                      ? "The interviewer ended this round early."
-                     : "Interview complete — nice work.")
+                     : "Interview complete. Nice work.")
                     .font(.ppHeadline)
                     .multilineTextAlignment(.center)
                 HStack(spacing: PPSpacing.md) {
@@ -307,7 +307,7 @@ struct MockInterviewView: View {
         if model.isThinking { return "Thinking…" }
         if model.isRecording { return "Release to send · slide left to discard" }
         if !model.micAuthorized { return "Hold to allow the microphone, then answer" }
-        if model.didDiscardRecording { return "Discarded — hold to answer again" }
+        if model.didDiscardRecording { return "Discarded. Hold to answer again" }
         return "Hold to answer"
     }
 

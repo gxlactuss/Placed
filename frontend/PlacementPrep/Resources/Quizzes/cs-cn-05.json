@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Duplicate ACKs prove later segments are still arriving, so the path is only mildly congested — fast recovery halves the window and continues. A timeout suggests the path has failed badly, so the sender restarts from slow start.",
+      "explanation": "Duplicate ACKs prove later segments are still arriving, so the path is only mildly congested; fast recovery halves the window and continues. A timeout suggests the path has failed badly, so the sender restarts from slow start.",
       "concept": "Congestion Control"
     },
     {
@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "UDP adds only ports, length and a checksum over IP — 8 bytes against TCP's 20. It leaves reliability, ordering and congestion response to the application, which is why real-time media often prefers it.",
+      "explanation": "UDP adds only ports, length and a checksum over IP; 8 bytes against TCP's 20. It leaves reliability, ordering and congestion response to the application, which is why real-time media often prefers it.",
       "concept": "UDP"
     },
     {

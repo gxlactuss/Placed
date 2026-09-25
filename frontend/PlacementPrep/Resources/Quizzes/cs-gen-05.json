@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "The leading 1 marks it negative. Inverting gives 0000 0000 0000 1010 and adding one gives 1011, which is 11 — so the value is -11.",
+      "explanation": "The leading 1 marks it negative. Inverting gives 0000 0000 0000 1010 and adding one gives 1011, which is 11, so the value is -11.",
       "concept": "Number Representation"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Both NAND gates are forced high, so Q and its complement are simultaneously 1 — a contradiction. Releasing both inputs at once then leaves the final state indeterminate.",
+      "explanation": "Both NAND gates are forced high, so Q and its complement are simultaneously 1, a contradiction. Releasing both inputs at once then leaves the final state indeterminate.",
       "concept": "Latches & Flip-Flops"
     },
     {

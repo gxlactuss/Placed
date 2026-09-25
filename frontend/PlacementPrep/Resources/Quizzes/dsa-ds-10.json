@@ -88,11 +88,11 @@
       "options": [
         {
           "id": "A",
-          "text": "Adjacency list — it visits only the actual neighbours"
+          "text": "Adjacency list, it visits only the actual neighbours"
         },
         {
           "id": "B",
-          "text": "Adjacency matrix — it is always faster"
+          "text": "Adjacency matrix, it is always faster"
         },
         {
           "id": "C",

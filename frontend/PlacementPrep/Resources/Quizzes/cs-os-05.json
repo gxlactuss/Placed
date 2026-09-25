@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "A 4 KB page needs 12 offset bits, leaving 20 bits of page number, so there are 2^20 entries. At 4 bytes each that is 4 MB per process — which is exactly why multi-level page tables exist.",
+      "explanation": "A 4 KB page needs 12 offset bits, leaving 20 bits of page number, so there are 2^20 entries. At 4 bytes each that is 4 MB per process, which is exactly why multi-level page tables exist.",
       "concept": "Page Tables"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Address spaces are sparse, so most second-level tables are never allocated — the saving is in space. The cost is that translation now requires walking more levels, which is exactly why a TLB is essential.",
+      "explanation": "Address spaces are sparse, so most second-level tables are never allocated, the saving is in space. The cost is that translation now requires walking more levels, which is exactly why a TLB is essential.",
       "concept": "Page Tables"
     },
     {

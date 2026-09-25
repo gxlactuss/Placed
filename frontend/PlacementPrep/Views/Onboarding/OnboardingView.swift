@@ -28,7 +28,7 @@ struct OnboardingView: View {
             switch self {
             case .name: "Four quick steps so Placement Prep can tailor your practice."
             case .role: "Your mock interviews and one extra quiz are built around this. You can change it later."
-            case .resume: "The interviewer will ask about your own projects and the stack you've listed. Optional — you can add it later from the Interview tab."
+            case .resume: "The interviewer will ask about your own projects and the stack you've listed. Optional: you can add it later from the Interview tab."
             case .theme: "Pick a starter theme. You can switch any time from Home."
             }
         }

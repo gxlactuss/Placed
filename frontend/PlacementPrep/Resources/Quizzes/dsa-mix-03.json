@@ -79,7 +79,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "gcd(a, b) equals gcd(b, a mod b), and the remainders shrink quickly until one becomes zero. It runs in O(log(min(a, b))) — logarithmic, not linear.",
+      "explanation": "gcd(a, b) equals gcd(b, a mod b), and the remainders shrink quickly until one becomes zero. It runs in O(log(min(a, b))), logarithmic, not linear.",
       "concept": "GCD"
     },
     {
@@ -204,7 +204,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Coprimality means they share no common factor beyond 1, though neither need be prime itself — for example 8 and 9. It is central to modular inverses and the Chinese Remainder Theorem.",
+      "explanation": "Coprimality means they share no common factor beyond 1, though neither need be prime itself, for example 8 and 9. It is central to modular inverses and the Chinese Remainder Theorem.",
       "concept": "Number Theory"
     },
     {

@@ -154,7 +154,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Unsafe means no ordering is guaranteed to let every process finish in the worst case. If processes happen not to claim their full maximum, the system can still complete — the Banker's algorithm is conservative by design.",
+      "explanation": "Unsafe means no ordering is guaranteed to let every process finish in the worst case. If processes happen not to claim their full maximum, the system can still complete, the Banker's algorithm is conservative by design.",
       "concept": "Banker's Algorithm"
     },
     {
@@ -254,7 +254,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Deadlock requires NO preemption — resources must not be forcibly taken back. Allowing preemption is in fact one of the standard ways to prevent deadlock.",
+      "explanation": "Deadlock requires NO preemption; resources must not be forcibly taken back. Allowing preemption is in fact one of the standard ways to prevent deadlock.",
       "concept": "Deadlock Conditions"
     }
   ]

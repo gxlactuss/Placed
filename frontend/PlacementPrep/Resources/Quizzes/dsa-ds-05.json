@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Fullness constrains child count — every node has zero or two children. Completeness constrains shape — all levels packed except the last, which fills from the left. A heap is a complete binary tree.",
+      "explanation": "Fullness constrains child count: every node has zero or two children. Completeness constrains shape: all levels packed except the last, which fills from the left. A heap is a complete binary tree.",
       "concept": "Binary Trees"
     },
     {
@@ -154,7 +154,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "The successor is the smallest key larger than the node, which is the minimum of its right subtree — reached by going right once, then left as far as possible.",
+      "explanation": "The successor is the smallest key larger than the node, which is the minimum of its right subtree, reached by going right once, then left as far as possible.",
       "concept": "Binary Search Trees"
     },
     {

@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "The common attributes must functionally determine all of at least one fragment. A non-empty intersection alone is insufficient — without the FD, the natural join produces spurious tuples.",
+      "explanation": "The common attributes must functionally determine all of at least one fragment. A non-empty intersection alone is insufficient; without the FD, the natural join produces spurious tuples.",
       "concept": "Decomposition"
     },
     {
@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "A lossless join into BCNF is always achievable, but dependency preservation can be impossible — the classic example is R(A,B,C) with AB → C and C → B. 3NF, by contrast, guarantees both.",
+      "explanation": "A lossless join into BCNF is always achievable, but dependency preservation can be impossible, the classic example is R(A,B,C) with AB → C and C → B. 3NF, by contrast, guarantees both.",
       "concept": "Decomposition"
     },
     {
@@ -63,19 +63,19 @@
       "options": [
         {
           "id": "A",
-          "text": "Yes — B is a key of R2"
+          "text": "Yes, B is a key of R2"
         },
         {
           "id": "B",
-          "text": "No — B determines nothing in either fragment"
+          "text": "No, B determines nothing in either fragment"
         },
         {
           "id": "C",
-          "text": "Yes — but only because A → B holds"
+          "text": "Yes, but only because A → B holds"
         },
         {
           "id": "D",
-          "text": "No — the intersection is empty"
+          "text": "No, the intersection is empty"
         }
       ],
       "correct_option_id": "A",
@@ -159,7 +159,7 @@
     },
     {
       "id": "cs-dbms-06-q07",
-      "prompt": "R(A, B, C) has FDs {A → B, B → C}. Decomposing into R1(A, B) and R2(A, C) — what is the outcome?",
+      "prompt": "R(A, B, C) has FDs {A → B, B → C}. Decomposing into R1(A, B) and R2(A, C); what is the outcome?",
       "options": [
         {
           "id": "A",

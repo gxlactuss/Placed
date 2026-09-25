@@ -79,7 +79,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Each process owns an isolated address space. Threads within a process share that space — which is why thread communication is cheap and why data races are possible.",
+      "explanation": "Each process owns an isolated address space. Threads within a process share that space, which is why thread communication is cheap and why data races are possible.",
       "concept": "Processes & Threads"
     },
     {
@@ -104,7 +104,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "SJF is optimal for average waiting time, but it requires knowing burst times in advance and can starve long jobs — which is why real schedulers approximate it instead.",
+      "explanation": "SJF is optimal for average waiting time, but it requires knowing burst times in advance and can starve long jobs, which is why real schedulers approximate it instead.",
       "concept": "CPU Scheduling"
     },
     {
@@ -229,7 +229,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "A safe state is one where at least one ordering exists that lets every process obtain its maximum need and terminate. Unsafe does not mean deadlocked — it means deadlock can no longer be ruled out.",
+      "explanation": "A safe state is one where at least one ordering exists that lets every process obtain its maximum need and terminate. Unsafe does not mean deadlocked; it means deadlock can no longer be ruled out.",
       "concept": "Deadlocks"
     },
     {

@@ -154,7 +154,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Nearly every phase consults it — semantic analysis for type checking, code generation for addressing. Because lookups are frequent, it is normally a hash table or a scoped stack of them.",
+      "explanation": "Nearly every phase consults it; semantic analysis for type checking, code generation for addressing. Because lookups are frequent, it is normally a hash table or a scoped stack of them.",
       "concept": "Symbol Table"
     },
     {

@@ -129,7 +129,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "A prepared participant has promised it can commit and must hold its locks until told the outcome. If the coordinator dies at that moment, participants are stuck — which is what three-phase commit and consensus protocols address.",
+      "explanation": "A prepared participant has promised it can commit and must hold its locks until told the outcome. If the coordinator dies at that moment, participants are stuck, which is what three-phase commit and consensus protocols address.",
       "concept": "Distributed Transactions"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Sagas accept that a single ACID transaction across services is impractical. Each step commits locally, and failure triggers compensating actions to unwind earlier steps — so intermediate states are visible.",
+      "explanation": "Sagas accept that a single ACID transaction across services is impractical. Each step commits locally, and failure triggers compensating actions to unwind earlier steps, so intermediate states are visible.",
       "concept": "Distributed Transactions"
     },
     {
@@ -229,7 +229,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "In an asynchronous network there is no timeout that separates crashed from merely slow. A short timeout declares healthy nodes dead; a long one delays recovery — the trade-off cannot be eliminated.",
+      "explanation": "In an asynchronous network there is no timeout that separates crashed from merely slow. A short timeout declares healthy nodes dead; a long one delays recovery, the trade-off cannot be eliminated.",
       "concept": "Failure Detection"
     },
     {

@@ -167,7 +167,7 @@
         },
         {
           "id": "B",
-          "text": "It exploits temporal locality — recently used items are likely to be used again"
+          "text": "It exploits temporal locality; recently used items are likely to be used again"
         },
         {
           "id": "C",
@@ -234,7 +234,7 @@
     },
     {
       "id": "cs-sd-02-q10",
-      "prompt": "What is the risk of caching data at multiple layers — browser, CDN and application — simultaneously?",
+      "prompt": "What is the risk of caching data at multiple layers (browser, CDN and application) simultaneously?",
       "options": [
         {
           "id": "A",
@@ -254,7 +254,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Each layer expires independently, so purging the CDN does nothing for copies already in browsers. This is why versioned asset URLs are preferred — a new URL sidesteps invalidation entirely.",
+      "explanation": "Each layer expires independently, so purging the CDN does nothing for copies already in browsers. This is why versioned asset URLs are preferred: a new URL sidesteps invalidation entirely.",
       "concept": "Cache Invalidation"
     }
   ]

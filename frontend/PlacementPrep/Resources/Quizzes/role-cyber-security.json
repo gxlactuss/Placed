@@ -354,7 +354,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Hiding a design adds friction but no guarantee. A system should stay secure even when its design is public, with only the keys secret — Kerckhoffs's principle.",
+      "explanation": "Hiding a design adds friction but no guarantee. A system should stay secure even when its design is public, with only the keys secret; Kerckhoffs's principle.",
       "concept": "Security Principles"
     },
     {

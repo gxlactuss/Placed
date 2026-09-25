@@ -129,7 +129,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Overloading is normally settled at compile time by argument types, while overriding is resolved at run time by the object's actual class — which is why only overriding gives polymorphic behaviour.",
+      "explanation": "Overloading is normally settled at compile time by argument types, while overriding is resolved at run time by the object's actual class, which is why only overriding gives polymorphic behaviour.",
       "concept": "OOP"
     },
     {

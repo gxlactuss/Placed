@@ -149,11 +149,11 @@ struct PPVoiceWave: View {
                 PPVoiceWave(mode: .thinking)
             }
             VStack(alignment: .leading, spacing: PPSpacing.sm) {
-                Text("Listening — quiet").font(.ppCaption).foregroundStyle(Color.ppMuted)
+                Text("Listening (quiet)").font(.ppCaption).foregroundStyle(Color.ppMuted)
                 PPVoiceWave(level: 0.15, mode: .listening)
             }
             VStack(alignment: .leading, spacing: PPSpacing.sm) {
-                Text("Listening — loud").font(.ppCaption).foregroundStyle(Color.ppMuted)
+                Text("Listening (loud)").font(.ppCaption).foregroundStyle(Color.ppMuted)
                 PPVoiceWave(level: 0.9, mode: .listening, height: 40)
             }
         }

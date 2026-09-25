@@ -29,7 +29,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Start with {A}; A → B adds B, B → C adds C, C → D adds D. The closure is all of R, so A is a superkey — and since no proper subset works, it is the candidate key.",
+      "explanation": "Start with {A}; A → B adds B, B → C adds C, C → D adds D. The closure is all of R, so A is a superkey, and since no proper subset works, it is the candidate key.",
       "concept": "Functional Dependencies"
     },
     {
@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "2NF removes partial dependencies — a non-prime attribute depending on only part of a composite candidate key. Removing transitive dependencies is 3NF; every determinant being a key is BCNF.",
+      "explanation": "2NF removes partial dependencies, a non-prime attribute depending on only part of a composite candidate key. Removing transitive dependencies is 3NF; every determinant being a key is BCNF.",
       "concept": "Normalization"
     },
     {
@@ -79,7 +79,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Candidate keys are AB and BC, so prime attributes are A, B and C — every attribute is prime, hence no transitive dependency on a non-prime attribute, giving 3NF. But C → A has a non-superkey determinant, so BCNF fails.",
+      "explanation": "Candidate keys are AB and BC, so prime attributes are A, B and C, every attribute is prime, hence no transitive dependency on a non-prime attribute, giving 3NF. But C → A has a non-superkey determinant, so BCNF fails.",
       "concept": "Normalization"
     },
     {
@@ -117,7 +117,7 @@
         },
         {
           "id": "B",
-          "text": "0 — B appears in no candidate key"
+          "text": "0; B appears in no candidate key"
         },
         {
           "id": "C",
@@ -204,7 +204,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "AB → C follows from A → C by augmentation, so removing it leaves the closure unchanged. Computing a canonical cover would drop it — note A → C itself is needed and is not redundant.",
+      "explanation": "AB → C follows from A → C by augmentation, so removing it leaves the closure unchanged. Computing a canonical cover would drop it; note A → C itself is needed and is not redundant.",
       "concept": "Functional Dependencies"
     },
     {
@@ -254,7 +254,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "A+ = {A}, then A → BC adds B and C, B → D adds D, and CD → E adds E — so A+ is all of R and A is minimal. (E and CD are also keys, via E → A.)",
+      "explanation": "A+ = {A}, then A → BC adds B and C, B → D adds D, and CD → E adds E, so A+ is all of R and A is minimal. (E and CD are also keys, via E → A.)",
       "concept": "Functional Dependencies"
     }
   ]

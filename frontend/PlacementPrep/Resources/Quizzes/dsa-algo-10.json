@@ -217,7 +217,7 @@
         },
         {
           "id": "B",
-          "text": "O(n) — each element enters and leaves at most once"
+          "text": "O(n), each element enters and leaves at most once"
         },
         {
           "id": "C",
@@ -254,7 +254,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "A subsequence need not be contiguous, so a window over a contiguous range cannot capture it — that problem needs DP or patience sorting. The others all concern contiguous subarrays or substrings.",
+      "explanation": "A subsequence need not be contiguous, so a window over a contiguous range cannot capture it; that problem needs DP or patience sorting. The others all concern contiguous subarrays or substrings.",
       "concept": "Sliding Window"
     }
   ]

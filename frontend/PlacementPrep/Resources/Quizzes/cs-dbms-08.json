@@ -54,7 +54,7 @@
         }
       ],
       "correct_option_id": "D",
-      "explanation": "Selection pushdown is the classic heuristic: filtering early shrinks the intermediate result feeding the join. The others change query semantics — a projection cannot discard a column a later predicate needs.",
+      "explanation": "Selection pushdown is the classic heuristic: filtering early shrinks the intermediate result feeding the join. The others change query semantics: a projection cannot discard a column a later predicate needs.",
       "concept": "Query Optimization"
     },
     {
@@ -179,7 +179,7 @@
         }
       ],
       "correct_option_id": "B",
-      "explanation": "Each R tuple matches at most one S tuple, since the referenced attribute is a primary key. So the result has at most |R| = 1000 tuples — exactly 1000 if no foreign key value is NULL.",
+      "explanation": "Each R tuple matches at most one S tuple, since the referenced attribute is a primary key. So the result has at most |R| = 1000 tuples, exactly 1000 if no foreign key value is NULL.",
       "concept": "Cost Estimation"
     },
     {
@@ -229,7 +229,7 @@
         }
       ],
       "correct_option_id": "C",
-      "explanation": "Materialization stores intermediates, costing extra I/O but simplifying execution and enabling reuse. Pipelining streams tuples straight into the next operator, avoiding that write — though blocking operators like sort must materialize anyway.",
+      "explanation": "Materialization stores intermediates, costing extra I/O but simplifying execution and enabling reuse. Pipelining streams tuples straight into the next operator, avoiding that write, though blocking operators like sort must materialize anyway.",
       "concept": "Query Processing"
     },
     {
@@ -254,7 +254,7 @@
         }
       ],
       "correct_option_id": "A",
-      "explanation": "Cost-based optimization estimates the cost of candidate plans from catalogue statistics. This is why stale statistics cause bad plans — and why running ANALYZE often fixes a sudden regression.",
+      "explanation": "Cost-based optimization estimates the cost of candidate plans from catalogue statistics. This is why stale statistics cause bad plans, and why running ANALYZE often fixes a sudden regression.",
       "concept": "Query Optimization"
     }
   ]
