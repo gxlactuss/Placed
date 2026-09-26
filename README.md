@@ -27,6 +27,7 @@ Per-company CSVs (`Resources/Companies/`) and logos (`Resources/Logos/`) ship wi
 ### AI mock interviews
 - **Six round types**: HR, tech stack, core CS, projects, panel debate, and DSA approach.
 - **Adaptive difficulty**: each round opens with calibration questions, then moves up or down a five-level ladder based on how accurate and how fluent your answers are. A round runs for 10 to 50 questions.
+- **Company-style rounds**: pick a company (defaults to your target company) and the rounds imitate its interviews. HR questions are aimed at its published values (Amazon's Leadership Principles, for example), DSA draws from its most-asked problems, and the other rounds are pitched at its bar. The feedback judges you against the same values. Company values and interview expectations live in `backend/app/content/data/expected_qualities.json`.
 - **Resume-aware**: you can attach a resume (PDF or text) during onboarding. The app extracts the text, and the backend summarizes your projects so questions can be tailored to them.
 - **Voice input**: hold to talk. Groq Whisper (`whisper-large-v3-turbo`) transcribes the audio.
 - **Feedback and history**: each round ends with a rating, a five-part rubric (correctness, depth, structure, communication, confidence) for the round and for every answer, a chart of your scores across the round, and suggestions. You can reopen past sessions with full transcripts, each answer marked with its score.

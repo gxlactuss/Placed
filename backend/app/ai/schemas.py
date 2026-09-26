@@ -20,6 +20,7 @@ class InterviewContext(BaseModel):
     dsa_problems: Optional[DSAProblemPool] = None
     dsa_problem: Optional[str] = Field(default=None, max_length=300)
     topic: Optional[str] = Field(default=None, max_length=300)
+    company: Optional[str] = Field(default=None, max_length=100)
 
 
 class InterviewStart(BaseModel):
@@ -44,6 +45,7 @@ class InterviewSummary(BaseModel):
     id: int
     target_role: str
     mode: Optional[str] = None
+    company: Optional[str] = None
     status: InterviewStatus
     answer_count: int
     rating: Optional[int] = None
@@ -55,6 +57,7 @@ class InterviewSessionRead(BaseModel):
     id: int
     target_role: str
     mode: Optional[str] = None
+    company: Optional[str] = None
     status: InterviewStatus
     transcript: list[InterviewTurn]
     feedback: Optional["InterviewFeedbackResponse"] = None

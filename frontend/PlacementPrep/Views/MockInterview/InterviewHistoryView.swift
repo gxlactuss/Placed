@@ -64,7 +64,7 @@ struct InterviewHistoryView: View {
                 VStack(alignment: .leading, spacing: PPSpacing.xs) {
                     Text(interview.round?.title ?? "Mock interview")
                         .font(.ppHeadline)
-                    Text(interview.targetRole)
+                    Text(interview.roleLine)
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
                     HStack(spacing: PPSpacing.sm) {

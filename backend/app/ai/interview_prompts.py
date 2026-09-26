@@ -17,6 +17,7 @@ from app.ai.interview_difficulty import (
 from app.ai.interview_mode import InterviewMode
 from app.ai.interview_rounds import RoundSpec, SeedQuestion, spec_for
 from app.ai.roles import technical_brief
+from app.content.company_expectations import CompanyExpectations, Quality, find_company
 
 END_INTERVIEW_SENTINEL = "[[END_INTERVIEW]]"
 
@@ -85,6 +86,69 @@ Then ask only questions that serve that.
 - Use the vocabulary this role actually uses, so the practice transfers to the real interview.
 - Where the resume points one way and the role points another, follow the role: ask how what they have done transfers to what this job needs. Do not drift into an interview for the job they have already done.
 - If something on their resume is irrelevant to this role, leave it alone. Interview time is short and a real interviewer would spend it on what matters."""
+
+
+def _company_name(context: dict) -> str:
+    return str(context.get("company") or "").strip()
+
+
+def _bullets(qualities: tuple[Quality, ...]) -> str:
+    return "\n".join(f"- {q.name}: {q.description}" for q in qualities)
+
+
+def _principles_label(company: CompanyExpectations | None) -> str:
+    return company.principles_label if company else "values"
+
+
+def _hr_company_block(name: str, company: CompanyExpectations | None) -> str:
+    label = _principles_label(company)
+    if company:
+        known = f"""\
+{name}'s interviewers judge every behavioural answer against the company's {label}:
+{_bullets(company.principles)}
+
+What they look for in interviews:
+{_bullets(company.interview_expectations)}"""
+    else:
+        known = (
+            f"Use what you know of {name}'s published values and how its interviewers run "
+            "behavioural rounds."
+        )
+
+    return f"""\
+THE COMPANY: {name}
+
+This is an HR round run the way {name} runs it. {known}
+
+How to interview on this:
+- Aim each behavioural question at one of {name}'s {label}, the way {name}'s interviewers would: ask for a real time they did something that would show it. Cover as many different ones as the round allows rather than returning to the same one.
+- Never read the list out or announce which one a question is testing. A real interviewer rarely names it.
+- Judge whether the example actually shows it: what they personally did, why, and how it turned out. A story about what the team did shows nothing about them.
+- Ask why {name} once, and push past an answer that would fit any company."""
+
+
+def _technical_company_block(name: str, company: CompanyExpectations | None) -> str:
+    if company:
+        bar = f"What {name}'s interviewers look for:\n{_bullets(company.interview_expectations)}"
+    else:
+        bar = f"Pitch it at the bar {name}'s interviewers set, and follow up the way they would."
+    return f"""\
+THE COMPANY: {name}
+
+This round simulates an interview at {name}. {bar}
+
+Let that set the bar and the style of your follow-ups, but the focus below still decides
+what you ask. Do not turn this round into a behavioural or values interview."""
+
+
+def _company_block(mode: InterviewMode, context: dict) -> str:
+    name = _company_name(context)
+    if not name or mode is InterviewMode.PANEL_DEBATE:
+        return ""
+    company = find_company(name)
+    if mode is InterviewMode.HR:
+        return _hr_company_block(name, company)
+    return _technical_company_block(name, company)
 
 
 def _projects_brief(role: str, context: dict) -> str:
@@ -247,15 +311,26 @@ def _problem_pool(context: dict) -> str:
     if not lines and legacy:
         lines.append(f"- Any level, if it fits: {legacy}")
 
+    company = _company_name(context)
+    source = (
+        f"the problems {company} asks most often"
+        if company
+        else "the companies the candidate is preparing for"
+    )
     if not lines:
+        if company:
+            return (
+                f"Choose problems {company} is known to ask often, whose difficulty matches the "
+                "level: easy ones for levels 1 and 2, medium for 3, hard for 4 and 5."
+            )
         return (
             "Choose well-known interview problems whose difficulty matches the level: easy "
             "ones for levels 1 and 2, medium for 3, hard for 4 and 5."
         )
     return (
-        "Draw the full problems from these lists, taken from the companies the candidate is "
-        "preparing for, using the list that matches the level. If a list runs out, choose a "
-        "well-known problem of the same difficulty:\n" + "\n".join(lines)
+        f"Draw the full problems from these lists, taken from {source}, using the list that "
+        "matches the level. If a list runs out, choose a well-known problem of the same "
+        "difficulty:\n" + "\n".join(lines)
     )
 
 
@@ -295,11 +370,20 @@ def _preamble(role: str, mode: InterviewMode, context: dict) -> str:
             f"preparing for a '{role}' role."
         )
     else:
+        company = _company_name(context)
+        at = f" at {company}" if company else ""
         opening = (
             "You are conducting a mock interview for a campus-placement candidate "
-            f"applying for the role of '{role}'."
+            f"applying for the role of '{role}'{at}."
         )
-    return f"{opening}\n\n{_role_block(role, mode)}\n\n{_BRIEFS[mode](role, context)}\n\n{_HARD_RULES}"
+    sections = (
+        opening,
+        _role_block(role, mode),
+        _company_block(mode, context),
+        _BRIEFS[mode](role, context),
+        _HARD_RULES,
+    )
+    return "\n\n".join(section for section in sections if section)
 
 
 def _seed_question(spec: RoundSpec, seed: SeedQuestion, role: str) -> str:
@@ -454,7 +538,18 @@ A higher level means a harder {noun}, never a colder tone; a lower one means an 
 The level changes what you ask, not how you reply: still react to their latest answer first, as described above, and then ask ONE {noun} — a single step, never several stacked into one message."""
 
 
-def _ending(plan: TurnPlan, spec: RoundSpec) -> str:
+def _conclusion(spec: RoundSpec, mode: InterviewMode, context: dict) -> str:
+    company = _company_name(context)
+    if mode is not InterviewMode.HR or not company:
+        return spec.conclusion
+    label = _principles_label(find_company(company))
+    return (
+        f"{spec.conclusion}, and their examples have been tested against at least four "
+        f"of {company}'s {label}"
+    )
+
+
+def _ending(plan: TurnPlan, spec: RoundSpec, conclusion: str) -> str:
     noun = spec.turn_noun
     if plan.must_close:
         return f"""\
@@ -486,13 +581,13 @@ ENDING THE ROUND
 
 They have given {plan.answered} answers, out of at most {MAX_QUESTIONS}. {settled}
 
-Close the round only once this is true: {spec.conclusion}. Answers being good or bad is not a reason to close on its own, and once it is true, do not drag the round out.
+Close the round only once this is true: {conclusion}. Answers being good or bad is not a reason to close on its own, and once it is true, do not drag the round out.
 
 To close: instead of another {noun}, react to their answer, say in one or two sentences that this is the end of the round, and put {ROUND_COMPLETE_SENTINEL} alone on the final line. Never say that marker out loud, and never use it in a message that asks anything.{final}"""
 
 
 def _adaptive_block(
-    role: str, plan: TurnPlan, spec: RoundSpec, transcript: list[dict]
+    role: str, plan: TurnPlan, spec: RoundSpec, transcript: list[dict], conclusion: str
 ) -> str:
     noun = spec.turn_noun
     ladder = "\n".join(f"{level}: {text}" for level, text in enumerate(spec.ladder, start=1))
@@ -523,7 +618,7 @@ In this round, only a wait of more than {spec.long_pause_seconds} seconds before
 
 {_next_turn(plan, spec, role)}
 
-{_ending(plan, spec)}"""
+{_ending(plan, spec, conclusion)}"""
 
 
 def _reply_format(spec: RoundSpec) -> str:
@@ -556,7 +651,7 @@ def follow_up_prompt(
         f"{_CONDUCT_RULES}\n\n"
         f"Conversation so far:\n{_history(transcript)}\n\n"
         f"Their latest answer: {latest_answer}\n\n"
-        f"{_adaptive_block(role, plan, spec, transcript)}\n\n"
+        f"{_adaptive_block(role, plan, spec, transcript, _conclusion(spec, mode, context))}\n\n"
         f"{_reply_format(spec)}\n\n"
         f"{closing}"
     )
@@ -663,7 +758,38 @@ weighted by level as described above. It should broadly agree with the per-answe
 scores and with the rating."""
 
 
-def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> str:
+def _feedback_company_lens(mode: InterviewMode, context: dict) -> str:
+    name = _company_name(context)
+    if not name or mode is InterviewMode.PANEL_DEBATE:
+        return ""
+    company = find_company(name)
+    if mode is InterviewMode.HR:
+        label = _principles_label(company)
+        listed = (
+            f": {', '.join(q.name for q in company.principles)}" if company else ""
+        )
+        return f"""
+They were practising for {name}'s HR round, where every answer is judged against the
+company's {label}{listed}. In the summary, say which of these their examples gave real
+evidence for; in improvements, name the ones that were missing or thin and what kind of
+example would show them. Evidence means what they personally did and how it turned out;
+a story about what the team did shows nothing about them.
+"""
+    bar = (
+        f": {', '.join(q.name for q in company.interview_expectations)}" if company else ""
+    )
+    return f"""
+They were practising for an interview at {name}. Judge them against the bar {name}'s
+interviewers set{bar}.
+"""
+
+
+def feedback_prompt(
+    role: str, mode: InterviewMode, transcript: list[dict], context: dict | None = None
+) -> str:
+    context = context or {}
+    company = _company_name(context)
+    at = f" at {company}" if company else ""
     history, answered = _numbered_history(transcript, spec_for(mode).long_pause_seconds)
     scores = ", ".join(f'"{name}": <0-10>' for name in RUBRIC_DIMENSIONS)
 
@@ -683,10 +809,10 @@ def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> s
             "answer and not just that they missed one."
         )
 
-    return f"""You are assessing a mock interview a student has just finished, for a '{role}' role.
+    return f"""You are assessing a mock interview a student has just finished, for a '{role}' role{at}.
 
 {lens}
-{_difficulty_track(transcript)}
+{_feedback_company_lens(mode, context)}{_difficulty_track(transcript)}
 
 The transcript below came from speech recognition, so it contains misheard words,
 missing punctuation and false starts. Those are the recogniser's errors, not the
@@ -701,7 +827,7 @@ Transcript:
 
 {_rubric_block(mode, answered)}
 
-Rate out of 10 against what an interviewer for '{role}' at campus-placement level
+Rate out of 10 against what an interviewer for '{role}'{at} at campus-placement level
 would actually expect — not against a principal engineer, and not against a
 textbook:
 - 1-3: would not get through this round. Answers that are wrong, guessed, or amount to "I don't know" and "it just gets stuck" belong here, however politely they were phrased. Most of the answers being like this is a 2, not a 4.

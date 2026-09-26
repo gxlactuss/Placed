@@ -51,7 +51,7 @@ struct InterviewTranscriptView: View {
 
     private func header(_ session: InterviewSession) -> some View {
         VStack(alignment: .leading, spacing: PPSpacing.xs) {
-            Text(session.targetRole).font(.ppTitle)
+            Text(session.roleLine).font(.ppTitle)
             Text(session.startedAt.formatted(date: .long, time: .shortened))
                 .font(.ppCaption)
                 .foregroundStyle(Color.ppMuted)

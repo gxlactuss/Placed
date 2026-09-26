@@ -306,9 +306,9 @@ def _mean_rubric(answers: list[AnswerRubric]) -> dict[str, int] | None:
 
 
 def generate_feedback(
-    target_role: str, mode: InterviewMode, transcript: list[dict]
+    target_role: str, mode: InterviewMode, transcript: list[dict], context: dict | None = None
 ) -> Feedback:
-    prompt = feedback_prompt(target_role, mode, transcript)
+    prompt = feedback_prompt(target_role, mode, transcript, context)
     data: dict | None = None
     for _attempt in range(2):
         raw = _generate(prompt)

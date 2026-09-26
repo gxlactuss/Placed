@@ -77,16 +77,17 @@ struct InterviewContextPayload: Codable {
     var skills: String?
     var dsaProblems: DSAProblemPool?
     var topic: String?
+    var company: String?
 
     var isEmpty: Bool {
-        projectsText == nil && skills == nil && dsaProblems == nil && topic == nil
+        projectsText == nil && skills == nil && dsaProblems == nil && topic == nil && company == nil
     }
 
     enum CodingKeys: String, CodingKey {
         case projectsText = "projects_text"
         case skills
         case dsaProblems = "dsa_problems"
-        case topic
+        case topic, company
     }
 }
 
@@ -191,6 +192,7 @@ struct InterviewSummary: Codable, Identifiable, Hashable {
     let id: Int
     let targetRole: String
     let mode: String?
+    let company: String?
     let status: InterviewStatus
     let answerCount: Int
     let rating: Int?
@@ -199,8 +201,11 @@ struct InterviewSummary: Codable, Identifiable, Hashable {
 
     var round: InterviewMode? { mode.flatMap(InterviewMode.init(rawValue:)) }
 
+    /// "Amazon · SDE" for a company-style round, otherwise just the role.
+    var roleLine: String { [company, targetRole].compactMap { $0 }.joined(separator: " · ") }
+
     enum CodingKeys: String, CodingKey {
-        case id, mode, status, rating
+        case id, mode, company, status, rating
         case targetRole = "target_role"
         case answerCount = "answer_count"
         case startedAt = "started_at"
@@ -212,6 +217,7 @@ struct InterviewSession: Codable, Identifiable {
     let id: Int
     let targetRole: String
     let mode: String?
+    let company: String?
     let status: InterviewStatus
     let transcript: [InterviewTurn]
     let feedback: InterviewFeedback?
@@ -220,8 +226,11 @@ struct InterviewSession: Codable, Identifiable {
 
     var round: InterviewMode? { mode.flatMap(InterviewMode.init(rawValue:)) }
 
+    /// "Amazon · SDE" for a company-style round, otherwise just the role.
+    var roleLine: String { [company, targetRole].compactMap { $0 }.joined(separator: " · ") }
+
     enum CodingKeys: String, CodingKey {
-        case id, mode, status, transcript, feedback
+        case id, mode, company, status, transcript, feedback
         case targetRole = "target_role"
         case startedAt = "started_at"
         case endedAt = "ended_at"

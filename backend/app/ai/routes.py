@@ -23,6 +23,7 @@ from app.ai.schemas import (
 )
 from app.ai.interview_difficulty import START_LEVEL, RoundState, opening_seed, plan_next_turn
 from app.ai.interview_prompts import InterviewMode, decode_context
+from app.content.company_expectations import find_company
 from app.ai.llm_service import (
     generate_feedback,
     generate_first_question,
@@ -32,6 +33,17 @@ from app.ai.llm_service import (
 )
 
 router = APIRouter(prefix="/api/interview", tags=["interview"])
+
+
+def _normalise_company(context: dict) -> None:
+    name = str(context.pop("company", "") or "").strip()
+    if name:
+        known = find_company(name)
+        context["company"] = known.name if known else name
+
+
+def _company_of(interview: InterviewSession) -> str | None:
+    return decode_context(interview.context_json).get("company") or None
 
 
 def _require_id(interview: InterviewSession) -> int:
@@ -48,6 +60,7 @@ def start_interview(
 ):
     mode = InterviewMode.parse(payload.mode)
     context = payload.context.model_dump(exclude_none=True) if payload.context else {}
+    _normalise_company(context)
 
     seed = opening_seed(mode)
     opening_question = generate_first_question(payload.target_role, mode, context, seed)
@@ -202,7 +215,10 @@ def interview_feedback(
         )
 
     feedback = generate_feedback(
-        interview.target_role, InterviewMode.parse(interview.mode), transcript
+        interview.target_role,
+        InterviewMode.parse(interview.mode),
+        transcript,
+        decode_context(interview.context_json),
     )
     response = InterviewFeedbackResponse(
         rating=feedback.rating,
@@ -268,6 +284,7 @@ def list_interviews(
                 id=_require_id(interview),
                 target_role=interview.target_role,
                 mode=interview.mode,
+                company=_company_of(interview),
                 status=interview.status,
                 answer_count=answers,
                 rating=feedback.rating if feedback else None,
@@ -292,6 +309,7 @@ def get_interview(
         id=_require_id(interview),
         target_role=interview.target_role,
         mode=interview.mode,
+        company=_company_of(interview),
         status=interview.status,
         transcript=json.loads(interview.transcript_json),
         feedback=_decode_feedback(interview.overall_feedback),

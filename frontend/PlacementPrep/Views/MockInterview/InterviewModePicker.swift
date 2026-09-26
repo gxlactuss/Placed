@@ -59,9 +59,11 @@ struct InterviewModePicker: View {
 
     let role: String
     let setup: InterviewSetup?
+    var company: DSACompany? = nil
     let onPick: (InterviewMode) -> Void
     let onEditSetup: () -> Void
     let onOpenHistory: () -> Void
+    var onEditStyle: () -> Void = {}
 
     @Environment(FocusModeStore.self) private var focus
     @Environment(ResumeReviewStore.self) private var resumeReviews
@@ -71,6 +73,7 @@ struct InterviewModePicker: View {
         ScrollView {
             VStack(alignment: .leading, spacing: PPSpacing.lg) {
                 heading
+                styleRow
                 resumeRow
                 if !focus.isOn { focusPrompt }
                 ForEach(InterviewMode.allCases) { mode in
@@ -118,6 +121,35 @@ struct InterviewModePicker: View {
                             .font(.ppCaption)
                             .foregroundStyle(Color.ppAccent400)
                     }
+                }
+            }
+        }
+        .buttonStyle(.ppPressable)
+    }
+
+    private var styleRow: some View {
+        Button(action: onEditStyle) {
+            PPCard(padding: PPSpacing.md) {
+                HStack(spacing: PPSpacing.md) {
+                    if let company {
+                        PPCompanyLogo(companyName: company.name, size: 36)
+                    } else {
+                        PPIconTile(systemName: "building.2", size: 36, tint: .ppAccent400)
+                    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(company.map { "\($0.name)-style interview" } ?? "General interview")
+                            .font(.ppBodyMedium)
+                        Text(company == nil
+                             ? "Pick a company to practise its values and most-asked problems."
+                             : "HR asks about its values. DSA uses its most-asked problems.")
+                            .font(.ppMicro)
+                            .foregroundStyle(Color.ppMuted)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: PPSpacing.sm)
+                    Text("Change")
+                        .font(.ppCaption)
+                        .foregroundStyle(Color.ppAccent400)
                 }
             }
         }

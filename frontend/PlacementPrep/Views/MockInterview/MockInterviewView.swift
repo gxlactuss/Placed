@@ -13,6 +13,7 @@ struct MockInterviewView: View {
     @State private var mode: InterviewMode?
     @State private var showResults = false
     @State private var showHistory = false
+    @State private var showStyle = false
     @State private var targetProfile: CompanyProfile?
 
     private var resolvedRole: String {
@@ -28,14 +29,19 @@ struct MockInterviewView: View {
                 InterviewModePicker(
                     role: resolvedRole,
                     setup: setupStore.setup,
+                    company: styleCompany,
                     onPick: { mode = $0 },
                     onEditSetup: { showSetup = true },
-                    onOpenHistory: { showHistory = true }
+                    onOpenHistory: { showHistory = true },
+                    onEditStyle: { showStyle = true }
                 )
             }
         }
         .sheet(isPresented: $showSetup) { InterviewSetupView() }
         .sheet(isPresented: $showHistory) { InterviewHistoryView() }
+        .sheet(isPresented: $showStyle) {
+            InterviewStyleSheet(current: styleCompany) { setupStore.setStyle($0) }
+        }
         .task { await companyBank.loadCatalogIfNeeded() }
     }
 
@@ -92,14 +98,17 @@ struct MockInterviewView: View {
         case .techStack:
             payload.skills = setupStore.setup?.skills
         case .dsaApproach:
-            payload.dsaProblems = await targetPool() ?? problemPool()
+            payload.dsaProblems = await companyPool() ?? problemPool()
         case .hr, .coreCs, .panelDebate:
             break
         }
+        if mode != .panelDebate { payload.company = styleCompany?.name }
         return payload
     }
 
     private static let problemsPerDifficulty = 10
+    /// How far down a company's list, by frequency, a company-style round draws from.
+    private static let mostAskedWindow = 30
 
     private func problemPool() -> DSAProblemPool? {
         guard !companyBank.catalog.isEmpty else { return nil }
@@ -117,10 +126,19 @@ struct MockInterviewView: View {
         companyBank.company(named: auth.currentUser?.targetCompany)
     }
 
-    /// Problems from the target company, most-asked and weak-topic unsolved ones first, topped
-    /// up from the whole catalog when a difficulty runs short.
-    private func targetPool() async -> DSAProblemPool? {
-        guard let company = targetCompany else { return nil }
+    /// The company the rounds imitate: the user's pick, or their target company until they pick.
+    private var styleCompany: DSACompany? {
+        switch setupStore.style {
+        case .general: nil
+        case .company(let name): companyBank.company(named: name)
+        case nil: targetCompany
+        }
+    }
+
+    /// The company's most-asked problems, unsolved and weak-topic ones first, topped up from
+    /// the whole catalog when a difficulty runs short.
+    private func companyPool() async -> DSAProblemPool? {
+        guard let company = styleCompany else { targetProfile = nil; return nil }
         let problems = await companyBank.problems(for: company)
         let profile = await companyBank.profile(for: company)
         targetProfile = profile
@@ -136,6 +154,12 @@ struct MockInterviewView: View {
         func sample(_ difficulty: DSADifficulty, filler: [String]) -> [String] {
             let picked = problems
                 .filter { $0.difficulty == difficulty }
+                .enumerated()
+                .sorted { $0.element.frequency != $1.element.frequency
+                    ? $0.element.frequency > $1.element.frequency
+                    : $0.offset < $1.offset }
+                .prefix(Self.mostAskedWindow)
+                .map(\.element)
                 .enumerated()
                 .sorted { rank($0.element) != rank($1.element)
                     ? rank($0.element) < rank($1.element)
@@ -217,11 +241,16 @@ struct MockInterviewView: View {
     }
 
     private var roundDetail: String {
-        if model.isWarmUp { return "\(model.role) · Warm-up" }
+        let role = [roundCompany, model.role].compactMap { $0 }.joined(separator: " · ")
+        if model.isWarmUp { return "\(role) · Warm-up" }
         if let difficulty = model.difficulty {
-            return "\(model.role) · \(difficulty.title) questions"
+            return "\(role) · \(difficulty.title) questions"
         }
-        return model.role
+        return role
+    }
+
+    private var roundCompany: String? {
+        mode == .panelDebate ? nil : styleCompany?.name
     }
 
     private var transcript: some View {
