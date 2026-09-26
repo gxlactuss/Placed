@@ -27,17 +27,27 @@ struct InterviewTranscriptView: View {
     }
 
     private func content(_ session: InterviewSession) -> some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: PPSpacing.xl) {
-                header(session)
-                if let feedback = session.feedback { debrief(feedback) }
-                transcript(session)
+        ScrollViewReader { scroller in
+            ScrollView {
+                VStack(alignment: .leading, spacing: PPSpacing.xl) {
+                    header(session)
+                    if let feedback = session.feedback {
+                        debrief(feedback) { answer in
+                            withAnimation(PPMotion.settle) {
+                                scroller.scrollTo(answerAnchor(answer.answer), anchor: .center)
+                            }
+                        }
+                    }
+                    transcript(session)
+                }
+                .padding(PPSpacing.xl)
+                .ppContentColumn()
             }
-            .padding(PPSpacing.xl)
-            .ppContentColumn()
+            .scrollIndicators(.hidden)
         }
-        .scrollIndicators(.hidden)
     }
+
+    private func answerAnchor(_ number: Int) -> String { "answer-\(number)" }
 
     private func header(_ session: InterviewSession) -> some View {
         VStack(alignment: .leading, spacing: PPSpacing.xs) {
@@ -52,7 +62,10 @@ struct InterviewTranscriptView: View {
         }
     }
 
-    private func debrief(_ feedback: InterviewFeedback) -> some View {
+    private func debrief(
+        _ feedback: InterviewFeedback,
+        onSelectAnswer: @escaping (AnswerScore) -> Void
+    ) -> some View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
             PPSectionHeader("Debrief")
 
@@ -61,7 +74,7 @@ struct InterviewTranscriptView: View {
                     HStack(alignment: .firstTextBaseline, spacing: PPSpacing.sm) {
                         Text("\(feedback.rating)")
                             .font(.ppStatFixed(30))
-                            .foregroundStyle(tint(for: feedback.rating))
+                            .foregroundStyle(Color.ppScore(Double(feedback.rating), middle: .ppAccent400))
                         Text("out of 10")
                             .font(.ppCaption)
                             .foregroundStyle(Color.ppMuted)
@@ -72,6 +85,14 @@ struct InterviewTranscriptView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            if let rubric = feedback.rubric {
+                PPCard { InterviewRubricBreakdown(rubric: rubric) }
+            }
+
+            if feedback.answers.count > 1 {
+                PPCard { InterviewScoreChart(answers: feedback.answers, onSelect: onSelectAnswer) }
             }
 
             bullets("What to correct", feedback.mistakes, dot: .ppHard)
@@ -104,38 +125,62 @@ struct InterviewTranscriptView: View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
             PPSectionHeader("Transcript")
 
-            ForEach(Array(session.transcript.enumerated()), id: \.offset) { _, turn in
-                let isUser = turn.speaker == "user"
-                HStack {
-                    if isUser { Spacer(minLength: PPSpacing.xxl) }
-                    Text(turn.text)
-                        .font(.ppBody)
-                        .foregroundStyle(isUser ? Color.ppOnAccent : Color.ppText)
-                        .padding(.horizontal, PPSpacing.lg)
-                        .padding(.vertical, PPSpacing.md)
-                        .background(
-                            isUser ? Color.ppAccent : Color.ppSurface,
-                            in: .rect(cornerRadius: PPRadius.lg)
-                        )
-                        .overlay {
-                            if !isUser {
-                                RoundedRectangle(cornerRadius: PPRadius.lg)
-                                    .stroke(Color.ppBorder, lineWidth: 1)
+            ForEach(numberedTurns(session.transcript), id: \.offset) { offset, turn, answerNumber in
+                let isUser = turn.isCandidate
+                VStack(alignment: .trailing, spacing: PPSpacing.sm) {
+                    HStack {
+                        if isUser { Spacer(minLength: PPSpacing.xxl) }
+                        Text(turn.text)
+                            .font(.ppBody)
+                            .foregroundStyle(isUser ? Color.ppOnAccent : Color.ppText)
+                            .padding(.horizontal, PPSpacing.lg)
+                            .padding(.vertical, PPSpacing.md)
+                            .background(
+                                isUser ? Color.ppAccent : Color.ppSurface,
+                                in: .rect(cornerRadius: PPRadius.lg)
+                            )
+                            .overlay {
+                                if !isUser {
+                                    RoundedRectangle(cornerRadius: PPRadius.lg)
+                                        .stroke(Color.ppBorder, lineWidth: 1)
+                                }
                             }
-                        }
-                        .fixedSize(horizontal: false, vertical: true)
-                    if !isUser { Spacer(minLength: PPSpacing.xxl) }
+                            .fixedSize(horizontal: false, vertical: true)
+                        if !isUser { Spacer(minLength: PPSpacing.xxl) }
+                    }
+                    if let answerNumber, let score = session.feedback?.score(forAnswer: answerNumber) {
+                        answerScore(score)
+                    }
                 }
+                .id(answerNumber.map(answerAnchor) ?? "turn-\(offset)")
             }
         }
     }
 
-    private func tint(for rating: Int) -> Color {
-        switch rating {
-        case 8...: .ppEasy
-        case 5..<8: .ppAccent400
-        default: .ppHard
+    private func numberedTurns(
+        _ turns: [InterviewTurn]
+    ) -> [(offset: Int, turn: InterviewTurn, answerNumber: Int?)] {
+        var answered = 0
+        return turns.enumerated().map { offset, turn in
+            guard turn.isCandidate else { return (offset, turn, nil) }
+            answered += 1
+            return (offset, turn, answered)
         }
+    }
+
+    private func answerScore(_ score: AnswerScore) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: PPSpacing.sm) {
+            Spacer(minLength: PPSpacing.xxl)
+            if !score.note.isEmpty {
+                Text(score.note)
+                    .font(.ppMicro)
+                    .foregroundStyle(Color.ppMuted)
+                    .multilineTextAlignment(.trailing)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            InterviewScoreChip(score: score.score)
+        }
+        .accessibilityElement(children: .combine)
     }
 
     private func errorState(_ message: String) -> some View {

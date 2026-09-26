@@ -11,6 +11,11 @@ struct InterviewTurn: Codable, Identifiable {
     let speaker: String
     let text: String
     let at: Date
+    let level: Int?
+    let accuracy: Int?
+    let ease: Int?
+
+    var isCandidate: Bool { speaker == "user" }
 }
 
 struct InterviewStartRequest: Codable {
@@ -110,11 +115,76 @@ struct InterviewAiResponse: Codable {
     }
 }
 
+enum RubricDimension: String, CaseIterable, Identifiable {
+    case correctness, depth, structure, communication, confidence
+
+    var id: Self { self }
+
+    var title: String { rawValue.capitalized }
+
+    var symbol: String {
+        switch self {
+        case .correctness: "checkmark.circle"
+        case .depth: "square.stack.3d.up"
+        case .structure: "list.bullet.indent"
+        case .communication: "text.bubble"
+        case .confidence: "waveform"
+        }
+    }
+}
+
+struct RubricScores: Codable, Equatable {
+    let correctness: Int
+    let depth: Int
+    let structure: Int
+    let communication: Int
+    let confidence: Int
+
+    subscript(dimension: RubricDimension) -> Int {
+        switch dimension {
+        case .correctness: correctness
+        case .depth: depth
+        case .structure: structure
+        case .communication: communication
+        case .confidence: confidence
+        }
+    }
+}
+
+struct AnswerScore: Codable, Equatable, Identifiable {
+    var id: Int { answer }
+    let answer: Int
+    let scores: RubricScores
+    let score: Double
+    let note: String
+    let level: Int?
+}
+
 struct InterviewFeedback: Codable, Equatable {
     let rating: Int
     let summary: String
     let improvements: [String]
     let mistakes: [String]
+    let rubric: RubricScores?
+    let answers: [AnswerScore]
+
+    enum CodingKeys: String, CodingKey {
+        case rating, summary, improvements, mistakes, rubric, answers
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        rating = try container.decode(Int.self, forKey: .rating)
+        summary = try container.decode(String.self, forKey: .summary)
+        improvements = try container.decodeIfPresent([String].self, forKey: .improvements) ?? []
+        mistakes = try container.decodeIfPresent([String].self, forKey: .mistakes) ?? []
+        rubric = try container.decodeIfPresent(RubricScores.self, forKey: .rubric)
+        answers = try container.decodeIfPresent([AnswerScore].self, forKey: .answers) ?? []
+    }
+
+    func score(forAnswer number: Int) -> AnswerScore? {
+        answers.first { $0.answer == number }
+    }
 }
 
 struct InterviewSummary: Codable, Identifiable, Hashable {

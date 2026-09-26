@@ -32,6 +32,12 @@ class InterviewTurn(BaseModel):
     speaker: str
     text: str
     at: datetime
+    level: Optional[int] = None
+    topic: Optional[str] = None
+    accuracy: Optional[int] = None
+    ease: Optional[int] = None
+    think_seconds: Optional[float] = None
+    speaking_seconds: Optional[float] = None
 
 
 class InterviewSummary(BaseModel):
@@ -80,11 +86,32 @@ class TranscriptionResponse(BaseModel):
     text: str
 
 
+_Score = Annotated[int, Field(ge=0, le=10)]
+
+
+class RubricScores(BaseModel):
+    correctness: _Score
+    depth: _Score
+    structure: _Score
+    communication: _Score
+    confidence: _Score
+
+
+class AnswerScore(BaseModel):
+    answer: int = Field(ge=1)
+    scores: RubricScores
+    score: float
+    note: str = ""
+    level: Optional[int] = None
+
+
 class InterviewFeedbackResponse(BaseModel):
     rating: int
     summary: str
     improvements: list[str] = []
     mistakes: list[str] = []
+    rubric: Optional[RubricScores] = None
+    answers: list[AnswerScore] = []
 
 
 class InterviewAiResponse(BaseModel):

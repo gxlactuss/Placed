@@ -36,6 +36,14 @@ extension Color {
 
     static var ppBorder: Color { palette.border }
     static var ppBorderStrong: Color { palette.borderStrong }
+
+    static func ppScore(_ score: Double, middle: Color = .ppAccent) -> Color {
+        switch score {
+        case 8...: .ppEasy
+        case 5..<8: middle
+        default: .ppHard
+        }
+    }
 }
 
 extension View {

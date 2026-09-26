@@ -389,11 +389,10 @@ def _history(transcript: list[dict]) -> str:
     )
 
 
-def _delivery(transcript: list[dict], long_pause_seconds: int) -> str:
-    latest = next((t for t in reversed(transcript) if t.get("speaker") == "user"), {})
-    think = latest.get("think_seconds")
-    speaking = latest.get("speaking_seconds")
-    words = len(str(latest.get("text", "")).split())
+def _timing(answer: dict, prompted_by: str) -> list[str]:
+    think = answer.get("think_seconds")
+    speaking = answer.get("speaking_seconds")
+    words = len(str(answer.get("text", "")).split())
 
     parts = []
     if isinstance(think, (int, float)):
@@ -403,15 +402,23 @@ def _delivery(transcript: list[dict], long_pause_seconds: int) -> str:
                 "away, so read nothing into that pause"
             )
         else:
-            parts.append(f"they started answering {round(think)} seconds after your message appeared")
+            parts.append(f"they started answering {round(think)} seconds after {prompted_by} appeared")
     if isinstance(speaking, (int, float)) and speaking > 0:
-        parts.append(f"spoke for {round(speaking)} seconds, about {words} words")
+        parts.append(
+            f"spoke for {round(speaking)} seconds, about {words} words "
+            f"({round(words * 60 / speaking)} a minute)"
+        )
+    return parts
 
+
+def _delivery(transcript: list[dict], long_pause_seconds: int) -> str:
+    latest = next((t for t in reversed(transcript) if t.get("speaker") == "user"), {})
+    parts = _timing(latest, "your message")
     if not parts:
         return "No timing was recorded for this answer, so judge ease from the words alone."
     pause = (
         " That is a long pause for this round, so ease is at most 1."
-        if is_long_pause(think, long_pause_seconds)
+        if is_long_pause(latest.get("think_seconds"), long_pause_seconds)
         else ""
     )
     return f"How they delivered it: {', and '.join(parts)}.{pause}"
@@ -575,12 +582,90 @@ level numbers in what you write — describe what they could and could not handl
 """
 
 
-def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> str:
-    speakers = {"ai": "Interviewer", "user": "Candidate"}
-    history = "\n".join(
-        f"{speakers.get(turn['speaker'], turn['speaker'])}: {turn['text']}"
-        for turn in transcript
+RUBRIC_DIMENSIONS = ("correctness", "depth", "structure", "communication", "confidence")
+
+_RUBRIC_MEANINGS = {
+    "correctness": "is what they said right, and does it answer the question actually asked? An accurate answer to a different question scores low here.",
+    "depth": "do they go past the definition to why it works, the trade-offs, edge cases and real examples? Weigh this against the level the question was asked at.",
+    "structure": "is the answer organised: it leads with the point, takes its steps in a sensible order, and ends somewhere rather than wandering?",
+    "communication": "could an interviewer follow it easily? Clear, concise, in the vocabulary this role uses, and aimed at what was asked.",
+}
+
+_DEBATE_RUBRIC_MEANINGS = {
+    "correctness": "are their claims factually sound and their reasoning valid?",
+    "depth": "do they back their position with reasons and evidence, and engage the opponent's push-back instead of restating themselves?",
+    "structure": "do they stake out a clear position and build on it, rather than drifting between sides?",
+    "communication": "are they clear, concise and persuasive, and do they respond to what the opponent actually said?",
+}
+
+_CONFIDENCE_MEANING = (
+    "how readily the answer came, judged from the delivery note under it and from the "
+    "words. A prompt start and a steady line of thought score high; a long pause, "
+    "hedging such as \"I think maybe\" or \"I'm not sure\", restarting the answer, or "
+    "trailing off score low, and an answer they say they are unsure of is at most 3 "
+    "however quickly it came. This is the one place delivery counts, and it still never "
+    "means accent, grammar or speech-recognition errors."
+)
+
+
+def _answer_delivery(answer: dict, long_pause_seconds: int) -> str:
+    parts = _timing(answer, "the question")
+    if isinstance(answer.get("ease"), int):
+        parts.append(f"graded ease {answer['ease']} of 2 during the round")
+    if not parts:
+        return "no timing recorded, so judge confidence from the words alone"
+    pause = (
+        "; that is a long pause for this round"
+        if is_long_pause(answer.get("think_seconds"), long_pause_seconds)
+        else ""
     )
+    return f"{', '.join(parts)}{pause}"
+
+
+def _numbered_history(transcript: list[dict], long_pause_seconds: int) -> tuple[str, int]:
+    lines = []
+    answered = 0
+    for turn in transcript:
+        if turn.get("speaker") != "user":
+            lines.append(f"Interviewer: {turn.get('text', '')}")
+            continue
+        answered += 1
+        lines.append(f"Candidate [A{answered}]: {turn.get('text', '')}")
+        lines.append(f"  (delivery: {_answer_delivery(turn, long_pause_seconds)})")
+    return "\n".join(lines), answered
+
+
+def _rubric_block(mode: InterviewMode, answered: int) -> str:
+    meanings = (
+        _DEBATE_RUBRIC_MEANINGS if mode is InterviewMode.PANEL_DEBATE else _RUBRIC_MEANINGS
+    )
+    definitions = "\n".join(
+        f"- {name}: {meanings.get(name, _CONFIDENCE_MEANING)}" for name in RUBRIC_DIMENSIONS
+    )
+    return f"""\
+Score every answer, and the round as a whole, on this rubric. Each dimension is a
+whole number from 0 to 10, using the same bands as the rating below (1-3 would not
+get through, 4-5 borderline, 6-7 solid with gaps, 8-9 strong, 10 nothing to fault):
+{definitions}
+
+Score each answer on its own, against the question it was given. "I don't know" or no
+real answer is 0 to 2 for correctness and depth, whatever the other dimensions get.
+The candidate's answers are numbered A1 to A{answered}; give an entry for every one of
+them, except an answer that was only a request to repeat or clarify the question,
+which you leave out.
+
+For each answer, also write a note: ONE short sentence naming the biggest thing that
+cost it points, or what made it strong if nothing did. Address them as "you", and
+never quote the transcript back.
+
+The round-level rubric is your judgement of the whole round on each dimension,
+weighted by level as described above. It should broadly agree with the per-answer
+scores and with the rating."""
+
+
+def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> str:
+    history, answered = _numbered_history(transcript, spec_for(mode).long_pause_seconds)
+    scores = ", ".join(f'"{name}": <0-10>' for name in RUBRIC_DIMENSIONS)
 
     if mode is InterviewMode.PANEL_DEBATE:
         lens = (
@@ -605,13 +690,16 @@ def feedback_prompt(role: str, mode: InterviewMode, transcript: list[dict]) -> s
 
 The transcript below came from speech recognition, so it contains misheard words,
 missing punctuation and false starts. Those are the recogniser's errors, not the
-candidate's — never mark them down for spelling, grammar, accent or fluency, and
-never comment on how they speak.
+candidate's — never mark them down for spelling, grammar or accent, and never
+comment on how they speak. How readily they answered is scored only under
+confidence, below, from the delivery notes.
 
 Transcript:
 ---
 {history}
 ---
+
+{_rubric_block(mode, answered)}
 
 Rate out of 10 against what an interviewer for '{role}' at campus-placement level
 would actually expect — not against a principal engineer, and not against a
@@ -643,7 +731,7 @@ said, and if all of it was strong, mark it that way.
 
 Reply with ONLY a JSON object and nothing else — no markdown fence, no commentary
 before or after. Exactly this shape:
-{{"rating": <whole number 0-10>, "summary": "<2 to 3 sentences on how it went, addressed to them as 'you'>", "improvements": ["<specific, actionable thing to work on>", "..."], "mistakes": ["<what they got wrong, with the correction>", "..."]}}
+{{"rating": <whole number 0-10>, "summary": "<2 to 3 sentences on how it went, addressed to them as 'you'>", "improvements": ["<specific, actionable thing to work on>", "..."], "mistakes": ["<what they got wrong, with the correction>", "..."], "rubric": {{{scores}}}, "answers": [{{"answer": <number from A1 to A{answered}, without the A>, {scores}, "note": "<one sentence>"}}, "..."]}}
 
 Give up to four improvements, and as many mistakes as there genuinely were. Both
 may be empty. If the round was flawless, one forward-looking suggestion or none at

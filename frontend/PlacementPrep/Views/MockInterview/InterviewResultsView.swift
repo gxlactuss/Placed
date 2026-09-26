@@ -16,6 +16,8 @@ struct InterviewResultsView: View {
                     header
                     if let feedback = model.feedback {
                         ring(feedback)
+                        rubric(feedback)
+                        scoreTrend(feedback)
                         summary(feedback)
                         mistakes(feedback)
                         improvements(feedback)
@@ -64,7 +66,7 @@ struct InterviewResultsView: View {
     }
 
     private func ring(_ feedback: InterviewFeedback) -> some View {
-        PPRingProgress(progress: animatedProgress, tint: tint(for: feedback.rating)) {
+        PPRingProgress(progress: animatedProgress, tint: .ppScore(Double(feedback.rating))) {
             VStack(spacing: PPSpacing.xs) {
                 Text("\(feedback.rating)").font(.ppStatFixed(44))
                 Text("out of 10")
@@ -75,11 +77,27 @@ struct InterviewResultsView: View {
         .padding(.vertical, PPSpacing.sm)
     }
 
-    private func tint(for rating: Int) -> Color {
-        switch rating {
-        case 8...: .ppEasy
-        case 5..<8: .ppAccent
-        default: .ppHard
+    @ViewBuilder
+    private func rubric(_ feedback: InterviewFeedback) -> some View {
+        if let rubric = feedback.rubric {
+            VStack(alignment: .leading, spacing: PPSpacing.md) {
+                PPSectionHeader("Where the marks went")
+                PPCard { InterviewRubricBreakdown(rubric: rubric, revealed: revealed) }
+            }
+            .opacity(revealed ? 1 : 0)
+            .animation(PPMotion.settle.delay(0.2), value: revealed)
+        }
+    }
+
+    @ViewBuilder
+    private func scoreTrend(_ feedback: InterviewFeedback) -> some View {
+        if feedback.answers.count > 1 {
+            VStack(alignment: .leading, spacing: PPSpacing.md) {
+                PPSectionHeader("Answer by answer")
+                PPCard { InterviewScoreChart(answers: feedback.answers) }
+            }
+            .opacity(revealed ? 1 : 0)
+            .animation(PPMotion.settle.delay(0.3), value: revealed)
         }
     }
 

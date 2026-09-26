@@ -9,6 +9,7 @@ from app.core.config import settings
 from database.db import get_session
 from database.models.interview import InterviewSession, InterviewStatus
 from app.ai.schemas import (
+    AnswerScore,
     InterviewAiResponse,
     InterviewAnswerSubmit,
     InterviewFeedbackResponse,
@@ -17,6 +18,7 @@ from app.ai.schemas import (
     InterviewSummary,
     ResumeSummaryRequest,
     ResumeSummaryResponse,
+    RubricScores,
     TranscriptionResponse,
 )
 from app.ai.interview_difficulty import START_LEVEL, RoundState, opening_seed, plan_next_turn
@@ -207,6 +209,17 @@ def interview_feedback(
         summary=feedback.summary,
         improvements=feedback.improvements,
         mistakes=feedback.mistakes,
+        rubric=RubricScores(**feedback.rubric) if feedback.rubric else None,
+        answers=[
+            AnswerScore(
+                answer=scored.answer,
+                scores=RubricScores(**scored.scores),
+                score=scored.score,
+                note=scored.note,
+                level=scored.level,
+            )
+            for scored in feedback.answers
+        ],
     )
 
     interview.overall_feedback = response.model_dump_json()

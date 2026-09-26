@@ -18,6 +18,7 @@ from app.ai.interview_difficulty import (
 from app.ai.interview_prompts import (
     END_INTERVIEW_SENTINEL,
     ROUND_COMPLETE_SENTINEL,
+    RUBRIC_DIMENSIONS,
     InterviewMode,
     feedback_prompt,
     follow_up_prompt,
@@ -178,11 +179,21 @@ def summarize_projects(target_role: str, projects_text: str) -> tuple[str, bool]
     return summary, False
 
 
+class AnswerRubric(NamedTuple):
+    answer: int
+    scores: dict[str, int]
+    score: float
+    note: str
+    level: int | None
+
+
 class Feedback(NamedTuple):
     rating: int
     summary: str
     improvements: list[str]
     mistakes: list[str]
+    rubric: dict[str, int] | None
+    answers: list[AnswerRubric]
 
 
 def _extract_json_object(raw: str) -> dict:
@@ -202,28 +213,122 @@ def _clean_list(value, limit: int) -> list[str]:
     return items[:limit]
 
 
+def _clamp_score(value) -> int | None:
+    if isinstance(value, bool):
+        return None
+    try:
+        number = round(float(value))
+    except (TypeError, ValueError, OverflowError):
+        return None
+    return max(0, min(10, number))
+
+
+def _rubric(value) -> dict[str, int] | None:
+    if not isinstance(value, dict):
+        return None
+    if isinstance(value.get("scores"), dict):
+        value = value["scores"]
+    scores: dict[str, int] = {}
+    for name in RUBRIC_DIMENSIONS:
+        score = _clamp_score(value.get(name))
+        if score is None:
+            return None
+        scores[name] = score
+    return scores
+
+
+_ANSWER_NUMBER = re.compile(r"\[?\s*A?\s*(\d+)\s*\]?", re.IGNORECASE)
+
+
+def _answer_number(value) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value) if value.is_integer() else None
+    match = _ANSWER_NUMBER.fullmatch(str(value).strip())
+    return int(match.group(1)) if match else None
+
+
+def _answer_levels(transcript: list[dict]) -> list[int | None]:
+    levels: list[int | None] = []
+    current: int | None = None
+    for turn in transcript:
+        if turn.get("speaker") == "user":
+            levels.append(current)
+        else:
+            level = turn.get("level")
+            current = level if isinstance(level, int) else None
+    return levels
+
+
+def _answer_rubrics(value, levels: list[int | None]) -> list[AnswerRubric]:
+    if not isinstance(value, list):
+        return []
+    found: dict[int, AnswerRubric] = {}
+    for entry in value:
+        if not isinstance(entry, dict):
+            continue
+        number = _answer_number(entry.get("answer"))
+        if number is None or not 1 <= number <= len(levels) or number in found:
+            continue
+        scores = _rubric(entry)
+        if scores is None:
+            continue
+        found[number] = AnswerRubric(
+            answer=number,
+            scores=scores,
+            score=round(sum(scores.values()) / len(scores), 1),
+            note=str(entry.get("note", "")).strip(),
+            level=levels[number - 1],
+        )
+    return [found[number] for number in sorted(found)]
+
+
+def _mean_rubric(answers: list[AnswerRubric]) -> dict[str, int] | None:
+    if not answers:
+        return None
+    return {
+        name: round(sum(a.scores[name] for a in answers) / len(answers))
+        for name in RUBRIC_DIMENSIONS
+    }
+
+
 def generate_feedback(
     target_role: str, mode: InterviewMode, transcript: list[dict]
 ) -> Feedback:
-    raw = _generate(feedback_prompt(target_role, mode, transcript))
-    try:
-        data = _extract_json_object(raw)
-    except (ValueError, json.JSONDecodeError) as exc:
-        logger.warning("Feedback reply was not usable JSON: %s", raw[:300])
+    prompt = feedback_prompt(target_role, mode, transcript)
+    data: dict | None = None
+    for _attempt in range(2):
+        raw = _generate(prompt)
+        try:
+            data = _extract_json_object(raw)
+            break
+        except (ValueError, json.JSONDecodeError):
+            logger.warning("Feedback reply was not usable JSON: %s", raw[:300])
+    if data is None:
         raise HTTPException(
             status_code=502, detail="Couldn't put your results together. Try again in a moment."
-        ) from exc
+        )
 
     try:
         rating = int(float(data.get("rating", 0)))
     except (TypeError, ValueError):
         rating = 0
 
+    levels = _answer_levels(transcript)
+    answers = _answer_rubrics(data.get("answers"), levels)
+    if len(answers) < len(levels):
+        logger.info("Feedback scored %d of %d answers", len(answers), len(levels))
+
     return Feedback(
         rating=max(0, min(10, rating)),
         summary=str(data.get("summary", "")).strip(),
         improvements=_clean_list(data.get("improvements"), limit=5),
         mistakes=_clean_list(data.get("mistakes"), limit=8),
+        rubric=_rubric(data.get("rubric")) or _mean_rubric(answers),
+        answers=answers,
     )
 
 
