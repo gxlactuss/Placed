@@ -54,7 +54,7 @@ struct QuizCategoryView: View {
                     PPCategoryBadge(category: category)
 
                     VStack(alignment: .leading, spacing: PPSpacing.xs) {
-                        Text(category.title)
+                        Text(bank.title(for: category))
                             .font(.ppHeadline)
                             .multilineTextAlignment(.leading)
                         Text(category.blurb)

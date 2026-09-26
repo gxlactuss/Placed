@@ -14,9 +14,17 @@ final class QuizBank {
     }
 
     private(set) var activeRoleGroup: RoleQuizGroup?
+    private(set) var activeRole: CareerRole?
 
     func adopt(role: CareerRole?) {
+        activeRole = role
         activeRoleGroup = role?.quizGroup
+    }
+
+    /// The role category is named after the user's own role, e.g. "Backend Developer".
+    func title(for category: Category) -> String {
+        guard category == .role, let activeRole else { return category.title }
+        return activeRole.title
     }
 
     func quizzes(in category: Category) -> [Quiz] {

@@ -8,6 +8,7 @@ struct CompanyQuestionsView: View {
     @Environment(SolvedStore.self) private var solved
     @Environment(StreakStore.self) private var streak
     @Environment(XPStore.self) private var xp
+    @EnvironmentObject private var auth: AuthViewModel
 
     @State private var problems: [DSAProblem] = []
     @State private var availableTopics: [TopicCount] = []
@@ -16,6 +17,10 @@ struct CompanyQuestionsView: View {
     @State private var difficultyFilter: DifficultyFilter = .all
     @State private var topicFilter: Set<String> = []
     @State private var showTopicSheet = false
+    @State private var profile: CompanyProfile?
+    @State private var coreOnly = false
+    @State private var showInsightSheet = false
+    @State private var isSavingTarget = false
 
     enum DifficultyFilter: Hashable, CaseIterable {
         case all, easy, medium, hard
@@ -59,10 +64,43 @@ struct CompanyQuestionsView: View {
             let loaded = await bank.problems(for: company)
             problems = loaded
             availableTopics = Self.topics(in: loaded)
+            profile = await bank.profile(for: company)
             isLoading = false
         }
         .sheet(isPresented: $showTopicSheet) {
             TopicFilterSheet(topics: availableTopics, selection: $topicFilter)
+        }
+        .sheet(isPresented: $showInsightSheet) {
+            if let profile {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: PPSpacing.md) {
+                        Text("What \(company.name) asks").font(.ppTitle)
+                        CompanyInsightCard(profile: profile, maxFamilies: 8)
+                    }
+                    .padding(PPSpacing.xl)
+                }
+                .foregroundStyle(Color.ppText)
+                .ppScreenBackground()
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { showInsightSheet = true } label: {
+                    Image(systemName: "chart.bar.fill").foregroundStyle(Color.ppMuted)
+                }
+                .disabled(profile?.families.isEmpty ?? true)
+                .accessibilityLabel("What \(company.name) asks")
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: toggleTarget) {
+                    Image(systemName: isTarget ? "star.fill" : "star")
+                        .foregroundStyle(isTarget ? Color.ppAccent400 : Color.ppMuted)
+                }
+                .disabled(isSavingTarget)
+                .accessibilityLabel(isTarget ? "Remove as target company" : "Set as target company")
+            }
         }
     }
 
@@ -153,10 +191,76 @@ struct CompanyQuestionsView: View {
         }
     }
 
+    private var readiness: CompanyReadiness? {
+        profile.map { CompanyReadiness.compute(profile: $0, isSolved: solved.isSolved) }
+    }
+
+    private var isTarget: Bool { bank.company(named: auth.currentUser?.targetCompany) == company }
+
+    private func toggleTarget() {
+        isSavingTarget = true
+        Task {
+            await auth.updateTargetCompany(isTarget ? nil : company.name)
+            isSavingTarget = false
+            PPHaptics.light()
+        }
+    }
+
+    private func practiseWeakTopics(_ families: [TopicFamily]) {
+        let tags = families.reduce(into: Set<String>()) { $0.formUnion($1.filterTags) }
+        withAnimation(PPMotion.snappy) {
+            topicFilter = Set(availableTopics.map(\.name)).intersection(tags)
+            difficultyFilter = .all
+        }
+    }
+
+    @ViewBuilder
+    private var readinessSummary: some View {
+        if let readiness, let profile {
+            let tint = Color.ppScore(readiness.score * 10, middle: .ppAccent400)
+            VStack(alignment: .leading, spacing: PPSpacing.sm) {
+                HStack(alignment: .firstTextBaseline, spacing: PPSpacing.sm) {
+                    Text("\(readiness.percent)% ready")
+                        .font(.ppBodyMedium)
+                        .foregroundStyle(tint)
+                        .contentTransition(.numericText())
+                    Text("\(readiness.solvedCount)/\(readiness.coreCount) most-asked")
+                        .font(.ppCaption)
+                        .foregroundStyle(Color.ppMuted)
+                    Spacer(minLength: PPSpacing.sm)
+                    if problems.count > profile.core.count {
+                        PPFilterChip(title: "Top \(profile.core.count) only", isSelected: coreOnly) {
+                            withAnimation(PPMotion.snappy) { coreOnly.toggle() }
+                        }
+                        .fixedSize()
+                    }
+                }
+
+                PPProgressBar(progress: readiness.score, height: 6, tint: tint)
+
+                if let weakLine = readiness.weakLine {
+                    HStack(spacing: PPSpacing.sm) {
+                        Text(weakLine)
+                            .font(.ppCaption)
+                            .foregroundStyle(Color.ppMedium)
+                        Spacer(minLength: PPSpacing.sm)
+                        Button("Practise these") { practiseWeakTopics(readiness.weakFamilies) }
+                            .buttonStyle(.plain)
+                            .font(.ppCaption)
+                            .foregroundStyle(Color.ppAccent400)
+                    }
+                }
+            }
+            .animation(PPMotion.settle, value: readiness.percent)
+        }
+    }
+
     private var progressSummary: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
+            readinessSummary
+
             HStack {
-                Text("\(solvedTotal) / \(problems.count) solved")
+                Text("\(solvedTotal) / \(problems.count) solved overall")
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
 
@@ -170,10 +274,6 @@ struct CompanyQuestionsView: View {
                     }
                 }
             }
-
-            PPProgressBar(
-                progress: problems.isEmpty ? 0 : Double(solvedTotal) / Double(problems.count)
-            )
         }
     }
 
@@ -242,7 +342,7 @@ struct CompanyQuestionsView: View {
     }
 
     private var visible: [DSAProblem] {
-        var result = problems
+        var result = coreOnly ? (profile?.core ?? problems) : problems
 
         if let level = difficultyFilter.difficulty {
             result = result.filter { $0.difficulty == level }
@@ -519,4 +619,5 @@ private struct ProblemScrollbar: View {
     .environment(SolvedStore.preview(solved: ["two-sum"]))
     .environment(StreakStore.preview())
     .environment(XPStore.preview())
+    .environmentObject(AuthViewModel())
 }

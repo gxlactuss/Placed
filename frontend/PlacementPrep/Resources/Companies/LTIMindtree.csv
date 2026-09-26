@@ -1,8 +1,30 @@
 Difficulty,Title,Frequency,Acceptance Rate,Link,Topics
-EASY,Reverse String,85.0,0.79,https://leetcode.com/problems/reverse-string,"Two Pointers, String"
-MEDIUM,Reverse Words in a String,78.0,0.36,https://leetcode.com/problems/reverse-words-in-a-string,"Two Pointers, String"
-MEDIUM,Reverse Integer,72.0,0.29,https://leetcode.com/problems/reverse-integer,"Math"
-EASY,Valid Anagram,68.0,0.65,https://leetcode.com/problems/valid-anagram,"Hash Table, String, Sorting"
-EASY,Palindrome Number,64.0,0.58,https://leetcode.com/problems/palindrome-number,"Math"
-MEDIUM,Second Highest Salary,60.0,0.40,https://leetcode.com/problems/second-highest-salary,"Database"
-MEDIUM,Nth Highest Salary,54.0,0.38,https://leetcode.com/problems/nth-highest-salary,"Database"
+EASY,Count Integers With Even Digit Sum,100.0,0.7103,https://leetcode.com/problems/count-integers-with-even-digit-sum,"Math, Simulation"
+EASY,Move Zeroes,100.0,0.6442,https://leetcode.com/problems/move-zeroes,"Array, Two Pointers"
+EASY,Valid Palindrome,92.0,0.5437,https://leetcode.com/problems/valid-palindrome,"Two Pointers, String"
+MEDIUM,Maximum White Tiles Covered by a Carpet,92.0,0.3654,https://leetcode.com/problems/maximum-white-tiles-covered-by-a-carpet,"Array, Binary Search, Greedy, Sliding Window, Sorting, Prefix Sum"
+EASY,Reverse String,85.0,0.8137,https://leetcode.com/problems/reverse-string,"Two Pointers, String"
+EASY,Fibonacci Number,80.7,0.7468,https://leetcode.com/problems/fibonacci-number,"Math, Dynamic Programming, Recursion, Memoization"
+HARD,Closest Subsequence Sum,80.7,0.4516,https://leetcode.com/problems/closest-subsequence-sum,"Array, Two Pointers, Dynamic Programming, Bit Manipulation, Meet in the Middle, Sorting, Bitmask"
+MEDIUM,Count Zero Request Servers,80.7,0.3666,https://leetcode.com/problems/count-zero-request-servers,"Array, Hash Table, Sliding Window, Sorting"
+EASY,Average Time of Process per Machine,79.0,0.6704,https://leetcode.com/problems/average-time-of-process-per-machine,Database
+MEDIUM,Reverse Words in a String,78.0,0.5795,https://leetcode.com/problems/reverse-words-in-a-string,"Two Pointers, String"
+MEDIUM,Reverse Integer,72.0,0.3257,https://leetcode.com/problems/reverse-integer,Math
+EASY,Two Sum,70.3,0.5793,https://leetcode.com/problems/two-sum,"Array, Hash Table"
+EASY,Valid Anagram,68.0,0.6869,https://leetcode.com/problems/valid-anagram,"Hash Table, String, Sorting"
+EASY,Palindrome Number,64.0,0.6099,https://leetcode.com/problems/palindrome-number,Math
+MEDIUM,Subarray Sum Equals K,62.5,0.4823,https://leetcode.com/problems/subarray-sum-equals-k,"Array, Hash Table, Prefix Sum"
+MEDIUM,Second Highest Salary,60.0,0.4850,https://leetcode.com/problems/second-highest-salary,Database
+MEDIUM,Nth Highest Salary,54.0,0.4029,https://leetcode.com/problems/nth-highest-salary,Database
+EASY,Number of Segments in a String,0.0,0.3783,https://leetcode.com/problems/number-of-segments-in-a-string,String
+EASY,Sort Integers by The Number of 1 Bits,0.0,0.8245,https://leetcode.com/problems/sort-integers-by-the-number-of-1-bits,"Array, Bit Manipulation, Sorting, Counting"
+MEDIUM,Min Stack,0.0,0.5870,https://leetcode.com/problems/min-stack,"Stack, Design"
+EASY,Pascal's Triangle,0.0,0.7941,https://leetcode.com/problems/pascals-triangle,"Array, Dynamic Programming"
+EASY,Excel Sheet Column Title,0.0,0.4770,https://leetcode.com/problems/excel-sheet-column-title,"Math, String"
+MEDIUM,Unique Binary Search Trees II,0.0,0.6342,https://leetcode.com/problems/unique-binary-search-trees-ii,"Dynamic Programming, Backtracking, Tree, Binary Search Tree, Binary Tree"
+MEDIUM,Reverse Linked List II,0.0,0.5247,https://leetcode.com/problems/reverse-linked-list-ii,Linked List
+MEDIUM,Search in Rotated Sorted Array,0.0,0.4569,https://leetcode.com/problems/search-in-rotated-sorted-array,"Array, Binary Search"
+HARD,Candy,0.0,0.4930,https://leetcode.com/problems/candy,"Array, Greedy"
+MEDIUM,Longest Increasing Subsequence,0.0,0.6001,https://leetcode.com/problems/longest-increasing-subsequence,"Array, Binary Search, Dynamic Programming, Longest Increasing Subsequence"
+HARD,Median of Two Sorted Arrays,0.0,0.4768,https://leetcode.com/problems/median-of-two-sorted-arrays,"Array, Binary Search, Divide and Conquer"
+MEDIUM,Coin Change II,0.0,0.5914,https://leetcode.com/problems/coin-change-ii,"Array, Dynamic Programming, Knapsack Problem, Complete Knapsack"

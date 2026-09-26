@@ -68,6 +68,7 @@ enum XPAward {
     case quizPassed(quizID: String)
     case interviewCleared(sessionID: Int)
     case problemSolved(slug: String, difficulty: DSADifficulty)
+    case readinessMilestone(company: String, percent: Int)
 
     static let quizThreshold = 70
 
@@ -83,6 +84,7 @@ enum XPAward {
         case .streakDay: 10
         case .quizPassed: 10
         case .interviewCleared: 25
+        case .readinessMilestone: 20
         case .problemSolved(_, let difficulty):
             switch difficulty {
             case .easy: 5
@@ -98,6 +100,7 @@ enum XPAward {
         case .quizPassed(let quizID): "quiz:\(quizID)"
         case .interviewCleared(let sessionID): "interview:\(sessionID)"
         case .problemSolved(let slug, _): "dsa:\(slug)"
+        case .readinessMilestone(let company, let percent): "readiness:\(company.lowercased()):\(percent)"
         }
     }
 
@@ -107,6 +110,7 @@ enum XPAward {
         case .quizPassed: "Quiz cleared"
         case .interviewCleared: "Mock round cleared"
         case .problemSolved(_, let difficulty): "\(difficulty.title) problem solved"
+        case .readinessMilestone(let company, let percent): "\(company) \(percent)% ready"
         }
     }
 }

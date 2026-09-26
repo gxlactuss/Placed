@@ -153,11 +153,18 @@ Quiz and company content ships in the app bundle. Regenerate it with the scripts
 ```bash
 python3 Scripts/validate-quizzes.py      # run after editing any quiz JSON
 python3 Scripts/shuffle-quiz-answers.py  # re-deal a quiz's answer key if validation flags a pattern
-./Scripts/fetch-company-csvs.sh          # refresh Resources/Companies/*.csv
+python3 Scripts/build-company-csvs.py    # refresh Resources/Companies/*.csv from every public source
+./Scripts/fetch-company-csvs.sh          # seed a brand-new company from the raw upstream snapshot
 python3 Scripts/fetch-company-logos.py   # refresh Resources/Logos/*.png
 ```
 
 `Scripts/companies-not-bundled.txt` lists the companies that are deliberately left out of the bundle.
+
+`build-company-csvs.py` merges LeetCode company tags from five public repos, GeeksforGeeks company
+tags (mapped through the hand-checked `Scripts/gfg-leetcode-equivalents.json`) and, for companies
+with under 100 problems, LeetCode Discuss interview posts. It re-tags every row from LeetCode's live
+catalog and never drops a bundled row. Problems with no current LeetCode frequency get `0`, so they
+show without a "Freq" badge after the tagged ones. Pass `--dry-run` to see the counts first.
 
 ## Deploying the backend
 

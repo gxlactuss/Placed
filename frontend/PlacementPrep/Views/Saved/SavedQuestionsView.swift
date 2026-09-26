@@ -59,7 +59,7 @@ struct SavedQuestionsView: View {
         PPCard {
             VStack(alignment: .leading, spacing: PPSpacing.md) {
                 HStack(spacing: PPSpacing.sm) {
-                    PPBadge(item.quiz.category.title, tone: .neutral)
+                    PPBadge(bank.title(for: item.quiz.category), tone: .neutral)
                     PPBadge(item.quiz.difficulty.title, tone: .tinted(item.quiz.difficulty.accent))
 
                     Spacer(minLength: PPSpacing.sm)

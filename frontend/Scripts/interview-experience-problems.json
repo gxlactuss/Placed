@@ -1,0 +1,44 @@
+{
+  "_comment": "Problems read out of LeetCode Discuss interview posts that describe a question without naming or linking it. Keyed by company, then by post id (https://leetcode.com/discuss/post/<id>/), each mapped to the LeetCode problem it is, or is a direct variant of. Machine-coding, LLD and HLD rounds are left out.",
+  "Nykaa": {
+    "7406725": ["max-area-of-island", "set-matrix-zeroes", "longest-valid-parentheses", "greatest-sum-divisible-by-three"],
+    "5002073": ["longest-repeating-character-replacement", "set-matrix-zeroes"],
+    "3601213": ["search-in-rotated-sorted-array", "next-greater-element-i", "find-all-duplicates-in-an-array"],
+    "4556426": ["candy", "keys-and-rooms"],
+    "5071062": ["magnetic-force-between-two-balls", "detonate-the-maximum-bombs"],
+    "1399987": ["insert-delete-getrandom-o1", "find-first-and-last-position-of-element-in-sorted-array"],
+    "4664443": ["merge-k-sorted-lists", "contiguous-array"],
+    "1470760": ["min-stack"]
+  },
+  "Groww": {
+    "1645191": ["remove-duplicates-from-sorted-list-ii", "decode-ways", "longest-substring-with-at-most-k-distinct-characters"],
+    "2957117": ["merge-intervals", "find-median-from-data-stream"],
+    "8413592": ["minimum-knight-moves"],
+    "1699609": ["next-permutation", "validate-binary-search-tree"],
+    "1629590": ["search-a-2d-matrix-ii", "recover-binary-search-tree"],
+    "2029867": ["permutation-in-string", "koko-eating-bananas"]
+  },
+  "IDFC First Bank": {
+    "8398766": ["rotting-oranges"],
+    "8537336": ["merge-intervals"],
+    "8443285": ["kth-smallest-element-in-a-bst"],
+    "6981837": ["find-first-and-last-position-of-element-in-sorted-array"],
+    "8450855": ["house-robber-ii"],
+    "6551503": ["special-binary-string"],
+    "7042380": ["consecutive-numbers-sum"]
+  },
+  "LTIMindtree": {
+    "6192767": ["reverse-integer"],
+    "1571662": ["number-of-segments-in-a-string", "sort-integers-by-the-number-of-1-bits", "min-stack", "fibonacci-number"]
+  },
+  "Razorpay": {
+    "2813215": ["flatten-nested-list-iterator"],
+    "6520935": ["search-in-rotated-sorted-array"],
+    "5189992": ["linked-list-cycle", "intersection-of-two-linked-lists", "find-the-duplicate-number", "maximum-subarray"],
+    "1606475": ["find-peak-element", "maximal-square", "maximal-rectangle"],
+    "1219395": ["largest-rectangle-in-histogram", "merge-sorted-array"],
+    "1295242": ["two-best-non-overlapping-events"],
+    "1408685": ["two-best-non-overlapping-events"],
+    "6889780": ["lfu-cache", "partition-labels"]
+  }
+}

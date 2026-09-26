@@ -7,6 +7,8 @@ struct PPLiquidWave: View {
         case idle
         case listening
         case thinking
+        /// A slow, steady swell for decorative use outside a round.
+        case ambient
     }
 
     var level: Double = 0
@@ -56,6 +58,7 @@ struct PPLiquidWave: View {
     private var targetLevel: Double {
         switch mode {
         case .idle: 0.05
+        case .ambient: 0.3
         case .thinking: 0.24
         case .listening: min(max(level, 0), 1)
         }
@@ -64,6 +67,7 @@ struct PPLiquidWave: View {
     private var targetSpeed: Double {
         switch mode {
         case .idle: 0.12
+        case .ambient: 0.2
         case .thinking: 0.34
         case .listening: 0.95
         }
@@ -72,13 +76,13 @@ struct PPLiquidWave: View {
     private var tint: Color {
         switch mode {
         case .thinking: .ppMuted
-        case .listening, .idle: .ppAccent
+        case .listening, .idle, .ambient: .ppAccent
         }
     }
 
     private var fallbackMode: PPVoiceWave.Mode {
         switch mode {
-        case .idle: .idle
+        case .idle, .ambient: .idle
         case .listening: .listening
         case .thinking: .thinking
         }

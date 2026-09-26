@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Overwrites every bundled list with the raw liquidslr snapshot, losing the merged sources and the
+# curated KJSIT lists. To refresh the bundled companies, run Scripts/build-company-csvs.py instead;
+# this is only for seeding a brand-new company, after which build-company-csvs.py fills it in.
+
 REPO="https://github.com/liquidslr/leetcode-company-wise-problems.git"
 DEST="$(cd "$(dirname "$0")/.." && pwd)/PlacementPrep/Resources/Companies"
 TMP="$(mktemp -d)"

@@ -5,6 +5,7 @@ struct QuizView: View {
     let quiz: Quiz
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(QuizBank.self) private var bank
     @Environment(QuizProgressStore.self) private var progress
     @Environment(SavedQuestionsStore.self) private var saved
     @Environment(StreakStore.self) private var streak
@@ -100,7 +101,7 @@ struct QuizView: View {
         HStack(spacing: PPSpacing.md) {
             PPIconButton(systemName: "xmark", diameter: 36) { dismiss() }
 
-            PPBadge(quiz.category.title, tone: .neutral)
+            PPBadge(bank.title(for: quiz.category), tone: .neutral)
             PPBadge(quiz.difficulty.title, tone: .tinted(quiz.difficulty.accent))
                 .layoutPriority(1)
 
@@ -252,6 +253,7 @@ struct QuizView: View {
 #Preview {
     if let quiz = QuizBank().quizzes(in: .aptitude).first {
         QuizView(quiz: quiz)
+            .environment(QuizBank())
             .environment(QuizProgressStore.preview())
             .environment(SavedQuestionsStore.preview())
             .environment(StreakStore.preview())

@@ -5,6 +5,7 @@ struct MockInterviewView: View {
     @EnvironmentObject private var auth: AuthViewModel
     @Environment(InterviewSetupStore.self) private var setupStore
     @Environment(CompanyBank.self) private var companyBank
+    @Environment(SolvedStore.self) private var solved
     @Environment(StreakStore.self) private var streak
     @Environment(XPStore.self) private var xp
     @State private var model = InterviewSessionModel()
@@ -12,6 +13,7 @@ struct MockInterviewView: View {
     @State private var mode: InterviewMode?
     @State private var showResults = false
     @State private var showHistory = false
+    @State private var targetProfile: CompanyProfile?
 
     private var resolvedRole: String {
         let role = auth.currentUser?.targetRole?.trimmingCharacters(in: .whitespaces) ?? ""
@@ -50,7 +52,7 @@ struct MockInterviewView: View {
             await model.startIfNeeded(
                 targetRole: resolvedRole,
                 mode: mode,
-                context: context(for: mode)
+                context: await context(for: mode)
             )
         }
         .onChange(of: model.isFinished) { _, finished in
@@ -72,6 +74,7 @@ struct MockInterviewView: View {
         .sheet(isPresented: $showResults) {
             InterviewResultsView(
                 model: model,
+                companyNudge: model.mode == .dsaApproach ? companyNudge : nil,
                 onAnotherRound: {
                     showResults = false
                     leaveRound()
@@ -81,7 +84,7 @@ struct MockInterviewView: View {
         }
     }
 
-    private func context(for mode: InterviewMode) -> InterviewContextPayload {
+    private func context(for mode: InterviewMode) async -> InterviewContextPayload {
         var payload = InterviewContextPayload()
         switch mode {
         case .projects:
@@ -89,7 +92,7 @@ struct MockInterviewView: View {
         case .techStack:
             payload.skills = setupStore.setup?.skills
         case .dsaApproach:
-            payload.dsaProblems = problemPool()
+            payload.dsaProblems = await targetPool() ?? problemPool()
         case .hr, .coreCs, .panelDebate:
             break
         }
@@ -108,6 +111,62 @@ struct MockInterviewView: View {
                 .map(Self.speakableTitle)
         }
         return DSAProblemPool(easy: sample(.easy), medium: sample(.medium), hard: sample(.hard))
+    }
+
+    private var targetCompany: DSACompany? {
+        companyBank.company(named: auth.currentUser?.targetCompany)
+    }
+
+    /// Problems from the target company, most-asked and weak-topic unsolved ones first, topped
+    /// up from the whole catalog when a difficulty runs short.
+    private func targetPool() async -> DSAProblemPool? {
+        guard let company = targetCompany else { return nil }
+        let problems = await companyBank.problems(for: company)
+        let profile = await companyBank.profile(for: company)
+        targetProfile = profile
+        let weak = Set(CompanyReadiness.compute(profile: profile, isSolved: solved.isSolved).weakFamilies)
+
+        func rank(_ problem: DSAProblem) -> Int {
+            let unsolved = !solved.isSolved(problem.id)
+            let inWeak = !TopicFamily.families(for: problem.topics).isDisjoint(with: weak)
+            return (unsolved ? 0 : 2) + (unsolved && inWeak ? 0 : 1)
+        }
+
+        let fallback = problemPool()
+        func sample(_ difficulty: DSADifficulty, filler: [String]) -> [String] {
+            let picked = problems
+                .filter { $0.difficulty == difficulty }
+                .enumerated()
+                .sorted { rank($0.element) != rank($1.element)
+                    ? rank($0.element) < rank($1.element)
+                    : $0.offset < $1.offset }
+                .prefix(Self.problemsPerDifficulty * 2)
+                .map(\.element.title)
+                .shuffled()
+                .prefix(Self.problemsPerDifficulty)
+            let topUp = filler.filter { !picked.contains($0) }
+            return Array(picked) + topUp.prefix(Self.problemsPerDifficulty - picked.count)
+        }
+
+        return DSAProblemPool(
+            easy: sample(.easy, filler: fallback?.easy ?? []),
+            medium: sample(.medium, filler: fallback?.medium ?? []),
+            hard: sample(.hard, filler: fallback?.hard ?? [])
+        )
+    }
+
+    private var companyNudge: CompanyNudge? {
+        guard let profile = targetProfile, let name = profile.companyName else { return nil }
+        let readiness = CompanyReadiness.compute(profile: profile, isSolved: solved.isSolved)
+        guard let focus = profile.signature.first(where: { readiness.weakFamilies.contains($0.family) })
+            ?? profile.signature.first
+        else { return nil }
+        return CompanyNudge(
+            company: name,
+            topic: focus,
+            coverage: readiness.coverage[focus.family, default: 0],
+            readiness: readiness.percent
+        )
     }
 
     private static func speakableTitle(_ slug: String) -> String {
@@ -325,6 +384,7 @@ struct MockInterviewView: View {
 #Preview {
     MockInterviewView()
         .environment(FocusModeStore.preview())
+        .environment(ResumeReviewStore.preview())
         .environment(StreakStore.preview())
         .environment(XPStore.preview())
         .environment(InterviewSetupStore.preview(

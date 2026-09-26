@@ -64,11 +64,14 @@ struct InterviewModePicker: View {
     let onOpenHistory: () -> Void
 
     @Environment(FocusModeStore.self) private var focus
+    @Environment(ResumeReviewStore.self) private var resumeReviews
+    @State private var showResumeReview = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: PPSpacing.lg) {
                 heading
+                resumeRow
                 if !focus.isOn { focusPrompt }
                 ForEach(InterviewMode.allCases) { mode in
                     row(for: mode)
@@ -80,6 +83,45 @@ struct InterviewModePicker: View {
         .scrollIndicators(.hidden)
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
+        .sheet(isPresented: $showResumeReview) { ResumeReviewView() }
+    }
+
+    private var resumeRow: some View {
+        Button {
+            showResumeReview = true
+        } label: {
+            PPCard(padding: PPSpacing.md) {
+                HStack(spacing: PPSpacing.md) {
+                    PPIconTile(systemName: "doc.text.magnifyingglass", size: 36, tint: .ppAccent400)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Your resume").font(.ppBodyMedium)
+                        Text(resumeReviews.latest == nil
+                             ? "Not reviewed yet. Get a score and fixes."
+                             : "The interviewer asks about what's on it.")
+                            .font(.ppMicro)
+                            .foregroundStyle(Color.ppMuted)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Spacer(minLength: PPSpacing.sm)
+                    if let overall = resumeReviews.latest?.review.overall {
+                        HStack(alignment: .firstTextBaseline, spacing: 2) {
+                            Text("\(overall)")
+                                .font(.ppHeadline)
+                                .foregroundStyle(Color.ppScore(Double(overall) / 10, middle: .ppAccent400))
+                            Text("/100")
+                                .font(.ppMicro)
+                                .foregroundStyle(Color.ppMuted)
+                        }
+                        .monospacedDigit()
+                    } else {
+                        Text("Review")
+                            .font(.ppCaption)
+                            .foregroundStyle(Color.ppAccent400)
+                    }
+                }
+            }
+        }
+        .buttonStyle(.ppPressable)
     }
 
     private var heading: some View {
@@ -162,6 +204,7 @@ struct InterviewModePicker: View {
         onOpenHistory: {}
     )
     .environment(FocusModeStore.preview())
+    .environment(ResumeReviewStore.preview())
 }
 
 #Preview("Resume skipped") {
@@ -173,4 +216,5 @@ struct InterviewModePicker: View {
         onOpenHistory: {}
     )
     .environment(FocusModeStore.preview(on: true))
+    .environment(ResumeReviewStore.preview())
 }

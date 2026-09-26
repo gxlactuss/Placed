@@ -22,7 +22,7 @@ struct QuizTrackListView: View {
             .ppContentColumn()
         }
         .scrollIndicators(.hidden)
-        .navigationTitle(category.title)
+        .navigationTitle(bank.title(for: category))
         .navigationBarTitleDisplayMode(.inline)
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()

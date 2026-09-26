@@ -4,11 +4,14 @@ struct CompanyListView: View {
 
     @Environment(CompanyBank.self) private var bank
     @Environment(SolvedStore.self) private var solved
+    @EnvironmentObject private var auth: AuthViewModel
+    @Binding var path: [DSACompany]
     @State private var query = ""
+    @State private var targetProfile: CompanyProfile?
     var columns = PPAdaptiveColumns()
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack(spacing: 0) {
                 header
 
@@ -24,6 +27,10 @@ struct CompanyListView: View {
             .foregroundStyle(Color.ppText)
             .ppScreenBackground()
             .task { await bank.loadCatalogIfNeeded() }
+            .task(id: target?.id) {
+                guard let target else { return targetProfile = nil }
+                targetProfile = await bank.profile(for: target)
+            }
         }
     }
 
@@ -96,6 +103,10 @@ struct CompanyListView: View {
 
                                 Spacer(minLength: PPSpacing.sm)
 
+                                if company == target {
+                                    PPBadge(targetLabel, tone: .accent)
+                                }
+
                                 Image(systemName: "chevron.right")
                                     .font(.ppMicro)
                                     .foregroundStyle(Color.ppMuted)
@@ -125,9 +136,20 @@ struct CompanyListView: View {
         return (bank.catalog.count, solvedTotal, solvedByLevel)
     }
 
+    private var target: DSACompany? { bank.company(named: auth.currentUser?.targetCompany) }
+
+    private var targetLabel: String {
+        guard let targetProfile else { return "Target" }
+        let readiness = CompanyReadiness.compute(profile: targetProfile, isSolved: solved.isSolved)
+        return "Target · \(readiness.percent)%"
+    }
+
     private var filtered: [DSACompany] {
         let trimmed = query.trimmingCharacters(in: .whitespaces)
-        guard !trimmed.isEmpty else { return bank.companies }
+        guard !trimmed.isEmpty else {
+            guard let target else { return bank.companies }
+            return [target] + bank.companies.filter { $0 != target }
+        }
         return bank.companies.filter { $0.name.localizedCaseInsensitiveContains(trimmed) }
     }
 
@@ -168,7 +190,8 @@ struct CompanyListView: View {
 }
 
 #Preview {
-    CompanyListView()
+    CompanyListView(path: .constant([]))
         .environment(CompanyBank())
         .environment(SolvedStore.preview())
+        .environmentObject(AuthViewModel())
 }

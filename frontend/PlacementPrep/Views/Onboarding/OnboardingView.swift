@@ -4,21 +4,28 @@ struct OnboardingView: View {
 
     @EnvironmentObject private var auth: AuthViewModel
     @Environment(InterviewSetupStore.self) private var setupStore
+    @Environment(ResumeReviewStore.self) private var reviewStore
+    @Environment(CompanyBank.self) private var companyBank
     @Bindable private var theme = ThemeStore.shared
 
     @State private var step: Step = .name
     @State private var isMovingForward = true
     @State private var name = ""
     @State private var role: CareerRole?
+    @State private var company: CompanyPicker.Choice?
+    @State private var otherCompany = ""
     @State private var resume = ResumeImporter()
+    @State private var reviewer = ResumeReviewer()
+    @State private var reviewTask: Task<Void, Never>?
 
     private enum Step: Int, CaseIterable {
-        case name, role, resume, theme
+        case name, role, company, resume, theme
 
         var title: String {
             switch self {
             case .name: "Let's set you up."
             case .role: "What are you preparing for?"
+            case .company: "Where are you aiming?"
             case .resume: "Got a resume handy?"
             case .theme: "Make it yours."
             }
@@ -26,8 +33,9 @@ struct OnboardingView: View {
 
         var subtitle: String {
             switch self {
-            case .name: "Four quick steps so Placement Prep can tailor your practice."
+            case .name: "Five quick steps so Placement Prep can tailor your practice."
             case .role: "Your mock interviews and one extra quiz are built around this. You can change it later."
+            case .company: "Pick the company you want most. We'll show what they ask and track how ready you are."
             case .resume: "The interviewer will ask about your own projects and the stack you've listed. Optional: you can add it later from the Interview tab."
             case .theme: "Pick a starter theme. You can switch any time from Home."
             }
@@ -57,11 +65,21 @@ struct OnboardingView: View {
         }
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
+        .onChange(of: resume.phase) { _, phase in startReview(after: phase) }
         .onAppear {
             if name.isEmpty { name = auth.currentUser?.fullName ?? "" }
             if role == nil { role = CareerRole(title: auth.currentUser?.targetRole) }
+            if company == nil, let saved = auth.currentUser?.targetCompany {
+                if let match = companyBank.company(named: saved) {
+                    company = .company(match)
+                } else {
+                    company = .other
+                    otherCompany = saved
+                }
+            }
             if let id = auth.currentUser?.id {
                 setupStore.adopt(userId: id)
+                reviewStore.adopt(userId: id)
                 if !resume.hasResume, let saved = setupStore.setup {
                     resume = ResumeImporter(restoring: saved)
                 }
@@ -115,6 +133,7 @@ struct OnboardingView: View {
         switch step {
         case .name: nameStep
         case .role: RolePicker(selection: $role)
+        case .company: CompanyPicker(choice: $company, otherName: $otherCompany)
         case .resume: resumeStep
         case .theme: themeStep
         }
@@ -163,6 +182,7 @@ struct OnboardingView: View {
     private var resumeStep: some View {
         VStack(alignment: .leading, spacing: PPSpacing.lg) {
             ResumeAttachCard(importer: resume, targetRole: role?.title ?? "")
+            reviewTeaser
 
             VStack(alignment: .leading, spacing: PPSpacing.md) {
                 Text("What it unlocks").ppSectionLabelStyle()
@@ -170,6 +190,83 @@ struct OnboardingView: View {
                 unlockRow(.techStack)
             }
         }
+    }
+
+    /// The first upload is also scored in the background, so Home opens with a resume score.
+    private func startReview(after phase: ResumeImporter.Phase) {
+        switch phase {
+        case .done, .noProjects:
+            guard let document = resume.document else { return }
+            reviewTask?.cancel()
+            reviewTask = Task {
+                await reviewer.review(
+                    document: document,
+                    fileName: resume.fileName ?? "Resume",
+                    targetRole: role?.title ?? SampleData.targetRole,
+                    store: reviewStore
+                )
+            }
+        case .idle, .reading:
+            reviewTask?.cancel()
+            reviewer.reset()
+        case .summarising, .failed:
+            break
+        }
+    }
+
+    @ViewBuilder
+    private var reviewTeaser: some View {
+        switch reviewer.phase {
+        case .idle:
+            EmptyView()
+        case .reading, .reviewing:
+            teaserCard {
+                ProgressView().tint(Color.ppAccent400)
+                Text("Scoring your resume for \(role?.title ?? "your role")…")
+                    .font(.ppCaption)
+                    .foregroundStyle(Color.ppMuted)
+            }
+        case .done(let saved):
+            teaserCard {
+                Text("\(saved.review.overall)")
+                    .font(.ppStat())
+                    .foregroundStyle(Color.ppScore(Double(saved.review.overall) / 10, middle: .ppAccent400))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Resume score out of 100").font(.ppBodyMedium)
+                    Text(teaserDetail(saved.review))
+                        .font(.ppCaption)
+                        .foregroundStyle(Color.ppMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        case .failed:
+            teaserCard {
+                Image(systemName: "clock")
+                    .foregroundStyle(Color.ppMuted)
+                Text("We'll score your resume later. You can run it from Home.")
+                    .font(.ppCaption)
+                    .foregroundStyle(Color.ppMuted)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private func teaserDetail(_ review: ResumeReview) -> String {
+        let fixes = review.improvements.filter { $0.priority != .low }.count
+        return fixes == 0
+            ? "Nothing urgent. The full review is waiting on Home."
+            : "\(fixes) fixes ready. You'll find them on Home."
+    }
+
+    private func teaserCard<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        PPCard(tone: .elevated, padding: PPSpacing.md) {
+            HStack(spacing: PPSpacing.md) {
+                content()
+                Spacer(minLength: 0)
+            }
+        }
+        .transition(.opacity.combined(with: .move(edge: .top)))
+        .animation(PPMotion.snappy, value: reviewer.phase)
     }
 
     private func unlockRow(_ mode: InterviewMode) -> some View {
@@ -263,6 +360,7 @@ struct OnboardingView: View {
         switch step {
         case .name: !trimmedName.isEmpty
         case .role: role != nil
+        case .company: company != nil
         case .resume: !resume.phase.isBusy
         case .theme: !trimmedName.isEmpty && role != nil
         }
@@ -286,12 +384,31 @@ struct OnboardingView: View {
     private func submit() {
         guard let role else { return }
         setupStore.save(resume.setup)
-        Task { await auth.completeOnboarding(fullName: trimmedName, targetRole: role.title) }
+        Task {
+            await auth.completeOnboarding(
+                fullName: trimmedName,
+                targetRole: role.title,
+                targetCompany: targetCompany
+            )
+        }
+    }
+
+    /// The bundled company's name, whatever was typed under "Other", or nil for "not sure".
+    private var targetCompany: String? {
+        switch company {
+        case .company(let picked): return picked.name
+        case .other:
+            let typed = otherCompany.trimmingCharacters(in: .whitespacesAndNewlines)
+            return typed.isEmpty ? nil : typed
+        case nil: return nil
+        }
     }
 }
 
 #Preview {
     OnboardingView()
         .environment(InterviewSetupStore.preview())
+        .environment(ResumeReviewStore.preview())
+        .environment(CompanyBank())
         .environmentObject(AuthViewModel())
 }

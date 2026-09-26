@@ -3,53 +3,71 @@ import SwiftUI
 struct HomeView: View {
 
     @Binding var selectedTab: AppTab
+    var onOpenCompany: (DSACompany) -> Void = { _ in }
 
     @Environment(QuizBank.self) private var quizBank
     @Environment(CompanyBank.self) private var companyBank
+    @Environment(SolvedStore.self) private var solved
     @Environment(StreakStore.self) private var streak
     @Environment(XPStore.self) private var xp
+    @Environment(ResumeReviewStore.self) private var resumeReviews
     @EnvironmentObject private var auth: AuthViewModel
 
     @State private var showThemeSheet = false
     @State private var showSavedSheet = false
     @State private var showIconSheet = false
+    @State private var showResumeSheet = false
+    @State private var showTargetSheet = false
+    @State private var targetProfile: CompanyProfile?
+    @State private var appeared = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: PPSpacing.lg) {
-                topBar
-                greeting
-                    .padding(.bottom, PPSpacing.xs)
-                interviewHero
+                header
+                    .staged(0, appeared)
+                InterviewHeroCard {
+                    selectedTab = .interview
+                }
+                .staged(1, appeared)
+                tiles
+                    .staged(2, appeared)
                 keepPracticing
-                xpCard
-                streakCard
+                    .staged(3, appeared)
+                targetDetail
+                    .staged(4, appeared)
             }
-            .padding(PPSpacing.xl)
+            .padding(.horizontal, PPSpacing.xl)
+            .padding(.vertical, PPSpacing.lg)
             .ppContentColumn()
         }
         .scrollIndicators(.hidden)
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
+        .onAppear { appeared = true }
         .task { await companyBank.loadCatalogIfNeeded() }
+        .task(id: auth.currentUser?.targetCompany) { await loadTargetProfile() }
         .sheet(isPresented: $showThemeSheet) { ThemePickerView() }
         .sheet(isPresented: $showSavedSheet) { SavedQuestionsView() }
         .sheet(isPresented: $showIconSheet) { AppIconPickerView() }
+        .sheet(isPresented: $showResumeSheet) { ResumeReviewView() }
+        .sheet(isPresented: $showTargetSheet) { TargetCompanySheet() }
     }
 
-    private var topBar: some View {
-        HStack(alignment: .center) {
-            Text(todayLine)
-                .font(.ppCaption)
-                .foregroundStyle(Color.ppMuted)
-            Spacer(minLength: PPSpacing.md)
-            FocusModeToggle()
-                .padding(.trailing, PPSpacing.sm)
+    // MARK: - Header
+
+    private var header: some View {
+        HStack(spacing: PPSpacing.md) {
             Menu {
                 Button {
                     showSavedSheet = true
                 } label: {
                     Label("Saved questions", systemImage: "bookmark")
+                }
+                Button {
+                    showTargetSheet = true
+                } label: {
+                    Label("Target company", systemImage: "scope")
                 }
                 Button {
                     showThemeSheet = true
@@ -68,235 +86,215 @@ struct HomeView: View {
                     Label("Log out", systemImage: "rectangle.portrait.and.arrow.right")
                 }
             } label: {
-                PPAvatar(initials: initials(from: displayName))
+                PPAvatar(initials: initials(from: displayName), diameter: 44)
             }
-        }
-    }
 
-    private var greeting: some View {
-        VStack(alignment: .leading, spacing: PPSpacing.sm) {
-            Text("\(timeOfDayGreeting),")
-                .font(.ppBody)
-                .foregroundStyle(Color.ppMuted)
-
-            Text("\(firstName).")
-                .font(.ppDisplay)
-
-            (
-                Text("Ready when you are. Let's train for ")
-                    .foregroundStyle(Color.ppMuted)
-                + Text(displayRole)
-                    .foregroundStyle(Color.ppAccent400)
-                + Text(".")
-                    .foregroundStyle(Color.ppMuted)
-            )
-            .font(.ppBody)
-            .padding(.top, PPSpacing.xs)
-        }
-    }
-
-    private var interviewHero: some View {
-        Button {
-            selectedTab = .interview
-        } label: {
-            VStack(alignment: .leading, spacing: PPSpacing.lg) {
-                Text("AI Mock Interview")
-                    .font(.ppSectionLabel)
-                    .textCase(.uppercase)
-                    .tracking(1.1)
-                    .foregroundStyle(Color.ppAccent400)
-
-                Text("Practice\nthe real thing.")
-                    .font(.system(.title, design: .serif, weight: .semibold))
-                    .lineSpacing(2)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Text("Voice round · live feedback · ~15 min")
+            VStack(alignment: .leading, spacing: 2) {
+                Text("\(timeOfDayGreeting), \(firstName)")
+                    .font(.ppHeadline)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+                Text(displayRole)
                     .font(.ppCaption)
-                    .foregroundStyle(Color.ppMuted)
+                    .foregroundStyle(Color.ppAccent400)
+                    .lineLimit(1)
+            }
 
-                startRoundPill
-                    .padding(.top, PPSpacing.xs)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(PPSpacing.xl)
-            .background(alignment: .trailing) {
-                Image(systemName: "mic.fill")
-                    .font(.system(size: 210, weight: .regular))
-                    .foregroundStyle(Color.ppAccent.opacity(0.12))
-                    .offset(x: 55)
-                    .accessibilityHidden(true)
-            }
-            .background(Color.ppAccentSection)
-            .clipShape(.rect(cornerRadius: PPRadius.lg))
-            .overlay {
-                RoundedRectangle(cornerRadius: PPRadius.lg)
-                    .strokeBorder(Color.ppAccent700.opacity(0.45), lineWidth: 1)
-            }
+            Spacer(minLength: PPSpacing.sm)
+
+            streakChip
+            FocusModeToggle(compact: true)
         }
-        .buttonStyle(.ppPressable)
     }
 
-    private var startRoundPill: some View {
-        HStack(spacing: PPSpacing.sm) {
-            Text("Start round")
-            Image(systemName: "arrow.right")
+    private var streakChip: some View {
+        let active = streak.didPracticeToday
+        return HStack(spacing: 4) {
+            Image(systemName: "flame.fill")
+                .foregroundStyle(active ? Color.ppAccent : Color.ppMuted)
+            Text("\(streak.currentStreak)")
+                .font(.ppCaption)
+                .monospacedDigit()
+                .contentTransition(.numericText())
         }
-        .font(.ppBodyMedium)
-        .foregroundStyle(Color.ppOnAccent)
-        .padding(.horizontal, PPSpacing.xl)
-        .frame(height: 46)
-        .background(Color.ppAccent, in: .capsule)
+        .padding(.horizontal, PPSpacing.md)
+        .frame(height: 36)
+        .background(Color.ppSurface, in: .capsule)
+        .overlay { Capsule().strokeBorder(Color.ppBorder, lineWidth: 1) }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(streak.currentStreak) day streak")
     }
 
-    private var keepPracticing: some View {
-        VStack(alignment: .leading, spacing: PPSpacing.md) {
-            PPSectionHeader("Keep practicing")
+    // MARK: - Tiles
 
-            HStack(spacing: PPSpacing.md) {
-                practiceCard(
-                    icon: "checklist",
-                    title: "Quiz",
-                    subtitle: "CS · DSA · Aptitude",
-                    metric: "\(quizQuestionCount.formatted()) questions",
-                    tab: .quiz
-                )
-                practiceCard(
-                    icon: "building.2.fill",
-                    title: "LeetCode",
-                    subtitle: "Company-wise DSA",
-                    metric: problemMetric,
-                    tab: .companies
-                )
+    private var tiles: some View {
+        Grid(horizontalSpacing: PPSpacing.md, verticalSpacing: PPSpacing.md) {
+            GridRow {
+                targetTile
+                resumeTile
+            }
+            GridRow {
+                xpTile
+                streakTile
             }
         }
     }
 
-    private func practiceCard(
-        icon: String,
-        title: String,
-        subtitle: String,
-        metric: String,
-        tab: AppTab
-    ) -> some View {
+    private var targetCompany: DSACompany? {
+        companyBank.company(named: auth.currentUser?.targetCompany)
+    }
+
+    private var targetTile: some View {
         Button {
-            selectedTab = tab
+            if let company = targetCompany {
+                onOpenCompany(company)
+            } else {
+                showTargetSheet = true
+            }
         } label: {
-            PPCard {
-                VStack(alignment: .leading, spacing: PPSpacing.md) {
-                    PPIconTile(systemName: icon, tint: .ppAccent400)
-
-                    VStack(alignment: .leading, spacing: PPSpacing.xs) {
-                        Text(title)
-                            .font(.ppHeadline)
-                        Text(subtitle)
-                            .font(.ppCaption)
-                            .foregroundStyle(Color.ppMuted)
-                    }
-
-                    Spacer(minLength: PPSpacing.md)
-
-                    Text(metric)
-                        .font(.ppCaption)
-                        .foregroundStyle(Color.ppAccent400)
+            HomeTile(title: targetCompany?.name ?? "Target company") {
+                if let company = targetCompany {
+                    PPCompanyLogo(companyName: company.name, size: 18)
+                } else {
+                    HomeTileSymbol(name: "scope")
                 }
-                .frame(maxWidth: .infinity, minHeight: 128, alignment: .leading)
+            } content: {
+                if let readiness {
+                    HomeTileValue(value: "\(readiness.percent)%", tint: .ppAccent400, unit: "ready")
+                    PPProgressBar(progress: readiness.score, height: 5)
+                } else if targetCompany != nil {
+                    ProgressView().tint(Color.ppMuted)
+                } else {
+                    Text("Pick a target")
+                        .font(.ppHeadline)
+                }
             }
         }
         .buttonStyle(.ppPressable)
     }
 
-    private var xpCard: some View {
+    private var readiness: CompanyReadiness? {
+        guard let targetProfile, targetCompany != nil else { return nil }
+        return CompanyReadiness.compute(profile: targetProfile, isSolved: solved.isSolved)
+    }
+
+    private var resumeTile: some View {
+        Button {
+            showResumeSheet = true
+        } label: {
+            HomeTile(title: "Resume") {
+                HomeTileSymbol(name: "doc.text.magnifyingglass")
+            } content: {
+                if let latest = resumeReviews.latest {
+                    let overall = latest.review.overall
+                    HomeTileValue(
+                        value: "\(overall)",
+                        tint: .ppScore(Double(overall) / 10, middle: .ppAccent400),
+                        unit: "/100"
+                    )
+                    PPProgressBar(progress: Double(overall) / 100, height: 5, tint: .ppScore(Double(overall) / 10))
+                } else {
+                    Text("Get scored")
+                        .font(.ppHeadline)
+                }
+            }
+        }
+        .buttonStyle(.ppPressable)
+    }
+
+
+    private var xpTile: some View {
         Button {
             showIconSheet = true
         } label: {
-            PPCard {
-                VStack(alignment: .leading, spacing: PPSpacing.md) {
-                    HStack(alignment: .firstTextBaseline) {
-                        (
-                            Text("\(xp.total)")
-                                .font(.ppStat())
-                                .foregroundStyle(Color.ppAccent)
-                            + Text(" XP")
-                                .font(.ppHeadline)
-                                .foregroundStyle(Color.ppText)
-                        )
-                        .contentTransition(.numericText())
-
-                        Spacer(minLength: PPSpacing.md)
-
-                        PPBadge(xp.level.title, tone: .accent)
-                    }
-
-                    PPProgressBar(progress: xp.progressInLevel)
-
-                    HStack(spacing: PPSpacing.sm) {
-                        Text(xpFootnote)
-                            .font(.ppCaption)
-                            .foregroundStyle(Color.ppMuted)
-                        Spacer(minLength: PPSpacing.sm)
-                        Label("Icons", systemImage: "app.badge")
-                            .font(.ppMicro)
-                            .foregroundStyle(Color.ppAccent400)
-                    }
-                }
+            HomeTile(title: xp.level.title) {
+                HomeTileSymbol(name: "sparkles")
+            } content: {
+                HomeTileValue(value: "\(xp.total)", tint: .ppAccent, unit: "XP")
+                PPProgressBar(progress: xp.progressInLevel, height: 5)
             }
         }
         .buttonStyle(.ppPressable)
         .animation(PPMotion.settle, value: xp.total)
     }
 
-    private var xpFootnote: String {
-        guard let next = xp.nextLevel, let remaining = xp.xpToNextLevel else {
-            return "Top tier: every icon unlocked"
+    private var streakTile: some View {
+        HomeTile(title: "Streak") {
+            HomeTileSymbol(name: "flame.fill")
+        } content: {
+            HomeTileValue(value: "\(streak.currentStreak)", unit: streak.currentStreak == 1 ? "day" : "days")
+            streakDots
         }
-        return "\(remaining) XP to \(next.title)"
     }
 
-    private var streakCard: some View {
-        PPCard {
-            HStack(spacing: PPSpacing.lg) {
-                PPIconTile(systemName: "moon.fill", tint: .ppAccent400)
 
-                VStack(alignment: .leading, spacing: PPSpacing.xs) {
-                    (
-                        Text("\(streak.currentStreak)")
-                            .font(.ppStat())
-                            .foregroundStyle(Color.ppAccent)
-                        + Text(" day streak")
-                            .font(.ppHeadline)
-                            .foregroundStyle(Color.ppText)
-                    )
-                    Text(streakSubtitle)
-                        .font(.ppCaption)
-                        .foregroundStyle(Color.ppMuted)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+    // MARK: - Practice
 
-                Spacer(minLength: PPSpacing.md)
+    private var keepPracticing: some View {
+        VStack(alignment: .leading, spacing: PPSpacing.md) {
+            PPSectionHeader("Keep practicing")
 
-                streakDots
+            HStack(spacing: PPSpacing.md) {
+                practiceRow(icon: "checklist", title: "Quiz", metric: "\(quizQuestionCount.formatted()) questions", tab: .quiz)
+                practiceRow(icon: "building.2.fill", title: "LeetCode", metric: problemMetric, tab: .companies)
             }
         }
     }
 
-    private var streakSubtitle: String {
-        let best = streak.bestStreak
-        if streak.currentStreak == 0 {
-            return "A quiz, a solved problem or a mock round starts it."
+    private func practiceRow(icon: String, title: String, metric: String, tab: AppTab) -> some View {
+        Button {
+            selectedTab = tab
+        } label: {
+            PPCard(padding: PPSpacing.md) {
+                HStack(spacing: PPSpacing.sm) {
+                    PPIconTile(systemName: icon, size: 32, tint: .ppAccent400)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(title)
+                            .font(.ppBodyMedium)
+                            .lineLimit(1)
+                        Text(metric)
+                            .font(.ppMicro)
+                            .foregroundStyle(Color.ppMuted)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.8)
+                    }
+                    Spacer(minLength: 0)
+                }
+            }
         }
-        if !streak.didPracticeToday {
-            return "Practise today to keep it alive"
-        }
-        return streak.currentStreak >= best
-            ? "Your best run yet · keep going"
-            : "Best: \(best) days"
+        .buttonStyle(.ppPressable)
     }
+
+    // MARK: - Target detail
+
+    @ViewBuilder
+    private var targetDetail: some View {
+        if let company = targetCompany {
+            VStack(alignment: .leading, spacing: PPSpacing.md) {
+                PPSectionHeader("Your target")
+                CompanyReadinessCard(
+                    company: company,
+                    onOpen: onOpenCompany,
+                    onPickTarget: { showTargetSheet = true }
+                )
+            }
+        }
+    }
+
+    // MARK: - Loading
+
+    private func loadTargetProfile() async {
+        guard let company = targetCompany else { return targetProfile = nil }
+        targetProfile = await companyBank.profile(for: company)
+    }
+
+    // MARK: - Helpers
+
 
     private var streakDots: some View {
         let progress = streak.weekProgress
         let todayIndex = streak.todayIndexInWeek
-        return HStack(spacing: PPSpacing.sm) {
+        return HStack(spacing: 5) {
             ForEach(progress.indices, id: \.self) { index in
                 Group {
                     if progress[index] {
@@ -307,7 +305,7 @@ struct HomeView: View {
                         Circle().fill(Color.ppElevated)
                     }
                 }
-                .frame(width: 8, height: 8)
+                .frame(width: 7, height: 7)
             }
         }
         .accessibilityElement()
@@ -322,10 +320,6 @@ struct HomeView: View {
         companyBank.isCatalogReady
             ? "\(companyBank.catalog.count.formatted()) problems"
             : "\(companyBank.companies.count) companies"
-    }
-
-    private var todayLine: String {
-        Date().formatted(.dateTime.weekday(.wide).month(.abbreviated).day())
     }
 
     private var timeOfDayGreeting: String {
@@ -368,5 +362,14 @@ struct HomeView: View {
         .environment(StreakStore.preview(daysBack: 5))
         .environment(XPStore.preview(total: 120))
         .environment(FocusModeStore.preview())
+        .environment(ResumeReviewStore.preview())
         .environmentObject(AuthViewModel())
+}
+
+private extension View {
+    func staged(_ index: Int, _ appeared: Bool) -> some View {
+        opacity(appeared ? 1 : 0)
+            .offset(y: appeared ? 0 : 12)
+            .animation(PPMotion.settle.delay(Double(index) * 0.06), value: appeared)
+    }
 }

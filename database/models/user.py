@@ -12,6 +12,7 @@ class User(SQLModel, table=True):
     hashed_password: str
     full_name: Optional[str] = None
     target_role: Optional[str] = None
+    target_company: Optional[str] = None
     is_verified: bool = Field(default=False)
     verification_code: Optional[str] = None
     verification_code_expires_at: Optional[datetime] = None

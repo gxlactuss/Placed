@@ -32,6 +32,8 @@ struct PlacementPrepApp: App {
                     } else if let user = auth.currentUser, !user.onboarded {
                         OnboardingView()
                             .environment(interviewSetup)
+                            .environment(resumeReviews)
+                            .environment(companyBank)
                     } else {
                         DashboardView()
                             .environment(companyBank)
@@ -54,6 +56,9 @@ struct PlacementPrepApp: App {
                                 quizBank.adopt(role: CareerRole(title: auth.currentUser?.targetRole))
                                 await quizProgress.sync(userId: id)
                                 await solvedStore.sync(userId: id)
+                            }
+                            .onChange(of: auth.currentUser?.targetRole) { _, role in
+                                quizBank.adopt(role: CareerRole(title: role))
                             }
                     }
                 case .unauthenticated:

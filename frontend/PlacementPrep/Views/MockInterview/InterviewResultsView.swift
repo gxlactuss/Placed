@@ -3,6 +3,7 @@ import SwiftUI
 struct InterviewResultsView: View {
 
     let model: InterviewSessionModel
+    var companyNudge: CompanyNudge? = nil
     let onAnotherRound: () -> Void
     let onClose: () -> Void
 
@@ -21,6 +22,7 @@ struct InterviewResultsView: View {
                         summary(feedback)
                         mistakes(feedback)
                         improvements(feedback)
+                        if let companyNudge { nudge(companyNudge) }
                     } else if model.isLoadingFeedback {
                         loading
                     } else if let error = model.feedbackError {
@@ -163,6 +165,28 @@ struct InterviewResultsView: View {
                 )
             }
         }
+    }
+
+    private func nudge(_ nudge: CompanyNudge) -> some View {
+        PPCard {
+            HStack(alignment: .top, spacing: PPSpacing.md) {
+                Image(systemName: "scope")
+                    .foregroundStyle(nudge.topic.heat == .hot ? Color.ppHard : Color.ppAccent400)
+                    .frame(width: 20)
+                VStack(alignment: .leading, spacing: PPSpacing.xs) {
+                    Text("\(nudge.company) asks \(nudge.topic.family.title) \(nudge.topic.lift.formatted(.number.precision(.fractionLength(1))))× more than average.")
+                        .font(.ppBodyMedium)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("You've covered \(Int((nudge.coverage * 100).rounded()))% of it · \(nudge.company) readiness \(nudge.readiness)%. Find it under Practise these in the LeetCode tab.")
+                        .font(.ppCaption)
+                        .foregroundStyle(Color.ppMuted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Spacer(minLength: 0)
+            }
+        }
+        .opacity(revealed ? 1 : 0)
+        .animation(PPMotion.settle.delay(0.6), value: revealed)
     }
 
     private var loading: some View {

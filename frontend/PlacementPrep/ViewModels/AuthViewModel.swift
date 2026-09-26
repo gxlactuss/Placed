@@ -100,11 +100,16 @@ final class AuthViewModel: ObservableObject {
     }
 
     @discardableResult
-    func completeOnboarding(fullName: String, targetRole: String) async -> Bool {
+    func completeOnboarding(fullName: String, targetRole: String, targetCompany: String?) async -> Bool {
         errorMessage = nil
         isLoading = true
         defer { isLoading = false }
-        let body = UserUpdate(fullName: fullName, targetRole: targetRole, onboarded: true)
+        let body = UserUpdate(
+            fullName: fullName,
+            targetRole: targetRole,
+            targetCompany: targetCompany,
+            onboarded: true
+        )
         do {
             let updated: User = try await network.request(path: "/api/auth/me", method: .patch, body: body)
             currentUser = updated
@@ -120,6 +125,15 @@ final class AuthViewModel: ObservableObject {
             path: "/api/auth/me",
             method: .patch,
             body: UserUpdate(targetRole: role)
+        ) else { return }
+        currentUser = updated
+    }
+
+    func updateTargetCompany(_ company: String?) async {
+        guard let updated: User = try? await network.request(
+            path: "/api/auth/me",
+            method: .patch,
+            body: TargetCompanyUpdate(targetCompany: company)
         ) else { return }
         currentUser = updated
     }

@@ -37,6 +37,30 @@ extension Color {
     static var ppBorder: Color { palette.border }
     static var ppBorderStrong: Color { palette.borderStrong }
 
+    /// Pale yellow at 0, the theme's amber at 0.5, its red at 1.
+    static func ppHeat(_ temperature: Double) -> Color {
+        let t = min(max(temperature, 0), 1)
+        let pale = palette.colorScheme == .dark ? Color(hex: 0xE8DCA8) : Color(hex: 0xDCC374)
+        return t < 0.5
+            ? pale.ppBlend(with: palette.medium, by: t / 0.5)
+            : palette.medium.ppBlend(with: palette.hard, by: (t - 0.5) / 0.5)
+    }
+
+    func ppBlend(with other: Color, by amount: Double) -> Color {
+        var (r1, g1, b1, a1): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        var (r2, g2, b2, a2): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        UIColor(self).getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+        UIColor(other).getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
+        let k = CGFloat(min(max(amount, 0), 1))
+        return Color(
+            .sRGB,
+            red: Double(r1 + (r2 - r1) * k),
+            green: Double(g1 + (g2 - g1) * k),
+            blue: Double(b1 + (b2 - b1) * k),
+            opacity: Double(a1 + (a2 - a1) * k)
+        )
+    }
+
     static func ppScore(_ score: Double, middle: Color = .ppAccent) -> Color {
         switch score {
         case 8...: .ppEasy

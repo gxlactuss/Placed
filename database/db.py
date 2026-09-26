@@ -9,6 +9,9 @@ _connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite"
 engine = create_engine(DATABASE_URL, echo=False, connect_args=_connect_args)
 
 _ADDED_COLUMNS: dict[str, dict[str, str]] = {
+    "users": {
+        "target_company": "VARCHAR",
+    },
     "interview_sessions": {
         "mode": "VARCHAR",
         "context_json": "VARCHAR",

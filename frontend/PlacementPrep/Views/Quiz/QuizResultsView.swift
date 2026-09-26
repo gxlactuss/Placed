@@ -6,6 +6,7 @@ struct QuizResultsView: View {
     let onRetry: () -> Void
     let onClose: () -> Void
 
+    @Environment(QuizBank.self) private var bank
     @State private var animatedProgress: Double = 0
     @State private var revealed = false
 
@@ -39,7 +40,7 @@ struct QuizResultsView: View {
     }
 
     private var header: some View {
-        Text("\(model.quiz.category.title) · \(model.quiz.title)")
+        Text("\(bank.title(for: model.quiz.category)) · \(model.quiz.title)")
             .ppSectionLabelStyle()
             .multilineTextAlignment(.center)
             .padding(.top, PPSpacing.lg)
@@ -239,6 +240,7 @@ struct QuizResultsView: View {
         model.finish()
         return AnyView(
             QuizResultsView(model: model, onRetry: {}, onClose: {})
+                .environment(QuizBank())
                 .ppScreenBackground()
         )
     } else {

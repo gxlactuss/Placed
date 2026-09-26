@@ -5,6 +5,7 @@ struct User: Codable, Identifiable {
     let email: String
     let fullName: String?
     let targetRole: String?
+    let targetCompany: String?
     let isVerified: Bool
     let onboarded: Bool
     let createdAt: Date
@@ -13,6 +14,7 @@ struct User: Codable, Identifiable {
         case id, email, onboarded
         case fullName = "full_name"
         case targetRole = "target_role"
+        case targetCompany = "target_company"
         case isVerified = "is_verified"
         case createdAt = "created_at"
     }
@@ -25,12 +27,28 @@ struct VerifyCodeRequest: Codable {
 struct UserUpdate: Codable {
     var fullName: String?
     var targetRole: String?
+    var targetCompany: String?
     var onboarded: Bool?
 
     enum CodingKeys: String, CodingKey {
         case onboarded
         case fullName = "full_name"
         case targetRole = "target_role"
+        case targetCompany = "target_company"
+    }
+}
+
+/// Sends `target_company` even when it is nil, so the user can clear their target.
+struct TargetCompanyUpdate: Encodable {
+    let targetCompany: String?
+
+    enum CodingKeys: String, CodingKey {
+        case targetCompany = "target_company"
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(targetCompany, forKey: .targetCompany)
     }
 }
 

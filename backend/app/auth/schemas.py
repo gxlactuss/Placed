@@ -21,6 +21,7 @@ class UserRead(BaseModel):
     email: str
     full_name: Optional[str] = None
     target_role: Optional[str] = None
+    target_company: Optional[str] = None
     is_verified: bool = False
     onboarded: bool = False
     created_at: datetime
@@ -36,6 +37,7 @@ class VerifyRequest(BaseModel):
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None
     target_role: Optional[str] = None
+    target_company: Optional[str] = None
     onboarded: Optional[bool] = None
 
 
