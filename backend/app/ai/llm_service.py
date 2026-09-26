@@ -26,6 +26,8 @@ from app.ai.interview_prompts import (
 )
 from app.ai.interview_rounds import SeedQuestion, spec_for
 from app.ai.quiz_prompts import quiz_summary_prompt
+from app.ai.resume_checks import DeviceFacts, ResumeSignals
+from app.ai.resume_prompts import FACTOR_WEIGHTS, resume_review_prompt
 
 genai.configure(api_key=settings.gemini_api_key)
 
@@ -48,11 +50,14 @@ class _QuotaExhausted(Exception):
 class _AuthRejected(Exception):
     pass
 
-def _call_groq(model: str, prompt: str) -> str:
+def _call_groq(model: str, prompt: str, temperature: float | None) -> str:
+    body: dict = {"model": model, "messages": [{"role": "user", "content": prompt}]}
+    if temperature is not None:
+        body["temperature"] = temperature
     response = httpx.post(
         f"{settings.groq_base_url}/chat/completions",
         headers={"Authorization": f"Bearer {settings.groq_api_key}"},
-        json={"model": model, "messages": [{"role": "user", "content": prompt}]},
+        json=body,
         timeout=_TIMEOUT,
     )
     if response.status_code in (413, 429):
@@ -98,9 +103,14 @@ def transcribe_audio(data: bytes, filename: str, content_type: str | None) -> st
     return response.json().get("text", "").strip()
 
 
-def _call_gemini(model: str, prompt: str) -> str:
+def _call_gemini(model: str, prompt: str, temperature: float | None) -> str:
+    config = {"temperature": temperature} if temperature is not None else None
     try:
-        return genai.GenerativeModel(model).generate_content(prompt).text.strip()
+        return (
+            genai.GenerativeModel(model)
+            .generate_content(prompt, generation_config=config)
+            .text.strip()
+        )
     except Exception as exc:
         text = str(exc)
         if "429" in text or "RESOURCE_EXHAUSTED" in text or "exceeded your current quota" in text:
@@ -110,7 +120,7 @@ def _call_gemini(model: str, prompt: str) -> str:
 
 _PROVIDERS = {"groq": _call_groq, "gemini": _call_gemini}
 
-def _generate(prompt: str) -> str:
+def _generate(prompt: str, temperature: float | None = None) -> str:
     chain = settings.llm_chain
     if not chain:
         raise HTTPException(status_code=503, detail="Interview service is not configured.")
@@ -122,7 +132,7 @@ def _generate(prompt: str) -> str:
         if provider in dead_providers:
             continue
         try:
-            return _PROVIDERS[provider](model, prompt)
+            return _PROVIDERS[provider](model, prompt, temperature)
         except _QuotaExhausted as exc:
             exhausted.append(f"{provider}/{model}")
             logger.warning("LLM quota exhausted for %s/%s (%s), trying next", provider, model, exc)
@@ -361,6 +371,135 @@ def generate_quiz_summary(
     return QuizSummary(
         summary=str(data.get("summary", "")).strip(),
         focus=_clean_list(data.get("focus"), limit=4),
+    )
+
+
+class FactorScore(NamedTuple):
+    key: str
+    weight: int
+    score: int
+    reason: str
+
+
+class ResumeReview(NamedTuple):
+    overall: int
+    factors: list[FactorScore]
+    strengths: list[str]
+    improvements: list[dict]
+    rewrites: list[dict]
+
+
+_PRIORITIES = ("high", "medium", "low")
+_PLACEHOLDER = re.compile(r"\[[^\]]*\]")
+_DIGITS = re.compile(r"\d+(?:\.\d+)?")
+_QUOTES = str.maketrans({"\u2018": "'", "\u2019": "'", "\u201c": '"', "\u201d": '"'})
+
+
+def _comparable(text: str) -> str:
+    return " ".join(text.translate(_QUOTES).lower().split())
+
+
+def _factors(value) -> list[FactorScore] | None:
+    if not isinstance(value, dict):
+        return None
+    factors = []
+    for key, weight in FACTOR_WEIGHTS.items():
+        entry = value.get(key)
+        detail = entry if isinstance(entry, dict) else {"score": entry}
+        score = _clamp_score(detail.get("score"))
+        if score is None:
+            return None
+        factors.append(FactorScore(key, weight, score, str(detail.get("reason", "")).strip()))
+    return factors
+
+
+def _improvements(value, limit: int) -> list[dict]:
+    if not isinstance(value, list):
+        return []
+    items = []
+    for entry in value:
+        if not isinstance(entry, dict):
+            continue
+        issue = str(entry.get("issue", "")).strip()
+        fix = str(entry.get("fix", "")).strip()
+        if not issue or not fix:
+            continue
+        priority = str(entry.get("priority", "")).strip().lower()
+        factor = str(entry.get("factor", "")).strip()
+        items.append({
+            "factor": factor if factor in FACTOR_WEIGHTS else None,
+            "priority": priority if priority in _PRIORITIES else "medium",
+            "section": str(entry.get("section", "")).strip(),
+            "issue": issue,
+            "fix": fix,
+        })
+        if len(items) == limit:
+            break
+    return sorted(items, key=lambda item: _PRIORITIES.index(item["priority"]))
+
+
+def _invents_numbers(original: str, improved: str) -> bool:
+    stated = set(_DIGITS.findall(original))
+    return any(n not in stated for n in _DIGITS.findall(_PLACEHOLDER.sub("", improved)))
+
+
+def _rewrites(value, resume_text: str, limit: int) -> list[dict]:
+    if not isinstance(value, list):
+        return []
+    source = _comparable(resume_text)
+    rewrites = []
+    for entry in value:
+        if not isinstance(entry, dict):
+            continue
+        original = str(entry.get("original", "")).strip().lstrip("•●▪◦·‣∙-–—* ")
+        improved = str(entry.get("improved", "")).strip()
+        if not original or not improved or _comparable(original) == _comparable(improved):
+            continue
+        if _comparable(original) not in source:
+            logger.info("Dropped a rewrite whose original is not in the resume: %s", original[:80])
+            continue
+        if _invents_numbers(original, improved):
+            logger.info("Dropped a rewrite that invented a number: %s", improved[:80])
+            continue
+        rewrites.append({
+            "original": original,
+            "improved": improved,
+            "why": str(entry.get("why", "")).strip(),
+        })
+        if len(rewrites) == limit:
+            break
+    return rewrites
+
+
+def generate_resume_review(
+    target_role: str,
+    resume_text: str,
+    signals: ResumeSignals,
+    device: DeviceFacts,
+    already_reported: list[str],
+) -> ResumeReview:
+    prompt = resume_review_prompt(target_role, resume_text, signals, device, already_reported)
+    for _attempt in range(2):
+        raw = _generate(prompt, temperature=0)
+        try:
+            data = _extract_json_object(raw)
+        except (ValueError, json.JSONDecodeError):
+            logger.warning("Resume review reply was not usable JSON: %s", raw[:300])
+            continue
+        factors = _factors(data.get("factors"))
+        if factors is None:
+            logger.warning("Resume review reply had incomplete factors: %s", raw[:300])
+            continue
+        return ResumeReview(
+            overall=round(sum(f.score * f.weight for f in factors) / 10),
+            factors=factors,
+            strengths=_clean_list(data.get("strengths"), limit=3),
+            improvements=_improvements(data.get("improvements"), limit=6),
+            rewrites=_rewrites(data.get("rewrites"), resume_text, limit=3),
+        )
+
+    raise HTTPException(
+        status_code=502, detail="Couldn't review that resume. Try again in a moment."
     )
 
 

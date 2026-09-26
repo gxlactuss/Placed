@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Optional
+from typing import Annotated, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -123,5 +123,56 @@ class InterviewAiResponse(BaseModel):
     question_number: Optional[int] = None
     difficulty: Optional[int] = None
     calibrating: bool = False
+
+class ResumeDeviceSignals(BaseModel):
+    has_email: bool
+    has_phone: bool
+    has_links: bool
+    page_count: int = Field(ge=1, le=20)
+    has_text_layer: bool
+
+
+class ResumeReviewRequest(BaseModel):
+    target_role: str = Field(min_length=1, max_length=200)
+    resume_text: str = Field(min_length=50, max_length=12000)
+    device: ResumeDeviceSignals
+
+
+class ResumeFactor(BaseModel):
+    key: str
+    weight: int
+    score: _Score
+    reason: str = ""
+
+
+class ResumeCheck(BaseModel):
+    key: str
+    label: str
+    passed: bool
+    detail: str
+
+
+class ResumeImprovement(BaseModel):
+    factor: Optional[str] = None
+    priority: Literal["high", "medium", "low"]
+    section: str = ""
+    issue: str
+    fix: str
+
+
+class ResumeRewrite(BaseModel):
+    original: str
+    improved: str
+    why: str = ""
+
+
+class ResumeReviewResponse(BaseModel):
+    overall: int = Field(ge=0, le=100)
+    factors: list[ResumeFactor]
+    checks: list[ResumeCheck]
+    strengths: list[str] = []
+    improvements: list[ResumeImprovement] = []
+    rewrites: list[ResumeRewrite] = []
+
 
 InterviewSessionRead.model_rebuild()

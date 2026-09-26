@@ -104,5 +104,6 @@ private struct XPLevelUpBanner: View {
         .environment(XPStore.preview(total: 120))
         .environment(FocusModeStore.preview())
         .environment(InterviewSetupStore.preview())
+        .environment(ResumeReviewStore.preview())
         .environmentObject(AuthViewModel())
 }

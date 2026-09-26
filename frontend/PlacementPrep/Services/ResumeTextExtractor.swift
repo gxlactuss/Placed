@@ -19,30 +19,40 @@ enum ResumeTextExtractor {
         }
     }
 
+    struct Document {
+        let text: String
+        let pageCount: Int
+        let hasTextLayer: Bool
+    }
+
     static func extractText(from url: URL) async throws -> String {
+        try await extract(from: url).text
+    }
+
+    static func extract(from url: URL) async throws -> Document {
         try await Task.detached(priority: .userInitiated) {
             let scoped = url.startAccessingSecurityScopedResource()
             defer { if scoped { url.stopAccessingSecurityScopedResource() } }
 
-            let text: String
+            let document: Document
             switch url.pathExtension.lowercased() {
             case "pdf":
-                text = try extractFromPDF(url)
+                document = try extractFromPDF(url)
             case "png", "jpg", "jpeg", "heic", "heif", "tiff":
                 guard let image = UIImage(contentsOfFile: url.path),
                       let cgImage = image.cgImage else { throw ExtractionError.unreadableFile }
-                text = try recognizeText(in: cgImage)
+                document = Document(text: try recognizeText(in: cgImage), pageCount: 1, hasTextLayer: false)
             default:
                 throw ExtractionError.unsupportedType
             }
 
-            let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmed = document.text.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmed.isEmpty else { throw ExtractionError.noTextFound }
-            return trimmed
+            return Document(text: trimmed, pageCount: document.pageCount, hasTextLayer: document.hasTextLayer)
         }.value
     }
 
-    private static func extractFromPDF(_ url: URL) throws -> String {
+    private static func extractFromPDF(_ url: URL) throws -> Document {
         guard let document = PDFDocument(url: url) else { throw ExtractionError.unreadableFile }
 
         var embedded = ""
@@ -52,7 +62,7 @@ enum ResumeTextExtractor {
             }
         }
         if embedded.trimmingCharacters(in: .whitespacesAndNewlines).count > 80 {
-            return embedded
+            return Document(text: embedded, pageCount: document.pageCount, hasTextLayer: true)
         }
 
         var ocr = ""
@@ -62,7 +72,7 @@ enum ResumeTextExtractor {
                 ocr += (try? recognizeText(in: cgImage)).map { $0 + "\n" } ?? ""
             }
         }
-        return ocr
+        return Document(text: ocr, pageCount: document.pageCount, hasTextLayer: false)
     }
 
     private static func render(_ page: PDFPage) -> CGImage? {

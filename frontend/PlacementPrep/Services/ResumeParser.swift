@@ -127,6 +127,51 @@ enum ResumeParser {
         #"\b\d{3}[\s.-]\d{3}[\s.-]\d{4}\b"#
     ]
 
+    private static let profileLinkPattern =
+        #"(?i)\b(?:https?://)?(?:www\.)?(?:linkedin\.com|github\.com|gitlab\.com|leetcode\.com|behance\.net)/\S*"#
+    private static let urlPattern = #"(?i)\bhttps?://\S+"#
+    private static let reviewCharacterLimit = 12000
+
+    static func deviceSignals(for document: ResumeTextExtractor.Document) -> ResumeDeviceSignals {
+        let text = document.text
+        func contains(_ pattern: String) -> Bool {
+            text.range(of: pattern, options: .regularExpression) != nil
+        }
+        return ResumeDeviceSignals(
+            hasEmail: contains(emailPattern),
+            hasPhone: phonePatterns.contains(where: contains),
+            hasLinks: contains(profileLinkPattern)
+                || text.localizedCaseInsensitiveContains("linkedin")
+                || text.localizedCaseInsensitiveContains("github"),
+            pageCount: max(document.pageCount, 1),
+            hasTextLayer: document.hasTextLayer
+        )
+    }
+
+    static func redactForReview(_ resumeText: String) -> String {
+        var text = resumeText
+        for pattern in [profileLinkPattern, urlPattern] {
+            text = text.replacingOccurrences(of: pattern, with: "[redacted]", options: .regularExpression)
+        }
+
+        var lines = text.components(separatedBy: .newlines)
+        if let first = lines.firstIndex(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty }),
+           looksLikeName(lines[first]) {
+            lines[first] = "[redacted]"
+        }
+        return redact(lines.joined(separator: "\n"), limit: reviewCharacterLimit)
+    }
+
+    private static func looksLikeName(_ line: String) -> Bool {
+        let trimmed = line.trimmingCharacters(in: .whitespaces)
+        let words = trimmed.split(separator: " ")
+        return (1...5).contains(words.count)
+            && trimmed.count <= 40
+            && trimmed.rangeOfCharacter(from: .decimalDigits) == nil
+            && !trimmed.contains("@")
+            && headingKey(for: trimmed) == nil
+    }
+
     private static func redactAndCap(_ text: String) -> String {
         redact(text, limit: characterLimit)
     }

@@ -11,6 +11,7 @@ struct PlacementPrepApp: App {
     @State private var xp = XPStore()
     @State private var focusMode = FocusModeStore()
     @State private var interviewSetup = InterviewSetupStore()
+    @State private var resumeReviews = ResumeReviewStore()
     @StateObject private var auth = AuthViewModel()
     @Bindable private var theme = ThemeStore.shared
     @Environment(\.scenePhase) private var scenePhase
@@ -42,12 +43,14 @@ struct PlacementPrepApp: App {
                             .environment(xp)
                             .environment(focusMode)
                             .environment(interviewSetup)
+                            .environment(resumeReviews)
                             .task(id: auth.currentUser?.id) {
                                 guard let id = auth.currentUser?.id else { return }
                                 savedQuestions.adopt(userId: id)
                                 streak.adopt(userId: id)
                                 xp.adopt(userId: id)
                                 interviewSetup.adopt(userId: id)
+                                resumeReviews.adopt(userId: id)
                                 quizBank.adopt(role: CareerRole(title: auth.currentUser?.targetRole))
                                 await quizProgress.sync(userId: id)
                                 await solvedStore.sync(userId: id)
@@ -68,6 +71,7 @@ struct PlacementPrepApp: App {
                     streak.clear()
                     xp.clear()
                     interviewSetup.clear()
+                    resumeReviews.clear()
                 }
             }
         }

@@ -536,16 +536,22 @@ split a trailing capitalised heading back onto its own line, trying the longest
 known heading first so the combined heading is not mistaken for the shorter one
 inside it.}
 
-\item Only the projects section of a resume is transmitted, after contact details
-are stripped. What threat model motivated that, and where exactly does the
-redaction happen?
+\item For interview tailoring only the projects section of a resume is
+transmitted, and even the resume review, which needs the whole document, never
+sends contact details. What threat model motivated that, and where exactly does
+the redaction happen?
 \ans{The free tier's terms permit submitted content to be retained and reviewed by
 humans, and a resume is the densest personal data a student owns --- name, email,
 phone, address, education history. The redaction happens entirely on the device,
-before any request is made: the parser narrows the text to the projects section
-and strips email and phone patterns from what remains. Nothing resume-derived is
-stored server-side at all; the summary endpoint is deliberately stateless and the
-result is kept only in local storage on the phone.}
+before any request is made. For interview tailoring the parser narrows the text to
+the projects section and strips email and phone patterns from what remains. The
+review has to judge the whole resume, so it sends the full text, but it first
+strips email, phone, profile links and URLs, and replaces a first line that looks
+like a name; the name removal is a heuristic and the app says so. Facts the
+review needs about the removed details --- whether an email or a link was present
+--- are computed on the device before redaction and sent as booleans. Nothing
+resume-derived is stored server-side at all: both endpoints are deliberately
+stateless, and summaries and reviews are kept only in local storage on the phone.}
 
 \item The company problem lists are parsed with a hand-written comma-separated
 value reader rather than by splitting on commas. What in the data made the naive

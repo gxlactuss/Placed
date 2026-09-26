@@ -19,6 +19,8 @@ final class ResumeImporter {
     private(set) var phase: Phase = .idle
     private(set) var projectsText: String?
     private(set) var skills: String?
+    private(set) var document: ResumeTextExtractor.Document?
+    private(set) var fileName: String?
 
     init(restoring setup: InterviewSetup? = nil) {
         guard let setup else { return }
@@ -39,6 +41,8 @@ final class ResumeImporter {
         phase = .idle
         projectsText = nil
         skills = nil
+        document = nil
+        fileName = nil
     }
 
     func fail(_ message: String) {
@@ -47,8 +51,21 @@ final class ResumeImporter {
 
     func process(_ url: URL, targetRole: String) async {
         phase = .reading
+        document = nil
         do {
-            let text = try await ResumeTextExtractor.extractText(from: url)
+            let extracted = try await ResumeTextExtractor.extract(from: url)
+            document = extracted
+            fileName = url.lastPathComponent
+            await process(text: extracted.text, targetRole: targetRole)
+        } catch let error as ResumeTextExtractor.ExtractionError {
+            phase = .failed(error.localizedDescription)
+        } catch {
+            phase = .failed("Couldn't summarise that resume. Check your connection and try again.")
+        }
+    }
+
+    func process(text: String, targetRole: String) async {
+        do {
             let extraction = ResumeParser.extractProjects(from: text)
             projectsText = extraction.foundProjectsSection ? extraction.text : nil
             skills = ResumeParser.extractSkills(from: text)
@@ -63,8 +80,6 @@ final class ResumeImporter {
                 )
             )
             phase = response.noProjectsFound ? .noProjects : .done(response.summary)
-        } catch let error as ResumeTextExtractor.ExtractionError {
-            phase = .failed(error.localizedDescription)
         } catch {
             phase = .failed("Couldn't summarise that resume. Check your connection and try again.")
         }

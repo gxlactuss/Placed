@@ -26,6 +26,22 @@ enum NetworkError: Error, LocalizedError {
     }
 }
 
+extension NetworkError {
+    static func userMessage(for error: Error) -> String {
+        if case let NetworkError.server(_, body) = error,
+           let data = body.data(using: .utf8),
+           let detail = try? JSONDecoder().decode(ServerDetail.self, from: data) {
+            return detail.detail
+        }
+        if case NetworkError.unauthorized = error {
+            return "Your session expired. Log in again to continue."
+        }
+        return error.localizedDescription
+    }
+
+    private struct ServerDetail: Decodable { let detail: String }
+}
+
 final class NetworkManager {
     static let shared = NetworkManager()
 
