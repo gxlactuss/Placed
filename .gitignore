@@ -42,3 +42,6 @@ venv/
 
 .idea/
 *.swp
+
+# Personal notes, kept out of the repo
+questions.tex

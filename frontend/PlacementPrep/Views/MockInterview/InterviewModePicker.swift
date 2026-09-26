@@ -68,6 +68,7 @@ struct InterviewModePicker: View {
     @Environment(FocusModeStore.self) private var focus
     @Environment(ResumeReviewStore.self) private var resumeReviews
     @State private var showResumeReview = false
+    @State private var showCommonQuestions = false
 
     var body: some View {
         ScrollView {
@@ -87,6 +88,9 @@ struct InterviewModePicker: View {
         .foregroundStyle(Color.ppText)
         .ppScreenBackground()
         .sheet(isPresented: $showResumeReview) { ResumeReviewView() }
+        .sheet(isPresented: $showCommonQuestions) {
+            CommonQuestionsView { onPick(.hr) }
+        }
     }
 
     private var resumeRow: some View {
@@ -162,17 +166,40 @@ struct InterviewModePicker: View {
             Text("Tailored to \(role).")
                 .font(.ppBody)
                 .foregroundStyle(Color.ppMuted)
-            HStack(spacing: PPSpacing.lg) {
-                Button(setup == nil ? "Add your resume" : "Change role or resume") {
-                    onEditSetup()
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: PPSpacing.lg) { headingLinks }
+                VStack(alignment: .leading, spacing: PPSpacing.sm) {
+                    HStack(spacing: PPSpacing.lg) {
+                        setupLink
+                        historyLink
+                    }
+                    questionsLink
                 }
-                .buttonStyle(.ppInlineLink)
-
-                Button("Saved interviews") { onOpenHistory() }
-                    .buttonStyle(.ppInlineLink)
             }
         }
         .padding(.top, PPSpacing.sm)
+    }
+
+    @ViewBuilder
+    private var headingLinks: some View {
+        setupLink
+        historyLink
+        questionsLink
+    }
+
+    private var setupLink: some View {
+        Button(setup == nil ? "Add your resume" : "Change role or resume") { onEditSetup() }
+            .buttonStyle(.ppInlineLink)
+    }
+
+    private var historyLink: some View {
+        Button("Saved interviews") { onOpenHistory() }
+            .buttonStyle(.ppInlineLink)
+    }
+
+    private var questionsLink: some View {
+        Button("Common questions") { showCommonQuestions = true }
+            .buttonStyle(.ppInlineLink)
     }
 
     private var focusPrompt: some View {

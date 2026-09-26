@@ -1,0 +1,358 @@
+{
+  "sections": [
+    {
+      "id": "about-you",
+      "title": "Getting to know you",
+      "questions": [
+        {
+          "id": "tell-me-about-yourself",
+          "question": "Tell me about yourself.",
+          "why": "It's the opener in almost every HR round. They want a two-minute version of you that explains why you're sitting in this interview.",
+          "tips": [
+            "Go present, past, future: what you're studying now, one or two things you've done that matter for this job, and why this role is next.",
+            "Keep it under two minutes. Skip your hometown and your school marks unless they asked.",
+            "End on something they'll want to ask about, like a project or internship."
+          ],
+          "sample": "I'm a final-year Computer Engineering student at [college]. Most of my time outside class has gone into backend development. I built a placement-prep app with FastAPI and SQLite that about two hundred students in my batch used, and last summer I interned at [company], where I wrote the API for their internal ticketing tool. What I enjoy most is making something that real people use and then fixing what breaks. That's why I'm applying for this software engineering role."
+        },
+        {
+          "id": "strengths",
+          "question": "What are your strengths?",
+          "why": "They're checking whether you know yourself, and whether your strengths are ones this job needs.",
+          "tips": [
+            "Pick one or two strengths, not a list of five.",
+            "Back each one with a real example. 'I'm a quick learner' means nothing without a time you learned something quickly.",
+            "Choose strengths that matter for the role you're interviewing for."
+          ],
+          "sample": "My main strength is that I stay with a problem until it's actually solved. In my third year, our team's hackathon project kept crashing under load the night before the demo. Everyone wanted to cut the feature, but I spent the night profiling it and found we were opening a new database connection on every request. Fixing that one thing saved the demo. I'm also comfortable explaining technical things simply, which helped when I was a teaching assistant for our data structures lab."
+        },
+        {
+          "id": "weakness",
+          "question": "What is your biggest weakness?",
+          "why": "They want to see self-awareness and whether you do anything about your flaws. A fake weakness tells them you're not being straight with them.",
+          "tips": [
+            "Avoid humblebrags like 'I work too hard' or 'I'm a perfectionist'. Interviewers hear them every day.",
+            "Pick something real that won't disqualify you from the job.",
+            "Spend most of the answer on what you're doing to fix it, with evidence that it's working."
+          ],
+          "sample": "I used to jump straight into writing code before thinking the design through. On a college project that cost us a week: I built the database schema on my own, and we had to redo it when we added user roles. Since then I write a short plan before starting anything bigger than a day's work: what the pieces are, what could change, and what I'm unsure about. I share it with my teammates first. It feels slower at the start, but I've rewritten far less since."
+        },
+        {
+          "id": "how-others-describe-you",
+          "question": "How would your friends or teammates describe you?",
+          "why": "This checks the same things as the strengths question, but from the outside, so they can see if you know how you come across.",
+          "tips": [
+            "Give two or three words, each with a short reason or example.",
+            "Make sure it's consistent with what you've said about yourself earlier."
+          ],
+          "sample": "I think they'd call me dependable and calm. Dependable because when I take on part of a project, it gets done on time. During our final-year project I owned the backend, and the rest of the team built on top of it without waiting on me. Calm because I'm usually the one who slows things down when a deadline is close and everyone is panicking, and helps us decide what actually needs to be finished."
+        },
+        {
+          "id": "why-engineering",
+          "question": "Why did you choose engineering, or your branch?",
+          "why": "They're looking for genuine interest rather than 'my parents wanted it'. Freshers get this often because there's little work history to ask about.",
+          "tips": [
+            "It's fine if the original choice wasn't entirely yours. Say what made you commit to it later.",
+            "Connect it to the role you're applying for."
+          ],
+          "sample": "Honestly, I chose computer engineering partly because it seemed like a safe career. What made me really commit was my second-year web development course. I built a small attendance tracker for our class, and seeing people use something I'd made every day was a completely different feeling from solving textbook problems. Since then I've spent most of my free time building things, which is what led me to apply for a development role."
+        }
+      ]
+    },
+    {
+      "id": "motivation",
+      "title": "Why this job",
+      "questions": [
+        {
+          "id": "why-this-company",
+          "question": "Why do you want to work for our company?",
+          "why": "They want proof you've researched them and aren't just applying everywhere. A generic answer is the most common way to lose this question.",
+          "tips": [
+            "Name something specific: a product, a technology they use, their training programme, or a value they're known for.",
+            "Link it to what you want to learn or do.",
+            "Never lead with salary, brand name or location."
+          ],
+          "sample": "Two things drew me to [company]. First, your work on [product or domain]. I've used [product] and read your engineering blog post on [topic], and that's exactly the kind of problem I want to work on. Second, your training programme for new graduates. I want to start somewhere that invests in making freshers good engineers rather than just putting them on a project. My internship showed me I learn fastest around experienced people, and that's what I'm looking for in my first job."
+        },
+        {
+          "id": "what-do-you-know-about-us",
+          "question": "What do you know about our company?",
+          "why": "A direct test of preparation. Mass recruiters ask it constantly because many candidates can't answer it.",
+          "tips": [
+            "Know what they do, who their customers are, roughly how big they are, and one recent piece of news.",
+            "Look at their careers page for their values and the role description.",
+            "Don't recite Wikipedia. Say two or three things and why they interest you."
+          ],
+          "sample": "[Company] is a [what they do] serving [who their customers are], with offices in [places]. I know you've recently [recent news, such as a product launch or acquisition]. What stood out to me on your careers page was [value or programme], and from talking to seniors from my college who joined last year, the team you'd place me in works on [domain], which lines up with the projects I've done."
+        },
+        {
+          "id": "why-hire-you",
+          "question": "Why should we hire you over other candidates?",
+          "why": "They're asking you to summarise your case. It's a chance to connect your skills to what the job needs.",
+          "tips": [
+            "Match two or three of your strengths to the job description, each with proof.",
+            "Don't criticise other candidates. You don't know them.",
+            "Be confident, not arrogant. Let the evidence do the talking."
+          ],
+          "sample": "I can't speak for the other candidates, but I can tell you what I'd bring. The role needs someone who can pick up a new codebase and contribute quickly, and in my internship I shipped my first feature in the second week. It asks for teamwork, and my final-year project was a four-person team where I coordinated the backend. And I care about doing things properly. I write tests for my own projects even when nobody asks me to. I think that combination would let me be useful early."
+        },
+        {
+          "id": "five-years",
+          "question": "Where do you see yourself in five years?",
+          "why": "They want to know if you'll stay, whether your ambitions fit what they can offer, and whether you've thought about your career at all.",
+          "tips": [
+            "Talk about skills and responsibility, not job titles or leaving for higher studies.",
+            "Keep it realistic for a fresher: mastering the job, then owning larger pieces of work.",
+            "Tie it back to growth at this company."
+          ],
+          "sample": "In five years I'd like to be someone the team trusts with a complete feature or service end to end, from design through to running it in production. Before that, I want to get really good at the fundamentals of the job in my first couple of years: writing solid code, reviewing others' code well, and understanding the business behind it. Eventually I'd like to help mentor new joiners the way seniors helped me in my internship. I'd like that growth to happen here."
+        },
+        {
+          "id": "higher-studies",
+          "question": "Are you planning to pursue higher studies?",
+          "why": "Very common in Indian campus HR. They're asking whether you'll leave in a year for an MS or MBA after they've trained you.",
+          "tips": [
+            "Be honest. If you have plans, say they're not in the near term and that you'll give the job a real commitment.",
+            "If you're unsure, say that your focus is on gaining industry experience first.",
+            "Don't claim you'll never study further if that isn't true."
+          ],
+          "sample": "Not in the near future. Right now I want industry experience. I've learned far more from building real things than from coursework, and I think I'd only get full value out of a master's degree after a few years of work, once I know which area I want to specialise in. If I do study further someday, it'd be something that makes me better at this work, possibly part-time. My focus for the next few years is growing here."
+        },
+        {
+          "id": "motivation",
+          "question": "What motivates you in your day-to-day work?",
+          "why": "They want to see whether what drives you matches what this job actually involves every day.",
+          "tips": [
+            "Pick a motivation that fits the role, and give an example of it.",
+            "'Money' or 'growth' on their own are too vague."
+          ],
+          "sample": "What motivates me most is seeing something I built actually get used. When we launched our college fest's registration site, I kept checking the logs just to watch sign-ups come in. It also works the other way: when a user reported a bug, fixing it felt urgent to me rather than a chore. I also like getting measurably better at something, like making a query ten times faster or finally understanding how a tool works underneath."
+        }
+      ]
+    },
+    {
+      "id": "stories",
+      "title": "Stories they'll ask for",
+      "questions": [
+        {
+          "id": "failure",
+          "question": "Tell me about a time you failed or made a mistake.",
+          "why": "They're testing accountability: whether you own the mistake, how you fixed it, and what you changed afterwards.",
+          "tips": [
+            "Use STAR: Situation, Task, Action, Result. Keep the situation short and spend most of the time on what you did.",
+            "Pick a real failure with real consequences, not a disguised success.",
+            "Finish with what you do differently now."
+          ],
+          "sample": "In my internship, I pushed a change to a reporting script without testing it against real data. It worked on my sample file, but on production data it skipped every row with an empty field, and a weekly report went out missing about a fifth of its entries. When my manager flagged it, I told him straight away that it was my change, fixed the script and helped re-send the report the same day. Since then I test against a copy of real data before anything goes out, and I added a check that fails loudly if the row count drops."
+        },
+        {
+          "id": "disagreement",
+          "question": "Tell me about a time you disagreed with a team member.",
+          "why": "They want to see that you can disagree respectfully, argue with reasons, and commit once a decision is made.",
+          "tips": [
+            "Show that you listened to their side and argued with evidence, not seniority or volume.",
+            "It's fine if you didn't win the argument. How you behaved afterwards matters more.",
+            "Don't make the other person the villain."
+          ],
+          "sample": "In our final-year project, a teammate wanted to use MongoDB because it was quicker to start with. I thought our data was very relational, since students, companies and applications all link to each other, and that we'd regret it. Instead of arguing in circles, I suggested we each sketch the three main queries in both designs. Seeing them side by side, the joins made the case, and we went with PostgreSQL. Afterwards I paired with him on the schema so it didn't feel like I'd just overruled him."
+        },
+        {
+          "id": "difficult-teammate",
+          "question": "Tell me about a time you worked with a difficult team member.",
+          "why": "This checks whether you can keep work moving with people you don't get along with, without gossip or blame.",
+          "tips": [
+            "Describe the behaviour, not the person's character.",
+            "Show what you did to understand them and improve things.",
+            "End with how the work turned out."
+          ],
+          "sample": "In a group assignment, one teammate kept missing our meetings and his part was always late, so the rest of us were getting frustrated. Rather than complaining to our professor, I asked him privately what was going on. It turned out he was travelling home every weekend for a family issue. We moved our meetings to weekday evenings and split his work into smaller pieces with earlier deadlines. He delivered everything after that, and we submitted on time."
+        },
+        {
+          "id": "pressure",
+          "question": "How do you handle tight deadlines or high-pressure situations?",
+          "why": "Most jobs have crunch times. They want to know you prioritise and communicate rather than panic or go silent.",
+          "tips": [
+            "Answer with a real example, not a general description of yourself.",
+            "Show how you prioritised and what you chose to drop or delay.",
+            "Mention keeping others informed."
+          ],
+          "sample": "During my internship, the week before a client demo, two features were still unfinished and I was also in my exam period. I listed what was left and asked my mentor which parts the demo actually depended on. It turned out only one feature did, so I finished that first, told the team the second would slip by three days, and delivered it after my exams. Breaking the work down and saying early what wouldn't make it kept the pressure manageable."
+        },
+        {
+          "id": "learned-quickly",
+          "question": "Tell me about a time you had to learn a new technology quickly.",
+          "why": "Freshers have to learn constantly in their first job. They want to hear how you learn, not just that you can.",
+          "tips": [
+            "Describe your method: docs, a small prototype, asking someone, reading existing code.",
+            "Say how long it took and what you delivered with it."
+          ],
+          "sample": "For a hackathon, our team decided to build an Android app, and none of us had used Kotlin. I had about two days. I skipped the long tutorials, did the official Kotlin basics course in one evening, and then built the smallest version of our app: one screen that called our API. Every time I got stuck I read the error carefully before searching for it. By the event we had a working app, and I've used Kotlin for two projects since."
+        },
+        {
+          "id": "initiative",
+          "question": "Tell me about a time you took initiative without being asked.",
+          "why": "They're looking for ownership: people who notice a problem and fix it rather than waiting to be told.",
+          "tips": [
+            "Pick something you noticed and acted on yourself, not an assigned task.",
+            "Show the result, ideally one you can measure."
+          ],
+          "sample": "Our college placement cell tracked student applications in a shared spreadsheet that broke every time two people edited it at once, and students often missed deadlines. Nobody asked me to, but I built a simple web form backed by a database that sent reminder emails a day before each deadline. I showed it to the placement coordinator, who agreed to try it for one company drive. It's now used for every drive, and missed deadlines dropped noticeably that season."
+        },
+        {
+          "id": "proudest-project",
+          "question": "Describe a project you are most proud of.",
+          "why": "They want to see what you consider good work and how deeply you understand something you built.",
+          "tips": [
+            "Choose a project where you can explain the decisions, not just the features.",
+            "Be clear about what you personally did versus the team.",
+            "Mention a problem you hit and how you solved it."
+          ],
+          "sample": "I'm proudest of the placement-prep app I built with two friends. I owned the backend in FastAPI. The part I'm proudest of is the mock interview feature. The first version sent the whole conversation to the language model on every turn and got slow and expensive after ten questions, so I changed it to summarise older turns and keep only the recent ones in full, which cut response time by more than half. About two hundred students in my batch used it before placements."
+        },
+        {
+          "id": "feedback",
+          "question": "How do you handle receiving critical feedback?",
+          "why": "They want to know whether you'll be easy to coach, since freshers get a lot of feedback in their first year.",
+          "tips": [
+            "Give a real example of feedback that stung and what you changed because of it.",
+            "Show you ask questions to understand feedback rather than defending yourself."
+          ],
+          "sample": "In my internship, my first pull request got about thirty review comments, mostly on naming and splitting up a very long function. My first reaction was to feel embarrassed, but I asked the reviewer to walk me through the three most important ones so I understood the reasoning rather than just the fixes. I kept a short list of the patterns he pointed out and checked my next PRs against it. By the end of the internship my reviews were down to a few comments each."
+        },
+        {
+          "id": "changing-requirements",
+          "question": "How do you handle requirements that change mid-project?",
+          "why": "Requirements change all the time in real jobs. They're checking you adapt without getting frustrated, and that you make the cost of a change visible.",
+          "tips": [
+            "Show you clarify the change and its impact before rushing to build it.",
+            "Mention communicating the effect on the deadline."
+          ],
+          "sample": "In our final-year project, our guide asked us to add role-based access for faculty three weeks before the submission deadline. Instead of starting immediately, I listed what it would touch: the database, login and three screens. I told her it would take about a week and that we'd have to drop the analytics page to fit it in. She agreed, we shipped the access control on time, and I'd designed the tables so analytics could be added later."
+        }
+      ]
+    },
+    {
+      "id": "work-style",
+      "title": "How you work",
+      "questions": [
+        {
+          "id": "prioritising",
+          "question": "How do you prioritise when you have several tasks at once?",
+          "why": "They want to see that you have a method, and that you check priorities with others rather than guessing.",
+          "tips": [
+            "Describe a simple method, such as sorting by deadline and impact, then give an example.",
+            "Mention asking your lead when priorities conflict."
+          ],
+          "sample": "I start by writing everything down with its deadline and who's waiting on it, because tasks that block other people usually come first. Then I do the most important thing early in the day, before smaller tasks eat the time. During my last semester I had a project submission, an internship assignment and exams in the same fortnight. Listing them showed that the internship work was blocking a teammate, so I finished that first and planned the rest around my exam dates."
+        },
+        {
+          "id": "explain-to-non-technical",
+          "question": "How would you explain a technical concept to someone non-technical?",
+          "why": "Engineers work with managers, clients and other teams. This checks whether you can drop the jargon.",
+          "tips": [
+            "Offer to actually explain something, using an analogy from everyday life.",
+            "Focus on what it means for the listener, not how it works internally."
+          ],
+          "sample": "I start from what they care about rather than how it works. For example, if I had to explain an API to a client, I'd say it's like a waiter in a restaurant: you don't go into the kitchen yourself, you tell the waiter what you want, and they bring it back in a standard way. Then I'd link it to their problem, such as their app being able to show live train times without building the timetable system themselves. I check they're following by asking them to say it back in their own words."
+        },
+        {
+          "id": "staying-updated",
+          "question": "How do you keep your technical skills up to date?",
+          "why": "The industry changes quickly, so they want signs that you keep learning on your own.",
+          "tips": [
+            "Name specific sources and habits, not just 'I read blogs'.",
+            "Best of all, mention something you learned recently and used."
+          ],
+          "sample": "Mostly by building things. When I want to learn something, I use it in a small project instead of just watching tutorials. Recently I learned Docker by containerising my placement app so my teammates could run it with one command. For keeping up, I follow a couple of engineering blogs, like [blog], read the release notes of the tools I use, and solve a few problems on LeetCode each week to keep my fundamentals sharp."
+        },
+        {
+          "id": "debugging-unfamiliar-code",
+          "question": "How do you approach debugging code you've never seen before?",
+          "why": "This shows how you think when you're stuck, which is most of a fresher's first months.",
+          "tips": [
+            "Describe a step-by-step process: reproduce, narrow it down, form a hypothesis, test it.",
+            "Mention knowing when to ask for help after trying on your own."
+          ],
+          "sample": "First I reproduce the bug reliably, because I can't fix what I can't trigger. Then I narrow down where it happens, using logs or a debugger to follow the request through the code rather than reading everything. Once I have a guess, I test it with the smallest possible change. If I've been stuck for about an hour, I ask someone who knows the code, but I bring what I've already ruled out. In my internship that approach helped me find a timezone bug in a module I'd never touched."
+        },
+        {
+          "id": "team-or-alone",
+          "question": "Do you prefer working in a team or on your own?",
+          "why": "Almost every job involves both. A one-sided answer can be a red flag.",
+          "tips": [
+            "Say you're comfortable with both, then show when each works best, with examples.",
+            "Lean slightly towards teamwork for most engineering roles."
+          ],
+          "sample": "I'm comfortable with both, and I think good work needs both. Deciding what to build and how usually works better in a team, because someone always spots what I've missed. Once the plan is clear, I like some uninterrupted time to build my part properly. In our final-year project, we planned and reviewed together twice a week and worked independently in between, and that rhythm worked well for all four of us."
+        }
+      ]
+    },
+    {
+      "id": "practical",
+      "title": "Practical questions",
+      "questions": [
+        {
+          "id": "relocation",
+          "question": "Are you willing to relocate?",
+          "why": "Many companies, especially service companies, place freshers in any of several cities. They need to know you'll join wherever you're posted.",
+          "tips": [
+            "Be honest. Saying yes and then refusing the posting later hurts you more than a conditional answer now.",
+            "If you have a genuine constraint, say so politely and briefly."
+          ],
+          "sample": "Yes, I'm open to relocating. I understand the first posting depends on project needs, and I see moving to a new city as part of starting my career. I'd appreciate knowing the location in advance so I can plan, but it won't affect my decision to join."
+        },
+        {
+          "id": "any-technology",
+          "question": "Are you comfortable working on any technology or domain we assign you?",
+          "why": "Common at service companies, which allocate freshers to projects based on demand, not preference.",
+          "tips": [
+            "Say yes, and show you have a learning method that makes that realistic.",
+            "You can mention a preference, but make clear it isn't a condition."
+          ],
+          "sample": "Yes. I've mostly worked in Python and JavaScript, but I've picked up new languages and tools quickly for projects, like learning Kotlin in two days for a hackathon. I'd be happy to start wherever the need is. If I get a choice later, I'm most interested in backend work, but I think the fundamentals I'd learn on any project would carry over."
+        },
+        {
+          "id": "service-agreement",
+          "question": "Are you comfortable signing a service agreement or bond?",
+          "why": "Some companies ask freshers to commit to a minimum period because they invest in training them.",
+          "tips": [
+            "Know the company's terms before the interview. It's usually in the job description.",
+            "Don't agree to something you won't honour. It's fine to ask for the details before committing."
+          ],
+          "sample": "Yes, I understand the company invests a lot in training freshers, and I'm planning to stay and grow here for the long term anyway. Could you tell me the duration and terms of the agreement, so I understand exactly what I'm committing to?"
+        },
+        {
+          "id": "salary-expectations",
+          "question": "What are your salary expectations?",
+          "why": "In campus placements the package is usually fixed and announced before the drive, so this mostly checks that you've read it and won't haggle unreasonably.",
+          "tips": [
+            "For a campus role, say you're comfortable with the announced package.",
+            "Off campus, give a researched range rather than a single number, and say learning matters more at this stage."
+          ],
+          "sample": "I've seen the package announced for this role and I'm comfortable with it. At this stage of my career, I'm more focused on what I'll learn and the kind of work I'll be doing than on negotiating the salary."
+        },
+        {
+          "id": "other-offers",
+          "question": "Do you have any other offers?",
+          "why": "They're gauging how likely you are to accept and how competitive you are.",
+          "tips": [
+            "Be truthful. Lying about offers is easy to catch and ends badly.",
+            "If you have offers, say so without sounding like you're negotiating, and explain why this company is your preference."
+          ],
+          "sample": "I have [one offer from X / no offers yet], and I'm also in the process with a couple of other companies. [Company] is my first preference, though, because of [a specific reason, such as the team, the product or the training], so if I receive an offer here, I'd be glad to accept it."
+        },
+        {
+          "id": "questions-for-us",
+          "question": "Do you have any questions for us?",
+          "why": "Asked at the end of nearly every interview. 'No' makes you seem uninterested, and a good question leaves a strong last impression.",
+          "tips": [
+            "Prepare two or three questions in advance. Ask about the work, the team or how new joiners grow.",
+            "Don't ask about leave, perks or anything you could have found on their website.",
+            "It's fine to ask the interviewer about their own experience."
+          ],
+          "sample": "Yes, thank you. What does the first six months usually look like for someone joining in this role? And what's something that the freshers who do really well here tend to have in common? I'd also love to hear what you've enjoyed most about working here."
+        }
+      ]
+    }
+  ]
+}
