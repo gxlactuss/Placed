@@ -5,21 +5,15 @@ from app.auth.jwt import get_current_user_id
 from app.content.quiz_schemas import (
     QuizAttemptSubmit,
     QuizProgressItem,
-    QuizQuestion,
     QuizResultRead,
     QuizSummaryRequest,
     QuizSummaryResponse,
 )
 from app.ai.llm_service import generate_quiz_summary
 from database.db import get_session
-from database.models.quiz import QuizDifficulty, QuizResult, QuizTopic
+from database.models.quiz import QuizResult
 
 router = APIRouter(prefix="/api/quiz", tags=["quiz"])
-
-
-@router.get("/questions", response_model=list[QuizQuestion])
-def get_quiz_questions(topic: QuizTopic, difficulty: QuizDifficulty):
-    raise NotImplementedError("Wire up the question bank data source here")
 
 
 @router.post("/summary", response_model=QuizSummaryResponse)

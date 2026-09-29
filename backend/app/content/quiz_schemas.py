@@ -3,8 +3,6 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from database.models.quiz import QuizDifficulty, QuizTopic
-
 
 class MissedQuestion(BaseModel):
     prompt: str = Field(max_length=2000)
@@ -25,19 +23,6 @@ class QuizSummaryRequest(BaseModel):
 class QuizSummaryResponse(BaseModel):
     summary: str
     focus: list[str] = []
-
-
-class QuizQuestionOption(BaseModel):
-    id: str
-    text: str
-
-
-class QuizQuestion(BaseModel):
-    id: str
-    topic: QuizTopic
-    difficulty: QuizDifficulty
-    prompt: str
-    options: list[QuizQuestionOption]
 
 
 class QuizAttemptSubmit(BaseModel):

@@ -1,20 +1,7 @@
 from datetime import datetime, timezone
-from enum import Enum
 from typing import Optional
 
 from sqlmodel import Field, SQLModel
-
-
-class QuizTopic(str, Enum):
-    CS_FUNDAMENTALS = "cs_fundamentals"
-    DSA = "dsa"
-    APTITUDE = "aptitude"
-
-
-class QuizDifficulty(str, Enum):
-    EASY = "easy"
-    MEDIUM = "medium"
-    HARD = "hard"
 
 
 class QuizResult(SQLModel, table=True):
