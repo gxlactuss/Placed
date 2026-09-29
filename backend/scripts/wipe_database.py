@@ -23,7 +23,12 @@ def main():
         tables = [
             row[0]
             for row in connection.execute(
-                text("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
+                # Keep alembic_version: wiping it would make the next boot treat
+                # the database as unversioned and re-run migrations.
+                text(
+                    "SELECT name FROM sqlite_master WHERE type='table' "
+                    "AND name NOT LIKE 'sqlite_%' AND name != 'alembic_version'"
+                )
             )
         ]
         if not tables:
