@@ -45,3 +45,6 @@ venv/
 
 # Personal notes, kept out of the repo
 questions.tex
+
+# Brag launch video output
+brag-output/
