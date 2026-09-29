@@ -146,36 +146,6 @@ enum SampleData {
         CompanySummary(slug: "microsoft", name: "Microsoft", questionCount: 110),
     ]
 
-    static func problems(for slug: String) -> [DSAQuestion] {
-        switch slug {
-        case "google": return googleProblems
-        case "amazon": return amazonProblems
-        default: return googleProblems.shuffled()
-        }
-    }
-
-    private static let googleProblems: [DSAQuestion] = [
-        .init(title: "Two Sum", leetcodeURL: "https://leetcode.com/problems/two-sum", difficulty: "easy", frequency: 0.98),
-        .init(title: "Add Two Numbers", leetcodeURL: "https://leetcode.com/problems/add-two-numbers", difficulty: "medium", frequency: 0.94),
-        .init(title: "Longest Substring Without Repeating", leetcodeURL: "https://leetcode.com/problems/longest-substring-without-repeating-characters", difficulty: "medium", frequency: 0.91),
-        .init(title: "LRU Cache", leetcodeURL: "https://leetcode.com/problems/lru-cache", difficulty: "medium", frequency: 0.89),
-        .init(title: "Number of Islands", leetcodeURL: "https://leetcode.com/problems/number-of-islands", difficulty: "medium", frequency: 0.87),
-        .init(title: "Merge Intervals", leetcodeURL: "https://leetcode.com/problems/merge-intervals", difficulty: "medium", frequency: 0.82),
-        .init(title: "Trapping Rain Water", leetcodeURL: "https://leetcode.com/problems/trapping-rain-water", difficulty: "hard", frequency: 0.78),
-        .init(title: "Median of Two Sorted Arrays", leetcodeURL: "https://leetcode.com/problems/median-of-two-sorted-arrays", difficulty: "hard", frequency: 0.74),
-        .init(title: "Word Ladder", leetcodeURL: "https://leetcode.com/problems/word-ladder", difficulty: "hard", frequency: 0.71),
-        .init(title: "Course Schedule", leetcodeURL: "https://leetcode.com/problems/course-schedule", difficulty: "medium", frequency: 0.68),
-    ]
-
-    private static let amazonProblems: [DSAQuestion] = [
-        .init(title: "Two Sum", leetcodeURL: "https://leetcode.com/problems/two-sum", difficulty: "easy", frequency: 0.96),
-        .init(title: "Valid Parentheses", leetcodeURL: "https://leetcode.com/problems/valid-parentheses", difficulty: "easy", frequency: 0.92),
-        .init(title: "Merge k Sorted Lists", leetcodeURL: "https://leetcode.com/problems/merge-k-sorted-lists", difficulty: "hard", frequency: 0.88),
-        .init(title: "Copy List with Random Pointer", leetcodeURL: "https://leetcode.com/problems/copy-list-with-random-pointer", difficulty: "medium", frequency: 0.84),
-        .init(title: "Word Break", leetcodeURL: "https://leetcode.com/problems/word-break", difficulty: "medium", frequency: 0.79),
-        .init(title: "Rotting Oranges", leetcodeURL: "https://leetcode.com/problems/rotting-oranges", difficulty: "medium", frequency: 0.75),
-    ]
-
     static let interviewOpener = "Let's start. Can you walk me through a project where you had to improve the performance of a system?"
 
     static let interviewFollowUps: [String] = [
