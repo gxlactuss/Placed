@@ -1,3 +1,4 @@
+from pydantic import model_validator
 from pydantic_settings import BaseSettings
 
 
@@ -56,7 +57,20 @@ class Settings(BaseSettings):
     oauth_redirect_base: str = "http://localhost:8000"
     app_redirect_scheme: str = "placementprep"
 
-    cors_origins: list[str] = ["*"]
+    # CORS only matters for browser clients; the iOS app is unaffected.
+    # List exact origins (e.g. ["https://app.example.com"]); empty = no cross-origin access.
+    cors_origins: list[str] = []
+    cors_allow_credentials: bool = False
+
+    @model_validator(mode="after")
+    def _check_cors(self) -> "Settings":
+        if self.cors_allow_credentials and "*" in self.cors_origins:
+            raise ValueError(
+                'CORS_ORIGINS must list exact origins, not "*", when '
+                "CORS_ALLOW_CREDENTIALS is true (otherwise any website gets "
+                "credentialed cross-origin access)."
+            )
+        return self
 
     class Config:
         env_file = ".env"
