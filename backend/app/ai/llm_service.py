@@ -5,6 +5,7 @@ from typing import NamedTuple
 
 import google.generativeai as genai
 import httpx
+from google.api_core import exceptions as google_exceptions
 from fastapi import HTTPException
 
 from app.core.config import settings
@@ -50,22 +51,32 @@ class _QuotaExhausted(Exception):
 class _AuthRejected(Exception):
     pass
 
+
+class _Transient(Exception):
+    """A timeout, network failure or 5xx: this model may be fine, just not right now."""
+
+
 def _call_groq(model: str, prompt: str, temperature: float | None) -> str:
     body: dict = {"model": model, "messages": [{"role": "user", "content": prompt}]}
     if temperature is not None:
         body["temperature"] = temperature
-    response = httpx.post(
-        f"{settings.groq_base_url}/chat/completions",
-        headers={"Authorization": f"Bearer {settings.groq_api_key}"},
-        json=body,
-        timeout=_TIMEOUT,
-    )
+    try:
+        response = httpx.post(
+            f"{settings.groq_base_url}/chat/completions",
+            headers={"Authorization": f"Bearer {settings.groq_api_key}"},
+            json=body,
+            timeout=_TIMEOUT,
+        )
+    except httpx.TransportError as exc:
+        raise _Transient(f"{type(exc).__name__}: {exc}") from exc
     if response.status_code in (413, 429):
         raise _QuotaExhausted(response.text[:200])
     if response.status_code in (401, 403):
         raise _AuthRejected(response.text[:200])
     if response.status_code == 404:
         raise _QuotaExhausted(f"unknown model {model}")
+    if response.status_code >= 500:
+        raise _Transient(f"HTTP {response.status_code}: {response.text[:200]}")
     response.raise_for_status()
     return _strip_reasoning(response.json()["choices"][0]["message"]["content"])
 
@@ -103,18 +114,32 @@ def transcribe_audio(data: bytes, filename: str, content_type: str | None) -> st
     return response.json().get("text", "").strip()
 
 
+# ServerError covers 500/502/503/504, including DeadlineExceeded and ServiceUnavailable.
+# RetryError is what the client raises when its own retries run out on those.
+_GEMINI_TRANSIENT = (
+    google_exceptions.ServerError,
+    google_exceptions.RetryError,
+    TimeoutError,
+    ConnectionError,
+)
+
+
 def _call_gemini(model: str, prompt: str, temperature: float | None) -> str:
     config = {"temperature": temperature} if temperature is not None else None
     try:
         return (
             genai.GenerativeModel(model)
-            .generate_content(prompt, generation_config=config)
+            .generate_content(
+                prompt, generation_config=config, request_options={"timeout": _TIMEOUT}
+            )
             .text.strip()
         )
     except Exception as exc:
         text = str(exc)
         if "429" in text or "RESOURCE_EXHAUSTED" in text or "exceeded your current quota" in text:
             raise _QuotaExhausted(text[:200]) from exc
+        if isinstance(exc, _GEMINI_TRANSIENT):
+            raise _Transient(f"{type(exc).__name__}: {text[:200]}") from exc
         raise
 
 
@@ -126,6 +151,7 @@ def _generate(prompt: str, temperature: float | None = None) -> str:
         raise HTTPException(status_code=503, detail="Interview service is not configured.")
 
     exhausted: list[str] = []
+    transient: list[str] = []
     dead_providers: set[str] = set()
 
     for provider, model in chain:
@@ -142,12 +168,24 @@ def _generate(prompt: str, temperature: float | None = None) -> str:
             exhausted.append(f"{provider}/* (auth rejected)")
             logger.error("LLM provider %s rejected our key: %s", provider, exc)
             continue
+        except _Transient as exc:
+            # The message leads with the error class ("ReadTimeout: ...", "HTTP 503: ...").
+            transient.append(f"{provider}/{model}")
+            logger.warning("LLM call on %s/%s failed transiently (%s), trying next", provider, model, exc)
+            continue
         except Exception as exc:
             logger.exception("LLM call failed on %s/%s", provider, model)
             raise HTTPException(
                 status_code=502,
                 detail="The interview service is having trouble right now. Please try again.",
             ) from exc
+
+    if transient:
+        logger.error("Every LLM provider/model failed: %s", ", ".join(exhausted + transient))
+        raise HTTPException(
+            status_code=503,
+            detail="The interview service is having trouble right now. Please try again shortly.",
+        )
 
     logger.error("Every LLM provider/model exhausted: %s", ", ".join(exhausted))
     raise HTTPException(

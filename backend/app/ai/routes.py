@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from sqlmodel import Session, select
 
 from app.auth.jwt import get_current_user_id
@@ -23,6 +23,7 @@ from app.ai.schemas import (
 )
 from app.ai.interview_difficulty import START_LEVEL, RoundState, opening_seed, plan_next_turn
 from app.ai.interview_prompts import InterviewMode, decode_context
+from app.ai.redaction import redact_contact_details
 from app.content.company_expectations import find_company
 from app.ai.llm_service import (
     generate_feedback,
@@ -102,7 +103,9 @@ def resume_summary(
     payload: ResumeSummaryRequest,
     user_id: str = Depends(get_current_user_id),
 ):
-    summary, none_found = summarize_projects(payload.target_role, payload.projects_text)
+    summary, none_found = summarize_projects(
+        payload.target_role, redact_contact_details(payload.projects_text)
+    )
     return ResumeSummaryResponse(summary=summary, no_projects_found=none_found)
 
 
@@ -257,42 +260,63 @@ def _decode_feedback(raw: str | None) -> InterviewFeedbackResponse | None:
         return None
 
 
+_INTERVIEW_SCAN_BATCH = 100
+
+
+def _summarise(interview: InterviewSession) -> InterviewSummary | None:
+    """Summary for the history list, or None for a session with no answers."""
+    try:
+        transcript: list[dict] = json.loads(interview.transcript_json)
+    except (TypeError, ValueError):
+        return None
+    answers = sum(1 for turn in transcript if turn.get("speaker") == "user")
+    if answers == 0:
+        return None
+
+    feedback = _decode_feedback(interview.overall_feedback)
+    return InterviewSummary(
+        id=_require_id(interview),
+        target_role=interview.target_role,
+        mode=interview.mode,
+        company=_company_of(interview),
+        status=interview.status,
+        answer_count=answers,
+        rating=feedback.rating if feedback else None,
+        started_at=interview.started_at,
+        ended_at=interview.ended_at,
+    )
+
+
 @router.get("", response_model=list[InterviewSummary])
 def list_interviews(
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
-    rows = session.exec(
+    # Sessions with no answers are hidden, and that can only be decided after
+    # decoding the transcript. So offset/limit apply to the *filtered* list:
+    # scan newest-first in SQL batches until enough visible sessions are found.
+    query = (
         select(InterviewSession)
         .where(InterviewSession.user_id == int(user_id))
-        .order_by(InterviewSession.started_at.desc())
-    ).all()
-
-    summaries: list[InterviewSummary] = []
-    for interview in rows:
-        try:
-            transcript: list[dict] = json.loads(interview.transcript_json)
-        except (TypeError, ValueError):
-            continue
-        answers = sum(1 for turn in transcript if turn.get("speaker") == "user")
-        if answers == 0:
-            continue
-
-        feedback = _decode_feedback(interview.overall_feedback)
-        summaries.append(
-            InterviewSummary(
-                id=_require_id(interview),
-                target_role=interview.target_role,
-                mode=interview.mode,
-                company=_company_of(interview),
-                status=interview.status,
-                answer_count=answers,
-                rating=feedback.rating if feedback else None,
-                started_at=interview.started_at,
-                ended_at=interview.ended_at,
-            )
-        )
-    return summaries
+        .order_by(InterviewSession.started_at.desc(), InterviewSession.id.desc())
+    )
+    wanted = offset + limit
+    kept: list[InterviewSummary] = []
+    scanned = 0
+    while len(kept) < wanted:
+        batch = session.exec(query.offset(scanned).limit(_INTERVIEW_SCAN_BATCH)).all()
+        for interview in batch:
+            summary = _summarise(interview)
+            if summary is not None:
+                kept.append(summary)
+                if len(kept) == wanted:
+                    break
+        if len(batch) < _INTERVIEW_SCAN_BATCH:
+            break
+        scanned += len(batch)
+    return kept[offset:]
 
 
 @router.get("/{session_id}", response_model=InterviewSessionRead)
