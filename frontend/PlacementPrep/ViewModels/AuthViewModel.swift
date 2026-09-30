@@ -8,6 +8,12 @@ final class AuthViewModel: ObservableObject {
     @Published var currentUser: User?
     @Published var errorMessage: String?
     @Published var isLoading = false
+    @Published private(set) var isDeletingAccount = false
+
+    /// Set by the owner of the per-user stores. Called after the server has deleted
+    /// the account and before the session is torn down, so the stores can erase
+    /// what they persisted for this user.
+    var onAccountDeleted: (() -> Void)?
 
     private let network = NetworkManager.shared
     private let oauthService = OAuthService()
@@ -165,6 +171,7 @@ final class AuthViewModel: ObservableObject {
         case "provider_not_configured": return "This sign-in option isn't set up yet."
         case "no_email": return "That account has no shareable email. Try another way."
         case "invalid_state": return "Sign-in expired. Please try again."
+        case "rate_limited": return "Too many sign-in attempts. Please wait a minute and try again."
         default: return "Sign-in didn't complete. Please try again."
         }
     }
@@ -174,6 +181,26 @@ final class AuthViewModel: ObservableObject {
         currentUser = nil
         errorMessage = nil
         sessionState = .unauthenticated
+    }
+
+    /// Deletes the account on the server (`DELETE /api/auth/me`, 204), then erases this
+    /// user's local data and signs out. Returns false and sets `errorMessage` on failure.
+    @discardableResult
+    func deleteAccount() async -> Bool {
+        guard !isDeletingAccount else { return false }
+        errorMessage = nil
+        isDeletingAccount = true
+        defer { isDeletingAccount = false }
+        do {
+            try await network.send(path: "/api/auth/me", method: .delete)
+        } catch {
+            errorMessage = NetworkError.userMessage(for: error)
+            return false
+        }
+        onAccountDeleted?()
+        URLCache.shared.removeAllCachedResponses()
+        logout()
+        return true
     }
 
     private func handleExpiredSession() {

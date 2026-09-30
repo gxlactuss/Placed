@@ -12,6 +12,7 @@ struct PlacementPrepApp: App {
     @State private var focusMode = FocusModeStore()
     @State private var interviewSetup = InterviewSetupStore()
     @State private var resumeReviews = ResumeReviewStore()
+    @State private var connectivity = ConnectivityMonitor()
     @StateObject private var auth = AuthViewModel()
     @Bindable private var theme = ThemeStore.shared
     @Environment(\.scenePhase) private var scenePhase
@@ -60,11 +61,21 @@ struct PlacementPrepApp: App {
                             .onChange(of: auth.currentUser?.targetRole) { _, role in
                                 quizBank.adopt(role: CareerRole(title: role))
                             }
+                            .onChange(of: connectivity.isOnline) { _, online in
+                                // Progress sync fails offline; catch up once the network is back.
+                                guard online, let id = auth.currentUser?.id else { return }
+                                Task {
+                                    await quizProgress.sync(userId: id)
+                                    await solvedStore.sync(userId: id)
+                                }
+                            }
                     }
                 case .unauthenticated:
                     AuthView()
                 }
             }
+            .environment(connectivity)
+            .ppOfflineBanner(isOffline: !connectivity.isOnline)
             .environmentObject(auth)
             .animation(PPMotion.settle, value: auth.sessionState)
             .preferredColorScheme(theme.activeTheme.palette.colorScheme)
@@ -77,6 +88,19 @@ struct PlacementPrepApp: App {
                     xp.clear()
                     interviewSetup.clear()
                     resumeReviews.clear()
+                }
+            }
+            .onAppear {
+                // Account deletion erases what the per-user stores persisted.
+                // Device preferences (theme, app icon, focus mode) are kept.
+                auth.onAccountDeleted = { [quizProgress, solvedStore, savedQuestions, streak, xp, interviewSetup, resumeReviews] in
+                    quizProgress.eraseAccountData()
+                    solvedStore.eraseAccountData()
+                    savedQuestions.eraseAccountData()
+                    streak.eraseAccountData()
+                    xp.eraseAccountData()
+                    interviewSetup.eraseAccountData()
+                    resumeReviews.eraseAccountData()
                 }
             }
         }
