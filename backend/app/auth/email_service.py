@@ -3,16 +3,22 @@ import logging
 import httpx
 
 from app.core.config import settings
+from app.core.logging import email_fingerprint
 
-logger = logging.getLogger("email")
+logger = logging.getLogger(__name__)
 
 
 def send_verification_email(to_email: str, code: str) -> None:
     subject = "Your Placement Prep verification code"
 
     if not settings.resend_api_key:
-        logger.warning("[email dev] Verification code for %s: %s", to_email, code)
-        print(f"[email dev] Verification code for {to_email}: {code}", flush=True)
+        # Local dev only: with no RESEND_API_KEY there is no email to read the
+        # code from, so print it. This branch never runs once a key is set.
+        logger.warning(
+            "dev_email RESEND_API_KEY unset, not sending; verification code for %s: %s",
+            to_email,
+            code,
+        )
         return
 
     try:
@@ -33,4 +39,9 @@ def send_verification_email(to_email: str, code: str) -> None:
         )
         response.raise_for_status()
     except Exception as exc:
-        logger.error("[email] failed to send to %s: %s", to_email, exc)
+        logger.error(
+            "verification_email_failed email_hash=%s error=%s detail=%s",
+            email_fingerprint(to_email),
+            type(exc).__name__,
+            exc,
+        )

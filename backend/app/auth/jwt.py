@@ -5,8 +5,11 @@ import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
+from sqlmodel import Session
 
 from app.core.config import settings
+from database.db import get_session
+from database.models.user import User
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/auth/login")
@@ -46,5 +49,21 @@ credentials_exception = HTTPException(
 )
 
 
-def get_current_user_id(token: str = Depends(oauth2_scheme)) -> str:
-    return decode_access_token(token)
+def get_current_user_id(
+    token: str = Depends(oauth2_scheme),
+    session: Session = Depends(get_session),
+) -> str:
+    """The id of the signed-in user.
+
+    A valid signature isn't enough: the account may have been deleted since the
+    token was issued, and that token must stop working (401, not 404). FastAPI
+    caches get_session per request, so this shares the route's session.
+    """
+    subject = decode_access_token(token)
+    try:
+        user_id = int(subject)
+    except ValueError:
+        raise credentials_exception
+    if session.get(User, user_id) is None:
+        raise credentials_exception
+    return subject

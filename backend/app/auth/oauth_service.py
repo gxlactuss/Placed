@@ -111,21 +111,26 @@ def _fetch_profile(provider: str, access_token: str) -> tuple[str, str | None]:
     try:
         with httpx.Client(timeout=10.0, headers=headers) as client:
             info = client.get(_PROVIDERS[provider]["userinfo_url"]).json()
+            # The callback signs the caller into whichever account owns this
+            # email, so only an address the provider has verified will do.
             if provider == "google":
-                email = info.get("email")
                 name = info.get("name")
+                verified = info.get("email_verified") in (True, "true")
+                email = info.get("email") if verified else None
             else:
                 name = info.get("name") or info.get("login")
-                email = info.get("email")
-                if not email:
-                    emails = client.get(_PROVIDERS["github"]["emails_url"]).json()
-                    primary = next(
-                        (e for e in emails if e.get("primary") and e.get("verified")), None
-                    )
-                    email = primary.get("email") if primary else None
+                # /user's "email" is just the public profile address and says
+                # nothing about verification; /user/emails does.
+                emails = client.get(_PROVIDERS["github"]["emails_url"]).json()
+                primary = next(
+                    (e for e in emails if e.get("primary") and e.get("verified") is True),
+                    None,
+                )
+                email = primary.get("email") if primary else None
     except Exception as exc:
         raise OAuthError(f"profile_fetch_failed: {exc}") from exc
     if not email:
+        # Kept as "no_email" (not a new code) because the iOS app maps it.
         raise OAuthError("no_email")
     return email, name
 
