@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Optional
 
+from sqlalchemy import Index
 from sqlmodel import Field, SQLModel
 
 
@@ -13,6 +14,10 @@ class InterviewStatus(str, Enum):
 
 class InterviewSession(SQLModel, table=True):
     __tablename__ = "interview_sessions"
+    __table_args__ = (
+        # GET /api/interview: WHERE user_id = ? ORDER BY started_at DESC
+        Index("ix_interview_sessions_user_started", "user_id", "started_at"),
+    )
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id", index=True)

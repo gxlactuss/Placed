@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends
-from sqlmodel import Session, select
+from fastapi import APIRouter, Depends, Query
+from sqlmodel import Session, func, select
 
 from app.auth.jwt import get_current_user_id
 from app.content.quiz_schemas import (
@@ -53,11 +53,17 @@ def submit_quiz(
 
 @router.get("/history", response_model=list[QuizResultRead])
 def get_quiz_history(
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
     user_id: str = Depends(get_current_user_id),
     session: Session = Depends(get_session),
 ):
     return session.exec(
-        select(QuizResult).where(QuizResult.user_id == int(user_id))
+        select(QuizResult)
+        .where(QuizResult.user_id == int(user_id))
+        .order_by(QuizResult.completed_at.desc(), QuizResult.id.desc())
+        .offset(offset)
+        .limit(limit)
     ).all()
 
 
@@ -67,10 +73,8 @@ def get_quiz_progress(
     session: Session = Depends(get_session),
 ):
     rows = session.exec(
-        select(QuizResult).where(QuizResult.user_id == int(user_id))
+        select(QuizResult.quiz_id, func.max(QuizResult.score_percentage))
+        .where(QuizResult.user_id == int(user_id))
+        .group_by(QuizResult.quiz_id)
     ).all()
-    best: dict[str, int] = {}
-    for row in rows:
-        if row.score_percentage > best.get(row.quiz_id, -1):
-            best[row.quiz_id] = row.score_percentage
-    return [QuizProgressItem(quiz_id=q, best_score=s) for q, s in best.items()]
+    return [QuizProgressItem(quiz_id=q, best_score=s) for q, s in rows]
