@@ -19,6 +19,7 @@ struct PPProgressBar: View {
         .frame(height: height)
         .animation(.easeOut(duration: 0.3), value: clamped)
         .accessibilityElement()
+        .accessibilityLabel(Text("Progress"))
         .accessibilityValue(Text("\(Int(clamped * 100)) percent"))
     }
 }
@@ -41,7 +42,12 @@ struct PPRingProgress<Center: View>: View {
                 .trim(from: 0, to: clamped)
                 .stroke(tint, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
+            // The ring is a fixed diameter; at large Dynamic Type sizes the
+            // center text shrinks to stay inside the track instead of spilling.
             center
+                .lineLimit(1)
+                .minimumScaleFactor(0.4)
+                .padding(lineWidth * 1.5)
         }
         .frame(width: diameter, height: diameter)
         .animation(.easeOut(duration: 0.6), value: clamped)

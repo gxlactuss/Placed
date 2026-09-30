@@ -80,7 +80,7 @@ struct PPFilterChip: View {
                 .foregroundStyle(isSelected ? Color.ppOnAccent : Color.ppText)
                 .padding(.horizontal, PPSpacing.lg)
                 .frame(height: 36)
-                .background(isSelected ? Color.ppAccent400 : Color.ppSurface, in: .capsule)
+                .background(isSelected ? Color.ppAccent : Color.ppSurface, in: .capsule)
                 .overlay {
                     Capsule().strokeBorder(
                         isSelected ? .clear : Color.ppBorderStrong,
@@ -90,6 +90,7 @@ struct PPFilterChip: View {
         }
         .buttonStyle(.plain)
         .animation(.easeOut(duration: 0.15), value: isSelected)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

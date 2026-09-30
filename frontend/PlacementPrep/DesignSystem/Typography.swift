@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 extension Font {
     static let ppDisplay = Font.system(.largeTitle, design: .serif, weight: .semibold)
@@ -20,8 +21,13 @@ extension Font {
         .system(style, design: .serif, weight: .semibold)
     }
 
+    /// Serif stat numeral at a specific design size that still follows Dynamic Type.
+    /// SwiftUI has no `.system(size:relativeTo:)`, so the size is scaled on the
+    /// `.largeTitle` curve through `UIFontMetrics`, which is what `relativeTo:` does
+    /// for custom fonts. Callers inside fixed frames should add `.minimumScaleFactor`.
     static func ppStatFixed(_ size: CGFloat) -> Font {
-        .system(size: size, weight: .semibold, design: .serif)
+        let scaled = UIFontMetrics(forTextStyle: .largeTitle).scaledValue(for: size)
+        return .system(size: scaled, weight: .semibold, design: .serif)
     }
 }
 

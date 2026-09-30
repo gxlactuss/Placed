@@ -83,6 +83,9 @@ struct PPIconButton: View {
     var tint: Color = .ppText
     var fill: Color = .ppSurface
     var isGlowing: Bool = false
+    /// Spoken by VoiceOver. Icon-only, so callers should always pass one;
+    /// falls back to a generic name derived from the symbol.
+    var label: String? = nil
     let action: () -> Void
 
     var body: some View {
@@ -95,6 +98,20 @@ struct PPIconButton: View {
                 .shadow(color: isGlowing ? fill.opacity(0.6) : .clear, radius: 18)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(Text(label ?? Self.fallbackLabel(for: systemName)))
+    }
+
+    private static func fallbackLabel(for systemName: String) -> String {
+        switch systemName {
+        case "xmark", "xmark.circle", "xmark.circle.fill": "Close"
+        case "chevron.left", "arrow.left": "Back"
+        case "chevron.right", "arrow.right": "Next"
+        default:
+            systemName
+                .replacingOccurrences(of: ".fill", with: "")
+                .replacingOccurrences(of: ".", with: " ")
+                .capitalized
+        }
     }
 }
 

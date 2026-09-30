@@ -49,7 +49,7 @@ struct PPHoldToTalkButton: View {
             .overlay {
                 Image(systemName: "mic.fill")
                     .font(.system(size: diameter * 0.36, weight: .semibold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.ppGround)
             }
             .shadow(
                 color: Color.ppHard.opacity(isRecording ? 0.45 + 0.35 * clampedLevel : 0),
@@ -95,9 +95,10 @@ struct PPHoldToTalkButton: View {
                 }
             }
             .accessibilityLabel(Text("Hold to talk"))
+            .accessibilityValue(Text(isRecording ? "Recording" : "Not recording"))
             .accessibilityHint(Text(onCancel == nil
-                ? "Touch and hold to record your answer, release to send"
-                : "Touch and hold to record your answer, release to send, or slide left to discard it"))
+                ? "Double-tap to start recording your answer, double-tap again to stop and send"
+                : "Double-tap to start recording your answer, double-tap again to stop and send. While recording, swipe up or down to discard it"))
             .accessibilityAddTraits(.startsMediaSession)
             .accessibilityAction {
                 isRecording ? onStop() : onStart()

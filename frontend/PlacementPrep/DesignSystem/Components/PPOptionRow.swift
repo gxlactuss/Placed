@@ -68,6 +68,7 @@ struct PPOptionRow: View {
         .animation(PPMotion.snappy, value: state)
         .accessibilityLabel(Text("\(letter). \(text)"))
         .accessibilityValue(Text(accessibilityValue))
+        .accessibilityAddTraits(state == .correct || state == .incorrect ? .isSelected : [])
     }
 
     private var isHighlighted: Bool {
@@ -98,7 +99,7 @@ struct PPOptionRow: View {
     }
 
     private var markerForeground: Color {
-        isHighlighted ? .ppOnAccent : .ppMuted
+        isHighlighted ? .ppGround : .ppMuted
     }
 
     private var trailingSymbol: String? {
@@ -115,7 +116,7 @@ struct PPOptionRow: View {
         case .correct: "Your answer, correct"
         case .incorrect: "Your answer, incorrect"
         case .revealed: "Correct answer"
-        case .dimmed: ""
+        case .dimmed: "Not selected"
         }
     }
 }

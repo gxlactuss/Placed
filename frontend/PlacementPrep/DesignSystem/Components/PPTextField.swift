@@ -41,6 +41,7 @@ struct PPTextField: View {
                 .submitLabel(submitLabel)
                 .focused($isFocused)
                 .onSubmit(onSubmit)
+                .accessibilityLabel(label)
 
                 if isSecure {
                     Button {
@@ -50,6 +51,7 @@ struct PPTextField: View {
                             .foregroundStyle(Color.ppMuted)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(isRevealed ? "Hide password" : "Show password")
                 }
             }
             .padding(.horizontal, PPSpacing.lg)

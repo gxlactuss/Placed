@@ -13,7 +13,7 @@ struct PPCheckbox: View {
                 .fill(isOn ? Color.ppAccent : Color.ppSurface)
                 .overlay {
                     RoundedRectangle(cornerRadius: 7)
-                        .strokeBorder(isOn ? .clear : Color.ppBorderStrong, lineWidth: 1)
+                        .strokeBorder(isOn ? .clear : Color.ppMuted, lineWidth: 1)
                 }
                 .overlay {
                     if isOn {
@@ -27,6 +27,7 @@ struct PPCheckbox: View {
         .buttonStyle(.plain)
         .animation(.easeOut(duration: 0.15), value: isOn)
         .accessibilityAddTraits(isOn ? [.isButton, .isSelected] : .isButton)
+        .accessibilityValue(isOn ? "Checked" : "Not checked")
     }
 }
 
@@ -44,6 +45,7 @@ struct PPStreakDay: View {
                     Image(systemName: "checkmark")
                         .font(.system(size: 13, weight: .bold))
                         .foregroundStyle(Color.ppOnAccent)
+                        .accessibilityHidden(true)
                 } else {
                     Circle()
                         .strokeBorder(
@@ -59,6 +61,7 @@ struct PPStreakDay: View {
                 .foregroundStyle(Color.ppMuted)
         }
         .accessibilityElement(children: .combine)
+        .accessibilityValue(isComplete ? "Completed" : (isToday ? "Today, not yet completed" : "Not completed"))
     }
 }
 

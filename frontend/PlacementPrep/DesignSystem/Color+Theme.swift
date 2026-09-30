@@ -38,9 +38,10 @@ extension Color {
     static var ppBorderStrong: Color { palette.borderStrong }
 
     /// Pale yellow at 0, the theme's amber at 0.5, its red at 1.
+    /// Light themes start from a dark olive so warm/hot heat pills stay >= 4.5:1.
     static func ppHeat(_ temperature: Double) -> Color {
         let t = min(max(temperature, 0), 1)
-        let pale = palette.colorScheme == .dark ? Color(hex: 0xE8DCA8) : Color(hex: 0xDCC374)
+        let pale = palette.colorScheme == .dark ? Color(hex: 0xE8DCA8) : Color(hex: 0x735C01)
         return t < 0.5
             ? pale.ppBlend(with: palette.medium, by: t / 0.5)
             : palette.medium.ppBlend(with: palette.hard, by: (t - 0.5) / 0.5)

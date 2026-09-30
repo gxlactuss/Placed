@@ -83,7 +83,7 @@ struct PPStatRow: View {
                     .init(value: "6", label: "Interviews"),
                 ],
                 valueColor: .ppOnAccent,
-                labelColor: Color.ppOnAccent.opacity(0.65)
+                labelColor: .ppOnAccent
             )
         }
 

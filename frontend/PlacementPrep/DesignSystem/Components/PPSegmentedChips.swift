@@ -54,7 +54,7 @@ struct PPSegmentedChips<ID: Hashable>: View {
                 .background {
                     if isSelected {
                         Capsule()
-                            .fill(Color.ppAccent400)
+                            .fill(Color.ppAccent)
                             .matchedGeometryEffect(id: "chip-highlight", in: highlight)
                     } else {
                         Capsule().strokeBorder(Color.ppBorderStrong, lineWidth: 1)

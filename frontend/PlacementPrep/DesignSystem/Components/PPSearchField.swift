@@ -9,6 +9,7 @@ struct PPSearchField: View {
         HStack(spacing: PPSpacing.md) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(Color.ppMuted)
+                .accessibilityHidden(true)
 
             TextField(
                 "",
@@ -20,6 +21,7 @@ struct PPSearchField: View {
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
             .submitLabel(.search)
+            .accessibilityLabel(placeholder)
 
             if !text.isEmpty {
                 Button {
@@ -29,6 +31,7 @@ struct PPSearchField: View {
                         .foregroundStyle(Color.ppMuted)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel("Clear search")
                 .transition(.opacity)
             }
         }

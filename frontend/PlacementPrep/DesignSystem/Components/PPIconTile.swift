@@ -42,6 +42,10 @@ struct PPAvatar: View {
         .frame(width: diameter, height: diameter)
         .clipShape(.circle)
         .overlay { Circle().strokeBorder(Color.ppBorderStrong, lineWidth: 1) }
+        // Initials alone read as letters ("K S"); callers that make the avatar
+        // interactive (e.g. HomeView's account Menu) label the control instead.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Profile"))
     }
 }
 
