@@ -7,6 +7,18 @@
 - **AI mock interviews** you can answer by voice. Rounds adapt their difficulty to your answers and end with written feedback.
 - **Progress and motivation**: XP levels, daily streaks, a dashboard, and app icons you unlock as you level up.
 
+## Demo
+
+[![Watch the demo video](docs/media/demo-poster.jpg)](docs/media/demo.mp4)
+
+<p align="center">
+  <img src="docs/media/01-home.png" alt="Home screen" width="30%">
+  &nbsp;
+  <img src="docs/media/08-transcript.png" alt="Mock interview feedback" width="30%">
+  &nbsp;
+  <img src="docs/media/12-resume.png" alt="Resume review score" width="30%">
+</p>
+
 ## Features
 
 ### Quizzes
