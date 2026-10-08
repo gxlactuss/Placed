@@ -41,6 +41,7 @@ struct QuizListView: View {
                     }
                     .buttonStyle(.ppPressable)
                     .disabled(!item.isUnlocked)
+                    .accessibilityHint(item.isUnlocked ? "" : "Pass the previous quiz to unlock")
                 }
             }
             .padding(.horizontal, PPSpacing.xl)
@@ -83,6 +84,7 @@ struct QuizListView: View {
                     Image(systemName: "lock.fill")
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
+                        .accessibilityLabel("Locked")
                 }
             }
         }
@@ -95,7 +97,7 @@ struct QuizListView: View {
                 .fill(item.isPassed ? Color.ppAccent : Color.clear)
                 .overlay {
                     if !item.isPassed {
-                        Circle().strokeBorder(Color.ppBorderStrong, lineWidth: 1)
+                        Circle().strokeBorder(Color.ppMuted, lineWidth: 1)
                     }
                 }
 
@@ -103,10 +105,13 @@ struct QuizListView: View {
                 Image(systemName: "checkmark")
                     .font(.system(size: 13, weight: .bold))
                     .foregroundStyle(Color.ppOnAccent)
+                    .accessibilityLabel("Passed")
             } else {
                 Text("\(item.number)")
                     .font(.ppMicro)
                     .foregroundStyle(Color.ppMuted)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
             }
         }
         .frame(width: 32, height: 32)
@@ -115,8 +120,9 @@ struct QuizListView: View {
     private var emptyState: some View {
         VStack(spacing: PPSpacing.md) {
             Image(systemName: "tray")
-                .font(.system(size: 30))
+                .font(.title)
                 .foregroundStyle(Color.ppMuted)
+                .accessibilityHidden(true)
             Text("No quizzes authored yet")
                 .font(.ppBodyMedium)
             Text("Add a quiz JSON for \(track.title) under Resources/Quizzes, then run xcodegen generate.")

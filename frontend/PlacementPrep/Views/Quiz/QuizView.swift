@@ -99,7 +99,7 @@ struct QuizView: View {
 
     private var topBar: some View {
         HStack(spacing: PPSpacing.md) {
-            PPIconButton(systemName: "xmark", diameter: 36) { dismiss() }
+            PPIconButton(systemName: "xmark", diameter: 36, label: "Close quiz") { dismiss() }
 
             PPBadge(bank.title(for: quiz.category), tone: .neutral)
             PPBadge(quiz.difficulty.title, tone: .tinted(quiz.difficulty.accent))
@@ -132,7 +132,9 @@ struct QuizView: View {
         .frame(height: 30)
         .background(Color.ppSurface, in: .capsule)
         .layoutPriority(2)
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel("Time on this question")
+        .accessibilityValue(model.formattedQuestionTime)
     }
 
     private var saveButton: some View {
@@ -140,11 +142,13 @@ struct QuizView: View {
         return PPIconButton(
             systemName: isSaved ? "bookmark.fill" : "bookmark",
             diameter: 36,
-            tint: isSaved ? .ppAccent : .ppText
+            tint: isSaved ? .ppAccent : .ppText,
+            label: "Save question"
         ) {
             withAnimation(PPMotion.snappy) { saved.toggle(model.current.id) }
         }
-        .accessibilityLabel(isSaved ? "Saved" : "Save question")
+        .accessibilityValue(isSaved ? "Saved" : "Not saved")
+        .accessibilityAddTraits(isSaved ? .isSelected : [])
     }
 
     private var progressHeader: some View {
@@ -192,12 +196,11 @@ struct QuizView: View {
             }
 
             HStack(spacing: PPSpacing.md) {
-                PPIconButton(systemName: "chevron.left", diameter: 46) {
+                PPIconButton(systemName: "chevron.left", diameter: 46, label: "Previous question") {
                     withAnimation { model.goBack() }
                 }
                 .disabled(model.isFirstQuestion)
                 .opacity(model.isFirstQuestion ? 0.35 : 1)
-                .accessibilityLabel("Previous question")
 
                 Button("Skip") {
                     withAnimation { model.advance() }
@@ -234,6 +237,7 @@ struct QuizView: View {
         } label: {
             HStack(spacing: PPSpacing.xs) {
                 Image(systemName: "arrow.uturn.backward")
+                    .accessibilityHidden(true)
                 Text(model.skippedCount == 1
                      ? "1 question skipped · go back to it"
                      : "\(model.skippedCount) questions skipped · go back to them")

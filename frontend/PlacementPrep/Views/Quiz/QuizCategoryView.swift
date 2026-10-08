@@ -68,6 +68,7 @@ struct QuizCategoryView: View {
                     Image(systemName: "chevron.right")
                         .font(.ppMicro)
                         .foregroundStyle(Color.ppMuted)
+                        .accessibilityHidden(true)
                 }
 
                 HStack {

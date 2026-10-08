@@ -53,6 +53,7 @@ struct QuizResultsView: View {
             HStack(spacing: PPSpacing.md) {
                 Image(systemName: passed ? "lock.open.fill" : "arrow.counterclockwise")
                     .foregroundStyle(passed ? Color.ppEasy : Color.ppMedium)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: PPSpacing.xs) {
                     Text(passed ? "Passed: next quiz unlocked" : "Not passed yet")
@@ -79,6 +80,8 @@ struct QuizResultsView: View {
                     .foregroundStyle(Color.ppMuted)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Score \(model.scorePercentage) percent, \(model.correctCount) of \(model.questions.count) correct")
         .padding(.vertical, PPSpacing.sm)
     }
 
@@ -174,6 +177,7 @@ struct QuizResultsView: View {
                             Spacer()
                         }
                     }
+                    .accessibilityElement(children: .combine)
                     .opacity(revealed ? 1 : 0)
                     .offset(y: revealed ? 0 : 14)
                     .animation(

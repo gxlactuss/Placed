@@ -90,6 +90,8 @@ struct SavedQuestionsView: View {
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .font(.ppCaption)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Correct answer: \(correct.id), \(correct.text)")
                 }
 
                 Text(item.question.explanation)
@@ -104,8 +106,9 @@ struct SavedQuestionsView: View {
     private var emptyState: some View {
         VStack(spacing: PPSpacing.md) {
             Image(systemName: "bookmark")
-                .font(.system(size: 30))
+                .font(.title)
                 .foregroundStyle(Color.ppMuted)
+                .accessibilityHidden(true)
             Text("No saved questions yet")
                 .font(.ppBodyMedium)
             Text("Tap the bookmark on any quiz question to keep it here for review.")
