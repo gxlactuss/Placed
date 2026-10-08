@@ -82,6 +82,8 @@ struct CompanyReadinessCard: View {
                         .foregroundStyle(readiness.weakFamilies.isEmpty ? Color.ppMuted : Color.ppMedium)
                 }
                 .animation(PPMotion.settle, value: readiness.percent)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("\(readiness.percent) percent ready, \(readiness.solvedCount) of \(readiness.coreCount) top questions solved. \(readiness.weakLine ?? statusLine(readiness))")
 
                 if !readiness.nextUp.isEmpty {
                     VStack(alignment: .leading, spacing: PPSpacing.sm) {
@@ -98,6 +100,7 @@ struct CompanyReadinessCard: View {
                     HStack(spacing: PPSpacing.sm) {
                         Text("Open \(company.name) plan")
                         Image(systemName: "arrow.right")
+                            .accessibilityHidden(true)
                     }
                 }
                 .buttonStyle(.ppInlineLink)
@@ -174,6 +177,7 @@ struct CompanyReadinessCard: View {
                     Image(systemName: "chevron.right")
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
+                        .accessibilityHidden(true)
                 }
             }
         }

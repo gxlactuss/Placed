@@ -159,7 +159,7 @@ struct CompanyQuestionsView: View {
                 if topicFilter.isEmpty {
                     Capsule().strokeBorder(Color.ppBorderStrong, lineWidth: 1)
                 } else {
-                    Capsule().fill(Color.ppAccent400)
+                    Capsule().fill(Color.ppAccent)
                 }
             }
         }
@@ -167,6 +167,7 @@ struct CompanyQuestionsView: View {
         .fixedSize()
         .disabled(availableTopics.isEmpty)
         .accessibilityLabel("Filter by topic")
+        .accessibilityValue(topicFilter.isEmpty ? "None selected" : "\(topicFilter.count) selected")
     }
 
     private var activeTopicChips: some View {
@@ -177,12 +178,15 @@ struct CompanyQuestionsView: View {
                 } label: {
                     HStack(spacing: PPSpacing.xs) {
                         Text(topic)
-                        Image(systemName: "xmark").font(.system(size: 9, weight: .bold))
+                        Image(systemName: "xmark")
+                            .font(.system(.caption2, weight: .bold))
+                            .imageScale(.small)
                     }
                     .font(.ppMicro)
+                    .lineLimit(1)
                     .foregroundStyle(Color.ppAccent300)
                     .padding(.horizontal, PPSpacing.sm)
-                    .frame(height: 28)
+                    .frame(minHeight: 28)
                     .background(Color.ppAccentSection, in: .capsule)
                 }
                 .buttonStyle(.plain)
@@ -307,6 +311,8 @@ struct CompanyQuestionsView: View {
                         }
                     )
                 )
+                .accessibilityLabel("Solved: \(problem.title)")
+                .accessibilityHint(isSolved ? "Marks this problem as unsolved" : "Marks this problem as solved")
 
                 VStack(alignment: .leading, spacing: PPSpacing.sm) {
                     Text(problem.title)
@@ -490,6 +496,8 @@ private struct TopicFilterSheet: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(topic.name), \(topic.count) problems")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

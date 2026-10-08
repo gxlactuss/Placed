@@ -81,6 +81,7 @@ struct CompanyListView: View {
                         .foregroundStyle(Color.ppMuted)
                 }
             }
+            .accessibilityElement(children: .combine)
         }
     }
 
@@ -110,6 +111,7 @@ struct CompanyListView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.ppMicro)
                                     .foregroundStyle(Color.ppMuted)
+                                    .accessibilityHidden(true)
                             }
                         }
                     }
@@ -172,8 +174,9 @@ struct CompanyListView: View {
     private func emptyState(icon: String, title: String, detail: String?) -> some View {
         VStack(spacing: PPSpacing.md) {
             Image(systemName: icon)
-                .font(.system(size: 30))
+                .font(.title)
                 .foregroundStyle(Color.ppMuted)
+                .accessibilityHidden(true)
             Text(title)
                 .font(.ppBodyMedium)
                 .multilineTextAlignment(.center)

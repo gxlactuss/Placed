@@ -84,6 +84,7 @@ struct TopicHeatRow: View {
                 Image(systemName: item.family.symbol)
                     .foregroundStyle(Color.ppMuted)
                     .frame(width: 18)
+                    .accessibilityHidden(true)
                 Text(item.family.title)
                     .lineLimit(1)
                     .minimumScaleFactor(0.85)
