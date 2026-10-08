@@ -80,6 +80,14 @@ final class QuizProgressStore {
         persist()
     }
 
+    /// Account deletion: drops every locally stored best score and the owner marker.
+    func eraseAccountData() {
+        userId = nil
+        bestScores = [:]
+        defaults.removeObject(forKey: Self.defaultsKey)
+        defaults.removeObject(forKey: Self.ownerKey)
+    }
+
     func listItems(for quizzes: [Quiz]) -> [QuizListItem] {
         var previousPassed = true
 

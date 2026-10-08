@@ -76,6 +76,14 @@ final class SolvedStore {
         persist()
     }
 
+    /// Account deletion: drops the locally stored solved list and the owner marker.
+    func eraseAccountData() {
+        userId = nil
+        solvedIDs = []
+        defaults.removeObject(forKey: Self.defaultsKey)
+        defaults.removeObject(forKey: Self.ownerKey)
+    }
+
     func solvedCount(in problems: [DSAProblem]) -> Int {
         problems.reduce(into: 0) { total, problem in
             if solvedIDs.contains(problem.id) { total += 1 }

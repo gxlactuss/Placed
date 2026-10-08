@@ -68,6 +68,16 @@ final class InterviewSetupStore {
         style = nil
     }
 
+    /// Account deletion: removes this user's projects/skills and interview style,
+    /// then behaves like `clear()`.
+    func eraseAccountData() {
+        if let userId {
+            defaults.removeObject(forKey: Self.key(for: userId))
+            defaults.removeObject(forKey: Self.styleKey(for: userId))
+        }
+        clear()
+    }
+
     private func load(for userId: Int) -> InterviewSetup? {
         guard let data = defaults.data(forKey: Self.key(for: userId)) else { return nil }
         return try? JSONDecoder().decode(InterviewSetup.self, from: data)

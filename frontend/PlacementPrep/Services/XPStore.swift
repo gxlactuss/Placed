@@ -87,6 +87,16 @@ final class XPStore {
         pendingLevelUp = nil
     }
 
+    /// Account deletion: removes this user's XP total and ledger, then behaves like `clear()`.
+    func eraseAccountData() {
+        if let userId {
+            let key = Self.key(for: userId)
+            defaults.removeObject(forKey: Self.totalKey(key))
+            defaults.removeObject(forKey: Self.ledgerKey(key))
+        }
+        clear()
+    }
+
     private static let lastOwnerKey = "xp.lastOwner"
 
     private static func key(for userId: Int?) -> String {

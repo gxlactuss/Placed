@@ -28,6 +28,12 @@ final class ResumeReviewStore {
         reviews = []
     }
 
+    /// Account deletion: removes this user's cached reviews, then behaves like `clear()`.
+    func eraseAccountData() {
+        if let userId { defaults.removeObject(forKey: Self.key(for: userId)) }
+        clear()
+    }
+
     func cached(hash: String) -> SavedResumeReview? {
         reviews.first { $0.textHash == hash }
     }

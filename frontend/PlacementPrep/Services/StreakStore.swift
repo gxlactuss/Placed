@@ -93,6 +93,12 @@ final class StreakStore {
         activeDays = Self.load(from: defaults, key: Self.key(for: nil))
     }
 
+    /// Account deletion: removes this user's practice days, then behaves like `clear()`.
+    func eraseAccountData() {
+        if let userId { defaults.removeObject(forKey: Self.key(for: userId)) }
+        clear()
+    }
+
     private static let dayFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")

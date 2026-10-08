@@ -45,6 +45,13 @@ final class SavedQuestionsStore {
         savedIDs = Self.load(from: defaults, key: Self.key(for: nil))
     }
 
+    /// Account deletion: removes this user's saved questions, then behaves like `clear()`.
+    func eraseAccountData() {
+        if let userId { defaults.removeObject(forKey: Self.key(for: userId)) }
+        defaults.removeObject(forKey: Self.legacyKey)
+        clear()
+    }
+
     private func migrateLegacyBucket(to userId: Int) {
         guard let data = defaults.data(forKey: Self.legacyKey) else { return }
         defaults.removeObject(forKey: Self.legacyKey)
