@@ -50,8 +50,12 @@ targets:
         ENABLE_PREVIEWS: YES
         SWIFT_EMIT_LOC_STRINGS: YES
       configs:
+        # Written into Info.plist as PPBackendURL. "$()" stops "//" being read as a comment.
+        Debug:
+          PP_BACKEND_URL: "http:/$()/localhost:8000"
         Release:
           "ENABLE_HARDENED_RUNTIME[sdk=macosx*]": YES
+          PP_BACKEND_URL: "https:/$()/placementprep-api.fly.dev"
 
 schemes:
   PlacementPrep:
