@@ -57,12 +57,34 @@ targets:
           "ENABLE_HARDENED_RUNTIME[sdk=macosx*]": YES
           PP_BACKEND_URL: "https:/$()/placementprep-api.fly.dev"
 
+  PlacementPrepTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: PlacementPrepTests
+    dependencies:
+      - target: PlacementPrep
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.placementprep.app.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/PlacementPrep.app/PlacementPrep"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
 schemes:
   PlacementPrep:
     build:
       targets:
         PlacementPrep: all
+        PlacementPrepTests: [test]
     run:
       config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - PlacementPrep
+      targets:
+        - PlacementPrepTests
     archive:
       config: Release
