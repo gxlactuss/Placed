@@ -1,17 +1,23 @@
 import Foundation
 
 enum CSVParser {
+    /// Parses RFC 4180-style CSV. Rows end at "\n", "\r\n" or a lone "\r" outside quotes;
+    /// inside quotes every character (including line breaks) is kept as field content.
+    ///
+    /// Iterates Unicode scalars rather than Characters: Swift treats "\r\n" as a single
+    /// Character, and a quote or comma followed by a combining mark would merge into one
+    /// Character too, so scalar-level matching is the only reliable way to see delimiters.
     static func rows(from text: String) -> [[String]] {
         var rows: [[String]] = []
-        var field = ""
+        var field = String.UnicodeScalarView()
         var row: [String] = []
         var inQuotes = false
-        var iterator = text.makeIterator()
-        var pending: Character?
+        var iterator = text.unicodeScalars.makeIterator()
+        var pending: Unicode.Scalar?
 
         func endField() {
-            row.append(field)
-            field = ""
+            row.append(String(field))
+            field = String.UnicodeScalarView()
         }
 
         func endRow() {
@@ -22,11 +28,11 @@ enum CSVParser {
             row = []
         }
 
-        while let character = pending ?? iterator.next() {
+        while let scalar = pending ?? iterator.next() {
             pending = nil
 
             if inQuotes {
-                if character == "\"" {
+                if scalar == "\"" {
                     if let next = iterator.next() {
                         if next == "\"" {
                             field.append("\"")
@@ -38,12 +44,12 @@ enum CSVParser {
                         inQuotes = false
                     }
                 } else {
-                    field.append(character)
+                    field.append(scalar)
                 }
                 continue
             }
 
-            switch character {
+            switch scalar {
             case "\"":
                 inQuotes = true
             case ",":
@@ -51,9 +57,13 @@ enum CSVParser {
             case "\n":
                 endRow()
             case "\r":
-                break
+                // "\r\n" or a lone "\r" (classic Mac) both end the row.
+                endRow()
+                if let next = iterator.next(), next != "\n" {
+                    pending = next
+                }
             default:
-                field.append(character)
+                field.append(scalar)
             }
         }
 
@@ -70,7 +80,8 @@ enum CSVParser {
 
         return all.dropFirst().compactMap { row in
             guard row.count == header.count else { return nil }
-            return Dictionary(uniqueKeysWithValues: zip(header, row))
+            // Duplicate header names: the first column wins (uniqueKeysWithValues would trap).
+            return Dictionary(zip(header, row), uniquingKeysWith: { first, _ in first })
         }
     }
 }
