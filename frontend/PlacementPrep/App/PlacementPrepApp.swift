@@ -28,9 +28,9 @@ struct PlacementPrepApp: App {
                 case .checking:
                     LaunchSplashView()
                 case .authenticated:
-                    if let user = auth.currentUser, !user.isVerified {
-                        VerifyEmailView()
-                    } else if let user = auth.currentUser, !user.onboarded {
+                    // Email verification is off until a RESEND_API_KEY is set. To turn it
+                    // back on, show VerifyEmailView() first when !user.isVerified.
+                    if let user = auth.currentUser, !user.onboarded {
                         OnboardingView()
                             .environment(interviewSetup)
                             .environment(resumeReviews)
