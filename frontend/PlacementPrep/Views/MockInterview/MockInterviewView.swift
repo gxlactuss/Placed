@@ -231,9 +231,11 @@ struct MockInterviewView: View {
 
             FocusModeToggle(compact: true)
 
-            PPIconButton(systemName: "xmark", diameter: 36) { leaveRound() }
+            PPIconButton(systemName: "xmark", diameter: 36, label: "End round") { leaveRound() }
+                .accessibilityHint("Leaves this interview and returns to round selection")
 
             PPBadge("Q\(model.questionNumber)", tone: .accent)
+                .accessibilityLabel("Question \(model.questionNumber)")
         }
         .padding(.horizontal, PPSpacing.xl)
         .padding(.vertical, PPSpacing.lg)
@@ -304,6 +306,12 @@ struct MockInterviewView: View {
                     .background(Color.ppAccentSection, in: .rect(cornerRadius: PPRadius.lg))
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+            turn.speaker == .ai
+                ? "\(turn.isFollowUp ? "Interviewer, follow-up" : "Interviewer"): \(turn.text)"
+                : "You: \(turn.text)"
+        )
     }
 
     private var aiAvatar: some View {
@@ -323,6 +331,8 @@ struct MockInterviewView: View {
                 .background(Color.ppSurface, in: .rect(cornerRadius: PPRadius.lg))
             Spacer()
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Interviewer is thinking")
     }
 
     private var controls: some View {
@@ -362,6 +372,8 @@ struct MockInterviewView: View {
                 Text(promptText)
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, PPSpacing.xl)
             }
         }
         .frame(maxWidth: .infinity)
@@ -380,12 +392,25 @@ struct MockInterviewView: View {
             HStack(alignment: .top, spacing: PPSpacing.sm) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(Color.ppHard)
+                    .accessibilityHidden(true)
                 Text(message)
                     .font(.ppCaption)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            Button("Try again") { Task { await model.recover() } }
-                .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+            if model.canRetryAnswer {
+                HStack(spacing: PPSpacing.md) {
+                    Button("Try again") { Task { await model.retryPendingAnswer() } }
+                        .buttonStyle(PPButtonStyle(variant: .primary, expands: false))
+                        .accessibilityLabel("Try sending your answer again")
+                    Button("Record again") { model.discardPendingAnswerAndRecordAgain() }
+                        .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+                        .accessibilityLabel("Discard this answer and record a new one")
+                }
+            } else {
+                Button("Try again") { Task { await model.recover() } }
+                    .buttonStyle(PPButtonStyle(variant: .secondary, expands: false))
+                    .accessibilityLabel("Try again")
+            }
         }
         .padding(.horizontal, PPSpacing.xl)
     }
@@ -395,6 +420,7 @@ struct MockInterviewView: View {
         if model.isThinking { return "Thinking…" }
         if model.isRecording { return "Release to send · slide left to discard" }
         if !model.micAuthorized { return "Hold to allow the microphone, then answer" }
+        if let notice = model.interruptionNotice { return notice }
         if model.didDiscardRecording { return "Discarded. Hold to answer again" }
         return "Hold to answer"
     }
@@ -416,6 +442,7 @@ struct MockInterviewView: View {
         .environment(ResumeReviewStore.preview())
         .environment(StreakStore.preview())
         .environment(XPStore.preview())
+        .environment(ConnectivityMonitor.preview())
         .environment(InterviewSetupStore.preview(
             InterviewSetup(projectsSummary: nil)
         ))
