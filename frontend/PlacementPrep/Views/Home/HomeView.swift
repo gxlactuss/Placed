@@ -18,6 +18,7 @@ struct HomeView: View {
     @State private var showIconSheet = false
     @State private var showResumeSheet = false
     @State private var showTargetSheet = false
+    @State private var showAccountSheet = false
     @State private var targetProfile: CompanyProfile?
     @State private var appeared = false
 
@@ -52,6 +53,7 @@ struct HomeView: View {
         .sheet(isPresented: $showIconSheet) { AppIconPickerView() }
         .sheet(isPresented: $showResumeSheet) { ResumeReviewView() }
         .sheet(isPresented: $showTargetSheet) { TargetCompanySheet() }
+        .sheet(isPresented: $showAccountSheet) { AccountSettingsView() }
     }
 
     // MARK: - Header
@@ -79,6 +81,11 @@ struct HomeView: View {
                 } label: {
                     Label("App icon", systemImage: "app.badge")
                 }
+                Button {
+                    showAccountSheet = true
+                } label: {
+                    Label("Account", systemImage: "person.crop.circle")
+                }
                 Divider()
                 Button(role: .destructive) {
                     auth.logout()
@@ -88,6 +95,8 @@ struct HomeView: View {
             } label: {
                 PPAvatar(initials: initials(from: displayName), diameter: 44)
             }
+            .accessibilityLabel("Account and settings")
+            .accessibilityHint("Saved questions, target company, themes, app icon, account, and log out")
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(timeOfDayGreeting), \(firstName)")
@@ -171,6 +180,7 @@ struct HomeView: View {
             }
         }
         .buttonStyle(.ppPressable)
+        .accessibilityHint(targetCompany == nil ? "Choose a target company" : "Opens this company's questions")
     }
 
     private var readiness: CompanyReadiness? {
@@ -215,6 +225,7 @@ struct HomeView: View {
             }
         }
         .buttonStyle(.ppPressable)
+        .accessibilityHint("Opens app icon rewards")
         .animation(PPMotion.settle, value: xp.total)
     }
 
@@ -225,6 +236,7 @@ struct HomeView: View {
             HomeTileValue(value: "\(streak.currentStreak)", unit: streak.currentStreak == 1 ? "day" : "days")
             streakDots
         }
+        .accessibilityElement(children: .combine)
     }
 
 
