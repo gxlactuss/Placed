@@ -34,6 +34,7 @@ struct InterviewStyleSheet: View {
                                     .font(.system(size: 18))
                                     .foregroundStyle(Color.ppMuted)
                                     .frame(width: 28, height: 28)
+                                    .accessibilityHidden(true)
                             } action: {
                                 pick(.general)
                             }
@@ -98,6 +99,7 @@ struct InterviewStyleSheet: View {
                     Image(systemName: "checkmark")
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppAccent400)
+                        .accessibilityHidden(true)
                 }
             }
             .padding(PPSpacing.md)

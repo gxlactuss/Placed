@@ -106,6 +106,7 @@ struct CommonQuestionsView: View {
                             .font(.ppCaption)
                             .foregroundStyle(Color.ppMuted)
                             .rotationEffect(.degrees(isOpen ? 180 : 0))
+                            .accessibilityHidden(true)
                     }
                     .contentShape(.rect)
                 }

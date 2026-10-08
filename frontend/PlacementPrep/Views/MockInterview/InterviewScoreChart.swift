@@ -14,6 +14,16 @@ struct InterviewScoreChart: View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
             chart
                 .frame(height: 180)
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel("Score by answer")
+                .accessibilityValue(chartSummary)
+                .accessibilityActions {
+                    ForEach(answers) { answer in
+                        Button("Show answer \(answer.answer)") {
+                            select(nearest: Double(answer.answer))
+                        }
+                    }
+                }
 
             if let selected {
                 detail(selected)
@@ -23,6 +33,14 @@ struct InterviewScoreChart: View {
                     .foregroundStyle(Color.ppMuted)
             }
         }
+    }
+
+    private var chartSummary: String {
+        guard let first = answers.first, let last = answers.last else { return "No answers" }
+        let average = answers.map(\.score).reduce(0, +) / Double(answers.count)
+        let format = FloatingPointFormatStyle<Double>.number.precision(.fractionLength(1))
+        return "\(answers.count) answers, average \(average.formatted(format)) out of 10, "
+            + "from \(first.score.formatted(format)) on the first to \(last.score.formatted(format)) on the last"
     }
 
     private var hint: String {

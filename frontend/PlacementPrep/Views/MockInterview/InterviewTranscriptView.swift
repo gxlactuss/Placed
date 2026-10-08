@@ -187,6 +187,7 @@ struct InterviewTranscriptView: View {
         VStack(spacing: PPSpacing.md) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(Color.ppAccent400)
+                .accessibilityHidden(true)
             Text(message)
                 .font(.ppCaption)
                 .foregroundStyle(Color.ppMuted)

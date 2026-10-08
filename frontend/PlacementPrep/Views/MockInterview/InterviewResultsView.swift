@@ -76,6 +76,8 @@ struct InterviewResultsView: View {
                     .foregroundStyle(Color.ppMuted)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Overall rating \(feedback.rating) out of 10")
         .padding(.vertical, PPSpacing.sm)
     }
 
@@ -173,6 +175,7 @@ struct InterviewResultsView: View {
                 Image(systemName: "scope")
                     .foregroundStyle(nudge.topic.heat == .hot ? Color.ppHard : Color.ppAccent400)
                     .frame(width: 20)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: PPSpacing.xs) {
                     Text("\(nudge.company) asks \(nudge.topic.family.title) \(nudge.topic.lift.formatted(.number.precision(.fractionLength(1))))× more than average.")
                         .font(.ppBodyMedium)
@@ -205,6 +208,7 @@ struct InterviewResultsView: View {
                 HStack(alignment: .top, spacing: PPSpacing.sm) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .foregroundStyle(Color.ppAccent400)
+                        .accessibilityHidden(true)
                     Text(message)
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)

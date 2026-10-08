@@ -46,7 +46,7 @@ struct InterviewSetupView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: PPSpacing.sm)
-            PPIconButton(systemName: "xmark", diameter: 36) { dismiss() }
+            PPIconButton(systemName: "xmark", diameter: 36, label: "Close interview profile") { dismiss() }
         }
         .padding(.top, PPSpacing.lg)
     }
