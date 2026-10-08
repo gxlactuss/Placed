@@ -41,6 +41,28 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
+    /// Tile label in the role picker. `title` is what gets stored and matched, so it stays as is.
+    var shortTitle: String {
+        switch self {
+        case .frontend: "Frontend"
+        case .backend: "Backend"
+        case .fullStack: "Full-Stack Web"
+        case .javaSpring: "Java / Spring"
+        case .python: "Python"
+        case .flutter: "Flutter"
+        case .reactNative: "React Native"
+        case .android: "Android"
+        case .ios: "iOS"
+        case .cyberSecurity: "Cyber Security"
+        case .devOps: "DevOps"
+        case .cloud: "Cloud"
+        case .dataScience: "Data Science"
+        case .machineLearning: "Machine Learning"
+        case .qa: "QA & Automation"
+        case .embedded: "Embedded & IoT"
+        }
+    }
+
     var blurb: String {
         switch self {
         case .frontend: "React, CSS, the browser, accessibility"
@@ -62,23 +84,24 @@ enum CareerRole: String, CaseIterable, Identifiable, Codable, Hashable {
         }
     }
 
+    /// SF Symbols, all available on iOS 17.
     var icon: String {
         switch self {
-        case .frontend: "macwindow"
+        case .frontend: "paintbrush.pointed"            // building what users see
         case .backend: "server.rack"
-        case .fullStack: "square.stack.3d.up"
-        case .javaSpring: "cup.and.saucer"
-        case .python: "chevron.left.forwardslash.chevron.right"
-        case .flutter: "square.on.square"
-        case .reactNative: "atom"
-        case .android: "candybarphone"
-        case .ios: "iphone"
+        case .fullStack: "square.3.layers.3d"            // every layer of the stack
+        case .javaSpring: "cup.and.saucer"               // Java's coffee cup
+        case .python: "terminal"                         // scripts and the REPL
+        case .flutter: "bird"                            // Dash, Flutter's mascot
+        case .reactNative: "atom"                        // React's logo
+        case .android: "smartphone"
+        case .ios: "swift"
         case .cyberSecurity: "lock.shield"
-        case .devOps: "arrow.triangle.2.circlepath"
+        case .devOps: "infinity"                         // the DevOps loop
         case .cloud: "cloud"
-        case .dataScience: "chart.bar.xaxis"
+        case .dataScience: "chart.dots.scatter"
         case .machineLearning: "brain"
-        case .qa: "checkmark.seal"
+        case .qa: "ladybug"                              // bug hunting
         case .embedded: "cpu"
         }
     }
