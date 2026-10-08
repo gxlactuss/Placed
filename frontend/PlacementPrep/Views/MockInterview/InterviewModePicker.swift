@@ -67,6 +67,7 @@ struct InterviewModePicker: View {
 
     @Environment(FocusModeStore.self) private var focus
     @Environment(ResumeReviewStore.self) private var resumeReviews
+    @Environment(ConnectivityMonitor.self) private var connectivity
     @State private var showResumeReview = false
     @State private var showCommonQuestions = false
 
@@ -77,6 +78,7 @@ struct InterviewModePicker: View {
                 styleRow
                 resumeRow
                 if !focus.isOn { focusPrompt }
+                if !connectivity.isOnline { offlineNote }
                 ForEach(InterviewMode.allCases) { mode in
                     row(for: mode)
                 }
@@ -89,8 +91,16 @@ struct InterviewModePicker: View {
         .ppScreenBackground()
         .sheet(isPresented: $showResumeReview) { ResumeReviewView() }
         .sheet(isPresented: $showCommonQuestions) {
-            CommonQuestionsView { onPick(.hr) }
+            // Reading the questions works offline; practising them needs a live round.
+            CommonQuestionsView(onPractise: connectivity.isOnline ? { onPick(.hr) } : nil)
         }
+    }
+
+    private var offlineNote: some View {
+        Label("Interviews need a connection. Reconnect to start a round.", systemImage: "wifi.slash")
+            .font(.ppCaption)
+            .foregroundStyle(Color.ppAccent400)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     private var resumeRow: some View {
@@ -241,12 +251,16 @@ struct InterviewModePicker: View {
                     Image(systemName: lock == nil ? "chevron.right" : "lock.fill")
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)
+                        .accessibilityHidden(true)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .buttonStyle(.ppPressable)
-        .opacity(lock == nil ? 1 : 0.75)
+        .disabled(!connectivity.isOnline)
+        .opacity(connectivity.isOnline ? (lock == nil ? 1 : 0.75) : 0.5)
+        .accessibilityValue(lock == nil ? "" : "Locked")
+        .accessibilityHint(lock == nil ? "Starts this round" : "Opens your interview profile to unlock it")
     }
 }
 
@@ -264,6 +278,7 @@ struct InterviewModePicker: View {
     )
     .environment(FocusModeStore.preview())
     .environment(ResumeReviewStore.preview())
+    .environment(ConnectivityMonitor.preview())
 }
 
 #Preview("Resume skipped") {
@@ -276,4 +291,5 @@ struct InterviewModePicker: View {
     )
     .environment(FocusModeStore.preview(on: true))
     .environment(ResumeReviewStore.preview())
+    .environment(ConnectivityMonitor.preview(isOnline: false))
 }

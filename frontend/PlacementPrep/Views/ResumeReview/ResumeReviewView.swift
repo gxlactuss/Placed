@@ -95,6 +95,7 @@ struct ResumeReviewView: View {
     @Environment(ResumeReviewStore.self) private var store
     @Environment(InterviewSetupStore.self) private var setupStore
     @EnvironmentObject private var auth: AuthViewModel
+    @Environment(ConnectivityMonitor.self) private var connectivity
     @Environment(\.dismiss) private var dismiss
 
     @State private var reviewer = ResumeReviewer()
@@ -188,6 +189,9 @@ struct ResumeReviewView: View {
                     }
                     Button("Choose PDF or image") { showFileImporter = true }
                         .buttonStyle(.ppPrimary)
+                        .disabled(!connectivity.isOnline)
+                        .opacity(connectivity.isOnline ? 1 : 0.5)
+                    if !connectivity.isOnline { offlineNote }
                 }
             }
             privacyNote
@@ -220,6 +224,7 @@ struct ResumeReviewView: View {
                     HStack(alignment: .top, spacing: PPSpacing.sm) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundStyle(Color.ppAccent400)
+                            .accessibilityHidden(true)
                         Text(message)
                             .font(.ppCaption)
                             .foregroundStyle(Color.ppMuted)
@@ -228,25 +233,41 @@ struct ResumeReviewView: View {
                     }
                     Button("Try another file") { showFileImporter = true }
                         .buttonStyle(.ppInlineLink)
+                        .disabled(!connectivity.isOnline)
+                        .opacity(connectivity.isOnline ? 1 : 0.5)
+                    if !connectivity.isOnline { offlineNote }
                 }
             }
             privacyNote
         }
     }
 
-    private var footer: some View {
-        HStack(spacing: PPSpacing.md) {
-            Button("Review another version") { showFileImporter = true }
-                .buttonStyle(.ppSecondary)
+    private var offlineNote: some View {
+        Label("Resume review needs a connection. Reconnect to submit.", systemImage: "wifi.slash")
+            .font(.ppCaption)
+            .foregroundStyle(Color.ppAccent400)
+            .fixedSize(horizontal: false, vertical: true)
+    }
 
-            if let text = reviewer.resumeText {
-                Button {
-                    useForInterviews(text)
-                } label: {
-                    Text(interviewButtonTitle)
+    private var footer: some View {
+        VStack(alignment: .leading, spacing: PPSpacing.md) {
+            if !connectivity.isOnline { offlineNote }
+            HStack(spacing: PPSpacing.md) {
+                Button("Review another version") { showFileImporter = true }
+                    .buttonStyle(.ppSecondary)
+                    .disabled(!connectivity.isOnline)
+                    .opacity(connectivity.isOnline ? 1 : 0.5)
+
+                if let text = reviewer.resumeText {
+                    Button {
+                        useForInterviews(text)
+                    } label: {
+                        Text(interviewButtonTitle)
+                    }
+                    .buttonStyle(.ppPrimary)
+                    .disabled(interviewButtonDisabled || !connectivity.isOnline)
+                    .opacity(connectivity.isOnline ? 1 : 0.5)
                 }
-                .buttonStyle(.ppPrimary)
-                .disabled(interviewButtonDisabled)
             }
         }
         .padding(PPSpacing.xl)
@@ -290,5 +311,6 @@ struct ResumeReviewView: View {
     ResumeReviewView()
         .environment(ResumeReviewStore.preview())
         .environment(InterviewSetupStore.preview())
+        .environment(ConnectivityMonitor.preview())
         .environmentObject(AuthViewModel())
 }
