@@ -121,11 +121,28 @@ enum ResumeParser {
         return cleaned
     }
 
+    // emailPattern and phonePattern are copied character-for-character into
+    // backend/app/ai/redaction.py (_EMAIL, _PHONE), which re-redacts on the
+    // server. Change both together, plus the shared sample strings in
+    // ResumeParserTests.swift and backend/tests/test_resume_privacy.py.
     private static let emailPattern = #"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"#
-    private static let phonePatterns = [
-        #"(?:\+\d{1,3}[\s-]?)?\b\d{10}\b"#,
-        #"\b\d{3}[\s.-]\d{3}[\s.-]\d{4}\b"#
-    ]
+
+    /// Pieces, in order:
+    /// - `(?<![\w.,/+])` not glued to a word, decimal, 1,50,000-style group,
+    ///   date/URL slash or another "+"
+    /// - `(?:(?:\+|00)\d{1,3}SEP?|0)?` optional +CC / 00CC country code, or a
+    ///   leading 0 trunk prefix
+    /// - then one of: `\d{10,12}` contiguous; `\d{5}SEP?\d{5}` Indian 5-5;
+    ///   `(?:\(\d{3}\)|\d{3})SEP?\d{3}SEP?\d{4}` 3-3-4 with optional (area code)
+    /// - `(?![\w%]|[.,/-]\d)` not followed by a word, "%" or more number
+    ///
+    /// SEP is one space, tab, no-break space, dot or dash. Years, ranges,
+    /// CGPAs, percentages, versions, PIN codes and dates never reach 10 digits
+    /// in one of these groupings, so they survive.
+    private static let phonePattern =
+        #"(?<![\w.,/+])(?:(?:\+|00)\d{1,3}[ \t .-]?|0)?"#
+        + #"(?:\d{10,12}|\d{5}[ \t .-]?\d{5}|(?:\(\d{3}\)|\d{3})[ \t .-]?\d{3}[ \t .-]?\d{4})"#
+        + #"(?![\w%]|[.,/-]\d)"#
 
     private static let profileLinkPattern =
         #"(?i)\b(?:https?://)?(?:www\.)?(?:linkedin\.com|github\.com|gitlab\.com|leetcode\.com|behance\.net)/\S*"#
@@ -139,7 +156,7 @@ enum ResumeParser {
         }
         return ResumeDeviceSignals(
             hasEmail: contains(emailPattern),
-            hasPhone: phonePatterns.contains(where: contains),
+            hasPhone: contains(phonePattern),
             hasLinks: contains(profileLinkPattern)
                 || text.localizedCaseInsensitiveContains("linkedin")
                 || text.localizedCaseInsensitiveContains("github"),
@@ -178,7 +195,7 @@ enum ResumeParser {
 
     private static func redact(_ text: String, limit: Int) -> String {
         var redacted = text
-        for pattern in [emailPattern] + phonePatterns {
+        for pattern in [emailPattern, phonePattern] {
             redacted = redacted.replacingOccurrences(
                 of: pattern,
                 with: "[redacted]",
