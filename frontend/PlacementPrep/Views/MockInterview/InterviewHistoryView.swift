@@ -9,6 +9,18 @@ struct InterviewHistoryView: View {
     @State private var errorMessage: String?
     @State private var selected: InterviewSummary?
 
+    // Pagination. `nextOffset` counts raw rows the server has handed us (before
+    // de-duplication), so a new interview landing at the top mid-scroll only
+    // causes an overlap — which `append` drops — never a gap.
+    private static let pageSize = 30
+    @State private var nextOffset = 0
+    @State private var hasMore = true
+    @State private var isLoadingMore = false
+    @State private var loadMoreFailed = false
+    /// Bumped on every reset so a page request still in flight from before the
+    /// reset can't append stale rows to the fresh list.
+    @State private var generation = 0
+
     var body: some View {
         NavigationStack {
             Group {
@@ -45,6 +57,17 @@ struct InterviewHistoryView: View {
                 ForEach(interviews) { interview in
                     Button { selected = interview } label: { row(interview) }
                         .buttonStyle(.ppPressable)
+                        .onAppear {
+                            if interview.id == interviews.last?.id {
+                                Task { await loadMore() }
+                            }
+                        }
+                }
+
+                if isLoadingMore {
+                    loadingMoreRow
+                } else if loadMoreFailed {
+                    loadMoreFailedRow
                 }
             }
             .padding(PPSpacing.xl)
@@ -69,7 +92,7 @@ struct InterviewHistoryView: View {
                         .foregroundStyle(Color.ppMuted)
                     HStack(spacing: PPSpacing.sm) {
                         Text(interview.startedAt.formatted(date: .abbreviated, time: .shortened))
-                        Text("·")
+                        Text("·").accessibilityHidden(true)
                         Text("^[\(interview.answerCount) answer](inflect: true)")
                     }
                     .font(.ppMicro)
@@ -83,6 +106,7 @@ struct InterviewHistoryView: View {
                         Text("\(rating)/10")
                             .font(.ppBodyMedium)
                             .foregroundStyle(tint(for: rating))
+                            .accessibilityLabel("Rated \(rating) out of 10")
                     }
                     if interview.status == .abandoned {
                         PPBadge("Ended early", tone: .neutral)
@@ -91,6 +115,40 @@ struct InterviewHistoryView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+
+    private var loadingMoreRow: some View {
+        HStack(spacing: PPSpacing.sm) {
+            ProgressView().tint(Color.ppAccent400)
+            Text("Loading more…")
+                .font(.ppCaption)
+                .foregroundStyle(Color.ppMuted)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, PPSpacing.md)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Loading more interviews")
+    }
+
+    private var loadMoreFailedRow: some View {
+        Button {
+            Task { await loadMore() }
+        } label: {
+            HStack(spacing: PPSpacing.sm) {
+                Image(systemName: "arrow.clockwise")
+                Text("Couldn't load more. Tap to retry")
+            }
+            .font(.ppCaption)
+            .foregroundStyle(Color.ppMuted)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, PPSpacing.md)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Couldn't load more interviews")
+        .accessibilityHint("Double-tap to try again")
+        .accessibilityAddTraits(.isButton)
     }
 
     private func tint(for rating: Int) -> Color {
@@ -127,6 +185,7 @@ struct InterviewHistoryView: View {
         VStack(spacing: PPSpacing.md) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(Color.ppAccent400)
+                .accessibilityHidden(true)
             Text(message)
                 .font(.ppCaption)
                 .foregroundStyle(Color.ppMuted)
@@ -138,14 +197,68 @@ struct InterviewHistoryView: View {
         .padding(PPSpacing.xxl)
     }
 
+    /// Resets to page one. Drives the full-screen loading / error / empty states.
     private func load() async {
+        generation += 1
+        let token = generation
         isLoading = true
         errorMessage = nil
-        defer { isLoading = false }
+        isLoadingMore = false
+        loadMoreFailed = false
         do {
-            interviews = try await NetworkManager.shared.request(path: "/api/interview")
+            let page = try await fetchPage(offset: 0)
+            guard token == generation else { return }
+            interviews = []
+            append(page)
+            nextOffset = page.count
+            hasMore = page.count >= Self.pageSize
         } catch {
+            guard token == generation else { return }
+            interviews = []
             errorMessage = "Couldn't load your saved interviews. Check your connection and try again."
         }
+        isLoading = false
+    }
+
+    /// Fetches the next page. On failure the loaded rows stay and an inline
+    /// retry row is shown instead of the full-screen error.
+    private func loadMore() async {
+        // Runs on the main actor, so this check-then-set can't interleave.
+        guard hasMore, !isLoading, !isLoadingMore else { return }
+        let token = generation
+        isLoadingMore = true
+        loadMoreFailed = false
+        do {
+            let page = try await fetchPage(offset: nextOffset)
+            guard token == generation else { return }
+            let added = append(page)
+            nextOffset += page.count
+            hasMore = page.count >= Self.pageSize
+            isLoadingMore = false
+            // A page made entirely of rows we already have leaves the last row
+            // unchanged, so its onAppear won't fire again; keep going ourselves.
+            if added == 0 && hasMore {
+                await loadMore()
+            }
+        } catch {
+            guard token == generation else { return }
+            loadMoreFailed = true
+            isLoadingMore = false
+        }
+    }
+
+    private func fetchPage(offset: Int) async throws -> [InterviewSummary] {
+        try await NetworkManager.shared.request(
+            path: "/api/interview?limit=\(Self.pageSize)&offset=\(offset)"
+        )
+    }
+
+    /// Appends rows not already present (by id); returns how many were added.
+    @discardableResult
+    private func append(_ page: [InterviewSummary]) -> Int {
+        var seen = Set(interviews.map(\.id))
+        let fresh = page.filter { seen.insert($0.id).inserted }
+        interviews.append(contentsOf: fresh)
+        return fresh.count
     }
 }
