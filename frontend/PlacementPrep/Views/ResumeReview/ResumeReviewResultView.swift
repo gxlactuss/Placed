@@ -60,6 +60,8 @@ struct ResumeReviewResultView: View {
                         .foregroundStyle(Color.ppMuted)
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Resume score \(review.overall) out of 100")
             .padding(.vertical, PPSpacing.sm)
 
             if let delta {
@@ -74,9 +76,11 @@ struct ResumeReviewResultView: View {
         let change = review.overall - previousScore
         if change > 0 {
             return Text("▲ \(change) since your last review").foregroundStyle(Color.ppEasy)
+                .accessibilityLabel("Up \(change) points since your last review")
         }
         if change < 0 {
             return Text("▼ \(-change) since your last review").foregroundStyle(Color.ppHard)
+                .accessibilityLabel("Down \(-change) points since your last review")
         }
         return Text("Same score as your last review").foregroundStyle(Color.ppMuted)
     }
@@ -193,6 +197,7 @@ struct ResumeReviewResultView: View {
                         .font(.ppMicro)
                         .foregroundStyle(Color.ppAccent400)
                         .padding(.top, 2)
+                        .accessibilityLabel("Fix")
                     Text(item.fix)
                         .font(.ppCaption)
                         .foregroundStyle(Color.ppMuted)

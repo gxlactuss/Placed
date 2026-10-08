@@ -31,11 +31,13 @@ struct HomeTileSymbol: View {
 
     let name: String
 
+    @ScaledMetric(relativeTo: .caption2) private var side: CGFloat = 18
+
     var body: some View {
         Image(systemName: name)
-            .font(.system(size: 13, weight: .semibold))
+            .font(.system(.footnote, weight: .semibold))
             .foregroundStyle(Color.ppAccent400)
-            .frame(width: 18, height: 18)
+            .frame(width: side, height: side)
             .accessibilityHidden(true)
     }
 }

@@ -123,6 +123,10 @@ private struct AppIconRow: View {
             }
         }
         .buttonStyle(.ppPressable)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(level.title) icon")
+        .accessibilityValue(isApplied ? "In use" : (isUnlocked ? subtitle : "Locked, \(subtitle)"))
+        .accessibilityAddTraits(isApplied ? [.isButton, .isSelected] : .isButton)
         .opacity(isUnlocked ? 1 : 0.55)
         .overlay {
             if isApplied {
@@ -165,7 +169,7 @@ private struct AppIconRow: View {
     private var trailingMark: some View {
         ZStack {
             Circle()
-                .strokeBorder(isApplied ? Color.clear : Color.ppBorderStrong, lineWidth: 1.5)
+                .strokeBorder(isApplied ? Color.clear : Color.ppMuted, lineWidth: 1.5)
             if isApplied {
                 Circle().fill(Color.ppAccent)
                 Image(systemName: "checkmark")

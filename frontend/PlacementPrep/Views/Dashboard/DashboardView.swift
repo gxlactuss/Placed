@@ -73,10 +73,11 @@ struct DashboardView: View {
         if let milestone, xp.pendingLevelUp == nil {
             HStack(spacing: PPSpacing.md) {
                 Image(systemName: "scope")
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.system(.body, weight: .medium))
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(milestone.reason).font(.ppBodyMedium)
-                    Text("+\(milestone.points) XP").font(.ppMicro).opacity(0.8)
+                    Text("+\(milestone.points) XP").font(.ppMicro)
                 }
                 Spacer(minLength: PPSpacing.sm)
             }
@@ -87,6 +88,9 @@ struct DashboardView: View {
             .padding(.horizontal, PPSpacing.xl)
             .transition(.move(edge: .top).combined(with: .opacity))
             .onTapGesture { withAnimation(PPMotion.settle) { self.milestone = nil } }
+            .accessibilityElement(children: .combine)
+            .accessibilityHint("Double-tap to dismiss")
+            .accessibilityAction { withAnimation(PPMotion.settle) { self.milestone = nil } }
         }
     }
 
@@ -123,8 +127,9 @@ private struct XPLevelUpBanner: View {
     var body: some View {
         HStack(spacing: PPSpacing.md) {
             Image(systemName: "sparkles")
-                .font(.system(size: 18, weight: .medium))
+                .font(.system(.body, weight: .medium))
                 .foregroundStyle(Color.ppOnAccent)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(level.title): new tier")
@@ -146,6 +151,8 @@ private struct XPLevelUpBanner: View {
                     .frame(width: 28, height: 28)
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("Dismiss")
+            .accessibilityShowsLargeContentViewer()
         }
         .padding(.horizontal, PPSpacing.lg)
         .padding(.vertical, PPSpacing.md)
@@ -165,5 +172,6 @@ private struct XPLevelUpBanner: View {
         .environment(FocusModeStore.preview())
         .environment(InterviewSetupStore.preview())
         .environment(ResumeReviewStore.preview())
+        .environment(ConnectivityMonitor.preview())
         .environmentObject(AuthViewModel())
 }

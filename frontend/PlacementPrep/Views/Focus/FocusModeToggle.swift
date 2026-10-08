@@ -22,21 +22,24 @@ struct FocusModeToggle: View {
         .accessibilityLabel("Focus mode")
         .accessibilityValue(focus.isOn ? "On" : "Off")
         .accessibilityAddTraits(focus.isOn ? [.isSelected, .isButton] : .isButton)
+        .accessibilityShowsLargeContentViewer()
         .sheet(isPresented: $showBriefing) { FocusModeBriefing() }
     }
 
     private var pill: some View {
         HStack(spacing: PPSpacing.xs) {
             icon
-            Text("Focus").font(.ppCaption)
+            Text("Focus").font(.ppCaption).lineLimit(1)
         }
         .padding(.horizontal, PPSpacing.md)
-        .frame(height: 36)
+        .frame(minHeight: 36)
     }
 
+    // The pill glyph scales with its "Focus" label; the compact variant sits in a
+    // fixed 36pt circle, so it stays at 14pt and relies on the Large Content Viewer.
     private var icon: some View {
         Image(systemName: focus.isOn ? "moon.zzz.fill" : "moon.zzz")
-            .font(.system(size: 14, weight: .medium))
+            .font(compact ? .system(size: 14, weight: .medium) : .system(.subheadline, weight: .medium))
     }
 
     private var foreground: Color { focus.isOn ? .ppAccent400 : .ppMuted }

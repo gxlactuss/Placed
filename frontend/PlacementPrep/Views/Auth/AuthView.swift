@@ -84,6 +84,7 @@ struct AuthView: View {
             HStack(alignment: .top, spacing: PPSpacing.sm) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(Color.ppHard)
+                    .accessibilityHidden(true)
                 Text(message)
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppText)

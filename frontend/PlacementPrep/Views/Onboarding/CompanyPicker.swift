@@ -53,6 +53,7 @@ struct CompanyPicker: View {
                         .font(.system(size: 22))
                         .foregroundStyle(Color.ppMuted)
                         .frame(width: 28, height: 28)
+                        .accessibilityHidden(true)
                 } action: {
                     if otherName.isEmpty { otherName = query.trimmingCharacters(in: .whitespaces) }
                     pick(.other)
@@ -120,6 +121,7 @@ struct CompanyPicker: View {
                 Image(systemName: "ellipsis.circle")
                     .font(.system(size: 26))
                     .foregroundStyle(Color.ppMuted)
+                    .accessibilityHidden(true)
                 Text("Other").font(.ppHeadline)
             }
             Spacer(minLength: PPSpacing.sm)

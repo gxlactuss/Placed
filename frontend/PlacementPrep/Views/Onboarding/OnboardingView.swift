@@ -243,6 +243,7 @@ struct OnboardingView: View {
             teaserCard {
                 Image(systemName: "clock")
                     .foregroundStyle(Color.ppMuted)
+                    .accessibilityHidden(true)
                 Text("We'll score your resume later. You can run it from Home.")
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
@@ -265,6 +266,7 @@ struct OnboardingView: View {
                 Spacer(minLength: 0)
             }
         }
+        .accessibilityElement(children: .combine)
         .transition(.opacity.combined(with: .move(edge: .top)))
         .animation(PPMotion.snappy, value: reviewer.phase)
     }
@@ -275,6 +277,7 @@ struct OnboardingView: View {
             Image(systemName: unlocked ? "checkmark.circle.fill" : mode.icon)
                 .foregroundStyle(unlocked ? Color.ppEasy : Color.ppMuted)
                 .frame(width: 20)
+                .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
                 Text(mode.title).font(.ppBodyMedium)
                 Text(mode.subtitle)
@@ -284,6 +287,8 @@ struct OnboardingView: View {
             }
         }
         .animation(PPMotion.snappy, value: unlocked)
+        .accessibilityElement(children: .combine)
+        .accessibilityValue(unlocked ? "Unlocked" : "Locked")
     }
 
     private var themeStep: some View {
@@ -322,6 +327,8 @@ struct OnboardingView: View {
             }
         }
         .buttonStyle(.plain)
+        .accessibilityLabel("\(option.name) theme")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
     @ViewBuilder
@@ -330,6 +337,7 @@ struct OnboardingView: View {
             HStack(alignment: .top, spacing: PPSpacing.sm) {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .foregroundStyle(Color.ppHard)
+                    .accessibilityHidden(true)
                 Text(message)
                     .font(.ppCaption)
                     .fixedSize(horizontal: false, vertical: true)

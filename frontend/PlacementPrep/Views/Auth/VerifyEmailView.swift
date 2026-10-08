@@ -81,6 +81,7 @@ struct VerifyEmailView: View {
     private func noticeRow(icon: String, tint: Color, text: String) -> some View {
         HStack(alignment: .top, spacing: PPSpacing.sm) {
             Image(systemName: icon).foregroundStyle(tint)
+                .accessibilityHidden(true)
             Text(text)
                 .font(.ppCaption)
                 .fixedSize(horizontal: false, vertical: true)

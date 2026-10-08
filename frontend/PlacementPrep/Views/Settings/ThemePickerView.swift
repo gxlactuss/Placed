@@ -92,7 +92,7 @@ private struct ThemeOptionRow: View {
                     ZStack {
                         Circle()
                             .strokeBorder(
-                                isSelected ? Color.clear : Color.ppBorderStrong,
+                                isSelected ? Color.clear : Color.ppMuted,
                                 lineWidth: 1.5
                             )
                         if isSelected {
@@ -107,6 +107,8 @@ private struct ThemeOptionRow: View {
             }
         }
         .buttonStyle(.ppPressable)
+        .accessibilityLabel("\(theme.name) theme")
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
         .overlay {
             if isSelected {
                 RoundedRectangle(cornerRadius: PPRadius.lg)

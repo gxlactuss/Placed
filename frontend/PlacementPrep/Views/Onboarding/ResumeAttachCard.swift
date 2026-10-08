@@ -175,6 +175,7 @@ struct ResumeAttachCard: View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
             HStack(spacing: PPSpacing.sm) {
                 Image(systemName: "checkmark.circle.fill").foregroundStyle(Color.ppEasy)
+                    .accessibilityHidden(true)
                 Text("Projects picked up").font(.ppHeadline)
                 Spacer(minLength: 0)
             }
@@ -195,6 +196,7 @@ struct ResumeAttachCard: View {
         VStack(alignment: .leading, spacing: PPSpacing.md) {
             HStack(alignment: .top, spacing: PPSpacing.sm) {
                 Image(systemName: icon).foregroundStyle(Color.ppAccent400)
+                    .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: PPSpacing.xs) {
                     Text(title).font(.ppHeadline)
                     Text(detail)
