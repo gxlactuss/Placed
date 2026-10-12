@@ -33,7 +33,8 @@ def init_database(db_path: Path = DEFAULT_DB_PATH, schema_path: Path = DEFAULT_S
     print(f"Initializing database at: {db_path}")
     print(f"Using schema file: {schema_path}")
 
-    with sqlite3.connect(db_path) as conn:
+    conn = sqlite3.connect(db_path)
+    try:
         cursor = conn.cursor()
 
         # Step 1: Explicitly enable foreign key constraints
@@ -75,6 +76,8 @@ def init_database(db_path: Path = DEFAULT_DB_PATH, schema_path: Path = DEFAULT_S
         if fk_violations:
             raise RuntimeError(f"Foreign key violations found: {fk_violations}")
         print("\n[OK] Schema integrity check passed with zero violations.")
+    finally:
+        conn.close()
 
     print(f"\nDatabase initialization complete: {db_path}\n")
 
