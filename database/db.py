@@ -6,6 +6,8 @@ from alembic.config import Config
 from sqlalchemy import Connection, inspect
 from sqlmodel import Session, create_engine
 
+import database.models  # noqa: F401 (registers every table on SQLModel.metadata)
+
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./placement_prep.db")
 
 _connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
