@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import sqlite3
-from typing import Generator, Tuple
-import pytest
+from typing import Tuple
 from sqlalchemy.pool import StaticPool
 from sqlmodel import SQLModel, create_engine
 from sqlalchemy.engine import Engine
@@ -30,12 +29,3 @@ def get_in_memory_db() -> Tuple[Engine, sqlite3.Connection]:
     raw_conn.execute("PRAGMA foreign_keys = ON;")
     return engine, raw_conn
 
-
-@pytest.fixture
-def memory_db() -> Generator[sqlite3.Connection, None, None]:
-    """Pytest fixture providing an isolated in-memory SQLite database."""
-    engine, conn = get_in_memory_db()
-    try:
-        yield conn
-    finally:
-        engine.dispose()

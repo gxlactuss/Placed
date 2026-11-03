@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import unittest
-from backend.tests.db_test_fixtures import get_in_memory_db
+from tests.db_test_fixtures import get_in_memory_db
 
 
 class Test01AllTablesExist(unittest.TestCase):

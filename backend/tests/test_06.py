@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import sqlite3
 import unittest
-from backend.tests.db_test_fixtures import get_in_memory_db
+from tests.db_test_fixtures import get_in_memory_db
 
 
 class Test06ForeignKeyConstraint(unittest.TestCase):

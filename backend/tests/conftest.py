@@ -1,6 +1,6 @@
 import os
 import pytest
-from backend.tests.db_test_fixtures import get_in_memory_db
+from tests.db_test_fixtures import get_in_memory_db
 
 # Ensure JWT secret is set for tests
 os.environ.setdefault("JWT_SECRET_KEY", "test-only-jwt-secret-not-for-real-use-0123456789")

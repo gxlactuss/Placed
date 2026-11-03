@@ -27,7 +27,6 @@ def upgrade() -> None:
         sa.Column("name", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("is_partner_recruiter", sa.Boolean(), nullable=False, server_default=sa.text("0")),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("slug", name="uq_company_slug"),
     )
     op.create_index("ix_Company_slug", "Company", ["slug"], unique=True)
 
@@ -39,7 +38,6 @@ def upgrade() -> None:
         sa.Column("difficulty", sqlmodel.sql.sqltypes.AutoString(), nullable=False),
         sa.Column("url", sqlmodel.sql.sqltypes.AutoString(), nullable=True),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("slug", name="uq_problem_slug"),
     )
     op.create_index("ix_Problem_slug", "Problem", ["slug"], unique=True)
 
@@ -71,7 +69,6 @@ def upgrade() -> None:
         sa.Column("questions_to_pass", sa.Integer(), nullable=True),
         sa.CheckConstraint("difficulty IN ('Easy', 'Medium', 'Hard')", name="ck_quiz_difficulty"),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("slug", name="uq_quiz_slug"),
     )
     op.create_index("ix_Quiz_slug", "Quiz", ["slug"], unique=True)
 
@@ -83,7 +80,7 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["quiz_id"], ["Quiz.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("idx_question_quiz_id", "Question", ["quiz_id"], unique=False)
+    op.create_index("ix_Question_quiz_id", "Question", ["quiz_id"], unique=False)
 
     op.create_table(
         "Option",
@@ -95,15 +92,19 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["question_id"], ["Question.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_index("idx_option_question_id", "Option", ["question_id"], unique=False)
+    op.create_index("ix_Option_question_id", "Option", ["question_id"], unique=False)
 
     with op.batch_alter_table("quiz_results", schema=None) as batch_op:
         batch_op.add_column(sa.Column("score", sa.Integer(), nullable=True))
         batch_op.add_column(sa.Column("submitted_at", sa.DateTime(), nullable=True))
+        for column in ("total_questions", "correct_answers", "score_percentage"):
+            batch_op.alter_column(column, existing_type=sa.Integer(), nullable=True)
 
 
 def downgrade() -> None:
     with op.batch_alter_table("quiz_results", schema=None) as batch_op:
+        for column in ("total_questions", "correct_answers", "score_percentage"):
+            batch_op.alter_column(column, existing_type=sa.Integer(), nullable=False)
         batch_op.drop_column("submitted_at")
         batch_op.drop_column("score")
 

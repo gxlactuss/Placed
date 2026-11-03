@@ -1,6 +1,7 @@
 from typing import Optional
 
 import sqlalchemy as sa
+from sqlalchemy import Index
 from sqlmodel import Field, SQLModel
 
 
@@ -29,6 +30,7 @@ class Problem(SQLModel, table=True):
 
 class CompanyProblem(SQLModel, table=True):
     __tablename__ = "CompanyProblem"
+    __table_args__ = (Index("idx_company_problem_problem_id", "problem_id"),)
 
     company_id: int = Field(
         foreign_key="Company.id",
