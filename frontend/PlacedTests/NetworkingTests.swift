@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import PlacementPrep
+@testable import Placed
 
 @Suite("LenientDate")
 struct LenientDateTests {
@@ -58,7 +58,7 @@ struct ResolveBaseURLTests {
 
     /// Runs `body` against a throwaway defaults suite so nothing leaks into the app's defaults.
     private func withDefaults(_ value: String?, _ body: (UserDefaults) -> Void) {
-        let name = "PlacementPrepTests.\(UUID().uuidString)"
+        let name = "PlacedTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: name)!
         defer { defaults.removePersistentDomain(forName: name) }
         if let value { defaults.set(value, forKey: "PPBackendURL") }
@@ -117,7 +117,7 @@ struct ResolveBaseURLTests {
     }
 
     @Test func nonStringValueFallsBack() {
-        let name = "PlacementPrepTests.\(UUID().uuidString)"
+        let name = "PlacedTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: name)!
         defer { defaults.removePersistentDomain(forName: name) }
         defaults.set(["https://example.com"], forKey: "PPBackendURL")

@@ -269,7 +269,7 @@ struct InterviewModePicker: View {
         role: "Backend Engineer",
         setup: InterviewSetup(
             projectsSummary: nil,
-            projectsText: "PlacementPrep: SwiftUI + FastAPI",
+            projectsText: "Placed: SwiftUI + FastAPI",
             skills: "Go, Redis, Docker"
         ),
         onPick: { _ in },

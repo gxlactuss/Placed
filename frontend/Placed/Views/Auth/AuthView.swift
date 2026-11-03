@@ -34,7 +34,7 @@ struct AuthView: View {
 
     private var brand: some View {
         VStack(alignment: .leading, spacing: PPSpacing.sm) {
-            Text("PlacementPrep")
+            Text("Placed")
                 .font(.ppDisplay)
             Text(mode == .login
                  ? "Welcome back. Let's get you interview-ready."

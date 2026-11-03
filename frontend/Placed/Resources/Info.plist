@@ -13,7 +13,7 @@
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Placement Prep</string>
+	<string>Placed</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -28,7 +28,7 @@
 		<true/>
 	</dict>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Placement Prep needs microphone access so you can speak your answers during mock interviews.</string>
+	<string>Placed needs microphone access so you can speak your answers during mock interviews.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

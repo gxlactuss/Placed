@@ -18,7 +18,7 @@ from app.content.company_expectations import DATA_FILE, company_names, find_comp
 from app.main import app
 from database.models.user import User
 
-BUNDLED_CSVS = Path(__file__).resolve().parents[2] / "frontend/PlacementPrep/Resources/Companies"
+BUNDLED_CSVS = Path(__file__).resolve().parents[2] / "frontend/Placed/Resources/Companies"
 
 TRANSCRIPT = [
     {"speaker": "ai", "text": "Tell me about a disagreement.", "level": 3, "topic": "Teamwork"},

@@ -33,7 +33,7 @@ struct OnboardingView: View {
 
         var subtitle: String {
             switch self {
-            case .name: "Five quick steps so Placement Prep can tailor your practice."
+            case .name: "Five quick steps so Placed can tailor your practice."
             case .role: "Your mock interviews and one extra quiz are built around this. You can change it later."
             case .company: "Pick the company you want most. We'll show what they ask and track how ready you are."
             case .resume: "The interviewer will ask about your own projects and the stack you've listed. Optional: you can add it later from the Interview tab."

@@ -172,7 +172,7 @@ def main():
         sys.exit("Needs macOS: uses sips, and qlmanage for SVG fallback.")
 
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-    out = os.path.join(root, "PlacementPrep", "Resources", "Logos")
+    out = os.path.join(root, "Placed", "Resources", "Logos")
     os.makedirs(out, exist_ok=True)
 
     only = set(sys.argv[1:])

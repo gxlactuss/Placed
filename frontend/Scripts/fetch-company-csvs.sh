@@ -21,7 +21,7 @@ Usage: fetch-company-csvs.sh [--force] COMPANY...
        fetch-company-csvs.sh --all
 
 Copies "<COMPANY>/5. All.csv" from liquidslr/leetcode-company-wise-problems into
-PlacementPrep/Resources/Companies/<COMPANY>.csv.
+Placed/Resources/Companies/<COMPANY>.csv.
 
   --force   overwrite a company that is already bundled (loses its merged and curated rows)
   --all     copy every upstream company over the bundled lists, after a confirmation prompt
@@ -31,7 +31,7 @@ EOF
 
 SCRIPTS="$(cd "$(dirname "$0")" && pwd)"
 REPO="${COMPANIES_REPO:-https://github.com/liquidslr/leetcode-company-wise-problems.git}"
-DEST="${COMPANIES_DIR:-$SCRIPTS/../PlacementPrep/Resources/Companies}"
+DEST="${COMPANIES_DIR:-$SCRIPTS/../Placed/Resources/Companies}"
 NOT_BUNDLED="$SCRIPTS/companies-not-bundled.txt"
 
 force=0

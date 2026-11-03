@@ -9,7 +9,7 @@ import re
 import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-QUIZZES = os.path.join(ROOT, "PlacementPrep", "Resources", "Quizzes", "*.json")
+QUIZZES = os.path.join(ROOT, "Placed", "Resources", "Quizzes", "*.json")
 
 IDS = ["A", "B", "C", "D"]
 

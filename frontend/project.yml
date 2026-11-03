@@ -1,4 +1,4 @@
-name: PlacementPrep
+name: Placed
 
 options:
   bundleIdPrefix: com.placementprep
@@ -16,31 +16,31 @@ settings:
     CURRENT_PROJECT_VERSION: "1"
 
 targets:
-  PlacementPrep:
+  Placed:
     type: application
     platform: auto
     supportedDestinations: [iOS, macCatalyst]
     sources:
-      - path: PlacementPrep
+      - path: Placed
         excludes:
           - "Resources/Info.plist"
-          - "Resources/PlacementPrep.entitlements"
+          - "Resources/Placed.entitlements"
           - "Resources/Companies"
           - "Resources/Quizzes"
           - "Resources/Logos"
-      - path: PlacementPrep/Resources/Companies
+      - path: Placed/Resources/Companies
         type: folder
-      - path: PlacementPrep/Resources/Quizzes
+      - path: Placed/Resources/Quizzes
         type: folder
-      - path: PlacementPrep/Resources/Logos
+      - path: Placed/Resources/Logos
         type: folder
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.placementprep.app
-        PRODUCT_NAME: PlacementPrep
-        INFOPLIST_FILE: PlacementPrep/Resources/Info.plist
+        PRODUCT_NAME: Placed
+        INFOPLIST_FILE: Placed/Resources/Info.plist
         GENERATE_INFOPLIST_FILE: NO
-        CODE_SIGN_ENTITLEMENTS: PlacementPrep/Resources/PlacementPrep.entitlements
+        CODE_SIGN_ENTITLEMENTS: Placed/Resources/Placed.entitlements
         "CODE_SIGN_STYLE[sdk=macosx*]": Manual
         "CODE_SIGN_IDENTITY[sdk=macosx*]": "-"
         TARGETED_DEVICE_FAMILY: "1,2"
@@ -57,34 +57,34 @@ targets:
           "ENABLE_HARDENED_RUNTIME[sdk=macosx*]": YES
           PP_BACKEND_URL: "https:/$()/placementprep-api.fly.dev"
 
-  PlacementPrepTests:
+  PlacedTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: PlacementPrepTests
+      - path: PlacedTests
     dependencies:
-      - target: PlacementPrep
+      - target: Placed
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.placementprep.app.tests
         GENERATE_INFOPLIST_FILE: YES
-        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/PlacementPrep.app/PlacementPrep"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Placed.app/Placed"
         BUNDLE_LOADER: "$(TEST_HOST)"
 
 schemes:
-  PlacementPrep:
+  Placed:
     build:
       targets:
-        PlacementPrep: all
-        PlacementPrepTests: [test]
+        Placed: all
+        PlacedTests: [test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - PlacementPrep
+        - Placed
       targets:
-        - PlacementPrepTests
+        - PlacedTests
     archive:
       config: Release

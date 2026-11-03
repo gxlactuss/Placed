@@ -1,6 +1,6 @@
-# PPIP Improvement Plan — 4 Sprints
+# Placed Improvement Plan — 4 Sprints
 
-Scope reviewed: `backend/` (FastAPI + SQLModel), `database/`, `frontend/PlacementPrep` (SwiftUI). Assumes 2-week sprints, one small team. Each item is tagged with the file(s) that show the issue today.
+Scope reviewed: `backend/` (FastAPI + SQLModel), `database/`, `frontend/Placed` (SwiftUI). Assumes 2-week sprints, one small team. Each item is tagged with the file(s) that show the issue today.
 
 ---
 
@@ -35,7 +35,7 @@ Checks: backend 37/37 tests pass, `alembic check` reports no drift, and the iOS 
 | S1-T1 fixed OTP | Yes | Default is now `""`; startup fails if a dev code is set together with `RESEND_API_KEY` |
 | S1-T2 JWT default | Yes | No default; startup refuses a missing, placeholder or short (<32 character) secret; tests supply their own |
 | 2.1 Backend route tests | Yes | New tests for auth/OAuth (52), quiz/DSA (20) and the interview flow (23). They surfaced 6 bugs, all fixed: login was case-sensitive on email, `PATCH /me` with a null `onboarded` returned 500, OAuth could take over an unverified account, OAuth didn't require provider-verified emails, a DSA slug could be empty or unbounded, and quiz scores had no bounds |
-| 2.2 Swift test target | Yes | `PlacementPrepTests`, 75 tests. They surfaced bugs, all fixed: CSV parsing broke on CRLF and crashed on duplicate headers, and phone redaction missed Indian 5-5, `+91…` and `(555)` formats (the device and server now share one pattern and the same test samples) |
+| 2.2 Swift test target | Yes | `PlacedTests`, 75 tests. They surfaced bugs, all fixed: CSV parsing broke on CRLF and crashed on duplicate headers, and phone redaction missed Indian 5-5, `+91…` and `(555)` formats (the device and server now share one pattern and the same test samples) |
 | 2.3 CI | Yes | `.github/workflows/ci.yml` runs backend tests, an Alembic drift check and, when the iOS code changes, the iOS tests |
 | 2.4 LLM call handling | Yes (bugs) | Groq timeouts and 5xx now fall back to the next model, Gemini has a timeout; 17 tests |
 | 2.5 Logging | Yes | `app/core/logging.py` writes one `key=value` line per record; auth events are logged with an email hash, never the raw email |

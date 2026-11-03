@@ -122,16 +122,16 @@ jobs:
         working-directory: frontend
         run: |
           xcodebuild test \
-            -project PlacementPrep.xcodeproj \
-            -scheme PlacementPrep \
+            -project Placed.xcodeproj \
+            -scheme Placed \
             -destination "platform=iOS Simulator,id=${{ steps.sim.outputs.udid }}" \
-            -resultBundlePath "$RUNNER_TEMP/PlacementPrepTests.xcresult" \
+            -resultBundlePath "$RUNNER_TEMP/PlacedTests.xcresult" \
             CODE_SIGNING_ALLOWED=NO
 
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: PlacementPrepTests.xcresult
-          path: ${{ runner.temp }}/PlacementPrepTests.xcresult
+          name: PlacedTests.xcresult
+          path: ${{ runner.temp }}/PlacedTests.xcresult
           retention-days: 7

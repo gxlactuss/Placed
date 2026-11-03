@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def send_verification_email(to_email: str, code: str) -> None:
-    subject = "Your Placement Prep verification code"
+    subject = "Your Placed verification code"
 
     if not settings.resend_api_key:
         # Local dev only: with no RESEND_API_KEY there is no email to read the
@@ -30,7 +30,7 @@ def send_verification_email(to_email: str, code: str) -> None:
                 "to": [to_email],
                 "subject": subject,
                 "html": (
-                    f"<p>Your Placement Prep verification code is "
+                    f"<p>Your Placed verification code is "
                     f"<strong style='font-size:20px'>{code}</strong>.</p>"
                     f"<p>It expires in {settings.verification_code_ttl_minutes} minutes.</p>"
                 ),

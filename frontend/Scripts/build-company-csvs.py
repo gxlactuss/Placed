@@ -47,7 +47,7 @@ import urllib.request
 from collections import defaultdict
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEST = os.path.join(ROOT, "PlacementPrep", "Resources", "Companies")
+DEST = os.path.join(ROOT, "Placed", "Resources", "Companies")
 
 REPOS = {
     "liquidslr": "liquidslr/leetcode-company-wise-problems",

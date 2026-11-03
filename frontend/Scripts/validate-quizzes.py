@@ -8,8 +8,8 @@ import re
 import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
-MODELS = os.path.join(ROOT, "PlacementPrep", "Models", "QuizBankModels.swift")
-QUIZZES = os.path.join(ROOT, "PlacementPrep", "Resources", "Quizzes", "*.json")
+MODELS = os.path.join(ROOT, "Placed", "Models", "QuizBankModels.swift")
+QUIZZES = os.path.join(ROOT, "Placed", "Resources", "Quizzes", "*.json")
 
 
 def swift_enum_values(source, name):

@@ -4,8 +4,8 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 export DEVELOPER_DIR="${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}"
 
-APP_NAME="PlacementPrep"
-VOL_NAME="Placement Prep"
+APP_NAME="Placed"
+VOL_NAME="Placed"
 BUILD="$(pwd)/build/mac"
 ARCHIVE="$BUILD/$APP_NAME.xcarchive"
 EXPORT="$BUILD/export"
@@ -95,7 +95,7 @@ if [[ -n "$DEVELOPER_ID" && -n "$NOTARY_PROFILE" ]]; then
 else
   echo "  Unsigned. Gatekeeper blocks this on any Mac it was downloaded to, until:"
   echo
-  echo "    xattr -dr com.apple.quarantine /Applications/PlacementPrep.app"
+  echo "    xattr -dr com.apple.quarantine /Applications/Placed.app"
   echo
   echo "  That is the whole workaround, and it is why this build skips the \$99"
   echo "  Developer ID."

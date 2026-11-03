@@ -3,7 +3,7 @@ import SwiftUI
 struct LaunchSplashView: View {
     var body: some View {
         VStack(spacing: PPSpacing.lg) {
-            Text("PlacementPrep")
+            Text("Placed")
                 .font(.ppDisplay)
                 .foregroundStyle(Color.ppText)
             ProgressView()

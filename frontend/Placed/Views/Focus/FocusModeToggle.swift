@@ -108,7 +108,7 @@ struct FocusModeBriefing: View {
                 Text("Automate it (once)")
                     .ppSectionLabelStyle()
 
-                Text("In Shortcuts → Automation → New → **App**, choose PlacementPrep and *Is Opened*, then add the **Set Focus** action.")
+                Text("In Shortcuts → Automation → New → **App**, choose Placed and *Is Opened*, then add the **Set Focus** action.")
                     .font(.ppCaption)
                     .foregroundStyle(Color.ppMuted)
                     .fixedSize(horizontal: false, vertical: true)

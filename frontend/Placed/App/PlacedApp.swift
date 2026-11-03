@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct PlacementPrepApp: App {
+struct PlacedApp: App {
     @State private var companyBank = CompanyBank()
     @State private var solvedStore = SolvedStore()
     @State private var quizBank = QuizBank()

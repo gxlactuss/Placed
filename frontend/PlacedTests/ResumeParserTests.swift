@@ -1,5 +1,5 @@
 import Testing
-@testable import PlacementPrep
+@testable import Placed
 
 @Suite("ResumeParser redaction")
 struct ResumeParserTests {

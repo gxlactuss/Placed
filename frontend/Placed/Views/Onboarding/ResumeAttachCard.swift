@@ -250,8 +250,8 @@ struct ResumeSummaryResponse: Decodable {
 #Preview("Attached") {
     ResumeAttachCard(
         importer: ResumeImporter(restoring: InterviewSetup(
-            projectsSummary: "PlacementPrep: a SwiftUI + FastAPI prep app with voice mock interviews.",
-            projectsText: "PlacementPrep",
+            projectsSummary: "Placed: a SwiftUI + FastAPI prep app with voice mock interviews.",
+            projectsText: "Placed",
             skills: "Swift, Python"
         )),
         targetRole: "iOS Developer"

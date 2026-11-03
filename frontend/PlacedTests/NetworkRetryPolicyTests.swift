@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import PlacementPrep
+@testable import Placed
 
 @Suite("Network retry policy")
 struct NetworkRetryPolicyTests {

@@ -1,8 +1,8 @@
 import Foundation
 import Testing
-@testable import PlacementPrep
+@testable import Placed
 
-/// These run inside the PlacementPrep test host, so the app bundle's resources are available.
+/// These run inside the Placed test host, so the app bundle's resources are available.
 @Suite("Bundled content")
 @MainActor
 struct BundledContentTests {

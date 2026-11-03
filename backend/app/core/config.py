@@ -8,7 +8,7 @@ _GENERATE_JWT_SECRET = 'python -c "import secrets; print(secrets.token_urlsafe(4
 
 
 class Settings(BaseSettings):
-    app_name: str = "Placement Prep API"
+    app_name: str = "Placed API"
     # Level for the app's own loggers (app.*); uvicorn's loggers are separate.
     log_level: str = "INFO"
     database_url: str = "sqlite:///./placement_prep.db"
@@ -55,7 +55,7 @@ class Settings(BaseSettings):
         return [c for c in chain if not (c in seen or seen.add(c))]
 
     resend_api_key: str = ""
-    email_from: str = "PlacementPrep <onboarding@resend.dev>"
+    email_from: str = "Placed <onboarding@resend.dev>"
     verification_code_ttl_minutes: int = 15
     # Local dev only: a fixed OTP with no expiry that skips sending email.
     # Must be empty in production (see _check_dev_verification_code).

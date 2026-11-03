@@ -29,7 +29,7 @@ PHONES = (
 
 # Keep these two lists identical to the phoneNumbersAreRedacted /
 # ordinaryNumbersAreNotRedacted arguments in
-# frontend/PlacementPrepTests/ResumeParserTests.swift: both sides share one
+# frontend/PlacedTests/ResumeParserTests.swift: both sides share one
 # phone regex (app/ai/redaction.py <-> Services/ResumeParser.swift).
 PHONE_SAMPLES = (
     "9876543210",

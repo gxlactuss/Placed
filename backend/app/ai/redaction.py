@@ -3,11 +3,11 @@
 The iOS app already strips these before upload (ResumeParser.swift); this is
 defence in depth so a modified or buggy client can't leak them to the LLM.
 The patterns are copied character-for-character from
-frontend/PlacementPrep/Services/ResumeParser.swift (emailPattern, phonePattern)
+frontend/Placed/Services/ResumeParser.swift (emailPattern, phonePattern)
 so both sides agree on what counts as an email or phone number. If you change
 one, change the other and the shared sample strings in
 backend/tests/test_resume_privacy.py and
-frontend/PlacementPrepTests/ResumeParserTests.swift.
+frontend/PlacedTests/ResumeParserTests.swift.
 """
 
 import re

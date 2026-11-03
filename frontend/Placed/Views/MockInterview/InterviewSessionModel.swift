@@ -216,7 +216,7 @@ final class InterviewSessionModel {
                     guard let self else { return }
                     self.micAuthorized = granted
                     if !granted {
-                        self.phase = .error("Microphone access is off. Turn it on for Placement Prep in Settings, then hold to answer again.")
+                        self.phase = .error("Microphone access is off. Turn it on for Placed in Settings, then hold to answer again.")
                     }
                 }
             }

@@ -1,8 +1,8 @@
-# PPIP: Placement Preparation Intelligence Platform
+# Placed
 
-[![CI](https://github.com/mohitsamant14/PPIP/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/mohitsamant14/PPIP/actions/workflows/ci.yml)
+[![CI](https://github.com/gxlactuss/Placed/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/gxlactuss/Placed/actions/workflows/ci.yml)
 
-**PlacementPrep** is an iOS, iPadOS and Mac Catalyst app for campus placement preparation, backed by a FastAPI service. It combines:
+**Placed** is an iOS, iPadOS and Mac Catalyst app for campus placement preparation, backed by a FastAPI service. It combines:
 
 - **Topic-wise quizzes**: aptitude, core CS, DSA and role-specific question sets, with an AI-written summary of how you did.
 - **Company DSA question banks** for about 40 companies (Google, Amazon, Microsoft, Flipkart, Zomato, Goldman Sachs and others), with solved and saved tracking.
@@ -24,7 +24,7 @@
 ## Features
 
 ### Quizzes
-Bundled JSON quiz sets live in `frontend/PlacementPrep/Resources/Quizzes/`:
+Bundled JSON quiz sets live in `frontend/Placed/Resources/Quizzes/`:
 
 | Track | Sets |
 | --- | --- |
@@ -76,7 +76,7 @@ Email sign-up with OTP verification (sent through Resend), plus Google and GitHu
 
 | Path | What it is |
 | --- | --- |
-| `frontend/` | SwiftUI app. Source is in `PlacementPrep/` (App, DesignSystem, Models, Services, ViewModels, Views, Resources); `project.yml` is the XcodeGen spec; `Scripts/` holds content and packaging tools. |
+| `frontend/` | SwiftUI app. Source is in `Placed/` (App, DesignSystem, Models, Services, ViewModels, Views, Resources); `project.yml` is the XcodeGen spec; `Scripts/` holds content and packaging tools. |
 | `backend/app/` | FastAPI service: `auth/` (JWT, OTP, OAuth), `ai/` (interview rounds, difficulty, prompts, LLM calls), `content/` (quiz and DSA routes, company interview expectations), `core/config.py` (settings). |
 | `backend/scripts/` | Maintenance scripts (`wipe_database.py`). |
 | `database/` | SQLModel table models (`user`, `quiz`, `dsa`, `interview`), the engine/session, and Alembic migrations (`alembic.ini`, `migrations/`), shared with the backend. |
@@ -176,7 +176,7 @@ Requires Xcode 15+ and XcodeGen (`brew install xcodegen`).
 ```bash
 cd frontend
 xcodegen generate            # re-run after adding, removing or renaming files
-open PlacementPrep.xcodeproj
+open Placed.xcodeproj
 ```
 
 Pick an iPhone or iPad simulator, or **My Mac (Mac Catalyst)**, then run. For a physical device, set your development team in Signing & Capabilities.
@@ -189,10 +189,10 @@ xcrun simctl spawn booted defaults write com.placementprep.app PPBackendURL http
 
 ### Tests
 
-Unit tests live in `frontend/PlacementPrepTests/` (Swift Testing, Xcode 16+) and run hosted in the app, so bundled quizzes and company CSVs are covered too. Press ⌘U in Xcode, or from `frontend/` (use any simulator from `xcrun simctl list devices available`):
+Unit tests live in `frontend/PlacedTests/` (Swift Testing, Xcode 16+) and run hosted in the app, so bundled quizzes and company CSVs are covered too. Press ⌘U in Xcode, or from `frontend/` (use any simulator from `xcrun simctl list devices available`):
 
 ```bash
-xcodebuild test -project PlacementPrep.xcodeproj -scheme PlacementPrep \
+xcodebuild test -project Placed.xcodeproj -scheme Placed \
   -destination 'platform=iOS Simulator,name=iPhone 17' CODE_SIGNING_ALLOWED=NO
 ```
 
