@@ -11,7 +11,11 @@
 
 ## Demo
 
-[![Watch the demo video](docs/media/demo-poster.jpg)](docs/media/demo.mp4)
+
+
+https://github.com/user-attachments/assets/a5dc8513-cd9c-4c67-85ec-775c8befc6c3
+
+
 
 <p align="center">
   <img src="docs/media/01-home.png" alt="Home screen" width="30%">
